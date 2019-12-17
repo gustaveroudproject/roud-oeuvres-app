@@ -46,3 +46,4 @@ testem.log
 Thumbs.db
 .yalc/
 .yalc
+yalc.lock
