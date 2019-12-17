@@ -13,6 +13,7 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { ThingsPageComponent } from './components/things-page/things-page.component';
+import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ThingsPageComponent } from './components/things-page/things-page.compon
     AppComponent,
     TopBarComponent,
     HomePageComponent,
-    ThingsPageComponent
+    ThingsPageComponent,
+    PersonsPageComponent
   ],
   imports: [
     BrowserModule,

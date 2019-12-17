@@ -34,4 +34,17 @@ CONSTRUCT {
 }`;
     return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearchQuery);
   }
+
+  getPersons(): Observable<ReadResource[] | ApiResponseError> {
+    const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#>
+
+CONSTRUCT {
+  ?person knora-api:isMainResource true .
+} WHERE {
+  ?person a roud-oeuvres:Person .
+}`;
+    return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearchQuery);
+  }
 }
