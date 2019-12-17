@@ -3,5 +3,10 @@
   "home.go-to": "Aller vers",
   "toolbar.home": "Home",
   "toolbar.things": "Choses",
-  "toolbar.persons": "Personnes"
+  "toolbar.persons": "Personnes",
+  "person.ark": "ARK",
+  "person.iri": "IRI",
+  "person.name": "Prénom",
+  "person.surname": "Nom",
+  "person.label": "Label"
 }

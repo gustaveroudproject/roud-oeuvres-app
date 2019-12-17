@@ -15,8 +15,12 @@ export class PersonsPageComponent implements OnInit {
   ngOnInit() {
     this.dataService.getPersons().subscribe((resources: ReadResource[]) => {
       this.persons = resources;
-      console.log(resources);
-    });
+    },
+    error => console.error(error));
+  }
+
+  encodeURIComponent(iri: string) {
+    return encodeURIComponent(iri);
   }
 
 }

@@ -35,6 +35,13 @@ CONSTRUCT {
     return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearchQuery);
   }
 
+  getThing(iri: string): Observable<ReadResource | ApiResponseError> {
+    return this.knoraApiConnection.v2.res.getResource(iri);
+  }
+
+
+
+
   getPersons(): Observable<ReadResource[] | ApiResponseError> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -46,5 +53,9 @@ CONSTRUCT {
   ?person a roud-oeuvres:Person .
 }`;
     return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearchQuery);
+  }
+
+  getPerson(iri: string): Observable<ReadResource | ApiResponseError> {
+    return this.knoraApiConnection.v2.res.getResource(iri);
   }
 }
