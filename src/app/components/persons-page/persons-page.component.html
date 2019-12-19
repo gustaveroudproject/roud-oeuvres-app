@@ -1,10 +1,17 @@
 <h2 class="p-3">{{ 'toolbar.persons' | translate }}</h2>
 
-<div class="container">
-  <or-persons-view [persons]="persons"></or-persons-view>
-  <or-person-view
-    *ngIf="selectedPerson"
-    class="child-container"
-    [person]="selectedPerson"
-  ></or-person-view>
+<div class="row">
+
+  <div class="col-4">
+    <or-persons-view [persons]="persons"></or-persons-view>
+  </div>
+  
+  <div class="col-8">
+    <or-person-view
+      *ngIf="selectedPerson"
+      
+      [person]="selectedPerson"
+    ></or-person-view>
+  </div>
+  
 </div>
