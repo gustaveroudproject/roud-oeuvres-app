@@ -14,7 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { ThingsPageComponent } from './components/things-page/things-page.component';
 import { PersonsPageComponent } from './components/persons-page/persons-page.component';
-import { PersonPageComponent } from './components/person-page/person-page.component';
+import { PersonsViewComponent } from './components/persons-view/persons-view.component';
+import { PersonViewComponent } from './components/person-view/person-view.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PersonPageComponent } from './components/person-page/person-page.compon
     HomePageComponent,
     ThingsPageComponent,
     PersonsPageComponent,
-    PersonPageComponent
+    PersonsViewComponent,
+    PersonViewComponent
   ],
   imports: [
     BrowserModule,

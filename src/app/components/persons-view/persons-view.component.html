@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let resource of persons">
+    <a routerLink="/persons/{{ encodeURIComponent(resource.id) }}">{{
+      resource.label
+    }}</a>
+  </li>
+</ul>
