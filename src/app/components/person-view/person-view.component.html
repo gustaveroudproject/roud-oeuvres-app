@@ -1,5 +1,11 @@
-<p class="p-2"><strong>{{ 'person.label' | translate }}</strong> : {{ person?.label }}</p>
-<p class="p-2"><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.arkUrl }}</p>
-<p class="p-2"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p>
-<p class="p-2"><strong>{{ 'person.name' | translate }}</strong> : {{ getPersonName(person) }}</p>
-<p class="p-2"><strong>{{ 'person.surname' | translate }}</strong> : {{ getPersonSurname(person) }}</p>
+<p class="p-2">
+    <strong>{{ getPersonName(person) }} {{ getPersonSurname(person) }}</strong> 
+    ({{ getPersonDateOfBirth(person) }}-{{ getPersonDateOfDeath(person) }})
+</p>
+<p class="p-2">{{ getPersonNotice(person) }} </p>
+<br/><br/>
+<a href="{{ getPersonDhsID(person) }}" target="_blank"><img src="assets/img/dhs.png" width="50px"></a>
+<a href="{{ getPersonViafID(person) }}" target="_blank"><img src="assets/img/viaf.png" width="50px"></a>
+<br/><br/>
+<p class="p-0"><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.arkUrl }}</p>
+<p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p>

@@ -29,6 +29,41 @@ export class PersonViewComponent implements OnInit {
     );
   }
 
+  getPersonDateOfBirth(person: ReadResource) {
+    return this.getFirstPropertyValueOrNull(
+      person,
+      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
+    );
+  }
+
+  getPersonDateOfDeath(person: ReadResource) {
+    return this.getFirstPropertyValueOrNull(
+      person,
+      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
+    );
+  }
+
+  getPersonNotice(person: ReadResource) {
+    return this.getFirstPropertyValueOrNull(
+      person,
+      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasNotice`
+    );
+  }
+
+  getPersonDhsID(person: ReadResource) {
+    return this.getFirstPropertyValueOrNull(
+      person,
+      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasDhsID`
+    );
+  }
+
+  getPersonViafID(person: ReadResource) {
+    return this.getFirstPropertyValueOrNull(
+      person,
+      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasAuthorityID`
+    );
+  }
+
   getFirstPropertyValueOrNull(resource: ReadResource, property: string) {
     const values: string[] = resource
       ? resource.getValuesAsStringArray(property)
