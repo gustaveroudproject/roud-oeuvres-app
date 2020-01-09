@@ -16,6 +16,7 @@ import { ThingsPageComponent } from './components/things-page/things-page.compon
 import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 import { PersonsViewComponent } from './components/persons-view/persons-view.component';
 import { PersonViewComponent } from './components/person-view/person-view.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { PersonViewComponent } from './components/person-view/person-view.compon
     ThingsPageComponent,
     PersonsPageComponent,
     PersonsViewComponent,
-    PersonViewComponent
+    PersonViewComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
