@@ -3,7 +3,7 @@ import { ReadResource } from '@knora/api';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
-  selector: 'kd-things-page',
+  selector: 'or-things-page',
   templateUrl: './things-page.component.html',
   styleUrls: ['./things-page.component.scss']
 })
