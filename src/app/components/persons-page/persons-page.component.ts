@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReadResource } from '@knora/api';
+import { Person } from  'src/app/models/person.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./persons-page.component.scss']
 })
 export class PersonsPageComponent implements OnInit {
-  persons: ReadResource[];
-  selectedPerson: ReadResource;
+  persons: Person[];
+  selectedPerson: Person;
 
   constructor(
     private dataService: DataService,
@@ -19,8 +19,8 @@ export class PersonsPageComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getPersons().subscribe(
-      (resources: ReadResource[]) => {
-      this.persons = resources;
+      (persons: Person[]) => {
+      this.persons = persons;
       },
       error => console.error(error)
     );
@@ -31,8 +31,8 @@ export class PersonsPageComponent implements OnInit {
             this.dataService
             .getPerson(decodeURIComponent(params.get('iri')))
             .subscribe(
-              (resource: ReadResource) => {
-                this.selectedPerson = resource;
+              (person: Person) => {
+                this.selectedPerson = person;
               },
               error => console.error(error)
             );

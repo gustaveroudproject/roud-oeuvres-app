@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ReadResource } from '@knora/api';
+import { ActivatedRoute } from '@angular/router';
+import { Thing } from 'src/app/models/thing.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -8,14 +9,21 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./things-page.component.scss']
 })
 export class ThingsPageComponent implements OnInit {
-  things: ReadResource[];
+  things: Thing[];
+  selectedThing: Thing;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.dataService.getThings().subscribe((resources: ReadResource[]) => {
-      this.things = resources;
-      console.log(resources);
-    });
+    this.dataService.getThings().subscribe(
+      (things: Thing[]) => {
+      this.things = things;
+      },
+      error => console.error(error)
+    );
+
   }
 }
