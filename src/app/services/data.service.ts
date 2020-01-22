@@ -6,13 +6,10 @@ import { environment } from 'src/environments/environment';
 import { Person } from '../models/person.model';
 import { Thing } from '../models/thing.model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  
   knoraApiConnection: KnoraApiConnection;
 
   constructor() {
@@ -23,7 +20,7 @@ export class DataService {
     this.knoraApiConnection = new KnoraApiConnection(config);
   }
 
-  getPersons(): Observable<Person[]> {
+  getPersons(index: number = 0): Observable<Person[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#>
@@ -31,22 +28,22 @@ CONSTRUCT {
   ?person knora-api:isMainResource true .
 } WHERE {
   ?person a roud-oeuvres:Person .
-}`;
-    return this.knoraApiConnection.v2.search
-    .doExtendedSearch(gravsearchQuery)
-    .pipe(
-      map((readResources: ReadResource[]) =>
-        readResources.map(r => new Person(r))
-      )
-    );
 }
+OFFSET ${index}
+`;
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((readResources: ReadResource[]) =>
+          readResources.map(r => new Person(r))
+        )
+      );
+  }
 
   getPerson(iri: string): Observable<Person> {
     return this.knoraApiConnection.v2.res
-    .getResource(iri)
-      .pipe(
-        map((readResource: ReadResource) => new Person(readResource))
-      );
+      .getResource(iri)
+      .pipe(map((readResource: ReadResource) => new Person(readResource)));
   }
 
   getThings(): Observable<Thing[]> {
@@ -58,12 +55,12 @@ CONSTRUCT {
 } WHERE {
   ?thing a any:Thing .
 }`;
-  return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((readResources: ReadResource[]) =>
-      readResources.map(r => new Thing(r))
-    )
-  );
-}
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((readResources: ReadResource[]) =>
+          readResources.map(r => new Thing(r))
+        )
+      );
+  }
 }
