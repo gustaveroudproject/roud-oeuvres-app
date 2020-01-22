@@ -1,20 +1,18 @@
 <div class="container">
-
   <h2 class="p-3">{{ 'toolbar.persons' | translate }}</h2>
 
   <div class="row">
-
     <div class="col-4">
       <or-persons-view [persons]="persons"></or-persons-view>
     </div>
-    
+
     <div class="col-8">
       <or-person-view
         *ngIf="selectedPerson"
-        
         [person]="selectedPerson"
       ></or-person-view>
     </div>
-    
+
+    <button (click)="onClick()" type="button" class="btn btn-light">Plus</button>
   </div>
 </div>
