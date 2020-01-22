@@ -28,7 +28,8 @@ CONSTRUCT {
   ?person knora-api:isMainResource true .
 } WHERE {
   ?person a roud-oeuvres:Person .
-}
+  ?person roud-oeuvres:personHasFamilyName ?surname .
+} ORDER BY ASC(?surname)
 OFFSET ${index}
 `;
     return this.knoraApiConnection.v2.search
