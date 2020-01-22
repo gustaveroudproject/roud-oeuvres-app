@@ -2,7 +2,8 @@
     <strong>{{ person?.name }} {{ person?.surname }}</strong> 
     ({{ person?.dateOfBirth }}-{{ person?.dateOfDeath }})
 </p>
-<p class="p-2">{{ person?.notice }} </p>
+<!--<p class="p-2">{{ person?.notice }} </p>-->
+<p class="p-2" [innerHtml]="person?.notice"></p> <!-- add pipe to transform link <a href="http://rdfh.ch/0112/d7xa60KtToy9uOjMby8A5w" class="salsah-link"> into <a routerLink="place/http%3A%2F%2Frdfh.ch%2F0112%2Fd7xa60KtToy9uOjMby8A5w" >-->
 <br/><br/>
 <a href="{{ person?.DhsID }}" target="_blank"><img src="assets/img/dhs.png" width="50px"></a>
 <a href="{{ person?.Viaf }}" target="_blank"><img src="assets/img/viaf.png" width="50px"></a>
