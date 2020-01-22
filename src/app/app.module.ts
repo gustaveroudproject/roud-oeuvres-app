@@ -17,6 +17,7 @@ import { PersonsPageComponent } from './components/persons-page/persons-page.com
 import { PersonsViewComponent } from './components/persons-view/persons-view.component';
 import { PersonViewComponent } from './components/person-view/person-view.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { FooterComponent } from './components/footer/footer.component';
     PersonsPageComponent,
     PersonsViewComponent,
     PersonViewComponent,
-    FooterComponent
+    FooterComponent,
+    knoradatesFormattingPipe
   ],
   imports: [
     BrowserModule,

@@ -22,13 +22,13 @@ export class Person extends Resource {
   get dateOfBirth(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
       `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
-    ).slice(10,14);
+    );
   } 
 
   get dateOfDeath(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
       `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
-    ).slice(10,14);
+    );
   } 
 
   get notice(): string {
