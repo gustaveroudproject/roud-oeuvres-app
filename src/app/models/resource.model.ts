@@ -15,6 +15,13 @@ export class Resource {
     return this.readResource.label;
   }
 
+
+  // does this really give me the label of the class of the resource?
+  // for example: for http%3A%2F%2Frdfh.ch%2F0112%2F-6s31wU0SPqOW7Kb7Clstg the label of the class should be Person
+  get resourceClassLabel(): string {
+    return this.readResource.resourceClassLabel
+  }
+
   getFirstValueAsStringOrNullOfProperty(property: string) {
     console.log(this.readResource);
     console.log(property);
