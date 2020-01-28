@@ -20,7 +20,8 @@ export class ResourceLinkDirective implements AfterViewInit {
    
   el.nativeElement.querySelectorAll('a').forEach((aElt: HTMLElement) => {
     const IRI = aElt.attributes['href'].value;  // record in a variable IRI the value of @href
-    this.renderer.setAttribute(aElt, 'routerLink','resources/'+IRI); // create new attribute @routerLink and assign it a value equal to 'resources/' + var IRI
+    const encodedIRI = encodeURIComponent(IRI);
+    this.renderer.setAttribute(aElt, 'routerLink',`resources/${encodedIRI}`); // create new attribute @routerLink and assign it a value equal to 'resources/' + var IRI
     this.renderer.removeAttribute(aElt, 'href');  // delete original @href
     this.renderer.removeAttribute(aElt, 'class'); // delete @class
 
