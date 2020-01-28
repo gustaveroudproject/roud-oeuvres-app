@@ -18,6 +18,7 @@ import { PersonsViewComponent } from './components/persons-view/persons-view.com
 import { PersonViewComponent } from './components/person-view/person-view.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
+import { ResourceLinkDirective } from './directives/resource-link.directive';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
     PersonsViewComponent,
     PersonViewComponent,
     FooterComponent,
-    knoradatesFormattingPipe
+    knoradatesFormattingPipe,
+    ResourceLinkDirective
   ],
   imports: [
     BrowserModule,
