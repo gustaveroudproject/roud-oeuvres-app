@@ -19,7 +19,7 @@ export class PersonsPageComponent implements OnInit {
   ) {}
 
   onClick() {
-    console.log('test');
+    // console.log('test');
     this.dataService.getPersons(this.index).subscribe(
       (persons: Person[]) => {
         this.persons.push(...persons);

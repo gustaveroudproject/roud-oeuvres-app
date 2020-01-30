@@ -15,6 +15,11 @@ export class Resource {
     return this.readResource.label;
   }
 
+
+  get resourceClassLabel(): string {
+    return this.readResource.resourceClassLabel
+  }
+
   getFirstValueAsStringOrNullOfProperty(property: string) {
     console.log(this.readResource);
     console.log(property);

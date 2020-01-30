@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Person } from '../models/person.model';
 import { Thing } from '../models/thing.model';
+import { Resource} from '../models/resource.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -64,4 +66,14 @@ CONSTRUCT {
         )
       );
   }
+
+
+
+  getResource(iri: string): Observable<Resource> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(map((readResource: ReadResource) => new Resource(readResource)));
+  }
+
+
 }
