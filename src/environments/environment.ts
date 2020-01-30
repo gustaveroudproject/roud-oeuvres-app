@@ -26,5 +26,7 @@ export const environment = {
 
 export const environment = {
   name: 'dev',
-  production: false
+  production: false,
+
+  knoraAppUrl: 'http://localhost:3335'
 };
