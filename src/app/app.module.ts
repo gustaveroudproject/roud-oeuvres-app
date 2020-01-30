@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -21,6 +21,14 @@ import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
 
+import { KnoraApiConnectionToken, KuiConfigToken, KuiCoreModule, KnoraApiConfigToken } from '@knora/core';
+import { AppInitService } from './app-init.service';
+
+export function initializeApp(appInitService: AppInitService) {
+  return (): Promise<any> => {
+      return appInitService.Init();
+  };
+}
 
 @NgModule({
   declarations: [
@@ -37,6 +45,7 @@ import { ResourceRouterComponent } from './components/resource-router/resource-r
     ResourceRouterComponent
   ],
   imports: [
+    KuiCoreModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -48,7 +57,27 @@ import { ResourceRouterComponent } from './components/resource-router/resource-r
       }
     })
   ],
-  providers: [],
+  providers: [
+    AppInitService,
+    {
+        provide: APP_INITIALIZER,
+        useFactory: initializeApp,
+        deps: [AppInitService],
+        multi: true
+    },
+    {
+        provide: KuiConfigToken,
+        useFactory: () => AppInitService.kuiConfig
+    },
+    {
+        provide: KnoraApiConfigToken,
+        useFactory: () => AppInitService.knoraApiConfig
+    },
+    {
+        provide: KnoraApiConnectionToken,
+        useFactory: () => AppInitService.knoraApiConnection
+    }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
