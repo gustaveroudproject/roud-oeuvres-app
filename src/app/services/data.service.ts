@@ -68,25 +68,6 @@ CONSTRUCT {
   }
 
 
-  getResources(): Observable<Resource[]> {
-    const gravsearchQuery = `
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX knora-base: <http://www.knora.org/ontology/knora-base#>
-CONSTRUCT {
-  ?resource knora-api:isMainResource true .
-} WHERE {
-  ?resource rdfs:subClassOf knora-base:Resource .
-}`;
-    return this.knoraApiConnection.v2.search
-      .doExtendedSearch(gravsearchQuery)
-      .pipe(
-        map((readResources: ReadResource[]) =>
-          readResources.map(r => new Resource(r))
-        )
-      );
-  }
 
   getResource(iri: string): Observable<Resource> {
     return this.knoraApiConnection.v2.res

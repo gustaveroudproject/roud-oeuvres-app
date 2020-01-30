@@ -5,9 +5,7 @@ import { Resource } from 'src/app/models/resource.model'
 
 
 @Component({
-  selector: 'or-resource-router',
-  templateUrl: './resource-router.component.html',
-  styleUrls: ['./resource-router.component.scss']
+  template: ''  // one could write the html part of the component here, but in this case we don't need any html
 })
 
 export class ResourceRouterComponent implements OnInit {
@@ -21,9 +19,11 @@ export class ResourceRouterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+        // get iri
     this.route.paramMap.subscribe(params => {
       console.log(params);
-      if (params.has('iri')) {
+      if (params.has('iri')) {     // I can have iri here, because in routing the path is defined resources:iri
         const iri = decodeURIComponent(params.get('iri'));
         console.log(iri);
         const routeMapping = new Map<string, string>();
@@ -33,15 +33,8 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('EstablishedText', '/texts/');
         routeMapping.set('Work', '/works/');
 
-
- 
-        this.dataService.getResources().subscribe(
-          (resources: Resource[]) => {
-          this.resources = resources;
-          },
-          error => console.error(error)
-        );
     
+        // get resource class
           this.route.paramMap.subscribe(
             params => {
               if (params.has('iri')) {
@@ -49,7 +42,19 @@ export class ResourceRouterComponent implements OnInit {
                 .getResource(decodeURIComponent(params.get('iri')))
                 .subscribe(
                   (resource: Resource) => {
-                    this.selectedResource = resource;
+                    console.log(resource.resourceClassLabel);
+                    if(routeMapping.has(resource.resourceClassLabel)) {  // if the class is in the dictionary
+                      const resRoutePrefix = routeMapping.get(   // give me the value of this key (e.g., the key is "Place" and the value is "/places/")
+                        resource.resourceClassLabel
+                      );
+
+                      // we use router to navigate, where? To the route mapped, which is made of resRoutePrefix + encodeURIComponent(iri)
+                      this.router.navigate([
+                        resRoutePrefix,  // is not a string that we give, but a table, so we use ","
+                        encodeURIComponent(iri)
+                      ]);
+                    }
+
                   },
                   error => console.error(error)
                 );
@@ -58,23 +63,7 @@ export class ResourceRouterComponent implements OnInit {
         error => console.error(error)
         );
 
-        // where to use the resourceClassLabel implemented in resource.model?
-
-        /*
-        this.knoraService.getResource(iri).subscribe((res: KResource) => {
-          console.log(res);
-          const routeKey = res
-            ? Array.from(routeMapping.keys()).find(k => res.type.endsWith(k))
-            : null;
-          console.log(routeKey);
-
-          if (routeKey) {
-            this.router.navigate([
-              routeMapping.get(routeKey),
-              encodeURIComponent(iri)
-            ]);
-          }
-        }); */
+       
       }
     });
   }
