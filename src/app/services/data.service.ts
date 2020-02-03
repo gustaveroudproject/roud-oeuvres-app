@@ -42,7 +42,9 @@ OFFSET ${index}
       .doExtendedSearch(gravsearchQuery)
       .pipe(
         map((readResources: ReadResource[]) =>
-          readResources.map(r => new Person(r))
+          readResources.map(r => {
+            return new Person(r, this.knoraApiConnection, this.kuiConfig);
+          })
         ) 
       );
       
@@ -51,7 +53,7 @@ OFFSET ${index}
   getPerson(iri: string): Observable<Person> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
-      .pipe(map((readResource: ReadResource) => new Person(readResource)));
+      .pipe(map((readResource: ReadResource) => new Person(readResource, this.knoraApiConnection, this.kuiConfig)));
   }
 
   getThings(): Observable<Thing[]> {
