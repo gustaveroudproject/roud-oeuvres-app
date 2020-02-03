@@ -19,43 +19,43 @@ export class Person extends Resource {
 
   get surname(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasFamilyName`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasFamilyName`
     );
   }
 
   get name(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasGivenName`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasGivenName`
     );
   }
 
   get dateOfBirth(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
     );
   } 
 
   get dateOfDeath(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
     );
   } 
 
   get notice(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasNotice`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasNotice`
     );
   } 
 
   get DhsID(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasDhsID`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasDhsID`
     );
   } 
 
   get Viaf(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasAuthorityID`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasAuthorityID`
     );
   } 
 
