@@ -1,13 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
-import { KnoraApiConfig, KnoraApiConnection, ReadResource } from '@knora/api';
+import { KnoraApiConnection, ReadResource } from '@knora/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { Person } from '../models/person.model';
 import { Thing } from '../models/thing.model';
 import { Resource} from '../models/resource.model';
-import { KnoraApiConnectionToken } from '@knora/core';
-import { AppInitService } from '../app-init.service';
+import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 
 @Injectable({
@@ -16,15 +14,22 @@ import { AppInitService } from '../app-init.service';
 
 export class DataService {
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(
+    @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+    @Inject(KuiConfigToken) private kuiConfig: KuiConfig) {
 
   }
+
+  getOntoPrefixPath() {
+    return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}`;
+  }
+
 
 
   getPersons(index: number = 0): Observable<Person[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${AppInitService.knoraApiConnection}/ontology/0112/roud-oeuvres/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#>
 CONSTRUCT {
   ?person knora-api:isMainResource true .
 } WHERE {
@@ -52,7 +57,7 @@ OFFSET ${index}
   getThings(): Observable<Thing[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX any: <${AppInitService.knoraApiConnection}/ontology/0001/anything/v2#>
+PREFIX any: <${this.getOntoPrefixPath()}/ontology/0001/anything/v2#>
 CONSTRUCT {
   ?thing knora-api:isMainResource true .
 } WHERE {
