@@ -26,6 +26,7 @@ import { AppInitService } from './app-init.service';
 import { FulltextSearchComponent } from './components/fulltext-search/fulltext-search.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { KuiSearchModule } from '@knora/search';
+import { KuiViewerModule } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
@@ -53,6 +54,7 @@ export function initializeApp(appInitService: AppInitService) {
   ],
   imports: [
     KuiCoreModule,
+    KuiViewerModule,
     BrowserModule,
     KuiSearchModule,
     AppRoutingModule,

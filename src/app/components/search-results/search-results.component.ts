@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'or-search-results',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchResultsComponent implements OnInit {
 
-  constructor() { }
+  // copied from Knora-app
+
+  searchQuery: string;
+  searchMode: string;
+
+  projectIri: string;
+
+  constructor (private _route: ActivatedRoute,
+      private _titleService: Title) {
+      this._route.paramMap.subscribe((params: Params) => {
+          // set the page title
+          this._titleService.setTitle('Results found for "' + decodeURIComponent(params.get('q')) + '"');
+      });
+  }
 
   ngOnInit() {
   }
-
+  
 }
