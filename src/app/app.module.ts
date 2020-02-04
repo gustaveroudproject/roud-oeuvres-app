@@ -24,7 +24,6 @@ import { ResourceRouterComponent } from './components/resource-router/resource-r
 import { KnoraApiConnectionToken, KuiConfigToken, KuiCoreModule, KnoraApiConfigToken } from '@knora/core';
 import { AppInitService } from './app-init.service';
 import { FulltextSearchComponent } from './components/fulltext-search/fulltext-search.component';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { KuiSearchModule } from '@knora/search';
 import { KuiViewerModule } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
@@ -49,7 +48,6 @@ export function initializeApp(appInitService: AppInitService) {
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,
-    SearchResultsComponent,
     SearchPageComponent
   ],
   imports: [

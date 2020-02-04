@@ -4,7 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ThingsPageComponent } from './components/things-page/things-page.component';
 import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { SearchResultsComponent } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 
 const routes: Routes = [
