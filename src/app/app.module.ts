@@ -27,6 +27,7 @@ import { FulltextSearchComponent } from './components/fulltext-search/fulltext-s
 import { KuiSearchModule } from '@knora/search';
 import { KuiViewerModule } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
+import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -48,7 +49,8 @@ export function initializeApp(appInitService: AppInitService) {
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,
-    SearchPageComponent
+    SearchPageComponent,
+    HtmlSanitizerPipe
   ],
   imports: [
     KuiCoreModule,
