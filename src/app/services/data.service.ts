@@ -43,7 +43,7 @@ OFFSET ${index}
       .pipe(
         map((readResources: ReadResource[]) =>
           readResources.map(r => {
-            return new Person(r, this.knoraApiConnection, this.kuiConfig);
+            return new Person(r, this.kuiConfig);
           })
         ) 
       );
@@ -53,7 +53,7 @@ OFFSET ${index}
   getPerson(iri: string): Observable<Person> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
-      .pipe(map((readResource: ReadResource) => new Person(readResource, this.knoraApiConnection, this.kuiConfig)));
+      .pipe(map((readResource: ReadResource) => new Person(readResource, this.kuiConfig)));
   }
 
   getThings(): Observable<Thing[]> {

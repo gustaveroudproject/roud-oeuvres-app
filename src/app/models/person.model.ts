@@ -6,9 +6,7 @@ import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core'
 export class Person extends Resource {
   constructor( 
     readResource: ReadResource,
-
-    @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-    @Inject(KuiConfigToken) private kuiConfig: KuiConfig) {
+    private kuiConfig: KuiConfig)  {  // private create an attribute in the class
       super(readResource);
   }
 
