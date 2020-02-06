@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Person } from '../models/person.model';
 import { Thing } from '../models/thing.model';
 import { Resource} from '../models/resource.model';
+import { Text} from '../models/text.model';
 import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 
@@ -80,6 +81,37 @@ CONSTRUCT {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
       .pipe(map((readResource: ReadResource) => new Resource(readResource)));
+  }
+
+
+  getTexts(index: number = 0): Observable<Text[]> {
+    const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#>
+CONSTRUCT {
+  ?text knora-api:isMainResource true .
+} WHERE {
+  ?text a roud-oeuvres:EstablishedText .
+  ?text roud-oeuvres:establishedTextHasTitle ?title .
+} ORDER BY ASC(?title)
+OFFSET ${index}
+`;  
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((readResources: ReadResource[]) =>
+          readResources.map(r => {
+            return new Text(r, this.kuiConfig);
+          })
+        ) 
+      );
+      
+  }
+
+  getText(iri: string): Observable<Text> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(map((readResource: ReadResource) => new Text(readResource, this.kuiConfig)));
   }
 
 

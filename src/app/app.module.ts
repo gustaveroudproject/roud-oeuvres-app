@@ -28,6 +28,9 @@ import { KuiSearchModule } from '@knora/search';
 import { KuiViewerModule } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
+import { TextViewComponent } from './components/text-view/text-view.component';
+import { TextsPageComponent } from './components/texts-page/texts-page.component';
+import { TextPageComponent } from './components/text-page/text-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -50,7 +53,10 @@ export function initializeApp(appInitService: AppInitService) {
     ResourceRouterComponent,
     FulltextSearchComponent,
     SearchPageComponent,
-    HtmlSanitizerPipe
+    HtmlSanitizerPipe,
+    TextViewComponent,
+    TextsPageComponent,
+    TextPageComponent
   ],
   imports: [
     KuiCoreModule,

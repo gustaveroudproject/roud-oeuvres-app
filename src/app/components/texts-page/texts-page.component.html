@@ -1,0 +1,15 @@
+{{ resource | json}}
+<div class="container">
+    <h2 class="p-3">{{ 'toolbar.texts' | translate }}</h2>
+  
+    <div class="row">
+        <ul>
+            <li *ngFor="let resource of texts">{{ text | json}}
+              <a routerLink="/texts/{{ encodeURIComponent(resource.id) }}">{{
+                resource.label
+              }}</a>
+            </li>
+          </ul>
+    </div>
+
+</div>

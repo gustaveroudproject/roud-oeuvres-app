@@ -6,6 +6,9 @@ import { PersonsPageComponent } from './components/persons-page/persons-page.com
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
 import { SearchResultsComponent } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
+import { TextsPageComponent } from './components/texts-page/texts-page.component';
+import { TextViewComponent } from './components/text-view/text-view.component';
+import { TextPageComponent } from './components/text-page/text-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -15,6 +18,13 @@ const routes: Routes = [
     children: [
       { path: '', component: PersonsPageComponent },
       { path: ':iri', component: PersonsPageComponent }
+    ]
+  },
+  {
+    path: 'texts',
+    children: [
+      { path: '', component: TextsPageComponent },
+      { path: ':iri', component: TextPageComponent }
     ]
   },
   {
