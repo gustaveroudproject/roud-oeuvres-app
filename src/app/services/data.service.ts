@@ -40,10 +40,20 @@ CONSTRUCT {
 OFFSET ${index}
 `;  
     return this.knoraApiConnection.v2.search
-      .doExtendedSearch(gravsearchQuery)
-      .pipe(
-        map((readResources: ReadResource[]) =>
-          readResources.map(r => {
+      .doExtendedSearch(gravsearchQuery)     // cet appel, asynchrone, retourne readResource
+      .pipe(                                 // on se met au milieu de ce flux de données qui arrivent dans l'observable et transforme chaque donnée à la volé
+        map((readResources: ReadResource[]) =>   // map = je transforme quelque chose en quelque chose
+        
+        // le suivant corréspond à
+        
+        // {
+        //   const res = [];
+        //   for(r in readResources) {
+        //     res.push(new Person(r, this.kuiConfig))
+        //   }
+        //   return res;  
+        // }
+        readResources.map(r => {
             return new Person(r, this.kuiConfig);
           })
         ) 
@@ -111,7 +121,12 @@ OFFSET ${index}
   getText(iri: string): Observable<Text> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
-      .pipe(map((readResource: ReadResource) => new Text(readResource, this.kuiConfig)));
+      .pipe(map((readResource: ReadResource) => {
+      
+      const text = new Text(readResource, this.kuiConfig);
+      console.log(text);
+      return text;
+      }));
   }
 
 

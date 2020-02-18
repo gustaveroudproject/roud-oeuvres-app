@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { Text} from '../../models/text.model';
+
 
 @Component({
   selector: 'or-texts-page',
@@ -13,11 +15,11 @@ export class TextsPageComponent implements OnInit {
   index = 0;
 
   constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute
+    private dataService: DataService
   ) {}
 
   ngOnInit() {
+
 
     this.dataService.getTexts().subscribe(
       (texts: Text[]) => {
@@ -27,21 +29,7 @@ export class TextsPageComponent implements OnInit {
       error => console.error(error)
     );
 
-    this.route.paramMap.subscribe(
-      params => {
-        if (params.has('iri')) {
-          this.dataService
-            .getText(decodeURIComponent(params.get('iri')))
-            .subscribe(
-              (text: Text) => {
-                this.selectedText = text;
-              },
-              error => console.error(error)
-            );
-        }
-      },
-      error => console.error(error)
-    );
+    
   }
   encodeURIComponent(iri: string) {
     return encodeURIComponent(iri);

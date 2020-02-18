@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Text } from 'src/app/models/text.model';
+
 
 @Component({
   selector: 'or-text-view',
@@ -6,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./text-view.component.scss']
 })
 export class TextViewComponent implements OnInit {
+  @Input()
+  text: Text;
+  
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }
