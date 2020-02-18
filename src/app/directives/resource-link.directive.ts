@@ -1,28 +1,35 @@
-import { Directive, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, Renderer2, AfterViewInit, DoCheck } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Directive({
   selector: '[orResourceLink]'
 })
-export class ResourceLinkDirective implements AfterViewInit {
+export class ResourceLinkDirective implements DoCheck {
           // AfterViewInit happens immediately after the component view is ready
 
   constructor(
     private el: ElementRef,
+    private router: Router,
     private renderer: Renderer2  // Renderer2 makes it safer
   ) { }
           
 
-  ngAfterViewInit():void {
-    this.replaceLink(this.el);  // use function, that is defined below
+  ngDoCheck():void {
+    this.reRouteLink(this.el);  // use function, that is defined below
  }
 
- replaceLink(el: ElementRef) {   
-  el.nativeElement.querySelectorAll('a').forEach((aElt: HTMLElement) => {
-    const IRI = aElt.attributes['href'].value;  // record in a variable IRI the value of @href
-    const encodedIRI = encodeURIComponent(IRI);
-    this.renderer.setAttribute(aElt, 'href',`/resources/${encodedIRI}`); // assign @href it a value equal to 'resources/' + var IRI
-    this.renderer.removeAttribute(aElt, 'class'); // delete @class
-  });
-
+ onClick(event) {
+  this.router.navigate(['resources', event.target.getAttribute('href')]);
+  event.preventDefault();
 }
+
+reRouteLink(el: ElementRef) {
+  el.nativeElement.querySelectorAll('a').forEach((aElt: HTMLElement) => {
+    // TODO: check that href contains IRI, because this is applied to all 'a'
+    aElt.addEventListener('click', this.onClick.bind(this));
+  });
+}
+
+ 
+
 }
