@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
-import { Text } from '../models/text.model';
+import { Text, TextLight } from '../models/text.model';
 import {
   KnoraApiConnectionToken,
   KuiConfigToken,
@@ -78,12 +78,13 @@ OFFSET ${index}
       );
   }
 
-  getTexts(index: number = 0): Observable<Text[]> {
+  getTextLights(index: number = 0): Observable<TextLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
   ?text knora-api:isMainResource true .
+  ?text roud-oeuvres:establishedTextHasTitle ?title .
 } WHERE {
   ?text a roud-oeuvres:EstablishedText .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
@@ -94,7 +95,7 @@ OFFSET ${index}
       .doExtendedSearch(gravsearchQuery)
       .pipe(
         map((readResources: ReadResource[]) =>
-          readResources.map(r => this.readRes2Text(r))
+          readResources.map(r => this.readRes2TextLight(r))
         )
       );
   }
@@ -156,16 +157,22 @@ OFFSET ${index}
     } as Person;
   }
 
-  readRes2Text(readResource: ReadResource): Text {
+  readRes2TextLight(readResource: ReadResource): TextLight {
     return {
       ...this.readRes2Resource(readResource),
       title: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
-        `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#establishedTextHasTitle`
-      ),
+        `${this.getOntoPrefixPath()}establishedTextHasTitle`
+      )
+    } as TextLight;
+  }
+
+  readRes2Text(readResource: ReadResource): Text {
+    return {
+      ...this.readRes2TextLight(readResource),
       establishedText: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
-        `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasTextContent`
+        `${this.getOntoPrefixPath()}hasTextContent`
       )
       // imageURL: this.getFirstValueAsStringOrNullOfProperty(
       //   readResource,
