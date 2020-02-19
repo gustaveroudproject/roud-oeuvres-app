@@ -1,1 +1,1 @@
-<div innerHtml="{{ text?.establishedText }}"></div>
+<div [innerHtml]="text?.establishedText | htmlSanitizer"></div>

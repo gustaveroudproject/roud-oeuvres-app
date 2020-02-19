@@ -1,9 +1,6 @@
-
-<h1><div innerHTML="{{text?.title}}"></div></h1>
-<!-- add innerHTML -->
-
+<h1><div [innerHTML]="text?.title | htmlSanitizer"></div></h1>
 
 <or-text-view [text]="text"></or-text-view>
- <!--this will be given to the @input-->
+<!--this will be given to the @input-->
 
 <!-- add list of IRI of facsimile in a test component somethign like 'list of images' -->
