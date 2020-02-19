@@ -9,9 +9,8 @@ import { Person } from 'src/app/models/person.model';
 export class PersonViewComponent implements OnInit {
   @Input()
   person: Person;
-  
+
   constructor() {}
 
   ngOnInit() {}
-
 }

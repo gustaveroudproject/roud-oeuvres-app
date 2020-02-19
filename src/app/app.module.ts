@@ -12,7 +12,6 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { ThingsPageComponent } from './components/things-page/things-page.component';
 import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 import { PersonsViewComponent } from './components/persons-view/persons-view.component';
 import { PersonViewComponent } from './components/person-view/person-view.component';
@@ -21,7 +20,12 @@ import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
 
-import { KnoraApiConnectionToken, KuiConfigToken, KuiCoreModule, KnoraApiConfigToken } from '@knora/core';
+import {
+  KnoraApiConnectionToken,
+  KuiConfigToken,
+  KuiCoreModule,
+  KnoraApiConfigToken
+} from '@knora/core';
 import { AppInitService } from './app-init.service';
 import { FulltextSearchComponent } from './components/fulltext-search/fulltext-search.component';
 import { KuiSearchModule } from '@knora/search';
@@ -34,7 +38,7 @@ import { TextPageComponent } from './components/text-page/text-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
-      return appInitService.Init();
+    return appInitService.Init();
   };
 }
 
@@ -43,7 +47,6 @@ export function initializeApp(appInitService: AppInitService) {
     AppComponent,
     TopBarComponent,
     HomePageComponent,
-    ThingsPageComponent,
     PersonsPageComponent,
     PersonsViewComponent,
     PersonViewComponent,
@@ -76,24 +79,24 @@ export function initializeApp(appInitService: AppInitService) {
   providers: [
     AppInitService,
     {
-        provide: APP_INITIALIZER,
-        useFactory: initializeApp,
-        deps: [AppInitService],
-        multi: true
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AppInitService],
+      multi: true
     },
     {
-        provide: KuiConfigToken,
-        useFactory: () => AppInitService.kuiConfig
+      provide: KuiConfigToken,
+      useFactory: () => AppInitService.kuiConfig
     },
     {
-        provide: KnoraApiConfigToken,
-        useFactory: () => AppInitService.knoraApiConfig
+      provide: KnoraApiConfigToken,
+      useFactory: () => AppInitService.knoraApiConfig
     },
     {
-        provide: KnoraApiConnectionToken,
-        useFactory: () => AppInitService.knoraApiConnection
+      provide: KnoraApiConnectionToken,
+      useFactory: () => AppInitService.knoraApiConnection
     }
-],
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
