@@ -11,9 +11,9 @@
 <div class="row">
   <ul>
     <li *ngFor="let resource of resources">
-      <a routerLink="/resources/{{ encodeURIComponent(resource.id) }}">{{
-        resource.label
-      }}</a>
+      <a routerLink="/resources/{{ encodeURIComponent(resource.id) }}"
+        >{{ resource.label }} ({{ resource.resourceClassLabel }})</a
+      >
     </li>
   </ul>
 </div>
