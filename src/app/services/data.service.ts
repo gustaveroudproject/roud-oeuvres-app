@@ -21,8 +21,24 @@ export class DataService {
     @Inject(KuiConfigToken) private kuiConfig: KuiConfig
   ) {}
 
+  getProjectIRI() {
+    return 'http://rdfh.ch/projects/0112';
+  }
+
   getOntoPrefixPath() {
     return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}/ontology/0112/roud-oeuvres/v2#`;
+  }
+
+  fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {
+    return this.knoraApiConnection.v2.search
+      .doFulltextSearch(searchText, offset, {
+        limitToProject: this.getProjectIRI()
+      })
+      .pipe(
+        map((
+          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
+        ) => readResources.map(r => this.readRes2Resource(r)))
+      );
   }
 
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
