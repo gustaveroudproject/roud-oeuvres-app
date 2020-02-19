@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { KnoraApiConnection, ReadResource } from '@knora/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Person } from '../models/person.model';
+import { Person, PersonLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text } from '../models/text.model';
 import {
@@ -25,15 +25,18 @@ export class DataService {
     return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}/ontology/0112/roud-oeuvres/v2#`;
   }
 
-  getPersons(index: number = 0): Observable<Person[]> {
+  getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
   ?person knora-api:isMainResource true .
+  ?person roud-oeuvres:personHasFamilyName ?surname .
+  ?person roud-oeuvres:personHasGivenName ?name .
 } WHERE {
   ?person a roud-oeuvres:Person .
   ?person roud-oeuvres:personHasFamilyName ?surname .
+  ?person roud-oeuvres:personHasGivenName ?name .
 } ORDER BY ASC(?surname)
 OFFSET ${index}
 `;
@@ -53,7 +56,7 @@ OFFSET ${index}
           //   return res;
           // }
           readResources.map(r => {
-            return this.readRes2Person(r);
+            return this.readRes2PersonLight(r);
           })
         )
       );
@@ -113,7 +116,7 @@ OFFSET ${index}
     } as Resource;
   }
 
-  readRes2Person(readResource: ReadResource): Person {
+  readRes2PersonLight(readResource: ReadResource): PersonLight {
     return {
       ...this.readRes2Resource(readResource),
       surname: this.getFirstValueAsStringOrNullOfProperty(
@@ -123,7 +126,13 @@ OFFSET ${index}
       name: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}personHasGivenName`
-      ),
+      )
+    } as PersonLight;
+  }
+
+  readRes2Person(readResource: ReadResource): Person {
+    return {
+      ...this.readRes2PersonLight(readResource),
       dateOfBirth: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasBirthDate`

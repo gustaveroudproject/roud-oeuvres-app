@@ -1,8 +1,7 @@
 <ul>
-  <li *ngFor="let resource of persons">
-    <a routerLink="/persons/{{ encodeURIComponent(resource.id) }}">{{
-      resource.label
-
-    }}</a>
+  <li *ngFor="let personLight of personLights">
+    <a routerLink="/persons/{{ encodeURIComponent(personLight.id) }}"
+      >{{ personLight.name }} {{ personLight.surname }}</a
+    >
   </li>
 </ul>

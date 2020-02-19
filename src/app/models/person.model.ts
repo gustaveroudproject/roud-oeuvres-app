@@ -9,9 +9,9 @@ import {
 
 export interface PersonLight extends Resource {
   surname: string;
+  name: string;
 }
 export interface Person extends PersonLight {
-  name: string;
   dateOfBirth: string;
   dateOfDeath: string;
   notice: string;
