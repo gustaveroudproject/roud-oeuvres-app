@@ -4,7 +4,7 @@
   <div class="row">
     <ul>
       <li *ngFor="let textLight of textLights">
-        <a routerLink="/texts/{{ encodeURIComponent(textLight.id) }}"
+        <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
           >{{ textLight.label }}
         </a>
       </li>

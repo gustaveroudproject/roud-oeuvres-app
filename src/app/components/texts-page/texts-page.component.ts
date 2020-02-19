@@ -28,8 +28,4 @@ export class TextsPageComponent implements OnInit {
   ngOnInit() {
     this.onLoadNextPage();
   }
-
-  encodeURIComponent(iri: string) {
-    return encodeURIComponent(iri);
-  }
 }
