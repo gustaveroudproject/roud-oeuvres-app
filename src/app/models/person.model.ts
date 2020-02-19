@@ -1,51 +1,59 @@
-import { ReadResource } from '@knora/api';
-import { environment } from 'src/environments/environment';
+import { KnoraApiConnection, ReadResource } from '@knora/api';
 import { Resource } from './resource.model';
+import { Inject } from '@angular/core';
+import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 export class Person extends Resource {
-  constructor(protected readResource: ReadResource) {
-    super(readResource);
+  constructor( 
+    readResource: ReadResource,
+    private kuiConfig: KuiConfig)  {  // private create an attribute in the class
+      super(readResource);
   }
+
+  getOntoPrefixPath() {
+    return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}`;
+  }
+
 
   get surname(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasFamilyName`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasFamilyName`
     );
   }
 
   get name(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasGivenName`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasGivenName`
     );
   }
 
   get dateOfBirth(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasBirthDate`
     );
   } 
 
   get dateOfDeath(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#hasDeathDate`
     );
   } 
 
   get notice(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasNotice`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasNotice`
     );
   } 
 
   get DhsID(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasDhsID`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasDhsID`
     );
   } 
 
   get Viaf(): string {
     return this.getFirstValueAsStringOrNullOfProperty(
-      `http://${environment.knoraApiHost}/ontology/0112/roud-oeuvres/v2#personHasAuthorityID`
+      `${this.getOntoPrefixPath()}/ontology/0112/roud-oeuvres/v2#personHasAuthorityID`
     );
   } 
 

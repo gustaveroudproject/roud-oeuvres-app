@@ -15,7 +15,7 @@ export class PersonsPageComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute  // it gives me the current route (URL)
   ) {}
 
   onClick() {

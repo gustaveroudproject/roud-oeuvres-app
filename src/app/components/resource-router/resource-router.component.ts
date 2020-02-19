@@ -22,10 +22,10 @@ export class ResourceRouterComponent implements OnInit {
 
         // get iri
     this.route.paramMap.subscribe(params => {
-      console.log(params);
+      // console.log(params);
       if (params.has('iri')) {     // I can have iri here, because in routing the path is defined resources:iri
         const iri = decodeURIComponent(params.get('iri'));
-        console.log(iri);
+        // console.log(iri);
         const routeMapping = new Map<string, string>();
         routeMapping.set('Person', '/persons/');
         routeMapping.set('Place', '/places/');

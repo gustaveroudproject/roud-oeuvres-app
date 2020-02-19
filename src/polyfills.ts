@@ -61,3 +61,9 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+
+ // As per Knora-ui core module setting:
+ // Add global to window, assigning the value of window itself.
+
+ (window as any).global = window;
