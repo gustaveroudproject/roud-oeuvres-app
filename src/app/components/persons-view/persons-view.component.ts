@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReadResource } from '@knora/api';
+import { PersonLight } from 'src/app/models/person.model';
 
 @Component({
   selector: 'or-persons-view',
@@ -8,14 +9,13 @@ import { ReadResource } from '@knora/api';
 })
 export class PersonsViewComponent implements OnInit {
   @Input()
-  persons: ReadResource[];
+  personLights: PersonLight[];
 
   constructor() {}
-  
+
   ngOnInit() {}
-  
+
   encodeURIComponent(iri: string) {
-      return encodeURIComponent(iri);
-  
-    }
+    return encodeURIComponent(iri);
+  }
 }

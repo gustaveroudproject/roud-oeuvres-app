@@ -1,1 +1,1 @@
-<p>{{text?.establishedText}}</p> <!-- if not ? it creates errors-->
+<div [innerHtml]="text?.establishedText | htmlSanitizer"></div>

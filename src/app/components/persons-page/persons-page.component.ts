@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Person } from 'src/app/models/person.model';
+import { Person, PersonLight } from 'src/app/models/person.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -9,20 +9,20 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./persons-page.component.scss']
 })
 export class PersonsPageComponent implements OnInit {
-  persons = [];
-  selectedPerson: Person;
+  personLights: PersonLight[] = [];
+  selectedPerson: PersonLight;
   index = 0;
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute  // it gives me the current route (URL)
+    private route: ActivatedRoute // it gives me the current route (URL)
   ) {}
 
-  onClick() {
+  onLoadNextPage() {
     // console.log('test');
-    this.dataService.getPersons(this.index).subscribe(
-      (persons: Person[]) => {
-        this.persons.push(...persons);
+    this.dataService.getPersonLights(this.index).subscribe(
+      (persons: PersonLight[]) => {
+        this.personLights.push(...persons);
         this.index = this.index + 1;
       },
       error => console.error(error)
@@ -30,13 +30,7 @@ export class PersonsPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.getPersons().subscribe(
-      (persons: Person[]) => {
-        this.persons.push(...persons);
-        this.index = this.index + 1;
-      },
-      error => console.error(error)
-    );
+    this.onLoadNextPage();
 
     this.route.paramMap.subscribe(
       params => {
