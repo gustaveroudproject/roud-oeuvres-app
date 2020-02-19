@@ -13,8 +13,7 @@ export class ResourceRouterComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute
-  ) //private knoraService: KnoraV2Service
-  {}
+  ) {}
 
   ngOnInit() {
     // get iri
@@ -52,6 +51,11 @@ export class ResourceRouterComponent implements OnInit {
                         resRoutePrefix, // is not a string that we give, but a table, so we use ","
                         encodeURIComponent(iri)
                       ]);
+                    } else {
+                      console.log(
+                        'No route for class ' + resource.resourceClassLabel
+                      );
+                      this.router.navigate(['not-found']);
                     }
                   },
                   error => console.error(error)
