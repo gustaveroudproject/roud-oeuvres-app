@@ -35,6 +35,7 @@ import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -59,7 +60,8 @@ export function initializeApp(appInitService: AppInitService) {
     HtmlSanitizerPipe,
     TextViewComponent,
     TextsPageComponent,
-    TextPageComponent
+    TextPageComponent,
+    NotFoundComponent
   ],
   imports: [
     KuiCoreModule,
