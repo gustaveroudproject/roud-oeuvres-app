@@ -23,8 +23,4 @@ export class FulltextSearchComponent implements OnInit {
       );
     }
   }
-
-  encodeURIComponent(iri: string) {
-    return encodeURIComponent(iri);
-  }
 }

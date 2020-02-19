@@ -14,8 +14,4 @@ export class PersonsViewComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
-  encodeURIComponent(iri: string) {
-    return encodeURIComponent(iri);
-  }
 }

@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 import { PersonsViewComponent } from './components/persons-view/persons-view.component';
@@ -19,6 +18,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
+import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 
 import {
   KnoraApiConnectionToken,
@@ -61,7 +61,8 @@ export function initializeApp(appInitService: AppInitService) {
     TextViewComponent,
     TextsPageComponent,
     TextPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    EncodeURIComponentPipe
   ],
   imports: [
     KuiCoreModule,
