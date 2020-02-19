@@ -8,6 +8,7 @@ import { SearchPageComponent } from './components/search-page/search-page.compon
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -39,7 +40,9 @@ const routes: Routes = [
       }
     ]
   },
-  { path: 'resources/:iri', component: ResourceRouterComponent } //this component only redirects to appropriate type (knora class) of resource
+  { path: 'resources/:iri', component: ResourceRouterComponent }, //this component only redirects to appropriate type (knora class) of resource
+  { path: 'not-found', component: NotFoundComponent }, // '/not-found' route open NotFoundComponent
+  { path: '**', redirectTo: '/not-found' } // means any route got to route 'not found'
 ];
 
 @NgModule({
