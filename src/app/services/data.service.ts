@@ -59,6 +59,7 @@ CONSTRUCT {
   ?fac roud-oeuvres:hasSeqnum ?seqnum .
   ?fac knora-api:hasStillImageFileValue ?imageURL .
 }
+ORDER BY ?seqnum
 OFFSET ${index}
 `
 ;
