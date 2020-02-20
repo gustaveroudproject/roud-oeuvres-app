@@ -31,7 +31,7 @@ export class DataService {
     return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}/ontology/0112/roud-oeuvres/v2#`;
   }
 
-  fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {
+  fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {   //offset = 0, only first page
     return this.knoraApiConnection.v2.search
       .doFulltextSearch(searchText, offset, {
         limitToProject: this.getProjectIRI()
