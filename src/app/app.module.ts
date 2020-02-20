@@ -36,6 +36,7 @@ import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { FormsModule } from '@angular/forms';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -71,6 +72,7 @@ export function initializeApp(appInitService: AppInitService) {
     KuiSearchModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

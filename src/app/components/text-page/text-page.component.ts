@@ -12,6 +12,7 @@ import { DataService } from 'src/app/services/data.service';
 export class TextPageComponent implements OnInit {
   text: Text;
   pages: Page[];
+  selectedPageNum: null;
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
@@ -31,14 +32,13 @@ export class TextPageComponent implements OnInit {
           .subscribe(
             (text: Text) => {
               this.text = text; // step 4    I give to the attribute text the value of text
-              
 
-          // asynchrone, we need text to ask pages of text
-              this.dataService.getPagesOfText(text.id).subscribe(
-                    (pages: Page[]) => {
-                      this.pages = pages;
-                    }
-              );
+              // asynchrone, we need text to ask pages of text
+              this.dataService
+                .getPagesOfText(text.id)
+                .subscribe((pages: Page[]) => {
+                  this.pages = pages;
+                });
             },
             error => console.error(error)
           );
