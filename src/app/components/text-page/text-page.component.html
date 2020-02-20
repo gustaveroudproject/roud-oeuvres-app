@@ -4,3 +4,9 @@
 <!--this will be given to the @input-->
 
 <!-- add list of IRI of facsimile in a test component somethign like 'list of images' -->
+
+<ul>
+    <li *ngFor="let page of pages" >
+        {{page.imageURL}}
+    </li>
+</ul>
