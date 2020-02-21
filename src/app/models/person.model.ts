@@ -7,7 +7,7 @@ import {
   KuiConfig
 } from '@knora/core';
 
-export interface PersonLight extends Resource {
+export interface PersonLight extends Resource {  //pour construire une personne
   surname: string;
   name: string;
 }

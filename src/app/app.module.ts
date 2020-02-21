@@ -36,6 +36,8 @@ import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { FormsModule } from '@angular/forms';
+import { PageLinkDirective } from './directives/page-link.directive';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -62,7 +64,8 @@ export function initializeApp(appInitService: AppInitService) {
     TextsPageComponent,
     TextPageComponent,
     NotFoundComponent,
-    EncodeURIComponentPipe
+    EncodeURIComponentPipe,
+    PageLinkDirective
   ],
   imports: [
     KuiCoreModule,
@@ -71,6 +74,7 @@ export function initializeApp(appInitService: AppInitService) {
     KuiSearchModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -1,6 +1,45 @@
 <h1><div [innerHTML]="text?.title | htmlSanitizer"></div></h1>
 
-<or-text-view [text]="text"></or-text-view>
-<!--this will be given to the @input-->
+<div class="container">
 
-<!-- add list of IRI of facsimile in a test component somethign like 'list of images' -->
+  <div class="row">
+    
+    <div class="col-sm container-scrollable">
+      <or-text-view
+        [text]="text"
+        orPageLink
+        [(pageNum)]="selectedPageNum"
+      ></or-text-view>
+      <!--this will be given to the @input-->
+    </div>
+
+    <div class="col-sm">
+      <select
+        class="form-control"
+        name="page-numbers"
+        [(ngModel)]="selectedPageNum"
+      >
+        <option></option>
+        <option [value]="page.seqnum" *ngFor="let page of pages">
+          Page {{ page.seqnum }}</option
+        >
+      </select>
+      <div *ngFor="let page of pages">
+        <img
+          *ngIf="page.seqnum === selectedPageNum"
+          src="{{ page.imageURL }}"
+          width="400"
+          height="400"
+        />
+      </div>
+      <!-- add list of IRI of facsimile in a test component somethign like 'list of images' -->
+      <!-- <ul>
+        <li *ngFor="let page of pages">
+          {{ page.seqnum }}
+          <img src="{{ page.imageURL }}" width="50" height="50" />
+        </li>
+      </ul> -->
+    </div>
+    
+  </div>
+</div>

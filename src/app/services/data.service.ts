@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
+import { Page } from '../models/page.model';
+
 import {
   KnoraApiConnectionToken,
   KuiConfigToken,
@@ -29,7 +31,7 @@ export class DataService {
     return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}/ontology/0112/roud-oeuvres/v2#`;
   }
 
-  fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {
+  fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {   //offset = 0, only first page
     return this.knoraApiConnection.v2.search
       .doFulltextSearch(searchText, offset, {
         limitToProject: this.getProjectIRI()
@@ -40,6 +42,39 @@ export class DataService {
         ) => readResources.map(r => this.readRes2Resource(r)))
       );
   }
+
+
+  getPagesOfText(textIRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
+    const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+  ?fac knora-api:isMainResource true .
+  ?fac roud-oeuvres:hasSeqnum ?seqnum .
+  ?fac knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+  ?fac a roud-oeuvres:Page .
+  ?fac roud-oeuvres:pageIsPartOfManuscript ?man .
+  <${textIRI}> roud-oeuvres:hasDirectSourceManuscript ?man .
+  ?fac roud-oeuvres:hasSeqnum ?seqnum .
+  ?fac knora-api:hasStillImageFileValue ?imageURL .
+}
+ORDER BY ?seqnum
+OFFSET ${index}
+`
+;
+  return this.knoraApiConnection.v2.search
+    .doExtendedSearch(gravsearchQuery)
+    .pipe(
+      map((
+        readResources: ReadResource[] 
+      ) => readResources.map(r => {
+          return this.readRes2Page(r);
+        })
+      )
+    );
+}
+
 
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
@@ -133,7 +168,23 @@ OFFSET ${index}
     } as Resource;
   }
 
-  readRes2PersonLight(readResource: ReadResource): PersonLight {
+  readRes2Page(readResource: ReadResource): Page {  
+    return {
+      ...this.readRes2Resource(readResource),
+      seqnum: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasSeqnum`
+      ),
+      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      )
+    } as Page;   
+  }
+
+
+
+  readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
     return {
       ...this.readRes2Resource(readResource),
       surname: this.getFirstValueAsStringOrNullOfProperty(
@@ -144,12 +195,12 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}personHasGivenName`
       )
-    } as PersonLight;
+    } as PersonLight;    //this indicates the interface declared in person.model.ts
   }
 
   readRes2Person(readResource: ReadResource): Person {
     return {
-      ...this.readRes2PersonLight(readResource),
+      ...this.readRes2PersonLight(readResource),  // person includes PersonLight's attributes
       dateOfBirth: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasBirthDate`
@@ -190,10 +241,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       )
-      // imageURL: this.getFirstValueAsStringOrNullOfProperty(
-      //   readResource,
-      //   `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
-      // )
+     
     } as Text;
   }
 

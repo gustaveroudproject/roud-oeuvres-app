@@ -14,7 +14,7 @@ export class FulltextSearchComponent implements OnInit {
   ngOnInit() {}
 
   onSearch(searchText: string) {
-    if (searchText && searchText.length > 0) {
+    if (searchText && searchText.length > 0) {  // check is not empty
       this.dataService.fullTextSearch(searchText).subscribe(
         (resources: Resource[]) => {
           this.resources = resources;
