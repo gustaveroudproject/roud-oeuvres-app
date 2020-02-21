@@ -1,11 +1,18 @@
 <h1><div [innerHTML]="text?.title | htmlSanitizer"></div></h1>
 
 <div class="container">
+
   <div class="row">
-    <div class="col-sm">
-      <or-text-view [text]="text"></or-text-view>
+    
+    <div class="col-sm container-scrollable">
+      <or-text-view
+        [text]="text"
+        orPageLink
+        [(pageNum)]="selectedPageNum"
+      ></or-text-view>
       <!--this will be given to the @input-->
     </div>
+
     <div class="col-sm">
       <select
         class="form-control"
@@ -33,5 +40,6 @@
         </li>
       </ul> -->
     </div>
+    
   </div>
 </div>

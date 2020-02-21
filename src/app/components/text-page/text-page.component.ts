@@ -12,7 +12,7 @@ import { DataService } from 'src/app/services/data.service';
 export class TextPageComponent implements OnInit {
   text: Text;
   pages: Page[];
-  selectedPageNum: null;
+  selectedPageNum: null;  //give here a default value is not enough to visualize page, it doesn't take the page.imageURL
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)

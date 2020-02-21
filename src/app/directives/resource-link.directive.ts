@@ -24,8 +24,9 @@ export class ResourceLinkDirective implements DoCheck {
 }
 
 reRouteLink(el: ElementRef) {
-  el.nativeElement.querySelectorAll('a').forEach((aElt: HTMLElement) => {
-    // TODO: check that href contains IRI, because this is applied to all 'a'
+  
+  el.nativeElement.querySelectorAll('a[class="resourceLink"]').forEach((aElt: HTMLElement) => {
+    // gives back an array of <a class="resourceLink">
     aElt.addEventListener('click', this.onClick.bind(this));
   });
 }
