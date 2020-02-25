@@ -6,14 +6,50 @@
 <div class="container">
   <input style="width: 300px;" type="text" #searchInput />  <!-- # indicate variable -->
   <button (click)="onSearch(searchInput.value)">Search</button>
+
+  <div class="row">
+
+    <div>
+      <strong>Personnes</strong>
+      <ul>
+        <li *ngFor="let person of persons">
+          <a routerLink="/persons/{{ person.id | encodeURIComponent }}"
+            >{{ person.name }} {{person.surname}}
+            ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div>
+      <strong>Textes</strong>
+      <ul>
+        <li *ngFor="let text of texts">
+          <a routerLink="/texts/{{ text.id | encodeURIComponent }}"
+            >{{text | json}}</a
+          >
+          Titolo c'è ma non appare
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <strong>Tout</strong>
+      <ul>
+        <li *ngFor="let resource of resources">
+          <a routerLink="/resources/{{ resource.id | encodeURIComponent }}"
+            >{{resource.label}}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+
+
 </div>
 
-<div class="row">
-  <ul>
-    <li *ngFor="let person of persons">
-      <a routerLink="/persons/{{ person.id | encodeURIComponent }}"
-        >{{ person.label }}</a
-      >
-    </li>
-  </ul>
-</div>
