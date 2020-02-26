@@ -9,7 +9,7 @@ import { Text } from 'src/app/models/text.model';
   templateUrl: './fulltext-search.component.html',
   styleUrls: ['./fulltext-search.component.scss']
 })
-export class FulltextSearchComponent implements DoCheck {
+export class FulltextSearchComponent implements OnInit {
   resources: Resource[];
   person: Person;
   persons: Person[] = [];
@@ -17,7 +17,7 @@ export class FulltextSearchComponent implements DoCheck {
   texts: Text[] = [];
   constructor(private dataService: DataService) {}
 
-  ngDoCheck() {}
+  ngOnInit() {}
 
   onSearch(searchText: string) {
     if (searchText && searchText.length > 0) {  // check is not empty
