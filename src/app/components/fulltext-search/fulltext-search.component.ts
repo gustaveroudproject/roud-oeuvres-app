@@ -33,39 +33,16 @@ export class FulltextSearchComponent implements OnInit {
 
           //console.log(resources);
 
-          this.resources.forEach( (resource) => {
+          const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
 
-            if (resource.resourceClassLabel == "Person") {
-              this.dataService.getPerson(resource.id)
-              .subscribe(
-                (person: Person) => {
-                this.person = person;
-                //console.log(person);
-                this.persons.push(person);
-                
-              },
-              error => console.error(error)
-              );
+          this.dataService.getPersons(personsIRIs).subscribe(
+            (persons: Person[]) => {
+              this.persons = persons;
             }
-
-            if (resource.resourceClassLabel == "Website page") {
-              this.dataService.getText(resource.id)
-              .subscribe(
-                (text: Text) => {
-                this.text = text;
-                //console.log(text);
-                this.texts.push(text);
-                
-              },
-              error => console.error(error)
-              );
-            }
-
-
-          }
-          
           )
-          //console.log(this.persons);
+
+          // add texts
+         
 
         },
         error => console.error(error)

@@ -121,6 +121,16 @@ OFFSET ${index}
       );
   }
 
+
+  getPersons(iris: string[]): Observable<Person[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Person(r)))
+      );
+  }
+
+
   getResource(iri: string): Observable<Resource> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
