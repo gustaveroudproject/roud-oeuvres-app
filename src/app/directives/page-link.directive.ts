@@ -21,12 +21,12 @@ export class PageLinkDirective implements DoCheck {
   @Input()
   set pageNum(pageNum: string) {
     if (pageNum) {
-      console.log('try to scroll to page ' + pageNum);
+      //console.log('try to scroll to page ' + pageNum);
       this.el.nativeElement
         .querySelectorAll('a[class="pageLink"]')
         .forEach((aElt: HTMLElement) => {
           if (aElt.attributes['href'].value === pageNum) {
-            console.log('Found page, scroll to ' + pageNum);
+            //console.log('Found page, scroll to ' + pageNum);
             aElt.scrollIntoView();
           }
         });
@@ -37,7 +37,7 @@ export class PageLinkDirective implements DoCheck {
 
   onClick(event) {
     const page = event.target.attributes['href'].value;
-    console.log('open page ' + page);
+    //console.log('open page ' + page);
     this.pageNumChange.next(page);
     event.preventDefault();
   }
