@@ -42,8 +42,10 @@ export class PageLinkDirective implements DoCheck {
     event.preventDefault();
   }
 
+
+
   ngDoCheck(): void {
-    this.el.nativeElement.querySelectorAll('a').forEach((aElt: HTMLElement) => {
+    this.el.nativeElement.querySelectorAll('a[class="pageLink"]').forEach((aElt: HTMLElement) => {
       aElt.addEventListener('click', this.onClick.bind(this));
     });
   }
