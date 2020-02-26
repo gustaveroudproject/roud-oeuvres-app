@@ -41,6 +41,14 @@ export class FulltextSearchComponent implements OnInit {
             }
           )
 
+          const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
+
+          this.dataService.getTexts(textsIRIs).subscribe(
+            (texts: Text[]) => {
+              this.texts = texts;
+            }
+          )
+
           // add texts
          
 

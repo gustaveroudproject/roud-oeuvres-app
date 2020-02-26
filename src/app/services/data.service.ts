@@ -169,6 +169,17 @@ OFFSET ${index}
       );
   }
 
+  
+  getTexts(iris: string[]): Observable<Text[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Text(r)))
+      );
+  }
+
+
+
   readRes2Resource(readResource: ReadResource): Resource {
     return {
       id: readResource.id,
