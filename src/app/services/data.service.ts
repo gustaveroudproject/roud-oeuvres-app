@@ -241,7 +241,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       )
-     
+      
     } as Text;
   }
 

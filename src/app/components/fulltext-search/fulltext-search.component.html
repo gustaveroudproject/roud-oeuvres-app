@@ -28,9 +28,9 @@
       <ul>
         <li *ngFor="let text of texts">
           <a routerLink="/texts/{{ text.id | encodeURIComponent }}"
-            >{{text | json}}</a
+             [innerHTML]="text?.title | htmlSanitizer"></a
           >
-          Titolo c'è ma non appare
+          <!-- to do, delete <p> for better rendering-->
         </li>
       </ul>
     </div>
