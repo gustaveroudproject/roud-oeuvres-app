@@ -4,7 +4,8 @@
 
   <div class="row">
     
-    <div class="col-sm container-scrollable">
+    <!-- text content -->
+    <div class="col-sm-8 container-scrollable">
       <or-text-view
         [text]="text"
         orPageLink
@@ -12,8 +13,45 @@
       ></or-text-view>
       <!--this will be given to the @input-->
     </div>
+    
 
-    <div class="col-sm">
+    <!-- entities mentioned in the text -->
+    <div class="col-sm-4">
+      <div id="entities">
+        <strong class="reperes highlightTitre">Repères</strong>
+        <div class="reperes">
+          <strong>Personnes</strong>
+          <ul>
+            <li *ngFor="let personLight of personsLight">
+              <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
+                >{{ personLight.name }} {{ personLight.surname }}</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="reperes">
+          <strong>Lieux</strong>
+          <ul>
+            <li>test test</li>
+            <li>encore un test</li>
+          </ul>
+        </div>
+        <div class="reperes">
+          <strong>Œuvres</strong>
+          <ul>
+            <li>encore un test</li>
+            <li>test test</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="row">
+
+    <!-- page viewer -->
+    <div class="col-sm-6">
       <select
         class="form-control"
         name="page-numbers"
@@ -32,14 +70,7 @@
           height="400"
         />
       </div>
-      <!-- add list of IRI of facsimile in a test component somethign like 'list of images' -->
-      <!-- <ul>
-        <li *ngFor="let page of pages">
-          {{ page.seqnum }}
-          <img src="{{ page.imageURL }}" width="50" height="50" />
-        </li>
-      </ul> -->
+      
     </div>
-    
   </div>
 </div>

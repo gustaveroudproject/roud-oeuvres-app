@@ -1,4 +1,29 @@
 .container-scrollable {
   overflow-y: scroll;
-  height: 400px;
+  height: 600px;
+  border: 1px solid lightgray;
 }
+
+.row {
+  margin-bottom: 100px;
+}
+
+#entities {
+  margin: 0 0 0 50px;  /* would be better to use Bootstrap column offset, but can't make it work properly */
+  border: 1px solid lightgray;
+}
+
+.reperes {
+  padding: 0 10px 0 10px;
+  display: block;
+}
+
+.highlightTitre {
+  background-color: lightgray;
+  padding: 10px;
+}
+
+ul {
+  list-style: none;
+}
+
