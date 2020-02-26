@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Resource } from 'src/app/models/resource.model';
 import { DataService } from 'src/app/services/data.service';
 import { Person } from 'src/app/models/person.model';
@@ -9,7 +9,7 @@ import { Text } from 'src/app/models/text.model';
   templateUrl: './fulltext-search.component.html',
   styleUrls: ['./fulltext-search.component.scss']
 })
-export class FulltextSearchComponent implements OnInit {
+export class FulltextSearchComponent implements DoCheck {
   resources: Resource[];
   person: Person;
   persons: Person[] = [];
@@ -17,7 +17,7 @@ export class FulltextSearchComponent implements OnInit {
   texts: Text[] = [];
   constructor(private dataService: DataService) {}
 
-  ngOnInit() {}
+  ngDoCheck() {}
 
   onSearch(searchText: string) {
     if (searchText && searchText.length > 0) {  // check is not empty
@@ -37,7 +37,9 @@ export class FulltextSearchComponent implements OnInit {
                 //console.log(person);
                 this.persons.push(person);
                 
-              });
+              },
+              error => console.error(error)
+              );
             }
 
             if (resource.resourceClassLabel == "Website page") {
@@ -48,7 +50,9 @@ export class FulltextSearchComponent implements OnInit {
                 //console.log(text);
                 this.texts.push(text);
                 
-              });
+              },
+              error => console.error(error)
+              );
             }
 
 
@@ -65,11 +69,3 @@ export class FulltextSearchComponent implements OnInit {
     
   }
 }
-
-
-///////////////////////
-const res = [];
-          //   for(r in readResources) {
-          //     res.push(this.readRes2Person(r))
-          //   }
-          //   return res;
