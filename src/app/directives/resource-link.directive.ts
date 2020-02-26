@@ -25,7 +25,7 @@ export class ResourceLinkDirective implements DoCheck {
 
 reRouteLink(el: ElementRef) {
   
-  el.nativeElement.querySelectorAll('a[class="resourceLink"]').forEach((aElt: HTMLElement) => {
+  el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
     // gives back an array of <a class="resourceLink">
     aElt.addEventListener('click', this.onClick.bind(this));
   });
