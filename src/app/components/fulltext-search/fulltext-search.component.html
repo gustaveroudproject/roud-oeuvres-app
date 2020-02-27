@@ -6,14 +6,49 @@
 <div class="container">
   <input style="width: 300px;" type="text" #searchInput />  <!-- # indicate variable -->
   <button (click)="onSearch(searchInput.value)">Search</button>
+
+  <div class="row" *ngIf="persons && persons.length > 0">
+    <div>
+      <strong>Personnes</strong>
+      <ul>
+        <li *ngFor="let person of persons">
+          <a routerLink="/persons/{{ person.id | encodeURIComponent }}"
+            >{{ person.name }} {{person.surname}}
+            ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="texts && texts.length > 0">
+    <div>
+      <strong>Textes</strong>
+      <ul>
+        <li *ngFor="let text of texts">
+          <a routerLink="/texts/{{ text.id | encodeURIComponent }}"
+             [innerHTML]="text?.title | htmlSanitizer"></a
+          >
+          <!-- to do, delete <p> for better rendering-->
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="resources && resources.length > 0">
+    <div>
+      <strong>Tout</strong>
+      <ul>
+        <li *ngFor="let resource of resources">
+          <a routerLink="/resources/{{ resource.id | encodeURIComponent }}"
+            >{{resource.label}}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+
+
 </div>
 
-<div class="row">
-  <ul>
-    <li *ngFor="let resource of resources">
-      <a routerLink="/resources/{{ resource.id | encodeURIComponent }}"
-        >{{ resource.label }} ({{ resource.resourceClassLabel }})</a
-      >
-    </li>
-  </ul>
-</div>

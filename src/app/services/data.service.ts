@@ -152,6 +152,16 @@ OFFSET ${index}
       );
   }
 
+
+  getPersons(iris: string[]): Observable<Person[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Person(r)))
+      );
+  }
+
+
   getResource(iri: string): Observable<Resource> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
@@ -189,6 +199,17 @@ OFFSET ${index}
         map((readResource: ReadResource) => this.readRes2Text(readResource))
       );
   }
+
+  
+  getTexts(iris: string[]): Observable<Text[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Text(r)))
+      );
+  }
+
+
 
   readRes2Resource(readResource: ReadResource): Resource {
     return {
@@ -272,7 +293,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       )
-     
+      
     } as Text;
   }
 
