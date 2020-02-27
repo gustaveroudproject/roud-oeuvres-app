@@ -76,6 +76,37 @@ OFFSET ${index}
 }
 
 
+  getPersonsInText(textIRI: string, index: number = 0): Observable<PersonLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Person knora-api:isMainResource true .
+    ?person roud-oeuvres:personHasFamilyName ?surname .
+    ?person roud-oeuvres:personHasGivenName ?name .
+} WHERE {
+    ?Person a roud-oeuvres:Person .
+    ?person roud-oeuvres:personHasFamilyName ?surname .
+    ?person roud-oeuvres:personHasGivenName ?name .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PersonLight(r);
+      })
+    )
+  );
+}
+
+
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
