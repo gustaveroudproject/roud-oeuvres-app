@@ -22,8 +22,8 @@ export class PersonsPageComponent implements OnInit {
     // console.log('test');
     this.dataService.getPersonLights(this.index).subscribe(
       (persons: PersonLight[]) => {
-        this.personLights.push(...persons);
-        this.index = this.index + 1;
+        this.personLights.push(...persons);  // add to array
+        this.index = this.index + 1;  // increment index
       },
       error => console.error(error)
     );

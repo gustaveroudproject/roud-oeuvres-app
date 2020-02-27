@@ -33,13 +33,19 @@ export class FulltextSearchComponent implements OnInit {
 
           //console.log(resources);
 
+
+          // if it is too slow, it is because multiple queries (get) at the same time (en parallel)
+
           const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
 
           this.dataService.getPersons(personsIRIs).subscribe(
             (persons: Person[]) => {
               this.persons = persons;
+
+              // if parallel is too slow, put the following get here, once persons have finished 
+
             }
-          )
+          );
 
           const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
 
@@ -47,7 +53,7 @@ export class FulltextSearchComponent implements OnInit {
             (texts: Text[]) => {
               this.texts = texts;
             }
-          )
+          );
 
           // add texts
          

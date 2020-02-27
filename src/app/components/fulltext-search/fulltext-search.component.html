@@ -7,7 +7,7 @@
   <input style="width: 300px;" type="text" #searchInput />  <!-- # indicate variable -->
   <button (click)="onSearch(searchInput.value)">Search</button>
 
-  <div class="row" *ngIf="persons.length > 0">
+  <div class="row" *ngIf="persons && persons.length > 0">
     <div>
       <strong>Personnes</strong>
       <ul>
@@ -21,7 +21,7 @@
     </div>
   </div>
   
-  <div class="row" *ngIf="texts.length > 0">
+  <div class="row" *ngIf="texts && texts.length > 0">
     <div>
       <strong>Textes</strong>
       <ul>
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="resources.length > 0">
+  <div class="row" *ngIf="resources && resources.length > 0">
     <div>
       <strong>Tout</strong>
       <ul>
