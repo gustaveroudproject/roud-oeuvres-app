@@ -18,17 +18,18 @@ export class ResourceLinkDirective implements DoCheck {
     this.reRouteLink(this.el);  // use function, that is defined below
  }
 
- onClick(event) {
-  this.router.navigate(['resources', event.target.getAttribute('href')]);
-  event.preventDefault();
-}
-
+ 
 reRouteLink(el: ElementRef) {
   
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
     // gives back an array of <a class="resourceLink">
-    aElt.addEventListener('click', this.onClick.bind(this));
+    aElt.addEventListener('click', this.onClick.bind(this));  //intercept click and call the following function, that navigates
   });
+}
+
+onClick(event) {
+  this.router.navigate(['resources', event.target.getAttribute('href')]);
+  event.preventDefault();
 }
 
  
