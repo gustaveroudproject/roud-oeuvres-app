@@ -1,5 +1,29 @@
+
+/*
+
+Used, for example, in person-view (notice) and in the texts content.
+
+- It takes all the links inside a text
+  (all the link with class = resourceLink, as in texts, or salsah-link, as in other classes)
+  and sets the router as 'resources'.
+- Then, not here but in app-routing module, redirects to the right component for the right class
+
+Example:
+1. In TEI
+<placeName knoraLink="http://rdfh.ch/0112/6E2ONBGbQCu37Hepso8ZLQ" ref="http://rdfh.ch/0112/6E2ONBGbQCu37Hepso8ZLQ">Kunstmuseum de Zurich</placeName>
+2. After XSL transformation
+<a class="resourceLink" href="http://rdfh.ch/0112/6E2ONBGbQCu37Hepso8ZLQ">Kunstmuseum de Zurich</a>
+3. Here
+<a class="resourceLink" href="resources/http://rdfh.ch/0112/6E2ONBGbQCu37Hepso8ZLQ">Kunstmuseum de Zurich</a>
+4. When the link is clicked, app-routing module calls resource-router component,
+which identifies the class of the IRI and redirects to, for example, places/IRI
+
+*/
+
+
 import { Directive, ElementRef, Renderer2, AfterViewInit, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
+import { mixinDisableRipple } from '@angular/material';
 
 @Directive({
   selector: '[orResourceLink]'

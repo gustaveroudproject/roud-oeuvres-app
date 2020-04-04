@@ -1,3 +1,15 @@
+
+/*
+
+Used in text-view component.
+
+Link between the content of the text and the image,
+applied to <a>s with class="pageLink",
+which are the result of the xsl transformation of <tei:pb>
+
+*/
+
+
 import {
   Directive,
   ElementRef,
