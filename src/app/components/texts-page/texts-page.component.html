@@ -4,8 +4,8 @@
   <div class="row">
     <ul>
       <li *ngFor="let textLight of textLights">
-        <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
-          >{{ textLight.label }}
+        <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}" [innerHtml]="textLight.title | htmlSanitizer"
+          >
         </a>
       </li>
     </ul>
