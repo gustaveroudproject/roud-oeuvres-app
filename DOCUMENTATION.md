@@ -35,16 +35,16 @@ Most of these things will be obvious for developers, but for non developers:
 
 Names should be self explanatory, but comments are provided in each of the ts files. These are the pipes used in the code:
 
-- HTML sanitizer;
-- encodeURIComponent;
-- Knora dates formatting.
+- *HTML sanitizer*;
+- *encodeURIComponent*;
+- *Knora dates formatting*.
 
 #### Directives
 
 See comments in the files for more info.
 
-- resource-link: it applies to links inside a text, which are just IRI, to trigger the redirection to the right class of resources.
-- page-link: used to sync facsimile pages to the pages in the texts.
+- *resource-link*: it applies to links inside a text, which are just IRI, to trigger the redirection to the right class of resources.
+- *page-link*: used to sync facsimile pages to the pages in the texts.
 
 
 
