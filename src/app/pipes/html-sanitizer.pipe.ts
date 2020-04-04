@@ -1,3 +1,7 @@
+/* Used, for example, in person-view component */
+
+/* To be used together with innerHTML */
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
