@@ -40,6 +40,9 @@ export class PersonsPageComponent implements OnInit {
             .subscribe(
               (person: Person) => {
                 this.selectedPerson = person;
+
+                // console.log(person.Viaf != null)
+
               },
               error => console.error(error)
             );

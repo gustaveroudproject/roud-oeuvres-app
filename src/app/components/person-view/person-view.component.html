@@ -1,11 +1,38 @@
-<p class="p-2">
-    <strong>{{ person?.name }} {{ person?.surname }}</strong> 
-    ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
-</p>
-<p class="p-2" [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
-<br/><br/>
-<a href="{{ person?.DhsID }}" target="_blank"><img src="assets/img/dhs.png" width="50px"></a>
-<a href="{{ person?.Viaf }}" target="_blank"><img src="assets/img/viaf.png" width="50px"></a>
-<br/><br/>
-<p class="p-0"><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.ark }}</p>
-<p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p>
+
+<!-- NAME AND DATES -->
+<div class="py-3"> <!-- bootstrap class: vertical padding 3 -->
+    <p>
+        <strong>{{ person?.name }} {{ person?.surname }}</strong> 
+        ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
+    </p>
+</div>
+
+
+<!-- NOTICE -->
+<div class="py-3">
+    <p [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
+</div>
+
+
+<!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
+<div class="py-3">
+    <a 
+        *ngIf="person.DhsID != null" 
+        href="{{ person?.DhsID }}"
+        target="_blank">
+            <img src="assets/img/dhs.png" width="40px">
+    </a>
+    <a  
+        *ngIf="person.Viaf != null"
+        href="{{ person?.Viaf }}"
+        target="_blank">
+            <img src="assets/img/viaf.png" width="40px">
+    </a>
+</div>
+
+
+<!-- PERMANENT IDENTIFIERS -->
+<div class="py-3">
+    <p class="p-0"><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.ark }}</p>
+    <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
+</div>
