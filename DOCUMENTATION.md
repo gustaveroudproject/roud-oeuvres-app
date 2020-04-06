@@ -14,22 +14,31 @@ API requests to Knora are handled using the JavaScript library *knora-api-js-lib
 
 During the first year of the project, in 2018, we created a [prototype](https://espadini.gitbook.io/roudwebappprototype) of the web application. This was presented to the publishing house that will produce the paper edition ([Zoé](http://www.editionszoe.ch/)) and used as a foundation for the web development.
 
-## How it works
+## A work in progress
+
+Issue [#12](https://github.com/gustaveroudproject/roud-oeuvres-app/issues/12) summarizes the tasks to be completed.
+
+
+## How the app works
+
+Most of these things will be obvious for developers, but for non developers:
 
 #### Knora ui
 
-[Knora ui](https://dasch-swiss.github.io/knora-ui/) provides out of the shelf front-end modules. It is a work in progress by the [DaSCH](dasch.swiss/) and it is not yet used in this project. The way the environments is set in our app is compliant with Knora ui though, to make possible future integrations.
+*[Knora ui](https://dasch-swiss.github.io/knora-ui/)* provides out of the shelf front-end modules. It is a work in progress by the [DaSCH](dasch.swiss/) and it is not yet used in this project. The way the environments is set up in our app is compliant with *Knora ui* though, to make possible future integrations.
 
 #### Style
 
 Bootstrap can be used. This section to be updated ...
-Most of these things will be obvious for developers, but for non developers:
+
+#### The app
 
 - `yalc` and `node_modules` contain all the libraries used in the project
 - `src` is where most of the things happen
 - `src/assets` contains localization data (multilingual)
 - `src/config` defines the *dev* and *prod* connection configurations
 - `src/environments` defines if *dev* or *prod* should be used.
+- ... to be completed
 
 #### Pipes
 
@@ -46,11 +55,6 @@ See comments in the files for more info.
 - *resource-link*: it applies to links inside a text, which are just IRI, to trigger the redirection to the right class of resources.
 - *page-link*: used to sync facsimile pages to the pages in the texts.
 
-
-
-## A work in progress
-
-Issue [#12](https://github.com/gustaveroudproject/roud-oeuvres-app/issues/12) summarizes the tasks to be completed.
 
 
 
