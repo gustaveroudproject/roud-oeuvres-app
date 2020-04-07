@@ -1,23 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { PersonsPageComponent } from './components/persons-page/persons-page.component';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
 import { SearchResultsComponent } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
-import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
+import { PersonPageComponent } from './components/person-page/person-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
   {
     path: 'persons',
     children: [
-      { path: '', component: PersonsPageComponent },
-      { path: ':iri', component: PersonsPageComponent }
+      { path: '', component: PersonPageComponent },
+      { path: ':iri', component: PersonPageComponent }
     ]
   },
   {
