@@ -38,6 +38,7 @@ import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
 import { PageLinkDirective } from './directives/page-link.directive';
+import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -65,7 +66,8 @@ export function initializeApp(appInitService: AppInitService) {
     TextPageComponent,
     NotFoundComponent,
     EncodeURIComponentPipe,
-    PageLinkDirective
+    PageLinkDirective,
+    EssaysPageComponent
   ],
   imports: [
     KuiCoreModule,

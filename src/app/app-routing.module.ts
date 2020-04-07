@@ -9,6 +9,7 @@ import { TextsPageComponent } from './components/texts-page/texts-page.component
 import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -24,6 +25,13 @@ const routes: Routes = [
     children: [
       { path: '', component: TextsPageComponent },
       { path: ':iri', component: TextPageComponent }
+    ]
+  },
+  {
+    path: 'essays',
+    children: [
+      { path: '', component: EssaysPageComponent },
+      { path: ':iri', component: EssaysPageComponent }
     ]
   },
   {
