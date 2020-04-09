@@ -3,6 +3,7 @@ import { Person } from 'src/app/models/person.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
+import { Picture } from 'src/app/models/picture.model';
 
 @Component({
   selector: 'or-person-page',
@@ -13,6 +14,7 @@ export class PersonPageComponent implements OnInit {
   
   person: Person;
   textsLight : TextLight[];
+  pictures : Picture[];
 
 
   constructor(
@@ -44,7 +46,16 @@ export class PersonPageComponent implements OnInit {
                 .subscribe((textsLight: TextLight[]) => {
                   this.textsLight = textsLight;
                   // console.log(textsLight);
-                });
+                  });
+
+                this.dataService
+                .getPicturesOfPerson(person.id)
+                .subscribe((pictures: Picture[]) => {
+                  this.pictures = pictures;
+                  // console.log(pictures);
+                    });
+
+                
               },
               
               error => console.error(error)

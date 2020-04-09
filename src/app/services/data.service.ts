@@ -6,6 +6,7 @@ import { Person, PersonLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
 import { Page } from '../models/page.model';
+import { Picture } from '../models/picture.model';
 
 import {
   KnoraApiConnectionToken,
@@ -74,6 +75,41 @@ OFFSET ${index}
       )
     );
 }
+
+
+
+getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Persons
+  const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+?pic knora-api:isMainResource true .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+?pic a roud-oeuvres:Photo .
+<${personIRI}> roud-oeuvres:personHasPhoto ?pic .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Picture(r);
+      })
+    )
+  );
+}
+
+
+
+
 
 
   getPersonsInText(textIRI: string, index: number = 0): Observable<PersonLight[]> {  
@@ -265,6 +301,20 @@ OFFSET ${index}
     } as Page;   
   }
 
+
+  readRes2Picture(readResource: ReadResource): Picture {  
+    return {
+      ...this.readRes2Resource(readResource),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}photoHasTitle`
+      ),
+      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      )
+    } as Picture;   
+  }
 
 
   readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
