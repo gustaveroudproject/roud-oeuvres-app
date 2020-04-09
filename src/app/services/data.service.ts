@@ -83,12 +83,12 @@ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
     ?Person knora-api:isMainResource true .
-    ?person roud-oeuvres:personHasFamilyName ?surname .
-    ?person roud-oeuvres:personHasGivenName ?name .
+    ?Person roud-oeuvres:personHasFamilyName ?surname .
+    ?Person roud-oeuvres:personHasGivenName ?name .
 } WHERE {
     ?Person a roud-oeuvres:Person .
-    ?person roud-oeuvres:personHasFamilyName ?surname .
-    ?person roud-oeuvres:personHasGivenName ?name .
+    ?Person roud-oeuvres:personHasFamilyName ?surname .
+    ?Person roud-oeuvres:personHasGivenName ?name .
     <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
 }
 OFFSET ${index}
@@ -101,6 +101,37 @@ return this.knoraApiConnection.v2.search
       readResources: ReadResource[] 
     ) => readResources.map(r => {
         return this.readRes2PersonLight(r);
+      })
+    )
+  );
+}
+
+
+
+
+getTextsMentioningPersons(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Text knora-api:isMainResource true .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?Text a roud-oeuvres:EstablishedText .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text knora-api:hasStandoffLinkTo <${textIRI}> .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
       })
     )
   );

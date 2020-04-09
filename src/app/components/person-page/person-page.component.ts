@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Person } from 'src/app/models/person.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
+import { TextLight } from 'src/app/models/text.model';
 
 @Component({
   selector: 'or-person-page',
@@ -11,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 export class PersonPageComponent implements OnInit {
   
   person: Person;
+  textsLight : TextLight[];
+
 
   constructor(
     private dataService: DataService,
@@ -35,7 +38,15 @@ export class PersonPageComponent implements OnInit {
 
                 // console.log(person.Viaf != null)
 
+                // asynchrone, we need text to ask texts mentioning persons
+                this.dataService
+                .getTextsMentioningPersons(person.id)
+                .subscribe((textsLight: TextLight[]) => {
+                  this.textsLight = textsLight;
+                  // console.log(textsLight);
+                });
               },
+              
               error => console.error(error)
             );
       },
