@@ -1,22 +1,22 @@
 <div class="container">
    
     <!-- NAME AND DATES -->
-    <div class="py-3"> <!-- bootstrap class: vertical padding 3 -->
-        <p>
-            <strong>{{ person?.name }} {{ person?.surname }}</strong> 
+    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+        <h3>
+            {{ person?.name }} {{ person?.surname }}
             ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
-        </p>
+        </h3>
     </div>
 
 
     <!-- NOTICE -->
-    <div class="py-3">
+    <div class="py-4">
         <p [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
 
     <!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
-    <div class="py-3">
+    <div class="py-4">
         <a 
             *ngIf="person.DhsID != null" 
             href="{{ person?.DhsID }}"
@@ -33,8 +33,8 @@
 
 
     <!-- PERMANENT IDENTIFIERS -->
-    <div class="py-3">
-        <p class="p-0"><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.ark }}</p>
+    <div class="py-4">
+        <p><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.ark }}</p>
         <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
     </div>
 
