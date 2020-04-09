@@ -11,9 +11,6 @@ import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { PersonsPageComponent } from './components/persons-page/persons-page.component';
-import { PersonsViewComponent } from './components/persons-view/persons-view.component';
-import { PersonViewComponent } from './components/person-view/person-view.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { ResourceLinkDirective } from './directives/resource-link.directive';
@@ -38,6 +35,8 @@ import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
 import { PageLinkDirective } from './directives/page-link.directive';
+import { EssaysPageComponent } from './components/essays-page/essays-page.component';
+import { PersonPageComponent } from './components/person-page/person-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -50,9 +49,6 @@ export function initializeApp(appInitService: AppInitService) {
     AppComponent,
     TopBarComponent,
     HomePageComponent,
-    PersonsPageComponent,
-    PersonsViewComponent,
-    PersonViewComponent,
     FooterComponent,
     knoradatesFormattingPipe,
     ResourceLinkDirective,
@@ -65,7 +61,9 @@ export function initializeApp(appInitService: AppInitService) {
     TextPageComponent,
     NotFoundComponent,
     EncodeURIComponentPipe,
-    PageLinkDirective
+    PageLinkDirective,
+    EssaysPageComponent,
+    PersonPageComponent
   ],
   imports: [
     KuiCoreModule,
