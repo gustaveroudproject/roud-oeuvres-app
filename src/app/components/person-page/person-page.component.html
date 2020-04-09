@@ -15,8 +15,18 @@
     </div>
 
 
+    <!-- PICTURES -->
+    <div class="py-4" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
+        <div *ngFor="let picture of pictures">
+            <img
+            src="{{ picture.imageURL }}"
+            />
+        </div>
+    </div>
+
+
     <!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
-    <div class="py-4">
+    <div class="py-4" *ngIf="person?.DhsID != null || person?.Viaf != null">
         <a 
             *ngIf="person?.DhsID != null" 
             href="{{ person?.DhsID }}"
@@ -37,6 +47,7 @@
         <p><strong>{{ 'person.ark' | translate }}</strong> : {{ person?.ark }}</p>
         <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
     </div>
+
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
