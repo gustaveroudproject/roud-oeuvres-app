@@ -26,7 +26,7 @@ export class PlacePageComponent implements OnInit {
 
     //1. recuperer IRI du URL courent (ActivatedRoute)
     //2. recuperer la ressource de Knora
-    //3. construire un objet de la classe person
+    //3. construire un objet de la classe place
     //4. l'affecter à cette variable
 
     this.route.paramMap.subscribe(
@@ -35,12 +35,10 @@ export class PlacePageComponent implements OnInit {
           .getPlace(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
           .subscribe(
             (place: Place) => {
-              this.place = place; // step 4    I give to the attribute person the value of person
+              this.place = place; // step 4    I give to the attribute place the value of place
 
 
-                // console.log(person.Viaf != null)
-
-                // asynchrone, we need text to ask texts mentioning persons
+                // asynchrone, we need text to ask texts mentioning places
                 this.dataService
                 .getTextsMentioningPlaces(place.id)
                 .subscribe((textsLight: TextLight[]) => {
