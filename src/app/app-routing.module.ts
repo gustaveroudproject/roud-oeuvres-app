@@ -21,7 +21,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'place',
+    path: 'places',
     children: [
       { path: '', component: PlacePageComponent },
       { path: ':iri', component: PlacePageComponent }

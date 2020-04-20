@@ -175,6 +175,36 @@ return this.knoraApiConnection.v2.search
 }
 
 
+
+getTextsMentioningPlaces(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Text knora-api:isMainResource true .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?Text a roud-oeuvres:EstablishedText .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text knora-api:hasStandoffLinkTo <${textIRI}> .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
