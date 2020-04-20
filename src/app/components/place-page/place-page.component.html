@@ -20,21 +20,21 @@
     </div>
 
 
-    <!-- PICTURES 
-    <div class="py-4" *ngIf="pictures && pictures.length > 0">  only show if there are pictures 
+    <!-- PICTURES -->
+    <div class="py-4" *ngIf="pictures && pictures.length > 0">  <!-- only show if there are pictures -->
         <div *ngFor="let picture of pictures">
             <img
             src="{{ picture.imageURL }}"
             />
         </div>
-    </div>-->
+    </div>
 
 
     
 
     <!-- PERMANENT IDENTIFIERS -->
     <div class="py-4">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place.ark }}</p>
+        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
     </div>
 
 

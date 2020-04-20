@@ -3,7 +3,7 @@ import { Place } from 'src/app/models/place.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
-// import { Picture } from 'src/app/models/picture.model';
+import { Picture } from 'src/app/models/picture.model';
 
 @Component({
   selector: 'or-place-page',
@@ -14,7 +14,7 @@ export class PlacePageComponent implements OnInit {
   
   place: Place;
   textsLight : TextLight[];
-//  pictures : Picture[];
+  pictures : Picture[];
 
 
   constructor(
@@ -45,6 +45,14 @@ export class PlacePageComponent implements OnInit {
                   this.textsLight = textsLight;
                   // console.log(textsLight);
                   });
+
+
+                this.dataService
+                .getPicturesOfPlace(place.id)
+                .subscribe((pictures: Picture[]) => {
+                  this.pictures = pictures;
+                  // console.log(pictures);
+                    });
 
                 
                 

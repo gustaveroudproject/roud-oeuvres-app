@@ -79,7 +79,7 @@ OFFSET ${index}
 
 
 
-getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Persons
+getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Pictures
   const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -107,6 +107,37 @@ return this.knoraApiConnection.v2.search
     )
   );
 }
+
+
+getPicturesOfPlace(placeIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Persons
+  const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+?pic knora-api:isMainResource true .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+?pic a roud-oeuvres:Photo .
+<${placeIRI}> roud-oeuvres:placeHasPhoto ?pic .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Picture(r);
+      })
+    )
+  );
+}
+
 
 
 
