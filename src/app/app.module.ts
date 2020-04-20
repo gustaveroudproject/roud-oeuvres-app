@@ -37,6 +37,7 @@ import { FormsModule } from '@angular/forms';
 import { PageLinkDirective } from './directives/page-link.directive';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
+import { PlacePageComponent } from './components/place-page/place-page.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -63,7 +64,8 @@ export function initializeApp(appInitService: AppInitService) {
     EncodeURIComponentPipe,
     PageLinkDirective,
     EssaysPageComponent,
-    PersonPageComponent
+    PersonPageComponent,
+    PlacePageComponent
   ],
   imports: [
     KuiCoreModule,

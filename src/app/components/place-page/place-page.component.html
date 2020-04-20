@@ -1,0 +1,53 @@
+<div class="container">
+   
+    <!-- NAME  -->
+    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+        <h3>
+            {{ place?.name }}
+            
+        </h3>
+    </div>
+
+
+    <!-- NOTICE -->
+    <div class="py-4">
+        <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
+    </div>
+
+    <!-- COORDINATES -->
+    <div class="py-4">
+        <p>Lat : {{ place?.lat}}; Long : {{ place?.long }}</p>
+    </div>
+
+
+    <!-- PICTURES -->
+    <div class="py-4" *ngIf="pictures && pictures.length > 0">  <!-- only show if there are pictures -->
+        <div *ngFor="let picture of pictures">
+            <img
+            src="{{ picture.imageURL }}"
+            />
+        </div>
+    </div>
+
+
+    
+
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="py-4">
+        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
+    </div>
+
+
+    <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
+    <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <h5>Textes en lien</h5>
+        <ul>
+            <li *ngFor="let textLight of textsLight">
+            <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
+                [innerHTML]="textLight.title | htmlSanitizer"></a
+            >
+            </li>
+        </ul>
+    </div>
+
+</div>

@@ -7,6 +7,7 @@ import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
 import { Page } from '../models/page.model';
 import { Picture } from '../models/picture.model';
+import { Place, PlaceLight } from '../models/place.model';
 
 import {
   KnoraApiConnectionToken,
@@ -78,7 +79,7 @@ OFFSET ${index}
 
 
 
-getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Persons
+getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Pictures
   const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -106,6 +107,37 @@ return this.knoraApiConnection.v2.search
     )
   );
 }
+
+
+getPicturesOfPlace(placeIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Persons
+  const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+?pic knora-api:isMainResource true .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+?pic a roud-oeuvres:Photo .
+<${placeIRI}> roud-oeuvres:placeHasPhoto ?pic .
+?pic roud-oeuvres:photoHasTitle ?title .
+?pic knora-api:hasStillImageFileValue ?imageURL .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Picture(r);
+      })
+    )
+  );
+}
+
 
 
 
@@ -146,6 +178,36 @@ return this.knoraApiConnection.v2.search
 
 
 getTextsMentioningPersons(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Text knora-api:isMainResource true .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?Text a roud-oeuvres:EstablishedText .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text knora-api:hasStandoffLinkTo <${textIRI}> .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
+
+getTextsMentioningPlaces(textIRI: string, index: number = 0): Observable<TextLight[]> {  
   const gravsearchQuery = `
 
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -225,6 +287,60 @@ OFFSET ${index}
       .getResources(iris)
       .pipe(
         map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Person(r)))
+      );
+  }
+
+
+
+  getPlaceLights(index: number = 0): Observable<PlaceLight[]> {
+    const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+  ?place knora-api:isMainResource true .
+  ?place roud-oeuvres:placeHasName ?name .
+} WHERE {
+  ?place a roud-oeuvres:Place .
+  ?place roud-oeuvres:placeHasName ?name .
+} ORDER BY ASC(?name)
+OFFSET ${index}
+`;
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery) // cet appel, asynchrone, retourne readResource
+      .pipe(
+        // on se met au milieu de ce flux de données qui arrivent dans l'observable et transforme chaque donnée à la volé
+        map((
+          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
+        ) =>
+          // le suivant corréspond à
+          // {
+          //   const res = [];
+          //   for(r in readResources) {
+          //     res.push(this.readRes2Person(r))
+          //   }
+          //   return res;
+          // }
+          readResources.map(r => {
+            return this.readRes2PlaceLight(r);
+          })
+        )
+      );
+  }
+
+  getPlace(iri: string): Observable<Place> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2Place(readResource))
+      );
+  }
+
+
+  getPlaces(iris: string[]): Observable<Place[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Place(r)))
       );
   }
 
@@ -355,6 +471,37 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}personHasAuthorityID`
       )
     } as Person;
+  }
+
+
+
+
+  readRes2PlaceLight(readResource: ReadResource): PlaceLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      name: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}placeHasName`
+      )
+    } as PlaceLight;    //this indicates the interface declared in place.model.ts
+  }
+
+  readRes2Place(readResource: ReadResource): Place {
+    return {
+      ...this.readRes2PlaceLight(readResource),  
+      lat: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasLatitude`
+      ),
+      long: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasLongitude`
+      ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}placeHasNotice`
+      )
+    } as Place;
   }
 
   readRes2TextLight(readResource: ReadResource): TextLight {

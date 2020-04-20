@@ -9,6 +9,7 @@ import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
+import { PlacePageComponent } from './components/place-page/place-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -17,6 +18,13 @@ const routes: Routes = [
     children: [
       { path: '', component: PersonPageComponent },
       { path: ':iri', component: PersonPageComponent }
+    ]
+  },
+  {
+    path: 'places',
+    children: [
+      { path: '', component: PlacePageComponent },
+      { path: ':iri', component: PlacePageComponent }
     ]
   },
   {
