@@ -27,7 +27,7 @@
     "@knora/core": "^10.0.1",
     "@knora/search": "^10.0.1",
     "@knora/viewer": "^10.0.1",
-    "@ng-bootstrap/ng-bootstrap": "^5.1.5",
+    "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@popperjs/core": "^2.0.4",

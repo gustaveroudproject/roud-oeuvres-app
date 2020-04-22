@@ -17,6 +17,8 @@ import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
 import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+
 import {
   KnoraApiConnectionToken,
   KuiConfigToken,
@@ -73,6 +75,7 @@ export function initializeApp(appInitService: AppInitService) {
     BrowserModule,
     KuiSearchModule,
     AppRoutingModule,
+    NgbModule,
     HttpClientModule,
     FormsModule,
     TranslateModule.forRoot({

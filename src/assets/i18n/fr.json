@@ -12,5 +12,6 @@
   "person.name": "Prénom",
   "person.surname": "Nom",
   "person.label": "Label",
-  "not.found.message": "wo wo wo, you reach the world famous not found page! (congrats)"
+  "not.found.message": "wo wo wo, you reach the world famous not found page! (congrats)",
+  "essays.essays": "Parcours"
 }
