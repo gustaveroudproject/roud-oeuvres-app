@@ -1,7 +1,7 @@
 <div class="container">
    
     <!-- NAME  -->
-    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+    <div class="py-4"> <!-- bootstrap class: vertical padding 4 -->
         <h3>
             {{ place?.name }}
             
@@ -10,7 +10,7 @@
 
 
    
-    <div class="row py-4">
+    <div class="row py-5">
 
          <!-- NOTICE -->
         <div class="col-6">
@@ -35,19 +35,10 @@
 
 
 
-    <!-- COORDINATES -->
-    <div class="pb-4">
-        <p>Lat : {{ place?.lat}}; Long : {{ place?.long }}</p>
-    </div>
-
-
-    
-
-
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <h5>Textes en lien</h5>
-        <ul>
+        <strong>Lieu mentionné dans les textes suivants :</strong>
+        <ul style="list-style: none;">
             <li *ngFor="let textLight of textsLight">
             <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
                 [innerHTML]="textLight.title | htmlSanitizer"></a
@@ -58,8 +49,10 @@
 
 
     <!-- PERMANENT IDENTIFIERS -->
-    <div class="py-4">
+    <div class="my-5 permanentId">
         <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
+        <!-- coordinates -->
+        <p>Lat : {{ place?.lat}}. Long : {{ place?.long }}.</p>
     </div>
     
 
