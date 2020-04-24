@@ -86,6 +86,7 @@ export function initializeApp(appInitService: AppInitService) {
     BrowserModule,
     KuiSearchModule,
     AppRoutingModule,
+    NgbModule,
     HttpClientModule,
     FormsModule,
     TranslateModule.forRoot({
