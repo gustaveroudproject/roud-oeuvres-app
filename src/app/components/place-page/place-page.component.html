@@ -9,33 +9,39 @@
     </div>
 
 
-    <!-- NOTICE -->
-    <div class="py-4">
-        <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
+   
+    <div class="row py-4">
+
+         <!-- NOTICE -->
+        <div class="col-6">
+            <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
+        </div>
+    
+        <!-- PICTURES -->
+        <div class="col-5" *ngIf="pictures && pictures.length > 0">  <!-- only show if there are pictures -->
+            <div *ngFor="let picture of pictures">
+                <img
+                src="{{ picture.imageURL }}"
+                />
+            </div>
+        </div>
+        
     </div>
+    
+
+    <!-- MAP -->
+    <or-place-map *ngIf="place" [placeVar]="place"></or-place-map>  
+        <!-- without *ngIf, place is undefined in or-place-map -->
+
+
 
     <!-- COORDINATES -->
-    <div class="py-4">
+    <div class="pb-4">
         <p>Lat : {{ place?.lat}}; Long : {{ place?.long }}</p>
     </div>
 
 
-    <!-- PICTURES -->
-    <div class="py-4" *ngIf="pictures && pictures.length > 0">  <!-- only show if there are pictures -->
-        <div *ngFor="let picture of pictures">
-            <img
-            src="{{ picture.imageURL }}"
-            />
-        </div>
-    </div>
-
-
     
-
-    <!-- PERMANENT IDENTIFIERS -->
-    <div class="py-4">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
-    </div>
 
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
@@ -51,8 +57,10 @@
     </div>
 
 
-    <div style="border:1px solid black" id="map">
-  
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="py-4">
+        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
     </div>
+    
 
 </div>

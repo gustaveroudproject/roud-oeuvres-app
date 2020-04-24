@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Place } from 'src/app/models/place.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
-import * as L from 'leaflet';
 
 
 @Component({
@@ -12,12 +11,10 @@ import * as L from 'leaflet';
   templateUrl: './place-page.component.html',
   styleUrls: ['./place-page.component.scss']
 })
-export class PlacePageComponent implements OnInit,AfterViewInit {
-  
+export class PlacePageComponent implements OnInit {
   place: Place;
   textsLight : TextLight[];
   pictures : Picture[];
-
 
   constructor(
     private dataService: DataService,
@@ -55,9 +52,8 @@ export class PlacePageComponent implements OnInit,AfterViewInit {
                   this.pictures = pictures;
                   // console.log(pictures);
                     });
-
-                
-                
+                    
+                    
               },
               
               error => console.error(error)
@@ -70,13 +66,4 @@ export class PlacePageComponent implements OnInit,AfterViewInit {
     
   }
 
-  ngAfterViewInit() {
-
-    const map = L.map('map').setView([46.527361, 6.770231], 12);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    
-  }
 }
