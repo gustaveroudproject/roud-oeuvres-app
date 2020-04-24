@@ -23,6 +23,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppInitService } from './app-init.service';
 
+/* BOOTSTRAP */
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+
 /* COMPONENTS */
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
