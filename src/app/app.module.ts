@@ -1,45 +1,55 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+/* ANGULAR */
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { TopBarComponent } from './components/top-bar/top-bar.component';
-
-import { HomePageComponent } from './components/home-page/home-page.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
-import { ResourceLinkDirective } from './directives/resource-link.directive';
-import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
-import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
-
+/* KNORA AND KNORA-UI */
 import {
   KnoraApiConnectionToken,
   KuiConfigToken,
   KuiCoreModule,
   KnoraApiConfigToken
 } from '@knora/core';
-import { AppInitService } from './app-init.service';
-import { FulltextSearchComponent } from './components/fulltext-search/fulltext-search.component';
 import { KuiSearchModule } from '@knora/search';
 import { KuiViewerModule } from '@knora/viewer';
+
+/* TRANSLATION */
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+/* ROUTING AND SERVICES */
+import { AppRoutingModule } from './app-routing.module';
+import { AppInitService } from './app-init.service';
+
+/* COMPONENTS */
+import { AppComponent } from './app.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
+import { FulltextSearchComponent } from './components/fulltext-search/fulltext-search.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
-import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { TextViewComponent } from './components/text-view/text-view.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { FormsModule } from '@angular/forms';
-import { PageLinkDirective } from './directives/page-link.directive';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
+import { PlaceMapComponent } from './components/place-map/place-map.component';
+
+
+/* PIPES */
+import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
+import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
+import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
+
+/* DIRECTIVES */
+import { ResourceLinkDirective } from './directives/resource-link.directive';
+import { PageLinkDirective } from './directives/page-link.directive';
+
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -67,7 +77,8 @@ export function initializeApp(appInitService: AppInitService) {
     PageLinkDirective,
     EssaysPageComponent,
     PersonPageComponent,
-    PlacePageComponent
+    PlacePageComponent,
+    PlaceMapComponent
   ],
   imports: [
     KuiCoreModule,

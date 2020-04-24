@@ -18,7 +18,7 @@
     <!-- PICTURES -->
     <div class="py-4" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
         <div *ngFor="let picture of pictures">
-            <img
+            <img width="full"
             src="{{ picture.imageURL }}"
             />
         </div>
@@ -39,15 +39,8 @@
             target="_blank">
                 <img src="assets/img/viaf.png" width="40px">
         </a>
-    </div> 
-
-
-    <!-- PERMANENT IDENTIFIERS -->
-    <div class="py-4">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ person?.ark }}</p>
-        <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
     </div>
-
+    
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
@@ -59,6 +52,13 @@
             >
             </li>
         </ul>
+    </div>
+
+
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="py-4 permanentId">
+        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ person?.ark }}</p>
+        <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
     </div>
 
 </div>

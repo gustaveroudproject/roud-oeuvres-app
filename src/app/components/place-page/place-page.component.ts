@@ -5,17 +5,16 @@ import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
 
+
 @Component({
   selector: 'or-place-page',
   templateUrl: './place-page.component.html',
   styleUrls: ['./place-page.component.scss']
 })
 export class PlacePageComponent implements OnInit {
-  
   place: Place;
   textsLight : TextLight[];
   pictures : Picture[];
-
 
   constructor(
     private dataService: DataService,
@@ -53,9 +52,8 @@ export class PlacePageComponent implements OnInit {
                   this.pictures = pictures;
                   // console.log(pictures);
                     });
-
-                
-                
+                    
+                    
               },
               
               error => console.error(error)
@@ -63,5 +61,9 @@ export class PlacePageComponent implements OnInit {
       },
       error => console.error(error)
     );
+
+
+    
   }
+
 }

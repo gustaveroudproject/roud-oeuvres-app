@@ -9,4 +9,12 @@ body {
 
 /* just use Bootstrap */
 
+/* this is for Knora-ui */
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+
+.permanentId {
+    border:1px solid black;
+    padding: 20px;
+}
+

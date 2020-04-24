@@ -492,6 +492,7 @@ OFFSET ${index}
       lat: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasLatitude`
+        
       ),
       long: this.getFirstValueAsStringOrNullOfProperty(
         readResource,

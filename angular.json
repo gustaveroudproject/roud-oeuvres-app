@@ -30,9 +30,12 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@knora/search/assets/style/search.scss"
+              "node_modules/@knora/search/assets/style/search.scss",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -89,9 +92,11 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@knora/search/assets/style/search.scss" 
+              "node_modules/@knora/search/assets/style/search.scss",
+              "node_modules/leaflet/dist/leaflet.css"        ],
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js"
             ],
-            "scripts": [],
             "assets": [
               "src/favicon.ico",
               "src/assets",
