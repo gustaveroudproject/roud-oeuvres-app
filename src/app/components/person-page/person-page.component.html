@@ -44,8 +44,8 @@
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <h5>Textes en lien</h5>
-        <ul>
+        <strong>Personne mentionnée dans les textes suivants :</strong>
+        <ul style="list-style: none;">
             <li *ngFor="let textLight of textsLight">
             <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
                 [innerHTML]="textLight.title | htmlSanitizer"></a
