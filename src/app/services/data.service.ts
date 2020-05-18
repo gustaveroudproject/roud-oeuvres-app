@@ -8,6 +8,8 @@ import { Text, TextLight } from '../models/text.model';
 import { Page } from '../models/page.model';
 import { Picture } from '../models/picture.model';
 import { Place, PlaceLight } from '../models/place.model';
+import { PublicationLight, Publication, PeriodicalArticle } from '../models/publication.model';
+import { AuthorLight, Author } from '../models/author.model';
 
 import {
   KnoraApiConnectionToken,
@@ -236,6 +238,7 @@ return this.knoraApiConnection.v2.search
 }
 
 
+
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -289,6 +292,16 @@ OFFSET ${index}
         map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Person(r)))
       );
   }
+
+
+  getAuthorLight(iri: string): Observable<AuthorLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2AuthorLight(readResource))
+      );
+  }
+
 
 
 
@@ -352,6 +365,18 @@ OFFSET ${index}
         map((readResource: ReadResource) => this.readRes2Resource(readResource))
       );
   }
+
+
+
+  getPublicationLight(iri: string): Observable<PublicationLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2PublicationLight(readResource))
+      );
+  }
+
+
 
   getTextLights(index: number = 0): Observable<TextLight[]> {
     const gravsearchQuery = `
@@ -433,6 +458,25 @@ OFFSET ${index}
   }
 
 
+  readRes2PublicationLight(readResource: ReadResource): PublicationLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publicationHasAuthorValue`
+      ),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publicationHasTitle`
+      ),
+      date: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publicationHasDate`
+      )
+    } as PublicationLight;    
+  }
+
+
   readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
     return {
       ...this.readRes2Resource(readResource),
@@ -471,6 +515,22 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}personHasAuthorityID`
       )
     } as Person;
+  }
+
+
+
+  readRes2AuthorLight(readResource: ReadResource): AuthorLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      surname: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}authorHasFamilyName`
+      ),
+      name: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}authorHasGivenName`
+      )
+    } as AuthorLight;    
   }
 
 
@@ -535,4 +595,5 @@ OFFSET ${index}
       : null;
     return values && values.length >= 1 ? values[0] : null;
   }
+  
 }

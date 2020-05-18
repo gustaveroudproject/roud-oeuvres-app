@@ -1,1 +1,11 @@
-<p>pub-text-page works!</p>
+<div class="container">
+   
+    <p>pub-text-page works!!</p>
+
+    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+        <p>
+            {{ authorLight?.name }} {{ authorLight?.surname }}, 
+            <i>{{ publicationLight?.title }}</i>, 
+            {{ publicationLight?.date | knoradatesFormatting }}
+        </p>
+    </div>
