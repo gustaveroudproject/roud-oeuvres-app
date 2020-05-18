@@ -42,6 +42,7 @@ import { EssaysPageComponent } from './components/essays-page/essays-page.compon
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
+import { PubTextPageComponent } from './components/pub-text-page/pub-text-page.component';
 
 
 /* PIPES */
@@ -81,7 +82,8 @@ export function initializeApp(appInitService: AppInitService) {
     EssaysPageComponent,
     PersonPageComponent,
     PlacePageComponent,
-    PlaceMapComponent
+    PlaceMapComponent,
+    PubTextPageComponent
   ],
   imports: [
     KuiCoreModule,
