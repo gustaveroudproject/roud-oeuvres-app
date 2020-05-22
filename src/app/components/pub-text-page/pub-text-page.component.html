@@ -1,11 +1,40 @@
 <div class="container">
    
-    <p>pub-text-page works!!</p>
+    
 
-    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+    <!-- VIEWER -->
+    
+
+
+
+
+    <!-- BIBLIO REFERENCE -->
+    <div class="py-4" *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 3 -->
+        <p>
+            {{ authorLight?.name }} {{ authorLight?.surname }},
+            « {{ periodicalArticle?.title }} », 
+            <i>{{ periodicalLight?.title }}</i>
+            {{ periodicalArticle?.volume }}<span *ngIf="periodicalArticle?.issue != null">
+                ({{ periodicalArticle?.issue }})
+            </span>, {{ periodicalArticle?.pages }},
+            {{ periodicalArticle?.date | knoradatesFormatting }}.
+        </p>
+    </div>
+
+    <div class="py-4" *ngIf="book != null"> <!-- bootstrap class: vertical padding 3 -->
+        <p>
+            {{ authorLight?.name }} {{ authorLight?.surname }},
+            <i [innerHTML]="book?.title | htmlSanitizer"></i>, {{ publisherLight?.name }},
+            {{ book?.date | knoradatesFormatting }}.
+        </p>
+    </div>
+
+    <div class="py-4" *ngIf="bookSection != null"> <!-- bootstrap class: vertical padding 3 -->
         <p>
             {{ authorLight?.name }} {{ authorLight?.surname }}, 
-            <i>{{ publicationLight?.title }}</i>, 
-            {{ publicationLight?.date | knoradatesFormatting }}
+            « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
+            <i>{{ bookSection?.book }}</i>,
+             {{ publisherLight?.name }},
+            {{ book?.date | knoradatesFormatting }}.
         </p>
     </div>

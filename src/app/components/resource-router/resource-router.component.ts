@@ -30,6 +30,8 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('EstablishedText', '/texts/');
         routeMapping.set('Work', '/works/');
         routeMapping.set('Periodical article', '/archive/pub/text/');
+        routeMapping.set('Book', '/archive/pub/text/');
+        routeMapping.set('Book section', '/archive/pub/text/');
 
         // get resource class
         this.route.paramMap.subscribe(

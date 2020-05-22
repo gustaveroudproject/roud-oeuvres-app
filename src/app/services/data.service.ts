@@ -8,8 +8,11 @@ import { Text, TextLight } from '../models/text.model';
 import { Page } from '../models/page.model';
 import { Picture } from '../models/picture.model';
 import { Place, PlaceLight } from '../models/place.model';
-import { PublicationLight, Publication, PeriodicalArticle } from '../models/publication.model';
+import { PublicationLight, Publication, PeriodicalArticle, Book, BookSection } from '../models/publication.model';
 import { AuthorLight, Author } from '../models/author.model';
+import { PeriodicalLight, Periodical } from '../models/periodical.model';
+import { PublisherLight, Publisher } from '../models/publisher.model';
+
 
 import {
   KnoraApiConnectionToken,
@@ -376,6 +379,55 @@ OFFSET ${index}
       );
   }
 
+  getPublication(iri: string): Observable<Publication> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2Publication(readResource))
+      );
+  }
+
+  getPeriodicalArticle(iri: string): Observable<PeriodicalArticle> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2PeriodicalArticle(readResource))
+      );
+  }
+
+  getPeriodicalLight(iri: string): Observable<PeriodicalLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2PeriodicalLight(readResource))
+      );
+  }
+
+  getBook(iri: string): Observable<Book> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2Book(readResource))
+      );
+  }
+
+  getBookSection(iri: string): Observable<BookSection> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2BookSection(readResource))
+      );
+  }
+
+  getPublisherLight(iri: string): Observable<PublisherLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2PublisherLight(readResource))
+      );
+  }
+
+
 
 
   getTextLights(index: number = 0): Observable<TextLight[]> {
@@ -475,6 +527,116 @@ OFFSET ${index}
       )
     } as PublicationLight;    
   }
+
+  readRes2Publication(readResource: ReadResource): Publication {  
+    return {
+      ...this.readRes2PublicationLight(readResource),
+      collaborators: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasCollaborators`
+      ),
+      isReusedIn: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publicationIsReusedInValue`
+      )
+    } as Publication;    
+  }
+
+
+  readRes2PeriodicalArticle(readResource: ReadResource): PeriodicalArticle {  
+    return {
+      ...this.readRes2Publication(readResource),
+      periodicalValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}isPublishedInPeriodicalValue`
+      ),
+      issue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}isInPeriodicalIssue`
+      ),
+      volume: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}isInPeriodicalVolume`
+      ),
+      pages: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}periodicalArticleIsInPages`
+      )
+    } as PeriodicalArticle;    
+  }
+
+
+  readRes2PeriodicalLight(readResource: ReadResource): PeriodicalLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}periodicalHasTitle`
+      )
+    } as PeriodicalLight;    
+  }
+
+  readRes2Periodical(readResource: ReadResource): Periodical {  
+    return {
+      ...this.readRes2PeriodicalLight(readResource),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}periodicalHasNotice`
+      )
+    } as Periodical;    
+  }
+
+  readRes2Book(readResource: ReadResource): Book {  
+    return {
+      ...this.readRes2Publication(readResource),
+      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasPublisherValue`
+      ),
+      editionNumber: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}isEditionNumber`
+      )
+    } as Book;    
+  }
+
+
+  readRes2BookSection(readResource: ReadResource): BookSection {  
+    return {
+      ...this.readRes2Publication(readResource),
+      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}bookSectionHasPublisherValue`
+      ),
+      book: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}bookSectionIsPartOf`
+      ),
+      pages: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}bookSectionIsInPages`
+      ),
+      volume: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}isInBookVolume`
+      )
+    } as BookSection;    
+  }
+
+  readRes2PublisherLight(readResource: ReadResource): PublisherLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      name: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publisherHasName`
+      ),
+      location: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}publisherHasLocation`
+      )
+    } as PublisherLight;    
+  }
+
 
 
   readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts

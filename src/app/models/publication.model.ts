@@ -19,8 +19,22 @@ export interface Publication extends PublicationLight {
 }
 
 export interface PeriodicalArticle extends Publication {
-  periodical: string;
+  periodicalValue: string;
   issue: string;
   volume: string;
-  pages: string; // ??
+  pages: string; 
+}
+
+export interface Book extends Publication {
+  publisherValue: string;
+  editionNumber: string;
+  // numberOfVolumes: string; no corresponding data
+  // specificPages: string;  not relevant for web application
+}
+
+export interface BookSection extends Publication {
+  publisherValue: string;
+  book: string;
+  pages: string;
+  volume: string;
 }

@@ -50,6 +50,7 @@ import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 
+
 /* DIRECTIVES */
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
