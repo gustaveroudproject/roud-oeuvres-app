@@ -6,6 +6,7 @@ import { AuthorLight } from 'src/app/models/author.model';
 import { PeriodicalLight } from 'src/app/models/periodical.model';
 import { Resource } from 'src/app/models/resource.model';
 import { PublisherLight } from 'src/app/models/publisher.model';
+import { Page } from 'src/app/models/page.model';
 
 
 @Component({
@@ -23,6 +24,9 @@ export class PubTextPageComponent implements OnInit {
   book: Book;
   bookSection: BookSection;
   publisherLight: PublisherLight;
+  pages: Page[];
+  selectedPageNum: number = 1; // default value, so it visualized the first scan when arriving on the page
+  
 
   constructor(
     private dataService: DataService,
@@ -41,6 +45,18 @@ export class PubTextPageComponent implements OnInit {
                 .subscribe(
                   (resource: Resource) => {
                     this.resource = resource;
+
+
+
+                    this.dataService
+                      .getPagesOfPub(resource.id)
+                      .subscribe((pages: Page[]) => {
+                        this.pages = pages;
+                        //console.log(pages);
+                        //console.log(this.selectedPageNum);
+                      });
+
+
                   
                     if (resource.resourceClassLabel == 'Periodical article') {
                       this.dataService

@@ -50,7 +50,7 @@ export class DataService {
       );
   }
 
-
+// DELETE THIS IF NOT USED
   getPagesOfText(textIRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -82,6 +82,38 @@ OFFSET ${index}
     );
 }
 
+
+
+
+getPagesOfPub(IRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
+  const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+?fac knora-api:isMainResource true .
+?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+?fac a roud-oeuvres:Page .
+?fac roud-oeuvres:pageIsPartOfPublication <${IRI}> .
+?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac knora-api:hasStillImageFileValue ?imageURL .
+}
+ORDER BY ?seqnum
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Page(r);
+      })
+    )
+  );
+}
 
 
 getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Pictures
