@@ -92,11 +92,13 @@ PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
 ?fac knora-api:isMainResource true .
 ?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac roud-oeuvres:pageHasName ?name .
 ?fac knora-api:hasStillImageFileValue ?imageURL .
 } WHERE {
 ?fac a roud-oeuvres:Page .
 ?fac roud-oeuvres:pageIsPartOfPublication <${IRI}> .
 ?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac roud-oeuvres:pageHasName ?name .
 ?fac knora-api:hasStillImageFileValue ?imageURL .
 }
 ORDER BY ?seqnum
@@ -340,35 +342,6 @@ OFFSET ${index}
 
 
 
-// DELETE THIS IF NOT USED
-  getAuthorsLight(index: number = 0): Observable<AuthorLight[]> {
-    const gravsearchQuery = `
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-  ?author knora-api:isMainResource true .
-  ?author roud-oeuvres:authorHasFamilyName ?surname .
-  ?author roud-oeuvres:authorHasGivenName ?name .
-} WHERE {
-  ?author a roud-oeuvres:Author .
-  ?author roud-oeuvres:authorHasFamilyName ?surname .
-  ?author roud-oeuvres:authorHasGivenName ?name .
-} ORDER BY ASC(?surname)
-OFFSET ${index}
-`;
-    return this.knoraApiConnection.v2.search
-      .doExtendedSearch(gravsearchQuery)
-      .pipe(
-        map((
-          readResources: ReadResource[] 
-        ) =>
-          readResources.map(r => {
-            return this.readRes2AuthorLight(r);
-          })
-        )
-      );
-  }
-
 
 
 
@@ -551,7 +524,10 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasSeqnum`
       ),
-      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+      name: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}pageHasName`
+      ),      imageURL: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
       )
