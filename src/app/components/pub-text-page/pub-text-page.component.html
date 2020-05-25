@@ -1,31 +1,32 @@
 <div class="container">
 
     
-    <!-- TITLE, light version of the bibliographical reference -->
-    <div class="py-4" *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
-        <h3>
-            « {{ periodicalArticle?.title }} », 
-            <i>{{ periodicalLight?.title }}</i>,
-            {{ periodicalArticle?.date | knoradatesFormatting }}
-        </h3>
-    </div>
+    <div class="py-4 title"><!-- TITLE, light version of the bibliographical reference -->
+        <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
+            <h3>
+                « {{ periodicalArticle?.title }} »
+                <!-- , <i>{{ periodicalLight?.title }}</i>,
+                {{ periodicalArticle?.date | knoradatesFormatting }}-->
+            </h3>
+        </div>
 
-    <div class="py-4" *ngIf="book != null"> 
-        <h3>
-            <i [innerHTML]="book?.title | htmlSanitizer"></i>,
-            {{ book?.date | knoradatesFormatting }}
-        </h3>
-    </div>
+        <div *ngIf="book != null"> 
+            <h3>
+                <i [innerHTML]="book?.title | htmlSanitizer"></i>
+                <!-- , {{ book?.date | knoradatesFormatting }}-->
+            </h3>
+        </div>
 
-    <div class="py-4" *ngIf="bookSection != null"> 
-        <h3>
-            « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
-            <i>{{ bookSection?.book }}</i>,
-             {{ publisherLight?.name }},
-            {{ book?.date | knoradatesFormatting }}
-        </h3>
+        <div *ngIf="bookSection != null"> 
+            <h3>
+                « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »
+                <!-- , <i>{{ bookSection?.book }}</i>,
+                {{ publisherLight?.name }},
+                {{ book?.date | knoradatesFormatting }}-->
+            </h3>
+        </div>
     </div>
-   
+    
     
 
     <!-- VIEWER -->
@@ -108,7 +109,7 @@
                 {{ book?.date | knoradatesFormatting }}.
             </p>
         </div>
-        
+
     </div>
 
     
