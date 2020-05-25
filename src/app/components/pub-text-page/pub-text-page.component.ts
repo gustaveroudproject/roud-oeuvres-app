@@ -4,7 +4,6 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorLight } from 'src/app/models/author.model';
 import { PeriodicalLight } from 'src/app/models/periodical.model';
-import { Resource } from 'src/app/models/resource.model';
 import { PublisherLight } from 'src/app/models/publisher.model';
 import { Page } from 'src/app/models/page.model';
 
@@ -18,15 +17,14 @@ export class PubTextPageComponent implements OnInit {
 
   publicationLight: PublicationLight;
   authorLight: AuthorLight;
-  resource: Resource;
   periodicalArticle: PeriodicalArticle;
   periodicalLight: PeriodicalLight;
   book: Book;
   bookSection: BookSection;
   publisherLight: PublisherLight;
   pages: Page[];
-  selectedPageNum: number = 1; // default value, so it visualized the first scan when arriving on the page
-  
+  selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+  authors: AuthorLight[];
 
   constructor(
     private dataService: DataService,
@@ -40,40 +38,43 @@ export class PubTextPageComponent implements OnInit {
     this.route.paramMap.subscribe(
           params => {
             if (params.has('iri')) {
+              //// get basic properties (publicationLight) of the publication
               this.dataService
-                .getResource(decodeURIComponent(params.get('iri')))
+                .getPublicationLight(decodeURIComponent(params.get('iri')))
                 .subscribe(
-                  (resource: Resource) => {
-                    this.resource = resource;
-
-
-
+                  (publicationLight: PublicationLight) => {
+                    this.publicationLight = publicationLight;
+                    
+                    //// get authors from authors' IRIs
+                    this.authors = [];
+                    for (var autVal in publicationLight.authorsValues) {
+                      this.dataService
+                      .getAuthorLight(publicationLight.authorsValues[autVal])
+                      .subscribe(
+                        (authorLight: AuthorLight) => {
+                          this.authorLight = authorLight;
+                          this.authors.push(authorLight);
+                        });
+                      }
+                      
+                    //// get facsimiles scans from publication IRI
                     this.dataService
-                      .getPagesOfPub(resource.id)
+                      .getPagesOfPub(publicationLight.id)
                       .subscribe((pages: Page[]) => {
                         this.pages = pages;
                         //console.log(pages);
                         //console.log(this.selectedPageNum);
                       });
 
-
-                  
-                    if (resource.resourceClassLabel == 'Periodical article') {
+                    //// if it is a PERIODICAL ARTICLE, retrieve its properties
+                    if (publicationLight.resourceClassLabel == 'Periodical article') {
                       this.dataService
-                        .getPeriodicalArticle(resource.id)  // = iri
+                        .getPeriodicalArticle(publicationLight.id)  // = iri
                         .subscribe(
                           (periodicalArticle: PeriodicalArticle) => {
                             this.periodicalArticle = periodicalArticle;
-    
+                            
                             // asynchrone
-                            this.dataService
-                            .getAuthorLight(periodicalArticle.authorValue)
-                            .subscribe(
-                              (authorLight: AuthorLight) => {
-                              this.authorLight = authorLight;
-                              // console.log(authorLight);
-                              });
-
                             this.dataService
                             .getPeriodicalLight(periodicalArticle.periodicalValue)
                             .subscribe(
@@ -87,23 +88,15 @@ export class PubTextPageComponent implements OnInit {
                         );
                       }  
 
-
-                      if (resource.resourceClassLabel == 'Book') {
+                      //// if it is a BOOK, retrieve its properties
+                      if (publicationLight.resourceClassLabel == 'Book') {
                         this.dataService
-                          .getBook(resource.id)  // = iri
+                          .getBook(publicationLight.id)  // = iri
                           .subscribe(
                             (book: Book) => {
                               this.book = book;
 
                               // asynchrone
-                              this.dataService
-                              .getAuthorLight(book.authorValue)
-                              .subscribe(
-                                (authorLight: AuthorLight) => {
-                                this.authorLight = authorLight;
-                                // console.log(authorLight);
-                                });
-
                               this.dataService
                               .getPublisherLight(book.publisherValue)
                               .subscribe(
@@ -116,37 +109,34 @@ export class PubTextPageComponent implements OnInit {
                           );
                         }  
 
-                        if (resource.resourceClassLabel == 'Book section') {
+                        //// if it is a BOOK SECTION, retrieve its properties
+                        if (publicationLight.resourceClassLabel == 'Book section') {
                           this.dataService
-                            .getBookSection(resource.id)  // = iri
+                            .getBookSection(publicationLight.id)  // = iri
                             .subscribe(
                               (bookSection: BookSection) => {
                                 this.bookSection = bookSection;
-  
+                                
                                 // asynchrone
-                                this.dataService
-                                .getAuthorLight(bookSection.authorValue)
-                                .subscribe(
-                                  (authorLight: AuthorLight) => {
-                                  this.authorLight = authorLight;
-                                  // console.log(authorLight);
-                                  });
-  
                                 this.dataService
                                 .getPublisherLight(bookSection.publisherValue)
                                 .subscribe(
                                   (publisherLight: PublisherLight) => {
                                   this.publisherLight = publisherLight;
                                   });
+                                
     
                               },
                               error => console.error(error)
                             );
                           } 
 
+                          
+                          
 
                   },
                   error => console.error(error)
+                  
                 );
               }
           },

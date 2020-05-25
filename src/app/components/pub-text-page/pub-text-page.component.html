@@ -1,7 +1,8 @@
 <div class="container">
 
-    <!-- TITLE -->
-    <div class="py-4" *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 3 -->
+    
+    <!-- TITLE, light version of the bibliographical reference -->
+    <div class="py-4" *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
         <h3>
             « {{ periodicalArticle?.title }} », 
             <i>{{ periodicalLight?.title }}</i>,
@@ -9,14 +10,14 @@
         </h3>
     </div>
 
-    <div class="py-4" *ngIf="book != null"> <!-- bootstrap class: vertical padding 3 -->
+    <div class="py-4" *ngIf="book != null"> 
         <h3>
             <i [innerHTML]="book?.title | htmlSanitizer"></i>,
             {{ book?.date | knoradatesFormatting }}
         </h3>
     </div>
 
-    <div class="py-4" *ngIf="bookSection != null"> <!-- bootstrap class: vertical padding 3 -->
+    <div class="py-4" *ngIf="bookSection != null"> 
         <h3>
             « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
             <i>{{ bookSection?.book }}</i>,
@@ -59,35 +60,55 @@
 
     <!-- BIBLIOGRAPHICAL REFERENCE -->
     <div class="py-4">
+
         <strong>Référence bibliographique</strong>
-        <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 3 -->
+
+        <!-- if PERIODICAL ARTICLE -->
+        <div *ngIf="periodicalArticle != null"> 
             <p>
-                {{ authorLight?.name }} {{ authorLight?.surname }},
+                <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                    {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                </span>,
                 « {{ periodicalArticle?.title }} », 
-                <i>{{ periodicalLight?.title }}</i>
-                {{ periodicalArticle?.volume }}<span *ngIf="periodicalArticle?.issue != null">
-                    ({{ periodicalArticle?.issue }})
-                </span>, {{ periodicalArticle?.pages }},
-                {{ periodicalArticle?.date | knoradatesFormatting }}.
+                <i>{{ periodicalLight?.title }}</i>,
+                n° {{ periodicalArticle?.volume }}<span *ngIf="periodicalArticle?.issue != null">
+                    ({{ periodicalArticle?.issue }})</span>,
+                <span *ngIf="periodicalArticle?.collaborators != null">{{ periodicalArticle?.collaborators }},</span>
+                <!--there is no entry with multiple collaborators even if cardinality would allow it-->
+                {{ periodicalArticle?.date | knoradatesYmdFormatting }},
+                {{ periodicalArticle?.pages }}.
             </p>
         </div>
 
-        <div *ngIf="book != null"> <!-- bootstrap class: vertical padding 3 -->
+        <!-- if BOOK -->
+        <div *ngIf="book != null"> 
             <p>
-                {{ authorLight?.name }} {{ authorLight?.surname }},
-                <i [innerHTML]="book?.title | htmlSanitizer"></i>, {{ publisherLight?.name }},
-                {{ publisherLight?.location }}
-                {{ book?.date | knoradatesFormatting }}.
-            </p>
-        </div>
-
-        <div *ngIf="bookSection != null"> <!-- bootstrap class: vertical padding 3 -->
-            <p>
-                {{ authorLight?.name }} {{ authorLight?.surname }}, 
-                « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
-                <i>{{ bookSection?.book }}</i>,
+                <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                    {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                </span>,
+                <i [innerHTML]="book?.title | htmlSanitizer"></i>,
+                <span *ngIf="book?.collaborators != null">{{ book?.collaborators }},</span>
+                {{ publisherLight?.location }},
                 {{ publisherLight?.name }},
                 {{ book?.date | knoradatesFormatting }}.
             </p>
         </div>
+
+        <!-- if BOOK SECTION -->
+        <div *ngIf="bookSection != null">
+            <p>
+                <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                    {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                </span>,
+                « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
+                <i>{{ bookSection?.book }}</i>,
+                <span *ngIf="bookSection?.collaborators != null">{{ bookSection?.collaborators }},</span>
+                {{ publisherLight?.location }},
+                {{ publisherLight?.name }},
+                {{ book?.date | knoradatesFormatting }}.
+            </p>
+        </div>
+        
     </div>
+
+    

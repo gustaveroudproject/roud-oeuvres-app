@@ -9,6 +9,7 @@ import {
 
 export interface PublicationLight extends Resource {  //pour construire une publication
   authorValue: string;
+  authorsValues: string[];
   title: string;
   date: string; // ??
 }

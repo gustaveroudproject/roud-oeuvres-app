@@ -48,6 +48,8 @@ import { PubTextPageComponent } from './components/pub-text-page/pub-text-page.c
 /* PIPES */
 import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
+import { knoradatesYmdFormattingPipe } from './pipes/knoradates-ymd-formatting.pipe';
+import { sortBySurnamePipe } from './pipes/sort-by-surname.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 
 
@@ -69,6 +71,8 @@ export function initializeApp(appInitService: AppInitService) {
     HomePageComponent,
     FooterComponent,
     knoradatesFormattingPipe,
+    knoradatesYmdFormattingPipe,
+    sortBySurnamePipe,
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,
