@@ -1,0 +1,10 @@
+<ul>
+    <li *ngFor="let avantTextPart of avantTextsParts">
+        <a routerLink="/resources/{{ avantTextPart.id | encodeURIComponent }}"
+            >
+            <span [innerHTML]="avantTextPart?.title | htmlSanitizer"></span>
+            ({{ avantTextPart?.archive }}
+            <span [innerHTML]="avantTextPart?.shelfmark | htmlSanitizer"></span>)
+        </a>
+    </li>
+</ul>

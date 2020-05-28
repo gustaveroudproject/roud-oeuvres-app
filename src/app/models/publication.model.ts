@@ -39,3 +39,15 @@ export interface BookSection extends Publication {
   pages: string;
   volume: string;
 }
+
+
+export interface PubPartLight extends Resource {  
+  title: string;
+  isPartOfPubValue: string;
+  number: string;
+}
+
+export interface PubPart extends PubPartLight {  
+  startingPageValue: string; 
+  isReusedInValue: string;
+}

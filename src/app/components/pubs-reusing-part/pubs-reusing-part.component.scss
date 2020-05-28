@@ -1,9 +1,5 @@
 /* COPIED FROM TEXT-PAGE COMPONENT, MOVE TO GENERAL STYLES ? */
 
-.container-fluid {
-  padding: 0 10rem 0 10rem !important;
-}
-
 #entities {
     margin: 0 0 0 50px;  /* would be better to use Bootstrap column offset, but can't make it work properly */
     border: 1px solid lightgray;

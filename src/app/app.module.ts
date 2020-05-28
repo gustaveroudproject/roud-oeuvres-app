@@ -43,6 +43,8 @@ import { PersonPageComponent } from './components/person-page/person-page.compon
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
 import { PubTextPageComponent } from './components/pub-text-page/pub-text-page.component';
+import { AvantTextsPartComponent } from './components/avant-texts-part/avant-texts-part.component';
+import { PubsReusingPartComponent } from './components/pubs-reusing-part/pubs-reusing-part.component';
 
 
 /* PIPES */
@@ -88,7 +90,9 @@ export function initializeApp(appInitService: AppInitService) {
     PersonPageComponent,
     PlacePageComponent,
     PlaceMapComponent,
-    PubTextPageComponent
+    PubTextPageComponent,
+    AvantTextsPartComponent,
+    PubsReusingPartComponent
   ],
   imports: [
     KuiCoreModule,
