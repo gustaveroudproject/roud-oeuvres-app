@@ -10,7 +10,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
-import { PubTextPageComponent } from './components/pub-text-page/pub-text-page.component';
+import { PubPageComponent } from './components/pub-page/pub-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: ':iri', component: TextPageComponent }
     ]
   },
-  { path: 'archive/pub/text/:iri', component: PubTextPageComponent },
+  { path: 'archive/pub/text/:iri', component: PubPageComponent },
   { path: 'essays', component: EssaysPageComponent },
   {
     path: 'search',

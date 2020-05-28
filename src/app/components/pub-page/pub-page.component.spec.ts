@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PubTextPageComponent } from './pub-text-page.component';
+import { PubPageComponent } from './pub-page.component';
 
-describe('PubTextPageComponent', () => {
-  let component: PubTextPageComponent;
-  let fixture: ComponentFixture<PubTextPageComponent>;
+describe('PubPageComponent', () => {
+  let component: PubPageComponent;
+  let fixture: ComponentFixture<PubPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PubTextPageComponent ]
+      declarations: [ PubPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PubTextPageComponent);
+    fixture = TestBed.createComponent(PubPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

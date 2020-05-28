@@ -48,7 +48,7 @@ import { EssaysPageComponent } from './components/essays-page/essays-page.compon
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
-import { PubTextPageComponent } from './components/pub-text-page/pub-text-page.component';
+import { PubPageComponent } from './components/pub-page/pub-page.component';
 import { AvantTextsPartComponent } from './components/avant-texts-part/avant-texts-part.component';
 import { PubsReusingPartComponent } from './components/pubs-reusing-part/pubs-reusing-part.component';
 
@@ -96,7 +96,7 @@ export function initializeApp(appInitService: AppInitService) {
     PersonPageComponent,
     PlacePageComponent,
     PlaceMapComponent,
-    PubTextPageComponent,
+    PubPageComponent,
     AvantTextsPartComponent,
     PubsReusingPartComponent
   ],

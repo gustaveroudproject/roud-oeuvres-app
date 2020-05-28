@@ -10,11 +10,11 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 
 
 @Component({
-  selector: 'or-pub-text-page',
-  templateUrl: './pub-text-page.component.html',
-  styleUrls: ['./pub-text-page.component.scss']
+  selector: 'or-pub-page',
+  templateUrl: './pub-page.component.html',
+  styleUrls: ['./pub-page.component.scss']
 })
-export class PubTextPageComponent implements OnInit {
+export class PubPageComponent implements OnInit {
   
    
   publicationLight: PublicationLight;
