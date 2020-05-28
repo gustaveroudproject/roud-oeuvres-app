@@ -11,6 +11,8 @@ import { EssaysPageComponent } from './components/essays-page/essays-page.compon
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PubPageComponent } from './components/pub-page/pub-page.component';
+import { MsPageComponent } from './components/ms-page/ms-page.component';
+
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -23,7 +25,8 @@ const routes: Routes = [
       { path: ':iri', component: TextPageComponent }
     ]
   },
-  { path: 'archive/pub/text/:iri', component: PubPageComponent },
+  { path: 'archive/pub/:iri', component: PubPageComponent },
+  { path: 'archive/ms/:iri', component: MsPageComponent },
   { path: 'essays', component: EssaysPageComponent },
   {
     path: 'search',

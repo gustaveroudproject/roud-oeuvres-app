@@ -51,6 +51,7 @@ import { PlaceMapComponent } from './components/place-map/place-map.component';
 import { PubPageComponent } from './components/pub-page/pub-page.component';
 import { AvantTextsPartComponent } from './components/avant-texts-part/avant-texts-part.component';
 import { PubsReusingPartComponent } from './components/pubs-reusing-part/pubs-reusing-part.component';
+import { MsPageComponent } from './components/ms-page/ms-page.component';
 
 
 /* PIPES */
@@ -98,7 +99,8 @@ export function initializeApp(appInitService: AppInitService) {
     PlaceMapComponent,
     PubPageComponent,
     AvantTextsPartComponent,
-    PubsReusingPartComponent
+    PubsReusingPartComponent,
+    MsPageComponent
   ],
   imports: [
     MatExpansionModule,
