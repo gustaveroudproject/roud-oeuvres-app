@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+import { ActivatedRoute } from '@angular/router';
+import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
+import { Page } from 'src/app/models/page.model';
+
+
 
 @Component({
   selector: 'or-ms-page',
@@ -7,9 +13,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MsPageComponent implements OnInit {
 
-  constructor() { }
+
+  msLight: MsLight;
+  pages: Page[];
+  selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+
+
+  constructor(
+    private dataService: DataService,
+    private route: ActivatedRoute // it gives me the current route (URL)
+  ) {}
 
   ngOnInit() {
-  }
 
+    this.route.paramMap.subscribe(
+      params => {
+        if (params.has('iri')) {
+          //// get basic properties (msLight) of the manuscript
+          this.dataService
+            .getMsLight(decodeURIComponent(params.get('iri')))
+            .subscribe(
+              (msLight: MsLight) => {
+                this.msLight = msLight;
+
+                //// get facsimiles scans from publication IRI
+                this.dataService
+                .getPagesOfMs(msLight.id)
+                .subscribe((pages: Page[]) => {
+                  this.pages = pages;
+                  //console.log(pages.length);
+                  //console.log(this.selectedPageNum);
+                });
+
+          });
+
+        }
+      },
+      error => console.error(error)
+    );
+  } 
 }
+
+
+
+
+     

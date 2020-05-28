@@ -119,6 +119,40 @@ return this.knoraApiConnection.v2.search
 }
 
 
+getPagesOfMs(IRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
+  const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+?fac knora-api:isMainResource true .
+?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac roud-oeuvres:pageHasName ?name .
+?fac knora-api:hasStillImageFileValue ?imageURL .
+} WHERE {
+?fac a roud-oeuvres:Page .
+?fac roud-oeuvres:pageIsPartOfManuscript <${IRI}> .
+?fac roud-oeuvres:hasSeqnum ?seqnum .
+?fac roud-oeuvres:pageHasName ?name .
+?fac knora-api:hasStillImageFileValue ?imageURL .
+}
+ORDER BY ?seqnum
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Page(r);
+      })
+    )
+  );
+}
+
+
+
 getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Pictures
   const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -560,6 +594,15 @@ OFFSET ${index}
         )
       );
   }
+
+  getMsLight(iri: string): Observable<MsLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2MsLight(readResource))
+      );
+  }
+
 
   getPerson(iri: string): Observable<Person> {
     return this.knoraApiConnection.v2.res
