@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
     <!-- TITLE, light version of the bibliographical reference -->
-    <div class="py-4 title">
+    <div class="py-4 page-title">
         <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
             <h3>
                 « {{ periodicalArticle?.title }} »
@@ -127,14 +127,19 @@
         <!-- start COLUMNS RIGHT -->
         <div class="col-5">
 
-            <!-- GENÈSE ET REPRISES -->  <!-- !!!!! check STYLES !!!! -->
+            <!-- GENÈSE ET REPRISES -->
             <div>
 
-                <div id="entities" class="my-4">
-                    <strong class="reperes highlightTitre">Genèse</strong>
-                    
-                    <div class="reperes">
-                        <strong>> Notes de journal utilisées dans la genèse</strong>
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>Genèse</mat-panel-title>
+                    </mat-expansion-panel-header>
+                        
+                    <div class="panel">
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Notes de journal utilisées dans la genèse
+                        </span>
                         <ul>
                             <li *ngFor="let diaryNote of diaryNotes">
                                 <a routerLink="/resources/{{ diaryNote.id | encodeURIComponent }}"
@@ -147,9 +152,12 @@
 
                         </ul>
                     </div>
-                    
-                    <div class="reperes">
-                        <strong>> Avant-textes</strong>
+                
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Avant-textes
+                        </span>
                         <ul>
                             <li *ngFor="let avantText of avantTexts">
                                 <a routerLink="/resources/{{ avantText.id | encodeURIComponent }}"
@@ -159,24 +167,24 @@
                                     <span [innerHTML]="avantText?.shelfmark | htmlSanitizer"></span>)
                                 </a>
                             </li>
-
-                            <!-- if incoming parts -->
-                            <span *ngIf="pubPartsLight && pubPartsLight.length > 0"> 
-                                <ul>
-                                    <li *ngFor="let pubPartLight of pubPartsLight">
-                                        > Pour la partie : 
-                                        <i>{{ pubPartLight?.title }}</i>
-                                        <or-avant-texts-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-avant-texts-part>
-                                        <!-- without *ngIf, pubPartId is undefined in or-avant-texts-part -->
-                                    </li>
-                                </ul>
-                            </span>
-                            
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <span>&#10146;</span>
+                                Pour la partie : 
+                                <i>{{ pubPartLight?.title }}</i>
+                                <or-avant-texts-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-avant-texts-part>
+                                <!-- without *ngIf, pubPartId is undefined in or-avant-texts-part -->
+                            </li>
                         </ul>
                     </div>
                     
-                    <div class="reperes">
-                        <strong>> Publications utilisées dans la genèse</strong>
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Publications utilisées dans la genèse
+                        </span>
                         <ul>
                             <li *ngFor="let publicationReused of publicationsReused">
                             <a routerLink="/resources/{{ publicationReused.id | encodeURIComponent }}"
@@ -187,12 +195,15 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </mat-expansion-panel>
 
-                <div id="entities" class="my-4">
-                    <strong class="reperes highlightTitre">Reprises</strong>
-                    
-                    <div class="reperes">
+
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Reprises</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
                         <ul>
                             <li *ngFor="let publicationReusing of publicationsReusing">
                                 <a routerLink="/resources/{{ publicationReusing.id | encodeURIComponent }}"
@@ -200,30 +211,28 @@
                                     ({{ publicationReusing?.date | knoradatesFormatting }})
                                 </a>
                             </li>
-
-                            <!-- if incoming parts -->
-                            <span *ngIf="pubPartsLight && pubPartsLight.length > 0"> 
-                                <ul>
-                                    <li *ngFor="let pubPartLight of pubPartsLight">
-                                        <!--
-                                            Show part only if it has been reused, something like 
-                                            *ngIf="publicationsReusingParts && publicationsReusingParts.length > 0"
-                                            but publicationsReusingParts is value in the child component
-                                            and can't make viewChild nor viewChildren work ..
-                                        -->
-                                        > Pour la partie : 
-                                        <i>{{ pubPartLight?.title }}</i>
-                                        <or-pubs-reusing-part [pubPartId]="pubPartLight.id"></or-pubs-reusing-part>
-                                        <!--
-                                            <or-pubs-reusing-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubs-reusing-part> 
-                                            without *ngIf, pubPartId is undefined in or-pubs-reusing-part ???
-                                        -->
-                                    </li>
-                                </ul>
-                            </span>
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <!--
+                                    Show part only if it has been reused, something like 
+                                    *ngIf="publicationsReusingParts && publicationsReusingParts.length > 0"
+                                    but publicationsReusingParts is value in the child component
+                                    and can't make viewChild nor viewChildren work ..
+                                -->
+                                <span>&#10146;</span>
+                                Pour la partie : 
+                                <i>{{ pubPartLight?.title }}</i>
+                                <or-pubs-reusing-part [pubPartId]="pubPartLight.id"></or-pubs-reusing-part>
+                                <!--
+                                    <or-pubs-reusing-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubs-reusing-part> 
+                                    without *ngIf, pubPartId is undefined in or-pubs-reusing-part ???
+                                -->
+                            </li>
                         </ul>
                     </div>
-                </div>
+                </mat-expansion-panel>
 
 
             </div>  <!-- end genèse et reprises-->

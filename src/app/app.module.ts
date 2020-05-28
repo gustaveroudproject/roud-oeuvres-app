@@ -23,8 +23,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppInitService } from './app-init.service';
 
-/* BOOTSTRAP */
+/* STYLE: BOOTSTRAP */
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+
+/* STYLE: ANGULAR MATERIAL */
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 /* COMPONENTS */
 import { AppComponent } from './app.component';
@@ -95,6 +101,10 @@ export function initializeApp(appInitService: AppInitService) {
     PubsReusingPartComponent
   ],
   imports: [
+    MatExpansionModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     KuiCoreModule,
     KuiViewerModule,
     BrowserModule,

@@ -12,12 +12,41 @@ body {
 /* this is for Knora-ui */
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
+* {
+    font-family: "Helvetica Neue", Arial, sans-serif !important;
+    //font-family: Reboto, sans-serif !important; 
+  }
 
+.container-fluid {
+    padding: 0 8% 0 8% !important;
+    //this is not responsive
+  }
+
+
+ul {
+    list-style: none;
+    line-height: 1.5em;
+}
+  
 .permanentId {
     border:1px solid black;
     padding: 20px;
 }
 
-.title {
+.page-title {
     text-align: center;
 }
+
+.mat-expansion-panel-header {
+    font-size: medium;
+    font-weight: bold;
+}
+
+.mat-expansion-panel-body {
+    font-size: medium;
+}
+
+.mat-expansion-panel-content {
+    
+}
+
