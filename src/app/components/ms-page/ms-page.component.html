@@ -116,6 +116,71 @@
 
         </div> <!-- end column left -->
 
+
+        <!-- start COLUMNS RIGHT -->
+        <div class="col-5">
+
+            <!-- GENÈSE ET REPRISES -->
+            <div>
+
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>Publications</mat-panel-title>
+                    </mat-expansion-panel-header>
+                
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Publications dont la genèse inclut ce manuscrit comme avant-texte
+                        </span>
+                        <ul>
+                            
+                            <li *ngFor="let pubAT of publicationsAvantTexte">
+                                <a routerLink="/resources/{{ pubAT.id | encodeURIComponent }}"
+                                    >
+                                    <span [innerHTML]="pubAT?.title | htmlSanitizer"></span>
+                                    ({{ pubAT?.date | knoradatesFormatting }})
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                
+                </mat-expansion-panel>
+
+                <!--
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Publications</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Publications dont la genèse inclut une ou plusieurs notes de journal
+                        </span>
+
+                        publications in which each note is reused
+                        
+                        <ul>
+                            <li *ngFor="let pubD of publicationsDiary">
+                                <a routerLink="/resources/{{ pubD.id | encodeURIComponent }}"
+                                    >{{ pubD?.title }}
+                                    ({{ pubD?.date | knoradatesFormatting }})
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        
+                       
+                    </div>
+                </mat-expansion-panel>
+                -->
+
+
+            </div>  <!-- end genèse et reprises-->
+
+        </div> <!-- end columns right-->
+
     </div> <!-- end row -->
 
     <div class="row">

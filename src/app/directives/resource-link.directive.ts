@@ -34,8 +34,7 @@ export class ResourceLinkDirective implements DoCheck {
 AfterContentChecked, AfterViewChecked, DoCheck work intermittently (see mss comments).
 Only DoCheck is also for directives: <https://v2.angular.io/docs/ts/latest/guide/lifecycle-hooks.html#!#hooks-purpose-timing> 
 OnInit, AfterContentInit, AfterViewInit, OnChanges do NOT work.
-It works on pages persons and places, because many links are created?
-(In place page, they are created because of the map. In person page? 
+It works only when many links are created, because of DoCheck? NO!
 */
 
 

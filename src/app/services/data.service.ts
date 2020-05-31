@@ -554,6 +554,44 @@ getMsOfMsPart(iri: string): Observable<MsLight> {
 }
 
 
+getPublicationsWithThisAvantTexte(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+  ?pub knora-api:isMainResource true .
+  ?pub roud-oeuvres:publicationHasTitle ?title .
+  ?pub roud-oeuvres:publicationHasDate ?date .
+  ?pubPart roud-oeuvres:pubPartIsPartOf ?pub .
+} WHERE {
+  ?pub a roud-oeuvres:Publication .
+  ?pub roud-oeuvres:publicationHasTitle ?title .
+  ?pub roud-oeuvres:publicationHasDate ?date .
+    {<${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .}
+  UNION
+    {<${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pub .}
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PublicationLight(r);
+      })
+    )
+  );
+}
+
+
+
 
 
 
@@ -612,6 +650,8 @@ OFFSET ${index}
       );
   }
   
+
+
   
 
   /*

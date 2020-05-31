@@ -3,6 +3,7 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript } from 'src/app/models/manuscript.model';
 import { Page } from 'src/app/models/page.model';
+import { PublicationLight, Publication } from 'src/app/models/publication.model';
 
 
 
@@ -19,6 +20,7 @@ export class MsPageComponent implements OnInit {
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   manuscript: Manuscript;
   manuscripts: Manuscript[];
+  publicationsAvantTexte: PublicationLight[];
 
 
   constructor(
@@ -56,6 +58,13 @@ export class MsPageComponent implements OnInit {
                     this.manuscript = manuscript;
                 });
 
+                /// get publications with this ms as avant-texte
+                this.dataService
+                .getPublicationsWithThisAvantTexte(msLight.id)
+                .subscribe((publicationsAvantTexte: PublicationLight[]) => {
+                  this.publicationsAvantTexte = publicationsAvantTexte;
+                  console.log(publicationsAvantTexte);
+                })
           });
 
         }

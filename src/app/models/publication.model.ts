@@ -11,7 +11,7 @@ export interface PublicationLight extends Resource {  //pour construire une publ
   authorValue: string;
   authorsValues: string[];
   title: string;
-  date: string; // ??
+  date: string;
 }
 
 export interface Publication extends PublicationLight {
