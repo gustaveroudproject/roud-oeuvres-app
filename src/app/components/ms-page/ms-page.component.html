@@ -43,9 +43,88 @@
             </div>
 
 
+            <!-- MANUSCRIPT DESCRIPTION -->
+
+            <!-- need values in French, see 
+                <https://discuss.dasch.swiss/t/listnode-access-label-and-filter-by-language/164> -->
+            <!-- lower cap -->
+            <!-- links in comment, see directive -->
+
+            <div class="py-4">
+                <strong>Description du manuscrit</strong>
+                <div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Archive</span> :
+                        {{ msLight?.archive }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Cote</span> :
+                        <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Titre</span> :
+                        <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Type de document</span> :
+                        {{ manuscript?.documentType }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Support</span> :
+                        {{ manuscript?.supportType }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.supportInfo != null">
+                        <span class="msDescHeader">Informations sur le support</span> :
+                        <span [innerHTML]="manuscript?.supportInfo | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.writingTool != null">
+                        <span class="msDescHeader">Outil d'écriture</span> :
+                        {{ manuscript?.writingTool }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.writingColor != null">
+                        <span class="msDescHeader">Couleur de l'écriture</span> :
+                        {{ manuscript?.writingColor }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.otherWritingTool != null">
+                        <span class="msDescHeader">Autres outils d'écriture</span> :
+                        <span [innerHTML]="manuscript?.otherWritingTool | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Manuscrit annoté</span> :
+                        {{ manuscript?.annotation | boolean }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Étape génétique</span> :
+                        {{ manuscript?.geneticStage }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.dateReadable">
+                        <span class="msDescHeader">Date dans le document</span> :
+                        <span [innerHTML]="manuscript?.dateReadable | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.establishedDateAdd">
+                        <span class="msDescHeader">Date établie</span> :
+                        {{ manuscript?.establishedDateAdd }}
+                        <span [innerHTML]="manuscript?.establishedDateReadable | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.comment">
+                        <span class="msDescHeader">Commentaire</span> :
+                        <p [innerHTML]="manuscript?.comment | htmlSanitizer" orResourceLink></p>
+                    </div>
+                </div>
+            </div> <!-- end manuscript description -->
+
+
         </div> <!-- end column left -->
 
     </div> <!-- end row -->
 
+    <div class="row">
+        <div class="col-7">
+            <!-- PERMANENT IDENTIFIERS -->
+            <div class="my-5 permanentId">
+                <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ msLight?.ark }}</p>
+            </div>
+        </div>
+    </div>
 
 </div>

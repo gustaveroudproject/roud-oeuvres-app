@@ -16,6 +16,23 @@ export interface MsLight extends Resource {
   isAvantTextInPartValue: string;
 }
 
+export interface Manuscript extends MsLight {
+  documentType: string;
+  editorialSet: string;
+  supportType: string;
+  supportInfo: string;
+  writingTool: string;
+  writingColor: string;
+  otherWritingTool: string;
+  annotations: string;
+  geneticStage: string;
+  dateReadable: string;
+  dateComputable: string;
+  establishedDateReadable: string;
+  establishedDateComputable: string;
+  establishedDateAdd: string;
+  comment: string;
+}
 
 export interface MsPartLight extends Resource {  
   title: string;

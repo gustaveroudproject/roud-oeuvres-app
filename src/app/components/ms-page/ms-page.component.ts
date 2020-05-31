@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
+import { MsLight, MsPartLight, Manuscript } from 'src/app/models/manuscript.model';
 import { Page } from 'src/app/models/page.model';
 
 
@@ -17,6 +17,8 @@ export class MsPageComponent implements OnInit {
   msLight: MsLight;
   pages: Page[];
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+  manuscript: Manuscript;
+  manuscripts: Manuscript[];
 
 
   constructor(
@@ -43,6 +45,15 @@ export class MsPageComponent implements OnInit {
                   this.pages = pages;
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
+                });
+
+
+                //// get complete manuscript
+                this.dataService
+                .getManuscript(msLight.id)
+                .subscribe(
+                  (manuscript: Manuscript) => {
+                    this.manuscript = manuscript;
                 });
 
           });

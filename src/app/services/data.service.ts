@@ -12,7 +12,7 @@ import { PublicationLight, Publication, PeriodicalArticle, Book, BookSection, Pu
 import { AuthorLight } from '../models/author.model';
 import { PeriodicalLight, Periodical } from '../models/periodical.model';
 import { PublisherLight } from '../models/publisher.model';
-import { MsLight, MsPartLight, MsPart } from '../models/manuscript.model';
+import { MsLight, MsPartLight, MsPart, Manuscript } from '../models/manuscript.model';
 
 
 import {
@@ -603,6 +603,79 @@ OFFSET ${index}
       );
   }
 
+  
+  getManuscript(iri: string): Observable<Manuscript> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2Manuscript(readResource))
+      );
+  }
+  
+  
+
+  /*
+ getManuscript(textIRI: string): Observable<Manuscript[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+  ?ms knora-api:isMainResource true .
+  ?ms roud-oeuvres:hasDocumentType ?documentType .
+  ?ms roud-oeuvres:manuscriptHasEditorialSet ?editorialSet .
+  ?ms roud-oeuvres:hasSupportType ?supportType .
+  ?ms roud-oeuvres:hasSupportInfo ?supportInfo .
+  ?ms roud-oeuvres:hasWritingTool ?writingTool .
+  ?ms roud-oeuvres:hasOtherWritingTool ?otherWritingTool .
+  ?ms roud-oeuvres:hasWritingColor ?writingColor .
+  ?ms roud-oeuvres:hasAnnotation ?annotations .
+  ?ms roud-oeuvres:manuscriptHasDateReadable ?dateReadable .
+  ?ms roud-oeuvres:manuscriptHasDateComputable ?dateComputable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedReadable ?establishedDateReadable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedComputable ?establishedDateComputable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedList ?establishedDateAdd .
+  ?ms roud-oeuvres:hasGeneticStage ?geneticStage .
+  ?ms roud-oeuvres:hasPublicComment ?comment .
+  
+} WHERE {
+  BIND(<${textIRI}> as ?ms)
+  ?ms a roud-oeuvres:Manuscript .
+  ?ms roud-oeuvres:hasDocumentType ?documentType .
+  ?ms roud-oeuvres:manuscriptHasEditorialSet ?editorialSet .
+  ?ms roud-oeuvres:hasSupportType ?supportType .
+  ?ms roud-oeuvres:hasSupportInfo ?supportInfo .
+  ?ms roud-oeuvres:hasWritingTool ?writingTool .
+  ?ms roud-oeuvres:hasOtherWritingTool ?otherWritingTool .
+  ?ms roud-oeuvres:hasWritingColor ?writingColor .
+  ?ms roud-oeuvres:hasAnnotation ?annotations .
+  ?ms roud-oeuvres:manuscriptHasDateReadable ?dateReadable .
+  ?ms roud-oeuvres:manuscriptHasDateComputable ?dateComputable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedReadable ?establishedDateReadable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedComputable ?establishedDateComputable .
+  ?ms roud-oeuvres:manuscriptHasDateEstablishedList ?establishedDateAdd .
+  ?ms roud-oeuvres:hasGeneticStage ?geneticStage .
+  ?ms roud-oeuvres:hasPublicComment ?comment .
+} 
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Manuscript(r);
+      })
+    )
+  );
+}
+*/
+
+
+
+
+
 
   getPerson(iri: string): Observable<Person> {
     return this.knoraApiConnection.v2.res
@@ -870,6 +943,74 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierPartValue`
       )
     } as MsLight;    
+  }
+
+
+
+  readRes2Manuscript(readResource: ReadResource): Manuscript {  
+    return {
+      ...this.readRes2MsLight(readResource),
+      documentType: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasDocumentType`
+      ),
+      otherWritingTool: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasOtherWritingTool`
+      ), 
+      geneticStage: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasGeneticStage`
+      ),
+      establishedDateReadable: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedReadable`
+      ),
+      supportType: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasSupportType`
+      ),
+      writingTool: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasWritingTool`
+      ),
+      establishedDateComputable: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedComputable`
+      ),
+      comment: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasPublicComment`
+      ),
+      dateReadable: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasDateReadable`
+      ),
+      dateComputable: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasDateComputable`
+      ),
+      establishedDateAdd: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`
+      ),
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`
+      ),
+      annotations: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasAnnotation`
+      ),
+      supportInfo: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasSupportInfo`
+      ),
+      writingColor: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasWritingColor`
+      )
+    } as Manuscript;    
   }
 
 
