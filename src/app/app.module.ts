@@ -61,6 +61,7 @@ import { knoradatesYmdFormattingPipe } from './pipes/knoradates-ymd-formatting.p
 import { sortBySurnamePipe } from './pipes/sort-by-surname.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { booleanPipe } from './pipes/boolean.pipe';
+import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
 
 
 /* DIRECTIVES */
@@ -84,6 +85,7 @@ export function initializeApp(appInitService: AppInitService) {
     knoradatesYmdFormattingPipe,
     sortBySurnamePipe,
     booleanPipe,
+    removeTextAndParPipe,
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,

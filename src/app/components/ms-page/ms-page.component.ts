@@ -63,7 +63,6 @@ export class MsPageComponent implements OnInit {
                 .getPublicationsWithThisAvantTexte(msLight.id)
                 .subscribe((publicationsAvantTexte: PublicationLight[]) => {
                   this.publicationsAvantTexte = publicationsAvantTexte;
-                  console.log(publicationsAvantTexte);
                 })
           });
 

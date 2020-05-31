@@ -75,7 +75,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.supportInfo != null">
                         <span class="msDescHeader">Informations sur le support</span> :
-                        <span [innerHTML]="manuscript?.supportInfo | htmlSanitizer"></span>
+                        <span [innerHTML]="manuscript?.supportInfo | removeTextAndPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.writingTool != null">
                         <span class="msDescHeader">Outil d'écriture</span> :
@@ -87,7 +87,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.otherWritingTool != null">
                         <span class="msDescHeader">Autres outils d'écriture</span> :
-                        <span [innerHTML]="manuscript?.otherWritingTool | htmlSanitizer"></span>
+                        <span [innerHTML]="manuscript?.otherWritingTool | removeTextAndPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem">
                         <span class="msDescHeader">Manuscrit annoté</span> :
@@ -108,7 +108,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.comment">
                         <span class="msDescHeader">Commentaire</span> :
-                        <p [innerHTML]="manuscript?.comment | htmlSanitizer" orResourceLink></p>
+                        <span [innerHTML]="manuscript?.comment | removeTextAndPar | htmlSanitizer" orResourceLink></span>
                     </div>
                 </div>
             </div> <!-- end manuscript description -->
