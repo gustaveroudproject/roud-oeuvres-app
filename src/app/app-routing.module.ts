@@ -10,23 +10,14 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
+import { PubPageComponent } from './components/pub-page/pub-page.component';
+import { MsPageComponent } from './components/ms-page/ms-page.component';
+
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
-  {
-    path: 'persons',
-    children: [
-      { path: '', component: PersonPageComponent },
-      { path: ':iri', component: PersonPageComponent }
-    ]
-  },
-  {
-    path: 'places',
-    children: [
-      { path: '', component: PlacePageComponent },
-      { path: ':iri', component: PlacePageComponent }
-    ]
-  },
+  { path: 'persons/:iri', component: PersonPageComponent },
+  { path: 'places/:iri', component: PlacePageComponent },
   {
     path: 'texts',
     children: [
@@ -34,13 +25,9 @@ const routes: Routes = [
       { path: ':iri', component: TextPageComponent }
     ]
   },
-  {
-    path: 'essays',
-    children: [
-      { path: '', component: EssaysPageComponent },
-      { path: ':iri', component: EssaysPageComponent }
-    ]
-  },
+  { path: 'archive/pub/:iri', component: PubPageComponent },
+  { path: 'archive/ms/:iri', component: MsPageComponent },
+  { path: 'essays', component: EssaysPageComponent },
   {
     path: 'search',
     component: SearchPageComponent, // --> Component with the search panel

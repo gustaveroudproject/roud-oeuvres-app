@@ -23,8 +23,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppInitService } from './app-init.service';
 
-/* BOOTSTRAP */
+/* STYLE: BOOTSTRAP */
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; 
+
+/* STYLE: ANGULAR MATERIAL */
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 /* COMPONENTS */
 import { AppComponent } from './app.component';
@@ -42,12 +48,25 @@ import { EssaysPageComponent } from './components/essays-page/essays-page.compon
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
+import { PubPageComponent } from './components/pub-page/pub-page.component';
+import { PubcAvantTextsPartComponent } from './components/pubc-avant-texts-part/pubc-avant-texts-part.component';
+import { PubcPubsReusingPartComponent } from './components/pubc-pubs-reusing-part/pubc-pubs-reusing-part.component';
+import { MsPageComponent } from './components/ms-page/ms-page.component';
+import { PubcDiaryReusedPartComponent } from './components/pubc-diary-reused-part/pubc-diary-reused-part.component';
+import { PubcPubsReusedPartComponent } from './components/pubc-pubs-reused-part/pubc-pubs-reused-part.component';
+
 
 
 /* PIPES */
 import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
+import { knoradatesYmdFormattingPipe } from './pipes/knoradates-ymd-formatting.pipe';
+import { sortBySurnamePipe } from './pipes/sort-by-surname.pipe';
+import { sortByShelfmarkPipe } from './pipes/sort-by-shelfmark.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
+import { booleanPipe } from './pipes/boolean.pipe';
+import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
+
 
 /* DIRECTIVES */
 import { ResourceLinkDirective } from './directives/resource-link.directive';
@@ -67,6 +86,11 @@ export function initializeApp(appInitService: AppInitService) {
     HomePageComponent,
     FooterComponent,
     knoradatesFormattingPipe,
+    knoradatesYmdFormattingPipe,
+    sortBySurnamePipe,
+    sortByShelfmarkPipe,
+    booleanPipe,
+    removeTextAndParPipe,
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,
@@ -81,9 +105,19 @@ export function initializeApp(appInitService: AppInitService) {
     EssaysPageComponent,
     PersonPageComponent,
     PlacePageComponent,
-    PlaceMapComponent
+    PlaceMapComponent,
+    PubPageComponent,
+    PubcAvantTextsPartComponent,
+    PubcPubsReusingPartComponent,
+    MsPageComponent,
+    PubcDiaryReusedPartComponent,
+    PubcPubsReusedPartComponent
   ],
   imports: [
+    MatExpansionModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     KuiCoreModule,
     KuiViewerModule,
     BrowserModule,

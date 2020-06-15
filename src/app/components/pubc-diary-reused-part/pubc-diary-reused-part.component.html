@@ -1,0 +1,21 @@
+
+<ul>
+    <!-- for each ms or msPart (both are in the array reusedInParts) -->
+    <li *ngFor="let x of reusedInParts"> <!--  | sortByShelfmark -->
+        <span *ngIf="x?.resourceClassLabel == 'Archival document'">
+            <span [innerHTML]="x?.title | htmlSanitizer"></span>
+            (<a routerLink="/archive/ms/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
+                <span [innerHTML]="x?.shelfmark | htmlSanitizer"></span>
+            </a>)
+        </span>
+        
+
+        <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript'">
+            {{ x?.title }}
+            (partie de 
+            <a routerLink="/archive/ms/{{ msLight2?.id | encodeURIComponent }}">{{ msLight2?.archive }}
+                <span [innerHTML]="msLight2?.shelfmark | htmlSanitizer"></span>
+            </a>)
+        </span>
+    </li>
+</ul>

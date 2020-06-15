@@ -29,6 +29,10 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('Manuscript', '/manuscripts/');
         routeMapping.set('EstablishedText', '/texts/');
         routeMapping.set('Work', '/works/');
+        routeMapping.set('Periodical article', '/archive/pub/');
+        routeMapping.set('Book', '/archive/pub/');
+        routeMapping.set('Book section', '/archive/pub/');
+        routeMapping.set('Archival document', '/archive/ms/');
 
         // get resource class
         this.route.paramMap.subscribe(
@@ -38,7 +42,7 @@ export class ResourceRouterComponent implements OnInit {
                 .getResource(decodeURIComponent(params.get('iri')))
                 .subscribe(
                   (resource: Resource) => {
-                    // console.log(resource.resourceClassLabel);
+                      // console.log(resource.resourceClassLabel);
                     if (routeMapping.has(resource.resourceClassLabel)) {
                       // if the class is in the dictionary
                       const resRoutePrefix = routeMapping.get(

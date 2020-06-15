@@ -1,0 +1,195 @@
+<div class="container-fluid">
+
+    <!-- TITLE and SHELFMARK -->
+    <div class="py-4 page-title">
+        <h3>
+            <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+            ({{ msLight?.archive }}
+            <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>)
+        </h3>
+    </div>
+
+
+    <!-- start ROW -->
+    <div class="row">
+
+        <!-- start COLUMNS LEFT -->
+        <div class="col-7">
+        
+            
+            <!-- VIEWER -->
+            <div class="py-4" *ngIf="pages && pages.length > 0">   
+                <div *ngFor="let page of pages">
+                    <img
+                        *ngIf="page.seqnum == selectedPageNum"
+                        src="{{ page.imageURL }}"
+                        width="70%"
+                    />
+                </div>
+                
+                <select
+                name="page-numbers"
+                [(ngModel)]="selectedPageNum" 
+                > <!-- ngModel binds the value of the select to an angular variable -->
+
+                    <option [value]="page.seqnum" *ngFor="let page of pages">
+                        {{ page.name }}</option
+                    >
+                </select>
+            </div>
+
+            <div class="py-4" *ngIf="pages && pages.length == 0">   
+                <p>La reproduction de l'original est interdite.</p>
+            </div>
+
+
+            <!-- MANUSCRIPT DESCRIPTION -->
+
+            <!-- need values in French, see 
+                <https://discuss.dasch.swiss/t/listnode-access-label-and-filter-by-language/164> -->
+            <!-- lower cap -->
+            <!-- links in comment, see directive -->
+
+            <div class="py-4">
+                <strong>Description du manuscrit</strong>
+                <div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Archive</span> :
+                        {{ msLight?.archive }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Cote</span> :
+                        <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Titre</span> :
+                        <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Type de document</span> :
+                        {{ manuscript?.documentType }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Support</span> :
+                        {{ manuscript?.supportType }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.supportInfo != null">
+                        <span class="msDescHeader">Informations sur le support</span> :
+                        <span [innerHTML]="manuscript?.supportInfo | removeTextAndPar | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.writingTool != null">
+                        <span class="msDescHeader">Outil d'écriture</span> :
+                        {{ manuscript?.writingTool }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.writingColor != null">
+                        <span class="msDescHeader">Couleur de l'écriture</span> :
+                        {{ manuscript?.writingColor }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.otherWritingTool != null">
+                        <span class="msDescHeader">Autres outils d'écriture</span> :
+                        <span [innerHTML]="manuscript?.otherWritingTool | removeTextAndPar | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Manuscrit annoté</span> :
+                        {{ manuscript?.annotation | boolean }}
+                    </div>
+                    <div class="msDescItem">
+                        <span class="msDescHeader">Étape génétique</span> :
+                        {{ manuscript?.geneticStage }}
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.dateReadable">
+                        <span class="msDescHeader">Date dans le document</span> :
+                        <span [innerHTML]="manuscript?.dateReadable | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.establishedDateAdd">
+                        <span class="msDescHeader">Date établie</span> :
+                        {{ manuscript?.establishedDateAdd }}
+                        <span [innerHTML]="manuscript?.establishedDateReadable | htmlSanitizer"></span>
+                    </div>
+                    <div class="msDescItem" *ngIf="manuscript?.comment">
+                        <span class="msDescHeader">Commentaire</span> :
+                        <span [innerHTML]="manuscript?.comment | removeTextAndPar | htmlSanitizer" orResourceLink></span>
+                    </div>
+                </div>
+            </div> <!-- end manuscript description -->
+
+
+        </div> <!-- end column left -->
+
+
+        <!-- start COLUMNS RIGHT -->
+        <div class="col-5">
+
+            <!-- GENÈSE ET REPRISES -->
+            <div>
+
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>Publications</mat-panel-title>
+                    </mat-expansion-panel-header>
+                
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Publications dont la genèse inclut ce manuscrit comme avant-texte
+                        </span>
+                        <ul>
+                            
+                            <li *ngFor="let pubAT of publicationsAvantTexte">
+                                <a routerLink="/resources/{{ pubAT.id | encodeURIComponent }}"
+                                    >
+                                    <span [innerHTML]="pubAT?.title | htmlSanitizer"></span>
+                                    ({{ pubAT?.date | knoradatesFormatting }})
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                
+                </mat-expansion-panel>
+
+                <!--
+                <mat-expansion-panel class="my-4">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Publications</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                        <span class="strong">
+                            <span>&#10148;</span>
+                            Publications dont la genèse inclut une ou plusieurs notes de journal
+                        </span>
+
+                        publications in which each note is reused
+                        
+                        <ul>
+                            <li *ngFor="let pubD of publicationsDiary">
+                                <a routerLink="/resources/{{ pubD.id | encodeURIComponent }}"
+                                    >{{ pubD?.title }}
+                                    ({{ pubD?.date | knoradatesFormatting }})
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        
+                       
+                    </div>
+                </mat-expansion-panel>
+                -->
+
+
+            </div>  <!-- end genèse et reprises-->
+
+        </div> <!-- end columns right-->
+
+    </div> <!-- end row -->
+
+    <div class="row">
+        <div class="col-7">
+            <!-- PERMANENT IDENTIFIERS -->
+            <div class="my-5 permanentId">
+                <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ msLight?.ark }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>

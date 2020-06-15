@@ -1,0 +1,311 @@
+<div class="container-fluid">
+
+    <!-- TITLE, light version of the bibliographical reference -->
+    <div class="py-4 page-title">
+        <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
+            <h3>
+                « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
+                <i>{{ periodicalLight?.title }}</i>
+                ({{ periodicalArticle?.date | knoradatesFormatting }})
+            </h3>
+        </div>
+
+        <div *ngIf="book != null"> 
+            <h3>
+                <i [innerHTML]="book?.title | htmlSanitizer"></i>
+                ({{ book?.date | knoradatesFormatting }})
+            </h3>
+        </div>
+
+        <div *ngIf="bookSection != null"> 
+            <h3>
+                « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
+                <i>{{ bookSection?.book }}</i>,
+                ({{ book?.date | knoradatesFormatting }})
+            </h3>
+        </div>
+    </div>
+
+
+    
+    <!-- start ROW -->
+    <div class="row">
+
+        <!-- start COLUMNS LEFT -->
+        <div class="col-7">
+        
+            
+            <!-- VIEWER -->
+            <div class="py-4" *ngIf="pages && pages.length > 0">   
+                <div *ngFor="let page of pages">
+                    <img
+                        *ngIf="page.seqnum == selectedPageNum"
+                        src="{{ page.imageURL }}"
+                        width="80%"
+                        height="500"
+                    />
+                </div>
+                
+                <select
+                name="page-numbers"
+                [(ngModel)]="selectedPageNum" 
+                > <!-- ngModel binds the value of the select to an angular variable -->
+
+                    <option [value]="page.seqnum" *ngFor="let page of pages">
+                        {{ page.name }}</option
+                    >
+                </select>
+            </div>
+
+            <div class="py-4" *ngIf="pages && pages.length == 0">   
+                <p>La reproduction de l'original est interdite.</p>
+            </div>
+
+
+
+            <!-- BIBLIOGRAPHICAL REFERENCE -->
+            <div class="py-4">
+
+                <strong class="test">Référence bibliographique</strong>
+
+                <!-- if PERIODICAL ARTICLE -->
+                <div *ngIf="periodicalArticle != null"> 
+                    <p>
+                        <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                            {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                        </span>,
+                        « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
+                        <i>{{ periodicalLight?.title }}</i>,
+                        <span *ngIf="periodicalArticle?.volume">n° {{ periodicalArticle?.volume }}</span><span *ngIf="periodicalArticle?.issue != null">
+                            ({{ periodicalArticle?.issue }})</span>,
+                        <span *ngIf="periodicalArticle?.collaborators != null">{{ periodicalArticle?.collaborators }},</span>
+                        <!--there is no entry with multiple collaborators even if cardinality would allow it-->
+                        {{ periodicalArticle?.date | knoradatesYmdFormatting }},
+                        {{ periodicalArticle?.pages }}.
+                    </p>
+                </div>
+
+                <!-- if BOOK -->
+                <div *ngIf="book != null"> 
+                    <p>
+                        <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                            {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                        </span>,
+                        <i [innerHTML]="book?.title | htmlSanitizer"></i>,
+                        <span *ngIf="book?.collaborators != null">{{ book?.collaborators }},</span>
+                        {{ publisherLight?.location }},
+                        {{ publisherLight?.name }},
+                        {{ book?.date | knoradatesFormatting }}.
+                    </p>
+                </div>
+
+                <!-- if BOOK SECTION -->
+                <div *ngIf="bookSection != null">
+                    <p>
+                        <span *ngFor="let aut of authors | sortBySurname; last as isLast">
+                            {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
+                        </span>,
+                        « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
+                        <i>{{ bookSection?.book }}</i>,
+                        <span *ngIf="bookSection?.collaborators != null">{{ bookSection?.collaborators }},</span>
+                        {{ publisherLight?.location }},
+                        {{ publisherLight?.name }},
+                        {{ book?.date | knoradatesFormatting }}.
+                    </p>
+                </div>
+            </div> <!-- end bibliographical reference -->
+
+
+            <!-- BUTTON READ THE TEXT -->
+            
+        
+        </div> <!-- end columns left-->
+
+
+
+        <!-- start COLUMNS RIGHT -->
+        <div class="col-5">
+
+            <!-- GENÈSE ET REPRISES -->
+            <div>
+
+                <!-- disable panel if empty -->
+                <mat-expansion-panel id="panelGenesis" class="my-4" [disabled]="panelGenesisDisableState">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>Genèse</mat-panel-title>
+                    </mat-expansion-panel-header>
+                        
+                    
+                    <div class="mainCategory">
+                        <span class="strong">
+                            <strong>Notes de journal utilisées dans la genèse</strong>
+                        </span>
+                        <!-- Cannot make one gravsearch query for both of them, 
+                            because needs to specify mainResource and
+                            because handling results of two classes won't be easy
+                            (how to retrieve properties, etc.).
+                            So put together the results of two separated queries
+                            into one array and then order by shelfmark with a pipe (as for surname)
+                             -->
+                        <ul>
+                            <!-- for each ms or msPart (both are in the array diaryNotes) -->
+                            <li *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
+                        
+                                <span *ngIf="x?.resourceClassLabel == 'Archival document'">
+                                    <span [innerHTML]="x?.title | htmlSanitizer"></span>
+                                    (<a routerLink="/archive/ms/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
+                                        <span [innerHTML]="x?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
+                        
+                                <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript'">
+                                    {{ x?.title }}
+                                    (partie de 
+                                    <a routerLink="/archive/ms/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
+                                        <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <span class="liPart"> 
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ pubPartLight?.title }}</i>
+                                    <or-pubc-diary-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-diary-reused-part>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                
+                    <div class="mainCategory">
+                        <span class="strong">
+                            <strong>Avant-textes</strong>
+                        </span>
+                        <ul>
+                            <li *ngFor="let avantText of avantTexts">
+                                <span [innerHTML]="avantText?.title | htmlSanitizer"></span>
+                                (<a routerLink="/archive/ms/{{ avantText.id | encodeURIComponent }}"
+                                >{{ avantText?.archive }}
+                                <span [innerHTML]="avantText?.shelfmark | htmlSanitizer"></span></a>)
+                            </li>
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <span class="liPart"> 
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ pubPartLight?.title }}</i>
+                                    <or-pubc-avant-texts-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-avant-texts-part>
+                                    <!-- without *ngIf, pubPartId is undefined in or-avant-texts-part -->
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                    <div class="mainCategory">
+                        <span class="strong">
+                            <strong>Publications utilisées dans la genèse</strong>
+                        </span>
+                        <ul>
+                            <li *ngFor="let pubReused of pubsReused">
+                                <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
+                                    because it is the same component, so need to pass through /resources -->  
+                                <span *ngIf="pubReused?.resourceClassLabel == 'Book'
+                                    || pubReused?.resourceClassLabel == 'Periodical article'
+                                    || pubReused?.resourceClassLabel == 'Book section'">
+                                    <a routerLink="/resources/{{ pubReused.id | encodeURIComponent }}"
+                                        ><span [innerHTML]="pubReused?.title | removeTextAndPar | htmlSanitizer"></span>
+                                    </a>
+                                    ({{ pubReused?.date | knoradatesFormatting }})
+                                </span>
+                                <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
+                                    {{ pubReused?.title }}
+                                    (partie de <a routerLink="/resources/{{ pubOfParts.id | encodeURIComponent }}">
+                                        <span [innerHTML]="pubOfParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubOfParts?.date | knoradatesFormatting }})
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <span class="liPart"> 
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ pubPartLight?.title }}</i>
+                                    <or-pubc-pubs-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-pubs-reused-part>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel id="panelReprises" class="my-4" [disabled]="panelReprisesDisableState">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Reprises</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                        <ul>
+                            <li *ngFor="let pubReusing of pubsReusing">
+                                <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
+                                    because it is the same component, so need to pass through /resources -->  
+                                <span *ngIf="pubReusing?.resourceClassLabel == 'Book'
+                                    || pubReusing?.resourceClassLabel == 'Periodical article'
+                                    || pubReusing?.resourceClassLabel == 'Book section'">
+                                    <a routerLink="/resources/{{ pubReusing.id | encodeURIComponent }}"
+                                        ><span [innerHTML]="pubReusing?.title | removeTextAndPar | htmlSanitizer"></span>
+                                    </a>
+                                    ({{ pubReusing?.date | knoradatesFormatting }})
+                                </span>
+                                <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
+                                    {{ pubReusing?.title }}
+                                    (partie de <a routerLink="/resources/{{ pubOfParts3?.id | encodeURIComponent }}">
+                                        <span [innerHTML]="pubOfParts3?.title | removeTextAndPar | htmlSanitizer"></span></a>, 
+                                        {{ pubOfParts3?.date | knoradatesFormatting }})
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- if incoming parts -->
+                        <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                            <li *ngFor="let pubPartLight of pubPartsLight">
+                                <span class="liPart">
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ pubPartLight?.title }}</i>
+                                    <or-pubc-pubs-reusing-part [pubPartId]="pubPartLight.id"></or-pubc-pubs-reusing-part>
+                                    <!--
+                                        <or-pubs-reusing-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubs-reusing-part> 
+                                        without *ngIf, pubPartId is undefined in or-pubs-reusing-part ???
+                                    -->
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </mat-expansion-panel>
+
+
+            </div>  <!-- end genèse et reprises-->
+
+        </div> <!-- end columns right-->
+
+    
+    </div> <!-- end row -->
+
+    <div class="row">
+        <div class="col-7">
+            <!-- PERMANENT IDENTIFIERS -->
+            <div class="my-5 permanentId">
+                <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ publicationLight?.ark }}</p>
+            </div>
+        </div>
+    </div>
+
+
+</div> <!-- end container -->

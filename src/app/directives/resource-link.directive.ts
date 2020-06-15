@@ -21,7 +21,7 @@ which identifies the class of the IRI and redirects to, for example, places/IRI
 */
 
 
-import { Directive, ElementRef, Renderer2, AfterViewInit, DoCheck } from '@angular/core';
+import { Directive, ElementRef, Renderer2, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { mixinDisableRipple } from '@angular/material';
 
@@ -29,7 +29,14 @@ import { mixinDisableRipple } from '@angular/material';
   selector: '[orResourceLink]'
 })
 export class ResourceLinkDirective implements DoCheck {
-          // AfterViewInit happens immediately after the component view is ready
+
+/*
+AfterContentChecked, AfterViewChecked, DoCheck work intermittently (see mss comments).
+Only DoCheck is also for directives: <https://v2.angular.io/docs/ts/latest/guide/lifecycle-hooks.html#!#hooks-purpose-timing> 
+OnInit, AfterContentInit, AfterViewInit, OnChanges do NOT work.
+It works only when many links are created, because of DoCheck? NO!
+*/
+
 
   constructor(
     private el: ElementRef,
@@ -46,8 +53,10 @@ export class ResourceLinkDirective implements DoCheck {
 reRouteLink(el: ElementRef) {
   
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
+    // console.log(aElt);
     // gives back an array of <a class="resourceLink">
-    aElt.addEventListener('click', this.onClick.bind(this));  //intercept click and call the following function, that navigates
+    aElt.addEventListener('click', this.onClick.bind(this)); 
+    //intercept click and call the following function, that navigates
   });
 }
 

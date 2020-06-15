@@ -46,6 +46,9 @@ See `services/data-service` and `models` (OOP).
 
 API requests to Knora are handled using the JavaScript library *knora-api-js-lib* ([npm](https://www.npmjs.com/package/@knora/api) | [doc](https://dasch-swiss.github.io/knora-api-js-lib/) | [github](https://github.com/dasch-swiss/knora-api-js-lib)).
 
+#### Components
+
+For each new component, if it has to be used in a new path, add to `app-routing.module` and to `resource-router.component`.
 
 #### Pipes
 

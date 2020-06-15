@@ -1,0 +1,20 @@
+<ul>
+    <li *ngFor="let pbReused of pbReusedInPart">
+        <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
+            because it is the same component, so need to pass through /resources -->  
+        <span *ngIf="pbReused?.resourceClassLabel == 'Book'
+            || pbReused?.resourceClassLabel == 'Periodical article'
+            || pbReused?.resourceClassLabel == 'Book section'">
+            <a routerLink="/resources/{{ pbReused.id | encodeURIComponent }}"
+                ><span [innerHTML]="pbReused?.title | removeTextAndPar | htmlSanitizer"></span>
+            </a>
+            ({{ pbReused?.date | knoradatesFormatting }})
+        </span>
+        
+        <span *ngIf="pbReused?.resourceClassLabel == 'Part of a publication'">
+            {{ pbReused?.title }}
+            (partie de <a routerLink="/resources/{{ pubOfParts2.id | encodeURIComponent }}">
+                <span [innerHTML]="pubOfParts2?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubOfParts2?.date | knoradatesFormatting }})
+        </span>
+    </li>
+</ul>
