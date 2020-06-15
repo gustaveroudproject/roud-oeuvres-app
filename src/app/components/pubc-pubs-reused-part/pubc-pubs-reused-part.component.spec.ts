@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PubsReusingPartComponent } from './pubs-reusing-part.component';
+import { PubcPubsReusedPartComponent } from './pubc-pubs-reused-part.component';
 
-describe('PubsReusingPartComponent', () => {
-  let component: PubsReusingPartComponent;
-  let fixture: ComponentFixture<PubsReusingPartComponent>;
+describe('PubcPubsReusedPartComponent', () => {
+  let component: PubcPubsReusedPartComponent;
+  let fixture: ComponentFixture<PubcPubsReusedPartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PubsReusingPartComponent ]
+      declarations: [ PubcPubsReusedPartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PubsReusingPartComponent);
+    fixture = TestBed.createComponent(PubcPubsReusedPartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

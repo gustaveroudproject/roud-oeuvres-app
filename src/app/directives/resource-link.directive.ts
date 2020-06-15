@@ -53,7 +53,7 @@ It works only when many links are created, because of DoCheck? NO!
 reRouteLink(el: ElementRef) {
   
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
-    console.log(aElt);
+    // console.log(aElt);
     // gives back an array of <a class="resourceLink">
     aElt.addEventListener('click', this.onClick.bind(this)); 
     //intercept click and call the following function, that navigates

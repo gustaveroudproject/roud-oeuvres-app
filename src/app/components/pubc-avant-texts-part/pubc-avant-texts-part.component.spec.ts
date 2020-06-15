@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrAvantTextsPartComponent } from './or-avant-texts-part.component';
+import { PubcAvantTextsPartComponent } from './pubc-avant-texts-part.component';
 
 describe('OrAvantTextsPartComponent', () => {
-  let component: OrAvantTextsPartComponent;
-  let fixture: ComponentFixture<OrAvantTextsPartComponent>;
+  let component: PubcAvantTextsPartComponent;
+  let fixture: ComponentFixture<PubcAvantTextsPartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrAvantTextsPartComponent ]
+      declarations: [ PubcAvantTextsPartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrAvantTextsPartComponent);
+    fixture = TestBed.createComponent(PubcAvantTextsPartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

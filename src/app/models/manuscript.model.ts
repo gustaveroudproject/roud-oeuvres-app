@@ -11,9 +11,6 @@ export interface MsLight extends Resource {
   archive: string;
   shelfmark: string;
   title: string;
-  isReusedInValue: string;
-  isAvantTextInValue: string;
-  isAvantTextInPartValue: string;
 }
 
 export interface Manuscript extends MsLight {
@@ -32,6 +29,10 @@ export interface Manuscript extends MsLight {
   establishedDateComputable: string;
   establishedDateAdd: string;
   comment: string;
+  isReusedInDossierValue: string;
+  isReusedInDossierPartValue: string;
+  isAvantTextInValue: string;
+  isAvantTextInPartValue: string;
 }
 
 export interface MsPartLight extends Resource {  

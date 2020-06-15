@@ -5,11 +5,11 @@ import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
-  selector: 'or-avant-texts-part',
-  templateUrl: './avant-texts-part.component.html',
-  styleUrls: ['./avant-texts-part.component.scss']
+  selector: 'or-pubc-avant-texts-part',
+  templateUrl: './pubc-avant-texts-part.component.html',
+  styleUrls: ['./pubc-avant-texts-part.component.scss']
 })
-export class AvantTextsPartComponent implements OnInit {
+export class PubcAvantTextsPartComponent implements OnInit {
 
   pubPartsLight: PubPartLight[];
   avantTextsParts: MsLight[];

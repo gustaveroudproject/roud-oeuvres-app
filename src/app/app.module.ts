@@ -49,9 +49,12 @@ import { PersonPageComponent } from './components/person-page/person-page.compon
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
 import { PubPageComponent } from './components/pub-page/pub-page.component';
-import { AvantTextsPartComponent } from './components/avant-texts-part/avant-texts-part.component';
-import { PubsReusingPartComponent } from './components/pubs-reusing-part/pubs-reusing-part.component';
+import { PubcAvantTextsPartComponent } from './components/pubc-avant-texts-part/pubc-avant-texts-part.component';
+import { PubcPubsReusingPartComponent } from './components/pubc-pubs-reusing-part/pubc-pubs-reusing-part.component';
 import { MsPageComponent } from './components/ms-page/ms-page.component';
+import { PubcDiaryReusedPartComponent } from './components/pubc-diary-reused-part/pubc-diary-reused-part.component';
+import { PubcPubsReusedPartComponent } from './components/pubc-pubs-reused-part/pubc-pubs-reused-part.component';
+
 
 
 /* PIPES */
@@ -59,6 +62,7 @@ import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
 import { knoradatesYmdFormattingPipe } from './pipes/knoradates-ymd-formatting.pipe';
 import { sortBySurnamePipe } from './pipes/sort-by-surname.pipe';
+import { sortByShelfmarkPipe } from './pipes/sort-by-shelfmark.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { booleanPipe } from './pipes/boolean.pipe';
 import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
@@ -84,6 +88,7 @@ export function initializeApp(appInitService: AppInitService) {
     knoradatesFormattingPipe,
     knoradatesYmdFormattingPipe,
     sortBySurnamePipe,
+    sortByShelfmarkPipe,
     booleanPipe,
     removeTextAndParPipe,
     ResourceLinkDirective,
@@ -102,9 +107,11 @@ export function initializeApp(appInitService: AppInitService) {
     PlacePageComponent,
     PlaceMapComponent,
     PubPageComponent,
-    AvantTextsPartComponent,
-    PubsReusingPartComponent,
-    MsPageComponent
+    PubcAvantTextsPartComponent,
+    PubcPubsReusingPartComponent,
+    MsPageComponent,
+    PubcDiaryReusedPartComponent,
+    PubcPubsReusedPartComponent
   ],
   imports: [
     MatExpansionModule,

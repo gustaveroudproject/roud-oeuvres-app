@@ -419,12 +419,12 @@ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
     ?pub knora-api:isMainResource true .
-    ?pub roud-oeuvres:publicationIsReusedIn ?dossier .
+    ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
     ?pub roud-oeuvres:publicationHasTitle ?title .
     ?pub roud-oeuvres:publicationHasDate ?date .
 } WHERE {
     ?pub a roud-oeuvres:Publication .
-    ?pub roud-oeuvres:publicationIsReusedIn ?dossier .
+    ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
     ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
     ?pub roud-oeuvres:publicationHasTitle ?title .
     ?pub roud-oeuvres:publicationHasDate ?date .
@@ -445,6 +445,121 @@ return this.knoraApiConnection.v2.search
 }
 
 
+
+getPublicationPartsReusedInPublication(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?pubPart roud-oeuvres:pubPartIsReusedInDossier ?dossier .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+} WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    ?pubPart roud-oeuvres:pubPartIsReusedInDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PubPartLight(r);
+      })
+    )
+  );
+}
+
+
+getPubOfPubPart(iri: string): Observable<PublicationLight> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2PublicationLight(readResource))
+    );
+}
+
+
+getPublicationsReusedInPubPart(pubPartIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pub knora-api:isMainResource true .
+    ?pub roud-oeuvres:publicationIsReusedInDossierPart ?dossierPart .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+} WHERE {
+    ?pub a roud-oeuvres:Publication .
+    ?pub roud-oeuvres:publicationIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart <${pubPartIRI}> .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PublicationLight(r);
+      })
+    )
+  );
+}
+
+
+
+getPublicationPartsReusedInPubPart(pubPartIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?pubPart roud-oeuvres:pubPartIsReusedInDossierPart ?dossierPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+} WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    ?pubPart roud-oeuvres:pubPartIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart <${pubPartIRI}> .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PubPartLight(r);
+      })
+    )
+  );
+}
+
+
+
 getPublicationsReusingPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
   const gravsearchQuery = `
 
@@ -457,7 +572,7 @@ CONSTRUCT {
     ?pub roud-oeuvres:publicationHasDate ?date .
 } WHERE {
     ?pub a roud-oeuvres:Publication .
-    <${textIRI}> roud-oeuvres:publicationIsReusedIn ?dossier .
+    <${textIRI}> roud-oeuvres:publicationIsReusedInDossier ?dossier .
     ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
     ?pub roud-oeuvres:publicationHasTitle ?title .
     ?pub roud-oeuvres:publicationHasDate ?date .
@@ -477,7 +592,44 @@ return this.knoraApiConnection.v2.search
   );
 }
 
-getPublicationsReusingPubParts(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+
+getPublicationPartsReusingPublication(pubIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+} WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    <${pubIRI}> roud-oeuvres:publicationIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PubPartLight(r);
+      })
+    )
+  );
+}
+
+
+
+getPublicationsReusingPubPart(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
   const gravsearchQuery = `
 
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -489,7 +641,7 @@ CONSTRUCT {
     ?pub roud-oeuvres:publicationHasDate ?date .
 } WHERE {
     ?pub a roud-oeuvres:Publication .
-    <${textIRI}> roud-oeuvres:pubPartIsReusedIn ?dossier .
+    <${textIRI}> roud-oeuvres:pubPartIsReusedInDossier ?dossier .
     ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
     ?pub roud-oeuvres:publicationHasTitle ?title .
     ?pub roud-oeuvres:publicationHasDate ?date .
@@ -510,6 +662,76 @@ return this.knoraApiConnection.v2.search
 }
 
 
+getPublicationPartsReusingPubPart(pubPartIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+} WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    <${pubPartIRI}> roud-oeuvres:pubPartIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PubPartLight(r);
+      })
+    )
+  );
+}
+
+
+
+
+getMssReusedInPublication(textIRI: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?msLight knora-api:isMainResource true .
+    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?msLight a roud-oeuvres:Manuscript .
+    ?msLight roud-oeuvres:msIsReusedInDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+} 
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
 getMsPartsReusedInPublication(textIRI: string, index: number = 0): Observable<MsPartLight[]> {  
   const gravsearchQuery = `
 
@@ -517,13 +739,13 @@ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
     ?msPart knora-api:isMainResource true .
-    ?msPart roud-oeuvres:msPartIsReusedIn ?dossier .
+    ?msPart roud-oeuvres:msPartIsReusedInDossier ?dossier .
     ?msPart roud-oeuvres:msPartHasTitle ?title .
     ?msPart roud-oeuvres:msPartHasNumber ?number .
     ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
 } WHERE {
     ?msPart a roud-oeuvres:MsPart .
-    ?msPart roud-oeuvres:msPartIsReusedIn ?dossier .
+    ?msPart roud-oeuvres:msPartIsReusedInDossier ?dossier .
     ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
     ?msPart roud-oeuvres:msPartHasTitle ?title .
     ?msPart roud-oeuvres:msPartHasNumber ?number .
@@ -543,6 +765,77 @@ return this.knoraApiConnection.v2.search
     )
   );
 }
+
+
+getMssReusedInPubParts(pubPartIRI: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?msLight knora-api:isMainResource true .
+    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?msLight a roud-oeuvres:Manuscript .
+    ?msLight roud-oeuvres:msIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart <${pubPartIRI}> .
+    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+} 
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
+
+
+getMsPartsReusedInPubParts(pubPartIRI: string, index: number = 0): Observable<MsPartLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?msPart knora-api:isMainResource true .
+    ?msPart roud-oeuvres:msPartHasTitle ?title .
+    ?msPart roud-oeuvres:msPartHasNumber ?number .
+    ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
+} WHERE {
+    ?msPart a roud-oeuvres:MsPart .
+    ?msPart roud-oeuvres:msPartIsReusedInDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart <${pubPartIRI}> .
+    ?msPart roud-oeuvres:msPartHasTitle ?title .
+    ?msPart roud-oeuvres:msPartHasNumber ?number .
+    ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
+} 
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsPartLight(r);
+      })
+    )
+  );
+}
+
+
 
 
 getMsOfMsPart(iri: string): Observable<MsLight> {
@@ -969,18 +1262,6 @@ OFFSET ${index}
       title: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasTitle`
-      ),
-      isReusedInValue: this.getFirstValueAsStringOrNullOfProperty(
-        readResource,
-        `${this.getOntoPrefixPath()}publicationHasDate`
-      ),
-      isAvantTextInValue: this.getFirstValueAsStringOrNullOfProperty(
-        readResource,
-        `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierValue`
-      ),
-      isAvantTextInPartValue: this.getFirstValueAsStringOrNullOfProperty(
-        readResource,
-        `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierPartValue`
       )
     } as MsLight;    
   }
@@ -1049,6 +1330,22 @@ OFFSET ${index}
       writingColor: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasWritingColor`
+      ),
+      isReusedInDossierValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msIsReusedInDossierValue`
+      ),
+      isReusedInDossierPartValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msIsReusedInDossierPartValue`
+      ),
+      isAvantTextInValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierValue`
+      ),
+      isAvantTextInPartValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierPartValue`
       )
     } as Manuscript;    
   }
@@ -1141,7 +1438,7 @@ OFFSET ${index}
       ),
       isReusedIn: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
-        `${this.getOntoPrefixPath()}publicationIsReusedInValue`
+        `${this.getOntoPrefixPath()}publicationIsReusedInDossierValue`
       )
     } as Publication;    
   }

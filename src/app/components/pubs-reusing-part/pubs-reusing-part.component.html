@@ -1,8 +1,0 @@
-<ul>
-    <li *ngFor="let publicationReusingPart of publicationsReusingParts">
-        <a routerLink="/resources/{{ publicationReusingPart.id | encodeURIComponent }}"
-            >{{ publicationReusingPart?.title }}
-            ({{ publicationReusingPart?.date | knoradatesFormatting }})
-        </a>
-    </li>
-</ul>
