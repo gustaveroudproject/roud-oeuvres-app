@@ -54,6 +54,7 @@ import { PubcPubsReusingPartComponent } from './components/pubc-pubs-reusing-par
 import { MsPageComponent } from './components/ms-page/ms-page.component';
 import { PubcDiaryReusedPartComponent } from './components/pubc-diary-reused-part/pubc-diary-reused-part.component';
 import { PubcPubsReusedPartComponent } from './components/pubc-pubs-reused-part/pubc-pubs-reused-part.component';
+import { PubcPartSelectorComponent } from './components/pubc-part-selector/pubc-part-selector.component';
 
 
 
@@ -111,7 +112,8 @@ export function initializeApp(appInitService: AppInitService) {
     PubcPubsReusingPartComponent,
     MsPageComponent,
     PubcDiaryReusedPartComponent,
-    PubcPubsReusedPartComponent
+    PubcPubsReusedPartComponent,
+    PubcPartSelectorComponent
   ],
   imports: [
     MatExpansionModule,

@@ -310,7 +310,7 @@ return this.knoraApiConnection.v2.search
 }
 
 
-getPartsOfPub(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+getPartsLightOfPub(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
   const gravsearchQuery = `
 
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -338,6 +338,48 @@ return this.knoraApiConnection.v2.search
       })
     )
   );
+}
+
+
+getPartsOfPub(textIRI: string, index: number = 0): Observable<PubPart[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+    ?pubPart roud-oeuvres:pubPartHasStartingPage ?startingPageValue .    
+} WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    ?pubPart roud-oeuvres:pubPartIsPartOf <${textIRI}> .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+    ?pubPart roud-oeuvres:pubPartHasStartingPage ?startingPageValue .
+} ORDER BY ASC(?number)
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PubPart(r);
+      })
+    )
+  );
+}
+
+
+getStartingPageOfPart(iri: string): Observable<Page> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2Page(readResource))
+    );
 }
 
 
@@ -636,7 +678,7 @@ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
     ?pub knora-api:isMainResource true .
-    ?dossierPart roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
     ?pub roud-oeuvres:publicationHasTitle ?title .
     ?pub roud-oeuvres:publicationHasDate ?date .
 } WHERE {
@@ -1368,6 +1410,9 @@ OFFSET ${index}
       )
     } as PubPartLight;    
   }
+
+
+  
 
   readRes2PubPart(readResource: ReadResource): PubPart {  
     return {
