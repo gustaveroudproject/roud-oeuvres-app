@@ -36,33 +36,60 @@
         
             
             <!-- VIEWER -->
-            <div class="py-4" *ngIf="pages && pages.length > 0">   
-                <div *ngFor="let page of pages">
-                    <img
-                        *ngIf="page.seqnum == selectedPageNum"
-                        src="{{ page.imageURL }}"
-                        width="80%"
-                        height="500"
-                    />
+            <div>
+                <div class="py-4" *ngIf="pages && pages.length > 0">   
+                    <div *ngFor="let page of pages">
+                        <img
+                            *ngIf="page.seqnum == selectedPageNum"
+                            src="{{ page.imageURL }}"
+                            width="80%"
+                            style="padding:10px; border: 1px solid lightgray;"
+                        />
+                    </div>
+                    
+                    <select
+                    name="page-numbers"
+                    [(ngModel)]="selectedPageNum" 
+                    > <!-- ngModel binds the value of the option to an angular variable -->
+                        <option [value]="page?.seqnum" *ngFor="let page of pages">
+                            {{ page?.name }}</option
+                        >
+                    </select>
+
+                    <!-- NOT WORKING, WILL FIX WHEN HAVE A VIEWER -->
+                    <!-- if not used, delete the component or-pubc-part-selector -->
+                    <select
+                    id="selectorPart">
+                    <!--[(ngModel)]="selectedPartNum"-->
+                        <option *ngFor="let p of pubParts"> <!--[value]="startingPage?.seqnum" -->
+                            <span>{{ p?.title }}</span>
+                            <!--{{ startingPage?.seqnum}}-->
+                            <!--<span><or-pubc-part-selector [startingPageValue]="part?.startingPageValue"></or-pubc-part-selector></span>-->
+                        </option>
+                    </select>
+                    
                 </div>
-                
-                <select
-                name="page-numbers"
-                [(ngModel)]="selectedPageNum" 
-                > <!-- ngModel binds the value of the select to an angular variable -->
 
-                    <option [value]="page.seqnum" *ngFor="let page of pages">
-                        {{ page.name }}</option
-                    >
-                </select>
+                <div class="py-4" *ngIf="pages && pages.length == 0">   
+                    <p>La reproduction de l'original est interdite.</p>
+                </div>
+            </div> <!-- end Viewer section -->
+
+
+            <!-- LIRE LE TEXTE -->
+            <!---->
+            <div class="readTheText">
+                <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
             </div>
 
-            <div class="py-4" *ngIf="pages && pages.length == 0">   
-                <p>La reproduction de l'original est interdite.</p>
+            <!--
+            <div>
+                <a href="">
+                    <img src="assets/img/readText.svg" width="37%"/>
+                </a>
             </div>
-
-
-
+-->
+            
             <!-- BIBLIOGRAPHICAL REFERENCE -->
             <div class="py-4">
 
@@ -116,7 +143,7 @@
             </div> <!-- end bibliographical reference -->
 
 
-            <!-- BUTTON READ THE TEXT -->
+           
             
         
         </div> <!-- end columns left-->
@@ -226,7 +253,7 @@
                                 </span>
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReused?.title }}
-                                    (partie de <a routerLink="/resources/{{ pubOfParts.id | encodeURIComponent }}">
+                                    (partie de <a routerLink="/resources/{{ pubOfParts?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubOfParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubOfParts?.date | knoradatesFormatting }})
                                 </span>
                             </li>
@@ -289,6 +316,33 @@
                         </ul>
                     </div>
                 </mat-expansion-panel>
+
+
+
+                <mat-expansion-panel id="panelInfo" expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Comment lire …</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <p>
+                            <strong>… la section <i>Genèse</i></strong>. 
+                            Elle est organisée en trois catégories qui ensemble
+                            représentent la possible genèse d'un texte de Gustave Roud. Pour chaque catégorie,
+                            il y a la liste des documents ou publications qui concernent l'intégralité du texte,
+                            suivie par la liste des documents ou publications qui concernent chaque section,
+                            si le texte est divisé en sections. La couleur grise indique l'absence de 
+                            matériaux.
+                        </p>
+                        <p>
+                            <strong>… la section <i>Reprises</i></strong>. 
+                            Gustave Roud réutilise ses propres textes pour de nouvelles genèses, en créant 
+                            un réseau de reprises. La liste présentée ici inclut les nouveaux textes qui reprennent
+                            cette publication intégralement ou en partie. La couleur grise indique l'absence de 
+                            matériaux.
+                        </p>
+                    </div>
+                </mat-expansion-panel>
+
 
 
             </div>  <!-- end genèse et reprises-->

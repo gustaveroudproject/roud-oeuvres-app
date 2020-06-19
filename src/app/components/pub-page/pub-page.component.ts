@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, AfterViewChecked, DoCheck } from '@angular/core';
-import { PublicationLight, PeriodicalArticle, Book, BookSection, PubPartLight } from 'src/app/models/publication.model';
+import { PublicationLight, PeriodicalArticle, Book, BookSection, PubPart, PubPartLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorLight } from 'src/app/models/author.model';
@@ -33,8 +33,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   publisherLight: PublisherLight;
   pages: Page[];
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+  selectedPartNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   pubPartsLight: PubPartLight[];
-  pubPartLight: PubPartLight;
+  pubParts: PubPart[];
+  startingPage: Page;
   msLight: MsLight;
   avantTexts: MsLight[];
   avantTextsParts: MsLight[];
@@ -49,7 +51,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
   pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
-
 
 
 
@@ -99,6 +100,33 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         //console.log(pages.length);
                         //console.log(this.selectedPageNum);
                       });
+
+
+                    //// get publication parts light
+                    this.dataService
+                    .getPartsLightOfPub(publicationLight.id)
+                    .subscribe((pubPartsLight: PubPartLight[]) => {
+                      this.pubPartsLight = pubPartsLight;
+                      });
+
+                    //// get publication parts
+                    this.dataService
+                    .getPartsOfPub(publicationLight.id)
+                    .subscribe((pubParts: PubPart[]) => {
+                      this.pubParts = pubParts;
+
+                      for (var part in pubParts) {
+                      this.dataService
+                      .getStartingPageOfPart(pubParts[part].startingPageValue)
+                      .subscribe(
+                        (startingPage: Page) => {
+                          this.startingPage = startingPage;
+                        });
+                      }
+                      });
+
+                    
+                      
                     
                     this.diaryNotes = [];
                     //// get diary notes (Manuscript) reused in this publication                    
@@ -202,14 +230,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
 
-                    //// get publication parts
-                    this.dataService
-                      .getPartsOfPub(publicationLight.id)
-                      .subscribe((pubPartsLight: PubPartLight[]) => {
-                        this.pubPartsLight = pubPartsLight;
-                        // console.log(pubPartsLight);
-                      });
-                      
+                    
                     
 
 
@@ -289,23 +310,25 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
         );
 
         
+        
 
   }
 
         
-  // MOVE INTO DIRECTIVES ??
+  
   ngAfterViewChecked() {
+    // this might be transformed into directives
     this.makeLiPartAppearIfNotEmpty(this.el);
     this.makeMainCategoryBlackIfNotEmpty(this.el);
-    
   }
 
   ngDoCheck() {
+    // MOVE INTO DIRECTIVES ? NO, because it is more complicated to act on the disable attribute of the panel, which is here
     this.disableExpansionPanelReprisesIfEmtpy(this.el);
     this.disableExpansionPanelGenesisIfEmtpy(this.el);
   }
 
-  
+   
 
 
   /*
@@ -379,7 +402,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
       
       var firstUlLength = panRepElt.children[1].children[0].children[0].children[0].children.length;
       var secondUlExists = panRepElt.children[1].children[0].children[0].children.length > 1;
-
+      
       // check if pubParts have children, using the class added in makeLiPartAppearIfNotEmpty
       var partsFullness = [];
       if (secondUlExists) {
@@ -391,24 +414,15 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
         };
       };
 
-      // if both ULs are empty
-      if (firstUlLength < 1 && ! secondUlExists) {
-        this.panelReprisesDisableState = true;
-      };
-
-      if (firstUlLength < 1) {
-        // if first Ul empty
-        if (secondUlExists) { //if second Ul exists
-          if (partsFullness.length < 1) { //but parts do not have children
-            this.panelReprisesDisableState = true;
-          };
-        };
+      // if both ULs are empty OR if first Ul empty and if second Ul exists but parts do not have children
+      if ((firstUlLength < 1 && !secondUlExists)
+      || (firstUlLength < 1 && secondUlExists && partsFullness.length < 1)) {
+        this.panelReprisesDisableState = true;        
       }
       else {
         this.panelReprisesDisableState = false;
         //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
       };
-         
       
     }); 
   }
@@ -419,6 +433,13 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   ###########
   DISABLE THE PANEL GENESIS IF IT DOES NOT CONTAIN INFO
   ###########
+  */
+
+  /*
+  In certain cases it does not work, because it seems to loop on one of the main categories only,
+  thus blocking to 1 empty instead of 3, even if there is no first UL and second does not have children.
+  See for example Air de la solitude.
+  Have to change method here.
   */
 
   // FRAGILE, maybe replace with contains
@@ -433,7 +454,9 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
         // for each of the three main categories
         for (var i = 0; i < mainCategories.length; i++) { 
             var firstUlLength = mainCategories[i].children[1].children.length;
+            //console.log("CATEGORY " + i + ": " + firstUlLength);
             var secondUlExists = mainCategories[i].children.length > 2;
+            //console.log("CATEGORY " + i + ": " + secondUlExists);
 
             // check if pubParts have children, using the class added in makeLiPartAppearIfNotEmpty
             var partsFullness = [];
@@ -446,24 +469,22 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
               };
             };
 
-            // if both ULs are empty
-            if (firstUlLength < 1 && ! secondUlExists) {
+            // if both ULs are empty OR
+            // if first Ul empty && if second Ul exists but parts do not have children
+            if ((firstUlLength < 1 && ! secondUlExists)
+            || (firstUlLength < 1 && secondUlExists && partsFullness.length < 1)) {
               categoriesFullness.push("empty");
-            };
-
-            if (firstUlLength < 1) {
-              // if first Ul empty
-              if (secondUlExists) { //if second Ul exists
-                if (partsFullness.length < 1) { //but parts do not have children
-                  categoriesFullness.push("empty");
-                };
-              };
+              //console.log("PUSH 1");
             }
             else {
               categoriesFullness.pop();
+              //console.log("POP");
               //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
             };
+
         }
+        
+        //console.log("CATEGORIES FULNESS: " + categoriesFullness);
 
         if (categoriesFullness.length == 3) {
           this.panelGenesisDisableState = true;
