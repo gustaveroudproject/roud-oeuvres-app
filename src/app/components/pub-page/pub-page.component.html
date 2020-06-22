@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="py-4" *ngIf="pages && pages.length == 0">   
-                    <p>La reproduction de l'original est interdite.</p>
+                    <p>La reproduction de l'original n'est pas disponible.</p>
                 </div>
             </div> <!-- end Viewer section -->
 
@@ -103,8 +103,8 @@
                         </span>,
                         « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
                         <i>{{ periodicalLight?.title }}</i>,
-                        <span *ngIf="periodicalArticle?.volume">n° {{ periodicalArticle?.volume }}</span><span *ngIf="periodicalArticle?.issue != null">
-                            ({{ periodicalArticle?.issue }})</span>,
+                        <span *ngIf="periodicalArticle?.issue">n° {{ periodicalArticle?.issue }}</span><span *ngIf="periodicalArticle?.volume">
+                            ({{ periodicalArticle?.volume }})</span>,
                         <span *ngIf="periodicalArticle?.collaborators != null">{{ periodicalArticle?.collaborators }},</span>
                         <!--there is no entry with multiple collaborators even if cardinality would allow it-->
                         {{ periodicalArticle?.date | knoradatesYmdFormatting }},
