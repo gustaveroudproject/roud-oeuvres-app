@@ -1,5 +1,6 @@
 
 /*
+OLD VERSION, COMMENTED OUT NOW:
 
 Used, for example, in person-view (notice) and in the texts content.
 
@@ -18,30 +19,36 @@ Example:
 4. When the link is clicked, app-routing module calls resource-router component,
 which identifies the class of the IRI and redirects to, for example, places/IRI
 
+AfterContentChecked, AfterViewChecked, DoCheck work INTERMITTENTLY (see mss comments).
+Only DoCheck is also for directives: <https://v2.angular.io/docs/ts/latest/guide/lifecycle-hooks.html#!#hooks-purpose-timing> 
+OnInit, AfterContentInit, AfterViewInit, OnChanges do NOT work.
+It works only when many links are created, because of DoCheck? NO!
+
+
+NEW VERSION:
+
+It replaces the value of @href (which is an IRI) of all <a> with class="resourceLink" or "salsah-link" with
+"resources/theEncodedIri", adding resources.
+The rest is the same as in the older version, which was better but sometimes did not work.
+
+
 */
 
 
-import { Directive, ElementRef, Renderer2, DoCheck } from '@angular/core';
-import { Router } from '@angular/router';
-import { mixinDisableRipple } from '@angular/material';
+import { Directive, ElementRef, DoCheck } from '@angular/core';
+//import { Router } from '@angular/router';
 
 @Directive({
   selector: '[orResourceLink]'
 })
 export class ResourceLinkDirective implements DoCheck {
 
-/*
-AfterContentChecked, AfterViewChecked, DoCheck work intermittently (see mss comments).
-Only DoCheck is also for directives: <https://v2.angular.io/docs/ts/latest/guide/lifecycle-hooks.html#!#hooks-purpose-timing> 
-OnInit, AfterContentInit, AfterViewInit, OnChanges do NOT work.
-It works only when many links are created, because of DoCheck? NO!
-*/
 
 
   constructor(
     private el: ElementRef,
-    private router: Router,
-    private renderer: Renderer2  // Renderer2 makes it safer
+    //private router: Router,
+    //private renderer: Renderer2  // Renderer2 makes it safer
   ) { }
           
 
@@ -51,20 +58,33 @@ It works only when many links are created, because of DoCheck? NO!
 
  
 reRouteLink(el: ElementRef) {
+
   
+  el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLLinkElement) => {
+    var iri = encodeURIComponent(aElt.href);
+    console.log(iri);
+    if (! (iri.includes("resources"))) {
+      aElt.setAttribute("href", `resources/${iri}`);
+    };
+  });
+  
+  /*
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
     // console.log(aElt);
     // gives back an array of <a class="resourceLink">
     aElt.addEventListener('click', this.onClick.bind(this)); 
     //intercept click and call the following function, that navigates
   });
+  */
+  
 }
 
-onClick(event) {
+
+/*onClick(event) {
   this.router.navigate(['resources', event.target.getAttribute('href')]);
   event.preventDefault();
-}
-
+}*/
  
 
 }
+
