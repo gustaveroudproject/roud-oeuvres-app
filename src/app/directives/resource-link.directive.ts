@@ -62,7 +62,7 @@ reRouteLink(el: ElementRef) {
   
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLLinkElement) => {
     var iri = encodeURIComponent(aElt.href);
-    console.log(iri);
+    // without if it keeps adding on DoCheck
     if (! (iri.includes("resources"))) {
       aElt.setAttribute("href", `resources/${iri}`);
     };

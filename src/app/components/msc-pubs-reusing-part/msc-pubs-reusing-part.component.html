@@ -1,0 +1,18 @@
+<ul>
+    <li *ngFor="let pubReusingPart of pubsReusingParts">
+        <span *ngIf="pubReusingPart?.resourceClassLabel == 'Book'
+            || pubReusingPart?.resourceClassLabel == 'Periodical article'
+            || pubReusingPart?.resourceClassLabel == 'Book section'">
+            <a routerLink="/archive/pub/{{ pubReusingPart.id | encodeURIComponent }}"
+                ><span [innerHTML]="pubReusingPart?.title | removeTextAndPar | htmlSanitizer"></span>
+            </a>
+            ({{ pubReusingPart?.date | knoradatesFormatting }})
+        </span>
+        <span *ngIf="pubReusingPart?.resourceClassLabel == 'Part of a publication'">
+            {{ pubReusingPart?.title }}
+            (partie de <a routerLink="/archive/pub/{{ pubFromParts3?.id | encodeURIComponent }}">
+                <span [innerHTML]="pubFromParts3?.title | removeTextAndPar | htmlSanitizer"></span></a>, 
+                {{ pubFromParts3?.date | knoradatesFormatting }})
+        </span>
+    </li>
+</ul>

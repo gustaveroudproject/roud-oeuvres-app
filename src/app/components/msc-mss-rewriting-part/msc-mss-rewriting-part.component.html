@@ -1,0 +1,19 @@
+<ul>
+    <li *ngFor="let y of mssRewritingParts"> <!--  | sortByShelfmark -->
+
+        <span *ngIf="y?.resourceClassLabel == 'Archival document'">
+            <span [innerHTML]="y?.title | htmlSanitizer"></span>
+            (<a routerLink="/resources/{{ y?.id | encodeURIComponent }}">{{ y?.archive }}
+                <span [innerHTML]="y?.shelfmark | htmlSanitizer"></span>
+            </a>)
+        </span>
+
+        <span *ngIf="y?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
+            {{ y?.title }}
+            (partie de 
+            <a routerLink="/resources/{{ msFromParts2?.id | encodeURIComponent }}">{{ msFromParts2?.archive }}
+                <span [innerHTML]="msFromParts2?.shelfmark | htmlSanitizer"></span>
+            </a>)
+        </span>
+    </li>
+</ul>
