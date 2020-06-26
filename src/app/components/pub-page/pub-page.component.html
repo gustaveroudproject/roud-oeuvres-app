@@ -56,15 +56,9 @@
                         >
                     </select>
 
-                    <!-- NOT WORKING, WILL FIX WHEN HAVE A VIEWER -->
-                    <!-- if not used, delete the component or-pubc-part-selector -->
-                    <select
-                    id="selectorPart">
-                    <!--[(ngModel)]="selectedPartNum"-->
-                        <option *ngFor="let p of pubParts"> <!--[value]="startingPage?.seqnum" -->
+                    <select id="selectorPart" *ngIf="pubPartsLight && pubPartsLight.length > 0">
+                        <option *ngFor="let p of pubPartsLight">
                             <span>{{ p?.title }}</span>
-                            <!--{{ startingPage?.seqnum}}-->
-                            <!--<span><or-pubc-part-selector [startingPageValue]="part?.startingPageValue"></or-pubc-part-selector></span>-->
                         </option>
                     </select>
                     
