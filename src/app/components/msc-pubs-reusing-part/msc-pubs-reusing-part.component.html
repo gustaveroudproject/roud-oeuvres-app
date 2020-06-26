@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let pubReusingPart of pubsReusingParts">
+    <li class="liDiaryPub" *ngFor="let pubReusingPart of pubsReusingParts">
         <span *ngIf="pubReusingPart?.resourceClassLabel == 'Book'
             || pubReusingPart?.resourceClassLabel == 'Periodical article'
             || pubReusingPart?.resourceClassLabel == 'Book section'">

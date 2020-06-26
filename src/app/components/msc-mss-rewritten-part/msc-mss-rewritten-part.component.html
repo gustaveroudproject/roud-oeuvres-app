@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let y of mssRewrittenParts"> <!--  | sortByShelfmark -->
+    <li class="liDiaryLevel" *ngFor="let y of mssRewrittenParts"> <!--  | sortByShelfmark -->
 
         <span *ngIf="y?.resourceClassLabel == 'Archival document'">
             <span [innerHTML]="y?.title | htmlSanitizer"></span>

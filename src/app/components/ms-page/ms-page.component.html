@@ -139,13 +139,16 @@
             <!-- GENÈSE ET REPRISES -->
             <div>
 
-                <mat-expansion-panel class="my-4" *ngIf="manuscript?.editorialSet == 'Poetic work'">
+                <mat-expansion-panel id="panelPoeticPub" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Poetic work'"
+                [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul>
-                            <li *ngFor="let pubAT of pubsAvantTexte">
+                            <li class="liPoeticPub" *ngFor="let pubAT of pubsAvantTexte">
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Book'
                                     || pubAT?.resourceClassLabel == 'Periodical article'
                                     || pubAT?.resourceClassLabel == 'Book section'">
@@ -164,7 +167,10 @@
                     </div>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="my-4" *ngIf="manuscript?.editorialSet == 'Diary'">
+                <mat-expansion-panel id="panelDiaryLevel" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Diary'"
+                [disabled]="panelDiaryLevelDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Niveaux de journal</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -174,7 +180,7 @@
                             <strong>Retranscription de</strong>
                         </span>
                         <ul>
-                            <li *ngFor="let x of rewrittenMs"> <!--  | sortByShelfmark -->
+                            <li class="liDiaryLevel" *ngFor="let x of rewrittenMs"> <!--  | sortByShelfmark -->
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
                                     <span [innerHTML]="x?.title | htmlSanitizer"></span>
                                     (<a routerLink="/resources/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
@@ -209,7 +215,7 @@
                             <strong>Retranscription dans</strong>
                         </span>
                         <ul>
-                            <li *ngFor="let x of rewritingMs"> <!--  | sortByShelfmark -->
+                            <li class="liDiaryLevel" *ngFor="let x of rewritingMs"> <!--  | sortByShelfmark -->
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
                                     <span [innerHTML]="x?.title | htmlSanitizer"></span>
                                     (<a routerLink="/resources/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
@@ -241,13 +247,16 @@
                     
                 </mat-expansion-panel>
 
-                <mat-expansion-panel class="my-4" *ngIf="manuscript?.editorialSet == 'Diary'">
+                <mat-expansion-panel id="panelDiaryPub" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Diary'"
+                [disabled]="panelDiaryPubDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul>
-                            <li *ngFor="let pubD of pubsDiary">
+                            <li class="liDiaryPub" *ngFor="let pubD of pubsDiary">
                                 <span *ngIf="pubD?.resourceClassLabel == 'Book'
                                     || pubD?.resourceClassLabel == 'Periodical article'
                                     || pubD?.resourceClassLabel == 'Book section'">
