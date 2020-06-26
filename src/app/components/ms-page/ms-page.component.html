@@ -18,29 +18,52 @@
         
             
             <!-- VIEWER -->
-            <div class="py-4" *ngIf="pages && pages.length > 0">   
-                <div *ngFor="let page of pages">
-                    <img
-                        *ngIf="page.seqnum == selectedPageNum"
-                        src="{{ page.imageURL }}"
-                        width="70%"
-                    />
+            <div>
+                <div class="py-4" *ngIf="pages && pages.length > 0">   
+                    <div *ngFor="let page of pages">
+                        <img
+                            *ngIf="page.seqnum == selectedPageNum"
+                            src="{{ page.imageURL }}"
+                            width="80%"
+                        />
+                    </div>
+                    
+                    <select
+                    name="page-numbers"
+                    [(ngModel)]="selectedPageNum" 
+                    > <!-- ngModel binds the value of the select to an angular variable -->
+
+                        <option [value]="page.seqnum" *ngFor="let page of pages">
+                            {{ page.name }}</option
+                        >
+                    </select>
+
+                    <select *ngIf="msParts && msParts.length > 0"
+                    id="selectorPart">
+                        <option *ngFor="let msPart of msParts">
+                            <span>{{ msPart?.title }}</span>
+                        </option>
+                    </select>
                 </div>
-                
-                <select
-                name="page-numbers"
-                [(ngModel)]="selectedPageNum" 
-                > <!-- ngModel binds the value of the select to an angular variable -->
 
-                    <option [value]="page.seqnum" *ngFor="let page of pages">
-                        {{ page.name }}</option
-                    >
-                </select>
-            </div>
+                <div class="py-4" *ngIf="pages && pages.length == 0">   
+                    <p>La reproduction de l'original est interdite.</p>
+                </div>
+            </div> <!-- end Viewer -->
 
-            <div class="py-4" *ngIf="pages && pages.length == 0">   
-                <p>La reproduction de l'original est interdite.</p>
+
+            <!-- LIRE LE TEXTE -->
+            <div *ngIf="manuscript?.editorialSet == 'Diary'" class="readTheText">
+                <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
             </div>
+            <!--
+            <div>
+                <a href="">
+                    <img src="assets/img/readText.svg" width="37%"/>
+                </a>
+            </div>
+            -->
+
 
 
             <!-- MANUSCRIPT DESCRIPTION -->
@@ -123,61 +146,193 @@
             <!-- GENÈSE ET REPRISES -->
             <div>
 
-                <mat-expansion-panel class="my-4">
+                <mat-expansion-panel id="panelPoeticPub" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Poetic work'"
+                [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Publications</mat-panel-title>
+                    <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
                     </mat-expansion-panel-header>
-                
                     <div>
-                        <span class="strong">
-                            <span>&#10148;</span>
-                            Publications dont la genèse inclut ce manuscrit comme avant-texte
-                        </span>
                         <ul>
-                            
-                            <li *ngFor="let pubAT of publicationsAvantTexte">
-                                <a routerLink="/resources/{{ pubAT.id | encodeURIComponent }}"
-                                    >
-                                    <span [innerHTML]="pubAT?.title | htmlSanitizer"></span>
+                            <li class="liPoeticPub" *ngFor="let pubAT of pubsAvantTexte">
+                                <span *ngIf="pubAT?.resourceClassLabel == 'Book'
+                                    || pubAT?.resourceClassLabel == 'Periodical article'
+                                    || pubAT?.resourceClassLabel == 'Book section'">
+                                    <a routerLink="/archive/pub/{{ pubAT.id | encodeURIComponent }}"
+                                        ><span [innerHTML]="pubAT?.title | removeTextAndPar | htmlSanitizer"></span>
+                                    </a>
                                     ({{ pubAT?.date | knoradatesFormatting }})
-                                </a>
+                                </span>
+                                <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
+                                    {{ pubAT?.title }}
+                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
+                                        <span [innerHTML]="pubFromParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubFromParts?.date | knoradatesFormatting }})
+                                </span>
                             </li>
                         </ul>
                     </div>
-                
                 </mat-expansion-panel>
 
-                <!--
-                <mat-expansion-panel class="my-4">
+                <mat-expansion-panel id="panelDiaryLevel" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Diary'"
+                [disabled]="panelDiaryLevelDisableState">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Publications</mat-panel-title>
+                    <mat-panel-title>Niveaux de journal</mat-panel-title>
                     </mat-expansion-panel-header>
 
-                    <div>
-                        <span class="strong">
-                            <span>&#10148;</span>
-                            Publications dont la genèse inclut une ou plusieurs notes de journal
+                    <div class="mainCategory">
+                        <span>
+                            <strong>Retranscription de</strong>
                         </span>
-
-                        publications in which each note is reused
-                        
                         <ul>
-                            <li *ngFor="let pubD of publicationsDiary">
-                                <a routerLink="/resources/{{ pubD.id | encodeURIComponent }}"
-                                    >{{ pubD?.title }}
-                                    ({{ pubD?.date | knoradatesFormatting }})
-                                </a>
+                            <li class="liDiaryLevel" *ngFor="let x of rewrittenMs"> <!--  | sortByShelfmark -->
+                                <span *ngIf="x?.resourceClassLabel == 'Archival document'">
+                                    <span [innerHTML]="x?.title | htmlSanitizer"></span>
+                                    (<a routerLink="/resources/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
+                                        <span [innerHTML]="x?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
+                        
+                                <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
+                                    {{ x?.title }}
+                                    (partie de 
+                                    <a routerLink="/resources/{{ msFromParts3?.id | encodeURIComponent }}">{{ msFromParts3?.archive }}
+                                        <span [innerHTML]="msFromParts3?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
                             </li>
                         </ul>
+                        <!-- if manuscript has parts -->
+                        <ul *ngIf="msParts && msParts.length > 0">
+                            <li *ngFor="let msPart of msParts">
+                                <span class="liPart">
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ msPart?.title }}</i>
+                                    <or-msc-mss-rewritten-part [msPartId]="msPart.id"></or-msc-mss-rewritten-part>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mainCategory">
+                        <span>
+                            <strong>Retranscription dans</strong>
+                        </span>
+                        <ul>
+                            <li class="liDiaryLevel" *ngFor="let x of rewritingMs"> <!--  | sortByShelfmark -->
+                                <span *ngIf="x?.resourceClassLabel == 'Archival document'">
+                                    <span [innerHTML]="x?.title | htmlSanitizer"></span>
+                                    (<a routerLink="/resources/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
+                                        <span [innerHTML]="x?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
                         
-                        
-                       
+                                <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
+                                    {{ x?.title }}
+                                    (partie de 
+                                    <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
+                                        <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
+                                    </a>)
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- if manuscript has parts -->
+                        <ul *ngIf="msParts && msParts.length > 0">
+                            <li *ngFor="let msPart of msParts">
+                                <span class="liPart">
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ msPart?.title }}</i>
+                                    <or-msc-mss-rewriting-part [msPartId]="msPart.id"></or-msc-mss-rewriting-part>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </mat-expansion-panel>
+
+                <mat-expansion-panel id="panelDiaryPub" 
+                class="my-4" 
+                *ngIf="manuscript?.editorialSet == 'Diary'"
+                [disabled]="panelDiaryPubDisableState">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <ul>
+                            <li class="liDiaryPub" *ngFor="let pubD of pubsDiary">
+                                <span *ngIf="pubD?.resourceClassLabel == 'Book'
+                                    || pubD?.resourceClassLabel == 'Periodical article'
+                                    || pubD?.resourceClassLabel == 'Book section'">
+                                    <a routerLink="/archive/pub/{{ pubD.id | encodeURIComponent }}"
+                                        ><span [innerHTML]="pubD?.title | removeTextAndPar | htmlSanitizer"></span>
+                                    </a>
+                                    ({{ pubD?.date | knoradatesFormatting }})
+                                </span>
+                                <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
+                                    {{ pubD?.title }}
+                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
+                                        <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
+                                        ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- if manuscript has parts -->
+                        <ul *ngIf="msParts && msParts.length > 0">
+                            <li *ngFor="let msPart of msParts">
+                                <span class="liPart">
+                                    <span>&#8226;</span>
+                                    Pour la partie : 
+                                    <i>{{ msPart?.title }}</i>
+                                    <or-msc-pubs-reusing-part [msPartId]="msPart.id"></or-msc-pubs-reusing-part>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                 </mat-expansion-panel>
-                -->
 
+                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Poetic work'">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Comment lire …</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <p>
+                            <strong>… la section <i>Publications</i></strong>. 
+                            Ici sont listé les publications pour lesquelles ce document fonctionne
+                            comme avant-texte ; ce document fait donc partie du dossier génétique de la publication
+                            ou d'une partie d'elle.
+                            La couleur grise indique l'absence de dossiers génétiques dans
+                            lesquels ce document a été utilisé.
+                        </p>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Diary'">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Comment lire …</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <p>
+                            <strong>… la section <i>Niveaux de journal</i></strong>. 
+                            Gustave Roud reorganise et recueille ces notes de journal, en le rétranscrivant,
+                            parfois plusieurs fois, souvent à partir d'un support précaire comme un petit feuillet
+                            vers un cahier. Au long de sa vie, ces pratiques d'écriture à cheval entre plusieurs
+                             "niveaux de journal" changent. Ici, on peut suivre
+                            la retranscription, avec ou sans changement, d'une note de journal sur un nouveau support.
+                        </p>
+                        <p>
+                            <strong>… la section <i>Publications</i></strong>. 
+                            Les publications listées ici sont celles dont la genèse inclut l'utilisation intégrale
+                            d'une ou plusieurs notes du journal intime du poète. Cette pratique est
+                            rare et bien plus souvent Roud reprends seulement des phrases (pour cela, 
+                            <a href=".">lire le texte</a>).
+                        </p>
+                    </div>
+                </mat-expansion-panel>
 
-            </div>  <!-- end genèse et reprises-->
+            </div>  <!-- end genèse-->
 
         </div> <!-- end columns right-->
 
