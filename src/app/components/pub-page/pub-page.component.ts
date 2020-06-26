@@ -319,7 +319,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   ngAfterViewChecked() {
     // this might be transformed into directives
     this.makeLiPartAppearIfNotEmpty(this.el);
-    this.makeMainCategoryBlackIfNotEmpty(this.el);
+    this.greyCategoryIfEmpty(this.el);
   }
 
   ngDoCheck() {
@@ -328,176 +328,85 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     this.disableExpansionPanelGenesisIfEmtpy(this.el);
   }
 
+
+
    
-
-
-  /*
-  ###########
+  
+  /*###########    
   DISPLAY PUBPARTS IN EACH GENETIC CATEGORY ONLY IF THEY HAVE CHILDREN
   (diary notes, avant-textes, publication or reprises)
-  ###########
-  */
-
-  // FRAGILE, maybe replace with contains
+  ###########*/ 
   makeLiPartAppearIfNotEmpty(el: ElementRef) {
     el.nativeElement.querySelectorAll('span[class="liPart"]').forEach((liPartElt: HTMLElement) => {  
       // if there are two UL and the second has children, that is if there are PubParts with children
+      // FRAGILE, maybe replace with contains ?
       if (liPartElt.children.length > 2) {
         if (liPartElt.children[2].children[0].children.length > 0) {
           liPartElt.style.display = "block";
-          liPartElt.classList.add("full");
         }
       }
     });
   }
-
 
   
 
-  /*
-  ###########
-  MAKE GENETIC CATEGORY BLACK IF NOT EMPTY
-  ###########
-  */
-
-  // FRAGILE, maybe replace with contains
-  makeMainCategoryBlackIfNotEmpty(el: ElementRef) {
-    el.nativeElement.querySelectorAll('div[class="mainCategory"]').forEach((mainCatElt: HTMLElement) => {  
-      
-      // check if pubParts have children, using the class added in makeLiPartAppearIfNotEmpty
-      var partsFullness = [];
-      if (mainCatElt.children.length > 2) {
-        var pubParts = mainCatElt.children[2].children
-        for (var i = 0; i < pubParts.length; i++) { 
-          if (pubParts[i].children[0].classList.contains("full")) {
-            partsFullness.push("full");
-          }
-        }
-      } 
-      
-      // if first UL has children or if a pubPart has children (see above), color is black
-      if (
-        (mainCatElt.children[1].children.length > 0)
-        ||
-        (mainCatElt.children.length > 2 && partsFullness.length > 0)
-        ) {
-          mainCatElt.style.color = "black";
-      }
-    });
-  }
-
-
-
-  /*
-  ###########
-  DISABLE THE PANEL REPRISES IF IT DOES NOT CONTAIN INFO
-  ###########
-  */
-
-  // FRAGILE, maybe replace with contains
-  disableExpansionPanelReprisesIfEmtpy(el: ElementRef) {
-
-    // this shold be replaced with querySelector, because it is only one
-    el.nativeElement.querySelectorAll('#panelReprises').forEach((panRepElt: HTMLElement) => { 
-      
-      var firstUlLength = panRepElt.children[1].children[0].children[0].children[0].children.length;
-      var secondUlExists = panRepElt.children[1].children[0].children[0].children.length > 1;
-      
-      // check if pubParts have children, using the class added in makeLiPartAppearIfNotEmpty
-      var partsFullness = [];
-      if (secondUlExists) {
-        var pubParts = panRepElt.children[1].children[0].children[0].children[1].children;
-        for (var i = 0; i < pubParts.length; i++) { 
-          if (pubParts[i].children[0].classList.contains("full")) {
-            partsFullness.push("full");
-          }
-        };
-      };
-
-      // if both ULs are empty OR if first Ul empty and if second Ul exists but parts do not have children
-      if ((firstUlLength < 1 && !secondUlExists)
-      || (firstUlLength < 1 && secondUlExists && partsFullness.length < 1)) {
-        this.panelReprisesDisableState = true;        
+  /*###########
+  MAKE GENETIC CATEGORY GREY IF EMPTY
+  ###########*/
+  greyCategoryIfEmpty(el: ElementRef) {
+    el.nativeElement.querySelectorAll('div[class="mainCategory"]').forEach((mainCatEl: HTMLElement) => {
+      // for each main category, how many li exists
+      var liGenesisLength = mainCatEl.getElementsByClassName("liGenesis").length;
+      if (liGenesisLength > 0) {
+        mainCatEl.style.color = "black";        
       }
       else {
-        this.panelReprisesDisableState = false;
-        //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
+        mainCatEl.style.color = "#bfbfbf";  
       };
-      
-    }); 
+    });
   }
-  
 
 
-  /*
-  ###########
+
+  /*###########
   DISABLE THE PANEL GENESIS IF IT DOES NOT CONTAIN INFO
-  ###########
-  */
-
-  /*
-  In certain cases it does not work, because it seems to loop on one of the main categories only,
-  thus blocking to 1 empty instead of 3, even if there is no first UL and second does not have children.
-  See for example Air de la solitude.
-  Have to change method here.
-  */
-
-  // FRAGILE, maybe replace with contains
+  ###########*/
   disableExpansionPanelGenesisIfEmtpy(el: ElementRef) {
-
     // this shold be replaced with querySelector, because it is only one
     el.nativeElement.querySelectorAll('#panelGenesis').forEach((panGenElt: HTMLElement) => { 
-
-        var mainCategories = panGenElt.children[1].children[0].children;
-        var categoriesFullness = [];
-
-        // for each of the three main categories
-        for (var i = 0; i < mainCategories.length; i++) { 
-            var firstUlLength = mainCategories[i].children[1].children.length;
-            //console.log("CATEGORY " + i + ": " + firstUlLength);
-            var secondUlExists = mainCategories[i].children.length > 2;
-            //console.log("CATEGORY " + i + ": " + secondUlExists);
-
-            // check if pubParts have children, using the class added in makeLiPartAppearIfNotEmpty
-            var partsFullness = [];
-            if (secondUlExists) {
-              var pubParts = mainCategories[i].children[2].children;
-              for (var i = 0; i < pubParts.length; i++) { 
-                if (pubParts[i].children[0].classList.contains("full")) {
-                  partsFullness.push("full");
-                }
-              };
-            };
-
-            // if both ULs are empty OR
-            // if first Ul empty && if second Ul exists but parts do not have children
-            if ((firstUlLength < 1 && ! secondUlExists)
-            || (firstUlLength < 1 && secondUlExists && partsFullness.length < 1)) {
-              categoriesFullness.push("empty");
-              //console.log("PUSH 1");
-            }
-            else {
-              categoriesFullness.pop();
-              //console.log("POP");
-              //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
-            };
-
-        }
-        
-        //console.log("CATEGORIES FULNESS: " + categoriesFullness);
-
-        if (categoriesFullness.length == 3) {
-          this.panelGenesisDisableState = true;
-        }
-        else {
-          this.panelGenesisDisableState = false;
-        }
-         
-      
+      // check how many li exists
+      var liGenesisLength = panGenElt.getElementsByClassName("liGenesis").length
+      if (liGenesisLength > 0) {
+        this.panelGenesisDisableState = false;        
+      }
+      else {
+        this.panelGenesisDisableState = true;
+        //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
+      };
     }); 
   }
-  
 
-  
+
+
+  /*###########
+  DISABLE THE PANEL REPRISES IF IT DOES NOT CONTAIN INFO
+  ###########*/
+  disableExpansionPanelReprisesIfEmtpy(el: ElementRef) {
+    // this shold be replaced with querySelector, because it is only one
+    el.nativeElement.querySelectorAll('#panelReprises').forEach((panRepElt: HTMLElement) => { 
+      // check how many li exists
+      var liReprisesLength = panRepElt.getElementsByClassName("liReprises").length
+      if (liReprisesLength > 0) {
+        this.panelReprisesDisableState = false;        
+      }
+      else {
+        this.panelReprisesDisableState = true;
+        //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
+      };
+    }); 
+  }
+
+
+    
 }
       

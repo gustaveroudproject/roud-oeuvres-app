@@ -176,7 +176,7 @@
                              -->
                         <ul>
                             <!-- for each ms or msPart (both are in the array diaryNotes) -->
-                            <li *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
+                            <li class="liGenesis" *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
                                     <span [innerHTML]="x?.title | htmlSanitizer"></span>
@@ -213,7 +213,7 @@
                             <strong>Avant-textes</strong>
                         </span>
                         <ul>
-                            <li *ngFor="let avantText of avantTexts">
+                            <li class="liGenesis" *ngFor="let avantText of avantTexts">
                                 <span [innerHTML]="avantText?.title | htmlSanitizer"></span>
                                 (<a routerLink="/archive/ms/{{ avantText.id | encodeURIComponent }}"
                                 >{{ avantText?.archive }}
@@ -240,7 +240,7 @@
                             <strong>Publications utilisées dans la genèse</strong>
                         </span>
                         <ul>
-                            <li *ngFor="let pubReused of pubsReused">
+                            <li class="liGenesis" *ngFor="let pubReused of pubsReused">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Book'
@@ -280,7 +280,7 @@
 
                     <div>
                         <ul>
-                            <li *ngFor="let pubReusing of pubsReusing">
+                            <li class="liReprises" *ngFor="let pubReusing of pubsReusing">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Book'
