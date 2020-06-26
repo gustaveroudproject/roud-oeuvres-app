@@ -24,7 +24,7 @@
                         <img
                             *ngIf="page.seqnum == selectedPageNum"
                             src="{{ page.imageURL }}"
-                            width="70%"
+                            width="80%"
                         />
                     </div>
                     
@@ -36,6 +36,13 @@
                         <option [value]="page.seqnum" *ngFor="let page of pages">
                             {{ page.name }}</option
                         >
+                    </select>
+
+                    <select *ngIf="msParts && msParts.length > 0"
+                    id="selectorPart">
+                        <option *ngFor="let msPart of msParts">
+                            <span>{{ msPart?.title }}</span>
+                        </option>
                     </select>
                 </div>
 
