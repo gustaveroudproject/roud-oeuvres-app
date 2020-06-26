@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let avantTextPart of avantTextsParts">
+    <li class="liGenesis" *ngFor="let avantTextPart of avantTextsParts">
         <span [innerHTML]="avantTextPart?.title | htmlSanitizer"></span>
         (<a routerLink="/archive/ms/{{ avantTextPart.id | encodeURIComponent }}"
         >{{ avantTextPart?.archive }}

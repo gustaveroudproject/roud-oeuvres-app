@@ -1,7 +1,7 @@
 
 <ul>
     <!-- for each ms or msPart (both are in the array reusedInParts) -->
-    <li *ngFor="let x of reusedInParts"> <!--  | sortByShelfmark -->
+    <li class="liGenesis" *ngFor="let x of reusedInParts"> <!--  | sortByShelfmark -->
         <span *ngIf="x?.resourceClassLabel == 'Archival document'">
             <span [innerHTML]="x?.title | htmlSanitizer"></span>
             (<a routerLink="/archive/ms/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
