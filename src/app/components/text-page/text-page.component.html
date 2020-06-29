@@ -32,41 +32,47 @@
     <div class="row">     
 
       <!-- TEXT CONTENT -->
-      <div class="col-sm-8 container-scrollable">
+      <div class="col-8 my-4 container-scrollable">
         <or-text-view [text]="text"></or-text-view>
       </div>
       
 
       <!-- ENTITIES -->
-      <div class="col-sm-4">
-        <div id="entities">
-          <strong class="reperes highlightTitre">Repères</strong>
-          <div class="reperes">
-            <strong>Personnes</strong>
-            <ul>
-              <li *ngFor="let personLight of personsLight">
-                <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
-                  >{{ personLight.name }} {{ personLight.surname }}</a
-                >
-              </li>
-            </ul>
+      <div class="col-3 offset-1">
+
+        <mat-expansion-panel class="my-4" expanded="true">
+          <mat-expansion-panel-header>
+              <mat-panel-title>Repères</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+              <div>
+                  <strong>Personnes</strong>
+                  <ul>
+                    <li *ngFor="let personLight of personsLight">
+                      <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
+                        >{{ personLight.name }} {{ personLight.surname }}</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+              <div>
+                  <strong>Lieux</strong>
+                  <ul>
+                    <li>test test</li>
+                    <li>encore un test</li>
+                  </ul>
+              </div>
+              <div>
+                  <strong>Œuvres</strong>
+                  <ul>
+                    <li>encore un test</li>
+                    <li>test test</li>
+                  </ul>
+              </div>
           </div>
-          <div class="reperes">
-            <strong>Lieux</strong>
-            <ul>
-              <li>test test</li>
-              <li>encore un test</li>
-            </ul>
-          </div>
-          <div class="reperes">
-            <strong>Œuvres</strong>
-            <ul>
-              <li>encore un test</li>
-              <li>test test</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        </mat-expansion-panel>
+         
+      </div> <!-- end col entities -->
       
     </div> <!-- end row -->
 
