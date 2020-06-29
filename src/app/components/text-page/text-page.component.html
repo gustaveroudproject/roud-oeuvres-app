@@ -1,4 +1,6 @@
-<h1><div [innerHTML]="text?.title | htmlSanitizer"></div></h1>
+<h1>
+  <div [innerHTML]="text?.title | htmlSanitizer"></div>
+</h1>
 
 <div class="container">
 
@@ -48,28 +50,4 @@
     
   </div>
 
-  <div class="row">
-
-    <!-- page viewer -->
-    <div class="col-sm-6">
-      <select
-        class="form-control"
-        name="page-numbers"
-        [(ngModel)]="selectedPageNum"
-      >
-        <option></option>
-        <option [value]="page.seqnum" *ngFor="let page of pages">
-          Page {{ page.seqnum }}</option
-        >
-      </select>
-      <div *ngFor="let page of pages">
-        <img
-          *ngIf="page.seqnum === selectedPageNum"
-          src="{{ page.imageURL }}"
-          width="400"
-          height="400"
-        />
-      </div>
-    </div>
   </div>
-</div>

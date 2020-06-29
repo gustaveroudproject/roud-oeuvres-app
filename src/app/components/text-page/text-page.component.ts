@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Text } from 'src/app/models/text.model';
-import { Page } from 'src/app/models/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { PersonLight } from 'src/app/models/person.model';
@@ -12,8 +11,6 @@ import { PersonLight } from 'src/app/models/person.model';
 })
 export class TextPageComponent implements OnInit {
   text: Text;
-  pages: Page[];
-  selectedPageNum: null;  //give here a default value is not enough to visualize page, it doesn't take the page.imageURL
   personsLight : PersonLight[];
 
   constructor(
@@ -34,13 +31,6 @@ export class TextPageComponent implements OnInit {
           .subscribe(
             (text: Text) => {
               this.text = text; // step 4    I give to the attribute text the value of text
-
-              // asynchrone, we need text to ask pages of text
-              this.dataService
-                .getPagesOfText(text.id)
-                .subscribe((pages: Page[]) => {
-                  this.pages = pages;
-                });
 
                 // asynchrone, we need text to ask persons mentioned in text
               this.dataService
