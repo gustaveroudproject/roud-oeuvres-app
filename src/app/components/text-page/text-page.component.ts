@@ -3,6 +3,9 @@ import { Text } from 'src/app/models/text.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { PersonLight } from 'src/app/models/person.model';
+import { PublicationLight, PeriodicalArticle, Book, BookSection } from 'src/app/models/publication.model';
+import { PeriodicalLight } from 'src/app/models/periodical.model';
+import { PublisherLight } from 'src/app/models/publisher.model';
 
 @Component({
   selector: 'or-text-page',
@@ -12,6 +15,12 @@ import { PersonLight } from 'src/app/models/person.model';
 export class TextPageComponent implements OnInit {
   text: Text;
   personsLight : PersonLight[];
+  baseWitPubLight: PublicationLight;
+  periodicalArticle: PeriodicalArticle;
+  periodicalLight: PeriodicalLight;
+  book: Book;
+  bookSection: BookSection;
+  publisherLight: PublisherLight;
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
@@ -39,6 +48,72 @@ export class TextPageComponent implements OnInit {
                 this.personsLight = personsLight;
                 // console.log(personsLight);
               });
+
+              this.dataService
+              .getPublicationLight(text.baseWitPub)
+              .subscribe((baseWitPubLight: PublicationLight) => {
+                this.baseWitPubLight = baseWitPubLight;
+
+                //// if it is a PERIODICAL ARTICLE, retrieve its properties
+                if (baseWitPubLight.resourceClassLabel == 'Periodical article') {
+                  this.dataService
+                    .getPeriodicalArticle(baseWitPubLight.id)  // = iri
+                    .subscribe(
+                      (periodicalArticle: PeriodicalArticle) => {
+                        this.periodicalArticle = periodicalArticle;
+                        // asynchrone
+                        this.dataService
+                        .getPeriodicalLight(periodicalArticle.periodicalValue)
+                        .subscribe(
+                          (periodicalLight: PeriodicalLight) => {
+                          this.periodicalLight = periodicalLight;
+                          // console.log(periodicalLight);
+                          });
+                      },
+                      error => console.error(error)
+                    );
+                  }  
+
+                  //// if it is a BOOK, retrieve its properties
+                  if (baseWitPubLight.resourceClassLabel == 'Book') {
+                    this.dataService
+                      .getBook(baseWitPubLight.id)  // = iri
+                      .subscribe(
+                        (book: Book) => {
+                          this.book = book;
+                          // asynchrone
+                          this.dataService
+                          .getPublisherLight(book.publisherValue)
+                          .subscribe(
+                            (publisherLight: PublisherLight) => {
+                            this.publisherLight = publisherLight;
+                            });
+                        },
+                        error => console.error(error)
+                      );
+                    }  
+
+                    //// if it is a BOOK SECTION, retrieve its properties
+                    if (baseWitPubLight.resourceClassLabel == 'Book section') {
+                      this.dataService
+                        .getBookSection(baseWitPubLight.id)  // = iri
+                        .subscribe(
+                          (bookSection: BookSection) => {
+                            this.bookSection = bookSection;
+                            // asynchrone
+                            this.dataService
+                            .getPublisherLight(bookSection.publisherValue)
+                            .subscribe(
+                              (publisherLight: PublisherLight) => {
+                              this.publisherLight = publisherLight;
+                              });
+                          },
+                          error => console.error(error)
+                        );
+                      } 
+              });
+
+
             },
             
             error => console.error(error)

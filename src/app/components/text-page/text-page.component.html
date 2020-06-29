@@ -1,53 +1,73 @@
-<h1>
-  <div [innerHTML]="text?.title | htmlSanitizer"></div>
-</h1>
-
-<div class="container">
-
-  <div class="row">
+<div class="container-fluid">
     
-    <!-- text content -->
-    <div class="col-sm-8 container-scrollable">
-      <or-text-view
-        [text]="text"
-        orPageLink
-        [(pageNum)]="selectedPageNum"
-      ></or-text-view>
-      <!--this will be given to the @input-->
-    </div>
-    
+  
+    <!-- TITLE -->
+    <div class="py-4 page-title">
+      <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
+        <h3>
+            « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
+            <i>{{ periodicalLight?.title }}</i>
+            ({{ periodicalArticle?.date | knoradatesFormatting }})
+        </h3>
+      </div>
 
-    <!-- entities mentioned in the text -->
-    <div class="col-sm-4">
-      <div id="entities">
-        <strong class="reperes highlightTitre">Repères</strong>
-        <div class="reperes">
-          <strong>Personnes</strong>
-          <ul>
-            <li *ngFor="let personLight of personsLight">
-              <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
-                >{{ personLight.name }} {{ personLight.surname }}</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="reperes">
-          <strong>Lieux</strong>
-          <ul>
-            <li>test test</li>
-            <li>encore un test</li>
-          </ul>
-        </div>
-        <div class="reperes">
-          <strong>Œuvres</strong>
-          <ul>
-            <li>encore un test</li>
-            <li>test test</li>
-          </ul>
+      <div *ngIf="book != null"> 
+          <h3>
+              <i [innerHTML]="book?.title | htmlSanitizer"></i>
+              ({{ book?.date | knoradatesFormatting }})
+          </h3>
+      </div>
+
+      <div *ngIf="bookSection != null"> 
+          <h3>
+              « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
+              <i>{{ bookSection?.book }}</i>,
+              ({{ book?.date | knoradatesFormatting }})
+          </h3>
+      </div>
+    </div> <!-- end title -->
+
+
+
+    <div class="row">     
+
+      <!-- TEXT CONTENT -->
+      <div class="col-sm-8 container-scrollable">
+        <or-text-view [text]="text"></or-text-view>
+      </div>
+      
+
+      <!-- ENTITIES -->
+      <div class="col-sm-4">
+        <div id="entities">
+          <strong class="reperes highlightTitre">Repères</strong>
+          <div class="reperes">
+            <strong>Personnes</strong>
+            <ul>
+              <li *ngFor="let personLight of personsLight">
+                <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
+                  >{{ personLight.name }} {{ personLight.surname }}</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="reperes">
+            <strong>Lieux</strong>
+            <ul>
+              <li>test test</li>
+              <li>encore un test</li>
+            </ul>
+          </div>
+          <div class="reperes">
+            <strong>Œuvres</strong>
+            <ul>
+              <li>encore un test</li>
+              <li>test test</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-    
-  </div>
+      
+    </div> <!-- end row -->
 
-  </div>
+</div>

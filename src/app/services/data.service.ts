@@ -2186,6 +2186,10 @@ OFFSET ${index}
       title: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}establishedTextHasTitle`
+      ),
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}establishedTextHasEditorialSet`
       )
     } as TextLight;
   }
@@ -2196,8 +2200,15 @@ OFFSET ${index}
       establishedText: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
-      )
-      
+      ),
+      baseWitMs: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasDirectSourceManuscriptValue`
+      ),
+      baseWitPub: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasDirectSourcePublicationValue`
+      ) 
     } as Text;
   }
 

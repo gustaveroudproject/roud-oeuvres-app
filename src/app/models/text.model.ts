@@ -9,8 +9,11 @@ import {
 
 export interface TextLight extends Resource {
   title: string;
+  editorialSet: string;
 }
 export interface Text extends TextLight {
   establishedText: string;
-  // imageURL: string;
+  baseWitMs: string;
+  baseWitPub: string;
+  comment: string;
 }
