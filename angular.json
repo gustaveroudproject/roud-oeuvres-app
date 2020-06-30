@@ -30,6 +30,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/@knora/search/assets/style/search.scss",
               "node_modules/leaflet/dist/leaflet.css"
             ],
@@ -92,6 +93,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/@knora/search/assets/style/search.scss",
               "node_modules/leaflet/dist/leaflet.css"        ],
             "scripts": [

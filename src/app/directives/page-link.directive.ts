@@ -1,6 +1,8 @@
 
 /*
 
+MAYBE DELETE THIS!! IT IS NO LONGER USED.
+
 Used in text-view component.
 
 Link between the content of the text and the image,
