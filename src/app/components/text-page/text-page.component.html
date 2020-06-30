@@ -29,18 +29,51 @@
 
 
 
-    <div class="row">     
+    <div class="row my-4">     
 
       <!-- TEXT CONTENT -->
-      <div class="col-8 my-4 container-scrollable">
-        <or-text-view [text]="text"></or-text-view>
+
+      <!-- reader controls -->
+      <div class="col-1">
+        <div class="my-1">
+          <button type="button" class="half btn btn-outline-secondary" 
+                  (click)="changeFontSize('readingText', 1)">+</button>
+          <button type="button" class="half btn btn-outline-secondary"
+                  (click)="changeFontSize('readingText', -1)">-</button>
+        </div>
+        <div class="my-1">
+          <button type="button" class="half btn btn-sm btn-outline-secondary" 
+                  (click)="changeHorizontalPadding('readingText', 20)">→←</button>
+          <button type="button" class="half btn btn-sm btn-outline-secondary" 
+                  (click)="changeHorizontalPadding('readingText', -20)">←→</button>
+        </div>
+        <div class="my-1">
+          <button type="button" class="half btn btn-sm btn-dark" 
+                  (click)="changeBackgroundColor('readingText', '#333333', '#ffffff')">dark</button>
+          <button type="button" class="half btn btn-sm btn-outline-secondary" 
+                  (click)="changeBackgroundColor('readingText', '#f8f8f8', '#212529')">light</button>
+        </div>
+        <div class="my-1">
+          <button type="button" class="half btn btn-sm btn-outline-secondary" 
+                  (click)="changeLineHeight('readingText', 1)">↑<br/>↓</button>
+          <button type="button" class="half btn btn-sm btn-outline-secondary" 
+                  (click)="changeLineHeight('readingText', -1)">↓<br/>↑</button>
+        </div>
+        <!-- font awesome downloaded but not used in the end -->
+      </div>
+
+      <!-- text MAIN-->
+      <div class="col-7 container-scrollable">
+        <main id="readingText">
+          <or-text-view [text]="text"></or-text-view>
+        </main>
       </div>
       
 
       <!-- ENTITIES -->
       <div class="col-3 offset-1">
 
-        <mat-expansion-panel class="my-4" expanded="true">
+        <mat-expansion-panel expanded="true">
           <mat-expansion-panel-header>
               <mat-panel-title>Repères</mat-panel-title>
           </mat-expansion-panel-header>
@@ -75,6 +108,8 @@
       </div> <!-- end col entities -->
       
     </div> <!-- end row -->
+
+
 
     <div class="row">
       <div class="col-7">

@@ -121,5 +121,37 @@ export class TextPageComponent implements OnInit {
       },
       error => console.error(error)
     );
+
+    
   }
+
+
+  changeFontSize(id: string, increaseValue:number){
+    var txt = document.getElementById(id);
+    var style = window.getComputedStyle(txt, null).getPropertyValue('font-size');
+    var currentSize = parseFloat(style);
+    txt.style.fontSize = (currentSize + increaseValue) + 'px';
+  }
+
+  changeHorizontalPadding(id: string, increaseValue:number){
+    var txt = document.getElementById(id);
+    var currentLeftPadding = parseFloat(window.getComputedStyle(txt, null).getPropertyValue('padding-left'));
+    var currentRightPadding = parseFloat(window.getComputedStyle(txt, null).getPropertyValue('padding-right'));
+    txt.style.paddingLeft = (currentLeftPadding + increaseValue) + 'px';
+    txt.style.paddingRight = (currentRightPadding + increaseValue) + 'px';
+  }
+
+  changeBackgroundColor(id: string, backgroundColor:string, color:string){
+    var txt = document.getElementById(id);
+    txt.style.backgroundColor = backgroundColor;
+    txt.style.color = color;
+  }
+
+  changeLineHeight(id: string, increaseValue:number){
+    var txt = document.getElementById(id);
+    var style = window.getComputedStyle(txt, null).getPropertyValue('line-height');
+    var currentLineHeight = parseFloat(style);
+    txt.style.lineHeight = (currentLineHeight + increaseValue) + 'px';
+  }
+
 }

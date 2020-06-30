@@ -1,7 +1,13 @@
 .container-scrollable {
   overflow-y: scroll;
-  height: 600px;
-  border: 1px solid lightgray;
+  background-color: #f8f8f8;
+  max-height: 2500px;
 }
 
+
+.half {
+  width: 45%;
+  margin-right: 5%;
+  height: 50px;
+}
 
