@@ -6,6 +6,10 @@ import { PersonLight } from 'src/app/models/person.model';
 import { PublicationLight, PeriodicalArticle, Book, BookSection } from 'src/app/models/publication.model';
 import { PeriodicalLight } from 'src/app/models/periodical.model';
 import { PublisherLight } from 'src/app/models/publisher.model';
+import { PlaceLight } from 'src/app/models/place.model';
+import { Work } from 'src/app/models/work.model';
+import { AuthorLight } from 'src/app/models/author.model';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'or-text-page',
@@ -13,14 +17,22 @@ import { PublisherLight } from 'src/app/models/publisher.model';
   styleUrls: ['./text-page.component.scss']
 })
 export class TextPageComponent implements OnInit {
+
+  faCoffee = faCoffee;
+  
   text: Text;
-  personsLight : PersonLight[];
+  personsMentioned : PersonLight[];
   baseWitPubLight: PublicationLight;
   periodicalArticle: PeriodicalArticle;
   periodicalLight: PeriodicalLight;
   book: Book;
   bookSection: BookSection;
   publisherLight: PublisherLight;
+  placesMentioned: PlaceLight[];
+  worksMentioned: Work[];
+  workAuthor: AuthorLight;
+  workAuthors: AuthorLight[];
+
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
@@ -41,14 +53,42 @@ export class TextPageComponent implements OnInit {
             (text: Text) => {
               this.text = text; // step 4    I give to the attribute text the value of text
 
-                // asynchrone, we need text to ask persons mentioned in text
+              // asynchrone
+              //// get persons mentioned in the text
               this.dataService
               .getPersonsInText(text.id)
-              .subscribe((personsLight: PersonLight[]) => {
-                this.personsLight = personsLight;
-                // console.log(personsLight);
+              .subscribe((personsMentioned: PersonLight[]) => {
+                this.personsMentioned = personsMentioned;
               });
 
+              //// get places mentioned in the text
+              this.dataService
+              .getPlacesInText(text.id)
+              .subscribe((placesMentioned: PlaceLight[]) => {
+                this.placesMentioned = placesMentioned;
+              });
+
+              //// get works mentioned in the text
+              this.dataService
+              .getWorksInText(text.id)
+              .subscribe((worksMentioned: Work[]) => {
+                this.worksMentioned = worksMentioned;
+
+                /// get works of authors
+                this.workAuthors = [];
+                for (var work in worksMentioned) {
+                  this.dataService
+                  .getAuthorLight(worksMentioned[work].authorValue)
+                  .subscribe(
+                    (workAuthor: AuthorLight) => {
+                      this.workAuthor = workAuthor;
+                      this.workAuthors.push(workAuthor);
+                    });
+                  }
+
+              });
+
+              //// get base witness publication
               this.dataService
               .getPublicationLight(text.baseWitPub)
               .subscribe((baseWitPubLight: PublicationLight) => {
@@ -126,12 +166,16 @@ export class TextPageComponent implements OnInit {
   }
 
 
+
+
+  /* READER CONTROLS
+  --------------------------------------------------------------------------*/
   changeFontSize(id: string, increaseValue:number){
     var txt = document.getElementById(id);
     var style = window.getComputedStyle(txt, null).getPropertyValue('font-size');
     var currentSize = parseFloat(style);
     txt.style.fontSize = (currentSize + increaseValue) + 'px';
-  }
+  };
 
   changeHorizontalPadding(id: string, increaseValue:number){
     var txt = document.getElementById(id);
@@ -139,19 +183,51 @@ export class TextPageComponent implements OnInit {
     var currentRightPadding = parseFloat(window.getComputedStyle(txt, null).getPropertyValue('padding-right'));
     txt.style.paddingLeft = (currentLeftPadding + increaseValue) + 'px';
     txt.style.paddingRight = (currentRightPadding + increaseValue) + 'px';
-  }
+  };
 
   changeBackgroundColor(id: string, backgroundColor:string, color:string){
     var txt = document.getElementById(id);
     txt.style.backgroundColor = backgroundColor;
     txt.style.color = color;
-  }
+  };
 
   changeLineHeight(id: string, increaseValue:number){
     var txt = document.getElementById(id);
     var style = window.getComputedStyle(txt, null).getPropertyValue('line-height');
     var currentLineHeight = parseFloat(style);
     txt.style.lineHeight = (currentLineHeight + increaseValue) + 'px';
-  }
+  };
+  
+
+
+  /* ENTITIES DISPLAY
+  --------------------------------------------------------------------------*/
+  visualizeEntities(){
+    this.visualizeOneTypeOfEntities("tei-persName", "#F5E663");
+    this.visualizeOneTypeOfEntities("tei-placeName", "#96CED9");
+    this.visualizeOneTypeOfEntities("tei-ref", "#FFAD69");
+  };
+
+
+  visualizeOneTypeOfEntities(teiElement: string, color: string) {
+    var checkBox = document.getElementById("entitiesCheckbox") as HTMLInputElement;
+    var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < entities.length; index++) {
+      const entity = entities[index];
+      if (checkBox.checked == true){
+        entity.style.border = "1px solid" + color;
+        entity.style.borderRadius = "3px";
+        entity.style.padding = "1px";
+        entity.style.backgroundColor = color;
+      }
+      else {
+        entity.style.border = "none";
+        entity.style.backgroundColor = "inherit";
+      }
+    }
+  };
+
+
+
 
 }
