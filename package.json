@@ -41,7 +41,7 @@
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
     "leaflet": "^1.6.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.26.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
