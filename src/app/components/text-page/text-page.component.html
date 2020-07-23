@@ -79,6 +79,8 @@
       
       <!-- ENTITIES -->
       <div class="col-3 offset-1">
+
+
         <mat-expansion-panel expanded="true">
           <mat-expansion-panel-header>
               <mat-panel-title>Repères</mat-panel-title>
@@ -93,8 +95,8 @@
                 </div>
               </div>
               <div>
-                  <fa-icon [icon]="faCoffee"></fa-icon>
-                  <strong class="tei-persName">Personnes</strong>
+                  <fa-icon [icon]="faUser"></fa-icon>
+                  <strong class="tei-persName"> Personnes</strong>
                   <ul>
                     <li *ngFor="let personLight of personsMentioned">
                       {{ personLight.name }} {{ personLight.surname }}
@@ -105,7 +107,8 @@
                   </ul>
               </div>
               <div>
-                  <strong class="tei-placeName">Lieux</strong>
+                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                  <strong class="tei-placeName"> Lieux</strong>
                   <ul>
                     <li *ngFor="let placeLight of placesMentioned">
                       {{ placeLight.name }}
@@ -116,7 +119,8 @@
                   </ul>
               </div>
               <div>
-                  <strong class="tei-ref">Œuvres</strong>
+                  <fa-icon [icon]="faPencilAlt"></fa-icon>
+                  <strong class="tei-ref"> Œuvres</strong>
                   <ul>
                     <li *ngFor="let work of worksMentioned">
                       <span *ngFor="let workAuthor of workAuthors">
@@ -132,8 +136,17 @@
                   </ul>
               </div>
           </div>
-        </mat-expansion-panel>
-      </div> <!-- end entities -->
+        </mat-expansion-panel> <!-- end entities -->
+
+        <!-- ARCHIVE ET GENÈSE-->
+        <div class="my-5">
+          <a class="btn btn-secondary"
+            href="/resources/{{ text?.baseWitPub | encodeURIComponent }}"
+            role="button">Archives et genèse</a>
+        </div>
+
+
+      </div>  <!-- end column -->
       
 
     </div> <!-- end row -->

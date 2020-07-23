@@ -42,53 +42,42 @@ export class RenderTeiDirective implements DoCheck {
     var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLLinkElement>);
     for (let index = 0; index < quotes.length; index++) {
       
-    const quote: HTMLLinkElement = quotes[index];
-    quote.style.display = "block";
-    quote.style.paddingLeft = "50px";
+      const quote: HTMLLinkElement = quotes[index];
+      quote.style.display = "block";
+      quote.style.paddingLeft = "50px";
 
-    // happens only once
-    if (quote.className != "sourceAdded") {
+      // happens only once
+      if (quote.className != "sourceAdded") {
+        quote.setAttribute("class", "sourceAdded");
+        
+        //undo everything that has been done by the directive orResourceLink ... 
+        const iri: string = quote.href.split('resources/')[1];
+        const decodedIri: string = decodeURIComponent(iri);
+        const encodedIri: string = encodeURIComponent(iri);
+        
+        // retrieve bibliographical reference of source
+        this.dataService
+        .getPublicationLight(decodedIri)
+        .subscribe((sourceLight: PublicationLight) => {
+          this.sourceLight = sourceLight;
 
-      quote.setAttribute("class", "sourceAdded");
-      
-      
-      //undo everything that has been done by the directive orResourceLink ... 
-      const iri: string = quote.href.split('resources/')[1];
-      const decodedIri: string = decodeURIComponent(iri);
-      const encodedIri: string = encodeURIComponent(iri);
-      
-      this.dataService
-      .getPublicationLight(decodedIri)
-      .subscribe((sourceLight: PublicationLight) => {
-        this.sourceLight = sourceLight;
+          const sourceTitle = (sourceLight.title).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<text><p>", "")
+          .replace("</p></text>", "");
 
-        const sourceTitle = sourceLight.title;
+          const sourceDate = sourceLight.date;
+        
+        // add icon, with tooltip and link to biblio ref
+        quote.insertAdjacentHTML("beforeend", 
+          ` <a  data-toggle="tooltip" data-placement="top" 
+          title="${sourceTitle} (${sourceDate})" href="${encodedIri}">&#128366;</a>`); 
+        });
 
-        quote.insertAdjacentHTML("beforeend", ` <a href="${encodedIri}">&#128366;</a>`);
-        // ADD TOOLTIP <span>${sourceTitle}</span> 
-      });
-
-      quote.removeAttribute("href");
-
-      
-    }
-    // indent
-    
-    /*
-    // if there is no child, i.e. if the node hasn't been already created on DoCheck
-    // (it does not work with other lifecycle events)
-    if (quote.children.length == 0) {
-      const iri: string = encodeURIComponent(quote.href);
-      var newItem = document.createElement("span"); 
-      var textnode = document.createTextNode("[" + iri + "]");
-      newItem.appendChild(textnode);
-      quote.insertBefore(newItem, quote.childNodes[0]);  
-      quote.insertAdjacentText("afterend", ` [${iri}]`)
-    };
-    */
+        // remove href behaviour to entire quote
+        quote.removeAttribute("href");
+      }
     };
     
-  }
+  };
   
 
 }

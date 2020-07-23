@@ -9,7 +9,9 @@ import { PublisherLight } from 'src/app/models/publisher.model';
 import { PlaceLight } from 'src/app/models/place.model';
 import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'or-text-page',
@@ -18,7 +20,9 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 })
 export class TextPageComponent implements OnInit {
 
-  faCoffee = faCoffee;
+  faUser = faUser;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faPencilAlt = faPencilAlt;
   
   text: Text;
   personsMentioned : PersonLight[];
