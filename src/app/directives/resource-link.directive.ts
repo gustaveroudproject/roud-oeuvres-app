@@ -1,3 +1,53 @@
+/*
+NEW VERSION (see below for Old version)
+It replaces the value of @href (which is an IRI) of all <a> with class="resourceLink" or "salsah-link" with
+"resources/theEncodedIri", adding resources.
+The rest is the same as in the older version, which was better but sometimes did not work.
+*/
+
+import { Directive, ElementRef, DoCheck } from '@angular/core';
+
+@Directive({
+  selector: '[orResourceLink]'
+})
+
+export class ResourceLinkDirective implements DoCheck {
+  constructor(
+    private el: ElementRef
+  ) { }
+          
+  ngDoCheck():void {
+    this.reRouteResourceLink(this.el);  // use function, that is defined below
+    this.reRouteSalsahLink(this.el);  // use function, that is defined below
+ }
+ 
+  reRouteResourceLink(el: ElementRef) {
+    var links = Array.from(el.nativeElement.getElementsByClassName('resourceLink') as HTMLCollectionOf<HTMLLinkElement>);
+    for (let index = 0; index < links.length; index++) {
+      const link: HTMLLinkElement = links[index];
+      var iri = encodeURIComponent(link.href);
+      if (! (iri.includes("resources"))) {
+        link.setAttribute("href", `resources/${iri}`);
+      };
+    }
+  }
+
+  reRouteSalsahLink(el: ElementRef) {
+    var links = Array.from(el.nativeElement.getElementsByClassName('salsah-link') as HTMLCollectionOf<HTMLLinkElement>);
+    for (let index = 0; index < links.length; index++) {
+      const link: HTMLLinkElement = links[index];
+      var iri = encodeURIComponent(link.href);
+      if (! (iri.includes("resources"))) {
+        link.setAttribute("href", `resources/${iri}`);
+      };
+    }
+  }
+
+}
+
+
+
+
 
 /*
 OLD VERSION, COMMENTED OUT NOW:
@@ -23,68 +73,30 @@ AfterContentChecked, AfterViewChecked, DoCheck work INTERMITTENTLY (see mss comm
 Only DoCheck is also for directives: <https://v2.angular.io/docs/ts/latest/guide/lifecycle-hooks.html#!#hooks-purpose-timing> 
 OnInit, AfterContentInit, AfterViewInit, OnChanges do NOT work.
 It works only when many links are created, because of DoCheck? NO!
-
-
-NEW VERSION:
-
-It replaces the value of @href (which is an IRI) of all <a> with class="resourceLink" or "salsah-link" with
-"resources/theEncodedIri", adding resources.
-The rest is the same as in the older version, which was better but sometimes did not work.
-
-
 */
 
 
-import { Directive, ElementRef, DoCheck } from '@angular/core';
+
+/* CODE
+
 //import { Router } from '@angular/router';
 
-@Directive({
-  selector: '[orResourceLink]'
-})
-export class ResourceLinkDirective implements DoCheck {
+//private router: Router,
+//private renderer: Renderer2  // Renderer2 makes it safer
 
-
-
-  constructor(
-    private el: ElementRef,
-    //private router: Router,
-    //private renderer: Renderer2  // Renderer2 makes it safer
-  ) { }
-          
-
-  ngDoCheck():void {
-    this.reRouteLink(this.el);  // use function, that is defined below
- }
-
- 
 reRouteLink(el: ElementRef) {
-
-  
-  el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLLinkElement) => {
-    var iri = encodeURIComponent(aElt.href);
-    // without if it keeps adding on DoCheck
-    if (! (iri.includes("resources"))) {
-      aElt.setAttribute("href", `resources/${iri}`);
-    };
-  });
-  
-  /*
   el.nativeElement.querySelectorAll('a[class="resourceLink"], a[class="salsah-link"]').forEach((aElt: HTMLElement) => {
     // console.log(aElt);
     // gives back an array of <a class="resourceLink">
     aElt.addEventListener('click', this.onClick.bind(this)); 
     //intercept click and call the following function, that navigates
   });
-  */
-  
 }
 
-
-/*onClick(event) {
+onClick(event) {
   this.router.navigate(['resources', event.target.getAttribute('href')]);
   event.preventDefault();
-}*/
- 
-
 }
+
+*/
 

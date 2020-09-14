@@ -1,16 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-/*
-body {
-    background: lightgray;
-    color: dodgerblue;
-}  
 
-*/
+/* using Bootstrap, see `angular.json` */
 
-/* just use Bootstrap */
 
 /* this is for Knora-ui */
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 
 * {
     font-family: "Helvetica Neue", Arial, sans-serif !important;

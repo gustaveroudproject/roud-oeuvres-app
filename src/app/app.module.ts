@@ -32,6 +32,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+/* FONTAWESOME ICONS */
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+
 /* COMPONENTS */
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
@@ -74,6 +78,7 @@ import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
 /* DIRECTIVES */
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
+import { RenderTeiDirective } from './directives/render-tei.directive';
 
 
 export function initializeApp(appInitService: AppInitService) {
@@ -117,7 +122,8 @@ export function initializeApp(appInitService: AppInitService) {
     PubcPubsReusedPartComponent,
     MscPubsReusingPartComponent,
     MscMssRewritingPartComponent,
-    MscMssRewrittenPartComponent
+    MscMssRewrittenPartComponent,
+    RenderTeiDirective
   ],
   imports: [
     MatExpansionModule,
@@ -138,7 +144,8 @@ export function initializeApp(appInitService: AppInitService) {
         useFactory: (http: HttpClient) => new TranslateHttpLoader(http),
         deps: [HttpClient]
       }
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [
     AppInitService,

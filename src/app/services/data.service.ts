@@ -13,6 +13,7 @@ import { AuthorLight } from '../models/author.model';
 import { PeriodicalLight, Periodical } from '../models/periodical.model';
 import { PublisherLight } from '../models/publisher.model';
 import { MsLight, MsPartLight, MsPart, Manuscript } from '../models/manuscript.model';
+import { WorkLight, Work } from '../models/work.model';
 
 
 import {
@@ -243,6 +244,80 @@ return this.knoraApiConnection.v2.search
       readResources: ReadResource[] 
     ) => readResources.map(r => {
         return this.readRes2PersonLight(r);
+      })
+    )
+  );
+}
+
+
+getPlacesInText(textIRI: string, index: number = 0): Observable<PlaceLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?place knora-api:isMainResource true .
+    ?place roud-oeuvres:placeHasName ?name .
+} WHERE {
+    ?place a roud-oeuvres:Place .
+    ?place roud-oeuvres:placeHasName ?name .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?place .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PlaceLight(r);
+      })
+    )
+  );
+}
+
+
+
+getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {  
+  const gravsearchQuery = `
+
+  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+  CONSTRUCT {
+      ?work knora-api:isMainResource true .
+      ?work roud-oeuvres:workHasTitle ?title .
+      ?work roud-oeuvres:workHasAuthor ?authorValue .
+      ?work roud-oeuvres:workHasDate ?date .
+      ?work roud-oeuvres:workHasNotice ?notice .
+  } WHERE {
+    ?work a roud-oeuvres:Work .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?work .
+      {
+        ?work roud-oeuvres:workHasTitle ?title .
+        ?work roud-oeuvres:workHasAuthor ?authorValue .
+        ?work roud-oeuvres:workHasDate ?date .
+      }
+      UNION
+      {
+        ?work roud-oeuvres:workHasTitle ?title .
+        ?work roud-oeuvres:workHasAuthor ?authorValue .
+        ?work roud-oeuvres:workHasDate ?date .
+        ?work roud-oeuvres:workHasNotice ?notice .
+      }
+  }
+  OFFSET ${index}
+`
+// don't understand why order by multiplies results?!
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2Work(r);
       })
     )
   );
@@ -2211,6 +2286,30 @@ OFFSET ${index}
       ) 
     } as Text;
   }
+
+
+  readRes2Work(readResource: ReadResource): Work {  
+    return {
+      ...this.readRes2Resource(readResource),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasTitle`
+      ),
+      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasAuthorValue`
+      ),
+      date: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasDate`
+      ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasNotice`
+      )
+    } as Work;    
+  }
+
 
   getFirstValueAsStringOrNullOfProperty(
     readResource: ReadResource,

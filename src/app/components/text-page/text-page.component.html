@@ -31,82 +31,124 @@
 
     <div class="row my-4">     
 
-      <!-- TEXT CONTENT -->
-
-      <!-- reader controls -->
+      <!-- READER CONTROLS -->
       <div class="col-1">
-        <div class="my-1">
-          <button type="button" class="half btn btn-outline-secondary" 
-                  (click)="changeFontSize('readingText', 1)">+</button>
-          <button type="button" class="half btn btn-outline-secondary"
-                  (click)="changeFontSize('readingText', -1)">-</button>
-        </div>
-        <div class="my-1">
-          <button type="button" class="half btn btn-sm btn-outline-secondary" 
-                  (click)="changeHorizontalPadding('readingText', 20)">→←</button>
-          <button type="button" class="half btn btn-sm btn-outline-secondary" 
-                  (click)="changeHorizontalPadding('readingText', -20)">←→</button>
-        </div>
-        <div class="my-1">
-          <button type="button" class="half btn btn-sm btn-dark" 
-                  (click)="changeBackgroundColor('readingText', '#333333', '#ffffff')">dark</button>
-          <button type="button" class="half btn btn-sm btn-outline-secondary" 
-                  (click)="changeBackgroundColor('readingText', '#f8f8f8', '#212529')">light</button>
-        </div>
-        <div class="my-1">
-          <button type="button" class="half btn btn-sm btn-outline-secondary" 
-                  (click)="changeLineHeight('readingText', 1)">↑<br/>↓</button>
-          <button type="button" class="half btn btn-sm btn-outline-secondary" 
-                  (click)="changeLineHeight('readingText', -1)">↓<br/>↑</button>
-        </div>
-        <!-- font awesome downloaded but not used in the end -->
-      </div>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+              <mat-panel-title>aA</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <div class="mb-5">
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeFontSize('readingText', 1)">+</button>
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary"
+                      (click)="changeFontSize('readingText', -1)">-</button>
+            </div>
+            <div class="mb-5">
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeHorizontalPadding('readingText', 20)">→←</button>
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeHorizontalPadding('readingText', -20)">←→</button>
+            </div>
+            <div class="mb-5">
+              <button type="button" class="btn-block btn btn-sm btn-dark" 
+                      (click)="changeBackgroundColor('readingText', '#333333', '#ffffff')">dark</button>
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeBackgroundColor('readingText', '#f8f8f8', '#212529')">light</button>
+            </div>
+            <div class="mb-5">
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeLineHeight('readingText', 1)">↑<br/>↓</button>
+              <button type="button" class="btn-block btn btn-sm btn-outline-secondary" 
+                      (click)="changeLineHeight('readingText', -1)">↓<br/>↑</button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div> <!-- end reader controlS -->
 
-      <!-- text MAIN-->
-      <div class="col-7 container-scrollable">
-        <main id="readingText">
+      
+      
+      <!-- TEXT CONTENT - MAIN -->
+      <div class="col-7 container-scrollable" id="readingText">
+        <main>
           <or-text-view [text]="text"></or-text-view>
         </main>
-      </div>
+      </div> <!-- end text content -->
       
 
+      
       <!-- ENTITIES -->
       <div class="col-3 offset-1">
+
 
         <mat-expansion-panel expanded="true">
           <mat-expansion-panel-header>
               <mat-panel-title>Repères</mat-panel-title>
           </mat-expansion-panel-header>
           <div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="entitiesCheckbox" (click)="visualizeEntities(body)">
+                  <label class="form-check-label" for="entitiesCheckbox">
+                    Trouver dans le texte
+                  </label>
+                </div>
+              </div>
               <div>
-                  <strong>Personnes</strong>
+                  <fa-icon [icon]="faUser"></fa-icon>&nbsp;
+                  <strong class="tei-persName">Personnes</strong>
                   <ul>
-                    <li *ngFor="let personLight of personsLight">
+                    <li *ngFor="let personLight of personsMentioned">
+                      {{ personLight.name }} {{ personLight.surname }}
                       <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
-                        >{{ personLight.name }} {{ personLight.surname }}</a
+                        >&nbsp;🔗</a
                       >
                     </li>
                   </ul>
               </div>
               <div>
-                  <strong>Lieux</strong>
+                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>&nbsp;
+                  <strong class="tei-placeName">Lieux</strong>
                   <ul>
-                    <li>test test</li>
-                    <li>encore un test</li>
+                    <li *ngFor="let placeLight of placesMentioned">
+                      {{ placeLight.name }}
+                      <a routerLink="/places/{{ placeLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
                   </ul>
               </div>
               <div>
-                  <strong>Œuvres</strong>
+                  <fa-icon [icon]="faPencilAlt"></fa-icon>&nbsp;
+                  <strong class="tei-ref">Œuvres</strong>
                   <ul>
-                    <li>encore un test</li>
-                    <li>test test</li>
+                    <li *ngFor="let work of worksMentioned">
+                      <span *ngFor="let workAuthor of workAuthors">
+                        <span *ngIf="workAuthor?.id == work?.authorValue">{{ workAuthor?.name}} {{ workAuthor?.surname }}, </span>
+                      </span>
+                      <span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span>
+                      <span *ngIf="work?.date">, {{ work?.date | knoradatesFormatting }}</span>
+                      
+                      <span *ngIf="work?.notice != null">
+                        <a routerLink="/works/{{ work?.id | encodeURIComponent }}">&nbsp;🔗</a>
+                      </span>
+                    </li>
                   </ul>
               </div>
           </div>
-        </mat-expansion-panel>
-         
-      </div> <!-- end col entities -->
+        </mat-expansion-panel> <!-- end entities -->
+
+        <!-- ARCHIVE ET GENÈSE-->
+        <div class="my-5">
+          <a class="btn btn-secondary"
+            href="/resources/{{ text?.baseWitPub | encodeURIComponent }}"
+            role="button">Archives et genèse</a>
+        </div>
+
+
+      </div>  <!-- end column -->
       
+
     </div> <!-- end row -->
 
 
