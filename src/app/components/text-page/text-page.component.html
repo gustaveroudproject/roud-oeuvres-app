@@ -95,42 +95,42 @@
                 </div>
               </div>
               <div>
-                  <fa-icon [icon]="faUser"></fa-icon>
-                  <strong class="tei-persName"> Personnes</strong>
+                  <fa-icon [icon]="faUser"></fa-icon>&nbsp;
+                  <strong class="tei-persName">Personnes</strong>
                   <ul>
                     <li *ngFor="let personLight of personsMentioned">
                       {{ personLight.name }} {{ personLight.surname }}
                       <a routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
-                        > 🔗</a
+                        >&nbsp;🔗</a
                       >
                     </li>
                   </ul>
               </div>
               <div>
-                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
-                  <strong class="tei-placeName"> Lieux</strong>
+                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>&nbsp;
+                  <strong class="tei-placeName">Lieux</strong>
                   <ul>
                     <li *ngFor="let placeLight of placesMentioned">
                       {{ placeLight.name }}
                       <a routerLink="/places/{{ placeLight.id | encodeURIComponent }}"
-                        > 🔗</a
+                        >&nbsp;🔗</a
                       >
                     </li>
                   </ul>
               </div>
               <div>
-                  <fa-icon [icon]="faPencilAlt"></fa-icon>
-                  <strong class="tei-ref"> Œuvres</strong>
+                  <fa-icon [icon]="faPencilAlt"></fa-icon>&nbsp;
+                  <strong class="tei-ref">Œuvres</strong>
                   <ul>
                     <li *ngFor="let work of worksMentioned">
                       <span *ngFor="let workAuthor of workAuthors">
                         <span *ngIf="workAuthor?.id == work?.authorValue">{{ workAuthor?.name}} {{ workAuthor?.surname }}, </span>
                       </span>
                       <span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span>
-                      <span *ngIf="work?.date"> ({{ work?.date | knoradatesFormatting }})</span>
+                      <span *ngIf="work?.date">, {{ work?.date | knoradatesFormatting }}</span>
                       
                       <span *ngIf="work?.notice != null">
-                        <a routerLink="/works/{{ work?.id | encodeURIComponent }}"> 🔗</a>
+                        <a routerLink="/works/{{ work?.id | encodeURIComponent }}">&nbsp;🔗</a>
                       </span>
                     </li>
                   </ul>
