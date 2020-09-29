@@ -5,15 +5,15 @@
         <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
             <h3>
                 « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
-                <i>{{ periodicalLight?.title }}</i>
-                ({{ periodicalArticle?.date | knoradatesFormatting }})
+                <i>{{ periodicalLight?.title }}</i>,
+                {{ periodicalArticle?.date | knoradatesFormatting }}
             </h3>
         </div>
 
         <div *ngIf="book != null"> 
             <h3>
-                <i [innerHTML]="book?.title | htmlSanitizer"></i>
-                ({{ book?.date | knoradatesFormatting }})
+                <i [innerHTML]="book?.title | htmlSanitizer"></i>,
+                {{ book?.date | knoradatesFormatting }}
             </h3>
         </div>
 
@@ -21,7 +21,7 @@
             <h3>
                 « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
                 <i>{{ bookSection?.book }}</i>,
-                ({{ book?.date | knoradatesFormatting }})
+                {{ book?.date | knoradatesFormatting }}
             </h3>
         </div>
     </div>
@@ -242,8 +242,8 @@
                                     || pubReused?.resourceClassLabel == 'Book section'">
                                     <a routerLink="/resources/{{ pubReused.id | encodeURIComponent }}"
                                         ><span [innerHTML]="pubReused?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>
-                                    ({{ pubReused?.date | knoradatesFormatting }})
+                                    </a>,
+                                    {{ pubReused?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReused?.title }}
@@ -282,8 +282,8 @@
                                     || pubReusing?.resourceClassLabel == 'Book section'">
                                     <a routerLink="/resources/{{ pubReusing.id | encodeURIComponent }}"
                                         ><span [innerHTML]="pubReusing?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>
-                                    ({{ pubReusing?.date | knoradatesFormatting }})
+                                    </a>,
+                                    {{ pubReusing?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReusing?.title }}

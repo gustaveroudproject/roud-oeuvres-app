@@ -161,8 +161,8 @@
                                     || pubAT?.resourceClassLabel == 'Book section'">
                                     <a routerLink="/archive/pub/{{ pubAT.id | encodeURIComponent }}"
                                         ><span [innerHTML]="pubAT?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>
-                                    ({{ pubAT?.date | knoradatesFormatting }})
+                                    </a>,
+                                    {{ pubAT?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubAT?.title }}
@@ -269,8 +269,8 @@
                                     || pubD?.resourceClassLabel == 'Book section'">
                                     <a routerLink="/archive/pub/{{ pubD.id | encodeURIComponent }}"
                                         ><span [innerHTML]="pubD?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>
-                                    ({{ pubD?.date | knoradatesFormatting }})
+                                    </a>,
+                                    {{ pubD?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubD?.title }}

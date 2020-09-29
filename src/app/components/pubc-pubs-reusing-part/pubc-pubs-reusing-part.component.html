@@ -7,8 +7,8 @@
             || pubReusingPart?.resourceClassLabel == 'Book section'">
             <a routerLink="/resources/{{ pubReusingPart.id | encodeURIComponent }}"
                 ><span [innerHTML]="pubReusingPart?.title | removeTextAndPar | htmlSanitizer"></span>
-            </a>
-            ({{ pubReusingPart?.date | knoradatesFormatting }})
+            </a>,
+            {{ pubReusingPart?.date | knoradatesFormatting }}
         </span>
         <span *ngIf="pubReusingPart?.resourceClassLabel == 'Part of a publication'">
             {{ pubReusingPart?.title }}
