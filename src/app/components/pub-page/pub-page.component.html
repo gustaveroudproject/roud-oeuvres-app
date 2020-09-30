@@ -153,13 +153,13 @@
                 <!-- disable panel if empty -->
                 <mat-expansion-panel id="panelGenesis" class="my-4" [disabled]="panelGenesisDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Genèse</mat-panel-title>
+                    <mat-panel-title>Genèse (matériaux utilisés pour l'élaboration du texte)</mat-panel-title>
                     </mat-expansion-panel-header>
                         
                     
                     <div class="mainCategory">
                         <span class="strong">
-                            <strong>Notes de journal utilisées dans la genèse</strong>
+                            <strong>Notes de journal</strong>
                         </span>
                         <!-- Cannot make one gravsearch query for both of them, 
                             because needs to specify mainResource and
@@ -231,7 +231,7 @@
                     
                     <div class="mainCategory">
                         <span class="strong">
-                            <strong>Publications utilisées dans la genèse</strong>
+                            <strong>Publications antérieures</strong>
                         </span>
                         <ul>
                             <li class="liGenesis" *ngFor="let pubReused of pubsReused">
