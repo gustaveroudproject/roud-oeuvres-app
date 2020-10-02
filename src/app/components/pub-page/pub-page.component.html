@@ -6,7 +6,7 @@
             <h3>
                 « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
                 <i>{{ periodicalLight?.title }}</i>,
-                {{ periodicalArticle?.date | knoradatesFormatting }}
+                {{ periodicalArticle?.date | knoradatesYmdFormatting }}
             </h3>
         </div>
 
@@ -97,8 +97,8 @@
                         </span>,
                         « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
                         <i>{{ periodicalLight?.title }}</i>,
-                        <span *ngIf="periodicalArticle?.issue">n° {{ periodicalArticle?.issue }}</span><span *ngIf="periodicalArticle?.volume">
-                            ({{ periodicalArticle?.volume }})</span>,
+                        <span *ngIf="periodicalArticle?.issue">n<sup>o</sup> {{ periodicalArticle?.issue } }<span *ngIf="periodicalArticle?.volume">
+                            ({{ periodicalArticle?.volume }})</span>,</span>
                         <span *ngIf="periodicalArticle?.collaborators != null">{{ periodicalArticle?.collaborators }},</span>
                         <!--there is no entry with multiple collaborators even if cardinality would allow it-->
                         {{ periodicalArticle?.date | knoradatesYmdFormatting }},
