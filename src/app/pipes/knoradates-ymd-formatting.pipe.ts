@@ -28,7 +28,7 @@ export class knoradatesYmdFormattingPipe implements PipeTransform {
       monthsMap.set( "06", "juin")
       monthsMap.set( "07", "juillet")
       monthsMap.set( "08", "août")
-      monthsMap.set( "09", "septembre09")
+      monthsMap.set( "09", "septembre")
       monthsMap.set( "10", "octobre")
       monthsMap.set( "11", "novembre")
       monthsMap.set( "12", "décembre")
