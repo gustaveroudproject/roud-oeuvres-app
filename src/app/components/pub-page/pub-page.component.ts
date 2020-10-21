@@ -51,6 +51,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
   pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
+  publicationsRepublishingPub: PublicationLight[];
+  publicationsRepublished: PublicationLight[];
 
 
 
@@ -197,6 +199,19 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                           }
                       });
 
+                      this.dataService
+                      .getPublicationsRepublishingPublication(publicationLight.id)
+                      .subscribe((publicationsRepublishingPub: PublicationLight[]) => {
+                        this.publicationsRepublishingPub = publicationsRepublishingPub;
+                      });
+
+                    this.dataService
+                    .getPublicationsRepublishedInPublication(publicationLight.id)
+                    .subscribe((publicationsRepublished: PublicationLight[]) => {
+                      this.publicationsRepublished = publicationsRepublished;
+
+                    });
+
 
                     this.pubsReusing = [];
                     //// get publications reusing this publication
@@ -231,8 +246,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
 
                     
-                    
-
 
                     //// if it is a PERIODICAL ARTICLE, retrieve its properties
                     if (publicationLight.resourceClassLabel == 'Periodical article') {
@@ -323,6 +336,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   }
 
   ngDoCheck() {
+
     // MOVE INTO DIRECTIVES ? NO, because it is more complicated to act on the disable attribute of the panel, which is here
     this.disableExpansionPanelReprisesIfEmtpy(this.el);
     this.disableExpansionPanelGenesisIfEmtpy(this.el);
@@ -356,15 +370,21 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   greyCategoryIfEmpty(el: ElementRef) {
     el.nativeElement.querySelectorAll('div[class="mainCategory"]').forEach((mainCatEl: HTMLElement) => {
       // for each main category, how many li exists
+      
       var liGenesisLength = mainCatEl.getElementsByClassName("liGenesis").length;
+      
       if (liGenesisLength > 0) {
         mainCatEl.style.color = "black";        
       }
       else {
         mainCatEl.style.color = "#bfbfbf";  
       };
+      
     });
   }
+
+
+  
 
 
 
@@ -395,7 +415,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     // this shold be replaced with querySelector, because it is only one
     el.nativeElement.querySelectorAll('#panelReprises').forEach((panRepElt: HTMLElement) => { 
       // check how many li exists
-      var liReprisesLength = panRepElt.getElementsByClassName("liReprises").length
+      var liReprisesLength = panRepElt.getElementsByClassName("liGenesis").length
       if (liReprisesLength > 0) {
         this.panelReprisesDisableState = false;        
       }
