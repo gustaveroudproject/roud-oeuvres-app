@@ -264,6 +264,25 @@
                             </li>
                         </ul>
                     </div>
+
+                    <div class="mainCategory">
+                        <span class="strong">
+                            <strong>Réedition de</strong>
+                        </span>
+                        <ul>
+                            <li class="liGenesis" *ngFor="let pubRepublished of publicationsRepublished">
+                                <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
+                                    because it is the same component, so need to pass through /resources -->  
+                                <span> <!-- can only be a book -->
+                                    <a routerLink="/resources/{{ pubRepublished.id | encodeURIComponent }}"
+                                        ><span [innerHTML]="pubRepublished?.title | removeTextAndPar | htmlSanitizer"></span>
+                                    </a>,
+                                    {{ pubRepublished?.date | knoradatesFormatting }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
                 </mat-expansion-panel>
 
 
@@ -272,9 +291,12 @@
                         <mat-panel-title>Reprises</mat-panel-title>
                     </mat-expansion-panel-header>
 
-                    <div>
+                    <div class="mainCategory">
+                        <span class="strong">
+                            <strong>Réemploi du texte pour une nouvelle publication</strong>
+                        </span>
                         <ul>
-                            <li class="liReprises" *ngFor="let pubReusing of pubsReusing">
+                            <li class="liGenesis" *ngFor="let pubReusing of pubsReusing">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Book'
@@ -309,6 +331,29 @@
                             </li>
                         </ul>
                     </div>
+
+
+                    <div class="mainCategory">
+                        <div *ngIf="publicationLight?.resourceClassLabel == 'Book'">
+                            <span class="strong">
+                                <strong>Réeditions</strong>
+                            </span>
+                            <ul>
+                                <li class="liGenesis" *ngFor="let pubRepublishing of publicationsRepublishingPub">
+                                    <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
+                                        because it is the same component, so need to pass through /resources -->  
+                                    <span> <!-- can only be book -->
+                                        <a routerLink="/resources/{{ pubRepublishing.id | encodeURIComponent }}"
+                                            ><span [innerHTML]="pubRepublishing?.title | removeTextAndPar | htmlSanitizer"></span>
+                                        </a>,
+                                        {{ pubRepublishing?.date | knoradatesFormatting }}
+                                    </span>
+                                </li>
+                            </ul>
+                            <!-- no parts, because republication is always of the entire book -->
+                        </div>
+                    </div>
+
                 </mat-expansion-panel>
 
 

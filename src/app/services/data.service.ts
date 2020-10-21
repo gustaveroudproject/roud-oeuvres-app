@@ -598,6 +598,40 @@ return this.knoraApiConnection.v2.search
 }
 
 
+getPublicationsRepublishedInPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pub knora-api:isMainResource true .
+    ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+} WHERE {
+    ?pub a roud-oeuvres:Publication .
+    ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PublicationLight(r);
+      })
+    )
+  );
+}
+
+
+
 getPubOfPubPart(iri: string): Observable<PublicationLight> {
   return this.knoraApiConnection.v2.res
     .getResource(iri)
@@ -812,6 +846,43 @@ return this.knoraApiConnection.v2.search
     )
   );
 }
+
+
+
+getPublicationsRepublishingPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pub knora-api:isMainResource true .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+} WHERE {
+    ?pub a roud-oeuvres:Publication .
+    <${textIRI}> roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PublicationLight(r);
+      })
+    )
+  );
+}
+
+
+
 
 
 getPubsReusingDiary(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
