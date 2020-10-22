@@ -1,0 +1,47 @@
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="py-4 page-title">
+        <h3>{{essay?.title}}</h3>
+        <h5>par {{essay?.author}}</h5>
+    </div>
+
+    <!-- PICTURES -->
+    <div class="row py-5" *ngIf="photos && photos.length > 0"> <!-- only show if there are pictures -->
+        <div *ngFor="let photo of photos" class="col-6">
+            <img width="80%"
+            src="{{ photo.imageURL }}"
+            />
+            <br/>
+            <span>{{photo?.title}}</span>
+        </div>
+    </div>
+
+    <!-- TEXT CONTENT - MAIN -->
+    <div class="row py-2">
+        <div>
+            <main>
+                <div [innerHtml]="essay?.textContent | htmlSanitizer" orResourceLink></div>
+            </main>
+        </div> <!-- end text content -->
+    </div>
+
+    <!-- SCANS -->
+    <div class="row py-5" *ngIf="pages && pages.length > 0"> <!-- only show if there are scans -->
+        <div *ngFor="let page of pages" class="col-6">
+            <img width="80%"
+            src="{{ page.imageURL }}"
+            />
+            <br/>
+            <span>{{page?.name}}</span>
+        </div>
+    </div>
+
+
+    <!-- BIBLIO -->
+    <div class="row py-2">
+        
+    </div>
+    
+
+</div>

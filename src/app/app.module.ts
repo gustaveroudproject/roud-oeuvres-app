@@ -49,6 +49,7 @@ import { TextsPageComponent } from './components/texts-page/texts-page.component
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
+import { EssayPageComponent } from './components/essay-page/essay-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
@@ -123,7 +124,8 @@ export function initializeApp(appInitService: AppInitService) {
     MscPubsReusingPartComponent,
     MscMssRewritingPartComponent,
     MscMssRewrittenPartComponent,
-    RenderTeiDirective
+    RenderTeiDirective,
+    EssayPageComponent
   ],
   imports: [
     MatExpansionModule,

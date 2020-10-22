@@ -12,15 +12,16 @@ import { PublicationLight, Publication, PeriodicalArticle, Book, BookSection, Pu
 import { AuthorLight } from '../models/author.model';
 import { PeriodicalLight, Periodical } from '../models/periodical.model';
 import { PublisherLight } from '../models/publisher.model';
-import { MsLight, MsPartLight, MsPart, Manuscript } from '../models/manuscript.model';
-import { WorkLight, Work } from '../models/work.model';
-
+import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
+import { Work } from '../models/work.model';
+import { Essay, EssayLight } from '../models/essay.model';
 
 import {
   KnoraApiConnectionToken,
   KuiConfigToken,
   KuiConfig
 } from '@knora/core';
+
 
 @Injectable({
   providedIn: 'root'
@@ -154,6 +155,17 @@ return this.knoraApiConnection.v2.search
 
 
 
+
+getPage(iri: string): Observable<Page> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2Page(readResource))
+    );
+}
+
+
+
 getPicturesOfPerson(personIRI: string, index: number = 0): Observable<Picture[]> {  //Observable va retourner table of Pictures
   const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -213,6 +225,16 @@ return this.knoraApiConnection.v2.search
   );
 }
 
+
+
+
+getPicture(iri: string): Observable<Picture> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2Picture(readResource))
+    );
+}
 
 
 
@@ -1900,6 +1922,53 @@ OFFSET ${index}
 
 
 
+
+
+
+  getEssaysLight(index: number = 0): Observable<EssayLight[]> {
+    const gravsearchQuery = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+  ?essayLight knora-api:isMainResource true .
+  ?essayLight roud-oeuvres:essayHasTitle ?title .
+  ?essayLight roud-oeuvres:essayHasAuthor ?author .
+} WHERE {
+  ?essayLight a roud-oeuvres:Essay .
+  ?essayLight roud-oeuvres:essayHasTitle ?title .
+  ?essayLight roud-oeuvres:essayHasAuthor ?author .
+} ORDER BY ASC(?title)
+OFFSET ${index}
+`;
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((readResources: ReadResource[]) =>
+          readResources.map(r => this.readRes2EssayLight(r))
+        )
+      );
+  }
+
+  getEssay(iri: string): Observable<Essay> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2Essay(readResource))
+      );
+  }
+
+  
+  getEssays(iris: string[]): Observable<Essay[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Essay(r)))
+      );
+  }
+
+
+
+
   readRes2Resource(readResource: ReadResource): Resource {
     return {
       id: readResource.id,
@@ -2380,6 +2449,44 @@ OFFSET ${index}
       )
     } as Work;    
   }
+
+
+  readRes2EssayLight(readResource: ReadResource): EssayLight {  
+    return {
+      ...this.readRes2Resource(readResource),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasTitle`
+      ),
+      author: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasAuthor`
+      )
+    } as EssayLight;    
+  }
+
+  readRes2Essay(readResource: ReadResource): Essay {
+    return {
+      ...this.readRes2EssayLight(readResource),  
+      textContent: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasTextContent`
+      ),
+      photos: this.getArrayOfValues(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
+      ),
+      scans: this.getArrayOfValues(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasLinkToScanValue`
+      ),
+      biblios: this.getArrayOfValues(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasBibliographyItemValue`
+      )
+    } as Essay;
+  }
+
 
 
   getFirstValueAsStringOrNullOfProperty(
