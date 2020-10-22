@@ -1,23 +1,30 @@
 <div class="container">
     <h2 class="p-5"><b>{{ 'essays.essays' | translate }}</b></h2>
 
-
     <!-- row carousel -->
     <div class="row justify-content-center">         
         <div class='col-8'>  
             <ngb-carousel>  
-                <ng-template ngbSlide>  
-                    <img class="carousel-img" src="assets/img/blue.jpeg" alt="Gustave Roud et les étoiles">  
-                    <div class="carousel-caption">  
-                        <h4>Gustave Roud et les étoiles</h4>  
-                    </div>  
+
+
+                <ng-template ngbSlide *ngFor="let essayLight of essaysLight">  
+                    <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
+                        <img class="carousel-img" src="assets/img/blue.jpeg" alt="{{essayLight?.title}}">  
+                        <div class="carousel-caption">  
+                            <h4>{{essayLight?.title}}</h4>  
+                        </div>  
+                    </a>
                 </ng-template>  
+                
+                
                 <ng-template ngbSlide>  
                     <img class="carousel-img" src="assets/img/yellow.jpeg" alt="La mise en recueil chez Gustave Roud">  
                     <div class="carousel-caption">  
                         <h4>La mise en recueil chez Gustave Roud</h4>  
                     </div>  
                 </ng-template>  
+                
+                
                 <ng-template ngbSlide>  
                     <img class="carousel-img" src="assets/img/red.jpeg" alt="La campagne vaudoise au XXe siècle<">  
                     <div class="carousel-caption">  
@@ -32,21 +39,17 @@
     <!-- first row cards -->
     <div class="row">
 
-        <div class="card p-3 col-3">
+        <div class="card p-3 col-3" *ngFor="let essayLight of essaysLight">
             <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/red.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Gustave Roud et les oiseaux
-                        </a>
-                    </h5>
-                </div>
+                <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
+                    <img class="card-img" src="assets/img/red.jpeg" width="100%">
+                </a>
             </div>
+            <h5 class="pt-2">
+                <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
+                    {{essayLight?.title}}
+                </a>
+            </h5>
         </div>
 
         <div class="card p-3 col-3">

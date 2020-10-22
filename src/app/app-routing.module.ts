@@ -8,6 +8,7 @@ import { TextsPageComponent } from './components/texts-page/texts-page.component
 import { TextPageComponent } from './components/text-page/text-page.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EssaysPageComponent } from './components/essays-page/essays-page.component';
+import { EssayPageComponent } from './components/essay-page/essay-page.component';
 import { PersonPageComponent } from './components/person-page/person-page.component';
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PubPageComponent } from './components/pub-page/pub-page.component';
@@ -27,7 +28,13 @@ const routes: Routes = [
   },
   { path: 'archive/pub/:iri', component: PubPageComponent },
   { path: 'archive/ms/:iri', component: MsPageComponent },
-  { path: 'essays', component: EssaysPageComponent },
+  {
+    path: 'essays',
+    children: [
+      { path: '', component: EssaysPageComponent },
+      { path: ':iri', component: EssayPageComponent }
+    ]
+  },
   {
     path: 'search',
     component: SearchPageComponent, // --> Component with the search panel
