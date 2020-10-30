@@ -71,7 +71,8 @@
       <!-- TEXT CONTENT - MAIN -->
       <div class="col-7 container-scrollable" id="readingText">
         <main>
-          <or-text-view [text]="text"></or-text-view>
+          <div [innerHtml]="text?.establishedText | htmlSanitizer" orResourceLink orRenderTei></div>
+          <!-- <or-text-view [text]="text"></or-text-view>--> 
         </main>
       </div> <!-- end text content -->
       

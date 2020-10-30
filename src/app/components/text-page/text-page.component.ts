@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Text } from 'src/app/models/text.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
@@ -40,7 +40,8 @@ export class TextPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
-    private dataService: DataService
+    private dataService: DataService,
+    private el:ElementRef
   ) {}
 
   ngOnInit() {
@@ -49,10 +50,67 @@ export class TextPageComponent implements OnInit {
     //3. construire un objet de la classe text
     //4. l'affecter à cette variable
 
+/*
+    , {fragment: 'id_RPM9AIaxST2d4PFq_p3h5A'}).then(res => {
+      console.log(res);
+
+      // THIS IS NOT WORKING, IT GIVES BACK NULL
+      const element = this.el.nativeElement.querySelector('#id_RPM9AIaxST2d4PFq_p3h5A');
+      console.log("testElement", element)
+      
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+          
+        let testElement = document.getElementById('id_RPM9AIaxST2d4PFq_p3h5A');
+        console.log("testElement", testElement)
+        if (testElement != undefined) testElement.scrollIntoView();
+        
+    }
+*/
+
+// get fragment
+/*
+this.route.fragment.subscribe((fragment: string) => {
+  console.log("My hash fragment is here => ", fragment)
+
+  const element = this.el.nativeElement.querySelector(fragment);
+  if (element) {
+    setTimeout(() => {
+      element.scrollIntoView();
+    });
+    };
+    
+});
+*/
+
+    
     this.route.paramMap.subscribe(
       params => {
+        var iri = decodeURIComponent(params.get('iri'));
+        var fragment = decodeURIComponent(params.get('iri'));
+          console.log("iri: "+ iri);      
+          // if iri has fragment, iri changes value
+          if (iri.includes('#')) {
+            var iri = iri.split('#')[0];
+            var fragment = fragment.split('#')[1];
+            console.log("fragment: "+ fragment);
+          }
+
+          //const element = this.el.nativeElement.querySelector(fragment);
+          //  console.log("element: " + element);
+            /*
+            if (element) {
+              setTimeout(() => {
+                element.scrollIntoView();
+              });
+              };
+
+              */
+
         this.dataService
           .getText(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          //.getText(iri) // step 1, 2 and 3
           .subscribe(
             (text: Text) => {
               this.text = text; // step 4    I give to the attribute text the value of text
