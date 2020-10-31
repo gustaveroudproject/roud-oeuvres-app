@@ -71,7 +71,8 @@
       <!-- TEXT CONTENT - MAIN -->
       <div class="col-7 container-scrollable" id="readingText">
         <main>
-          <or-text-view [text]="text"></or-text-view>
+          <div [innerHtml]="text?.establishedText | htmlSanitizer" orResourceLink orRenderTei></div>
+          <!-- <or-text-view [text]="text"></or-text-view>--> 
         </main>
       </div> <!-- end text content -->
       
@@ -88,7 +89,7 @@
           <div>
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="entitiesCheckbox" (click)="visualizeEntities(body)">
+                  <input class="form-check-input" type="checkbox" id="entitiesCheckbox" (click)="visualizeEntities()">
                   <label class="form-check-label" for="entitiesCheckbox">
                     Trouver dans le texte
                   </label>

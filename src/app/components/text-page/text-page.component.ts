@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Text } from 'src/app/models/text.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
@@ -9,14 +9,14 @@ import { PublisherLight } from 'src/app/models/publisher.model';
 import { PlaceLight } from 'src/app/models/place.model';
 import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
-import { faLink, faUser, faPencilAlt, faExternalLinkAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'or-text-page',
   templateUrl: './text-page.component.html',
   styleUrls: ['./text-page.component.scss']
 })
-export class TextPageComponent implements OnInit {
+export class TextPageComponent implements OnInit, AfterViewInit {  
 
   faUser = faUser;
   faMapMarkerAlt = faMapMarkerAlt;
@@ -37,18 +37,29 @@ export class TextPageComponent implements OnInit {
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
 
+  id_fragment: string;
 
+  
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
     private dataService: DataService
-  ) {}
+  ) { }
+
+  
 
   ngOnInit() {
+
+    // assign to the variable id_fragment the value of the fragment inside the URL
+    // (everything after #, as built by the resource-router component)
+    this.route.fragment.subscribe((fragment: string) => {
+      // console.log("My hash fragment is here => ", fragment);
+      this.id_fragment = fragment;
+    });
+
     //1. recuperer IRI du URL courent (ActivatedRoute)
     //2. recuperer la ressource de Knora
     //3. construire un objet de la classe text
     //4. l'affecter à cette variable
-
     this.route.paramMap.subscribe(
       params => {
         this.dataService
@@ -165,10 +176,35 @@ export class TextPageComponent implements OnInit {
       },
       error => console.error(error)
     );
-
     
-  }
+  };
 
+
+  
+
+  ngAfterViewInit() {
+
+    // execute only if the URL contains a fragment, retrieved above at the beginning of ngOnInit
+    if (this.id_fragment) {
+
+      setTimeout(() => {
+
+        // scroll into view the element identified by the fragment id
+        // console.log(document.querySelector('#' + this.id_fragment));
+        document.querySelector('#' + this.id_fragment).scrollIntoView({block: "center"}); // option block defines vertical alignment
+
+        // check entities checkBox and visualize entities
+        var checkBox = document.getElementById("entitiesCheckbox") as HTMLInputElement;
+        checkBox.checked = true;
+        this.visualizeEntities();
+
+      }, (1000)); 
+      // setTimeout indicates the time it will wait before doing this. 1000ms = 1 second.
+      // If it does not wait that long, the text is not yet initialized so nothing will work.
+    }; 
+
+  };
+  
 
 
 
@@ -218,7 +254,7 @@ export class TextPageComponent implements OnInit {
     var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < entities.length; index++) {
       const entity = entities[index];
-      if (checkBox.checked == true){
+      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
         entity.style.border = "1px solid" + color;
         entity.style.borderRadius = "3px";
         entity.style.padding = "1px";
@@ -230,8 +266,5 @@ export class TextPageComponent implements OnInit {
       }
     }
   };
-
-
-
 
 }
