@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Resource } from 'src/app/models/resource.model';
-import { decode } from 'punycode';
 
 @Component({
   template: '' // one could write the html part of the component here, but in this case we don't need any html
@@ -17,10 +16,6 @@ export class ResourceRouterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
-    this.route.fragment.subscribe((fragment: string) => {
-      console.log("My hash fragment is here => ", fragment)
-    });
 
     // get iri
     this.route.paramMap.subscribe(params => {
@@ -43,10 +38,9 @@ export class ResourceRouterComponent implements OnInit {
           params => {
             if (params.has('iri')) {
               
+              // if iri has fragment, iri changes value
               var iri = decodeURIComponent(params.get('iri'));
               var fragment = decodeURIComponent(params.get('iri'));
-
-              // if iri has fragment, iri changes value
               if (iri.includes('#')) {
                 var iri = iri.split('#')[0]; 
                 var fragment = fragment.split('#')[1]; 
@@ -65,14 +59,13 @@ export class ResourceRouterComponent implements OnInit {
                         resource.resourceClassLabel
                       );
                       
-                      // we use router to navigate, where? To the route mapped, which is made of resRoutePrefix + encodeURIComponent(iri)
+                      // we use router to navigate, where? To the route mapped,
+                      // which is made of resRoutePrefix + encodeURIComponent(iri) + fragment, if any
                       this.router.navigate([
                         resRoutePrefix, // is not a string that we give, but a table, so we use ","
-                        encodeURIComponent(iri),
-                        encodeURIComponent('#'),
-                        fragment]);
-
-                        console.log(resRoutePrefix+encodeURIComponent(iri)+encodeURIComponent('#')+fragment);
+                        encodeURIComponent(iri)],
+                        {fragment: fragment});
+                        // see https://angular.io/api/router/NavigationExtras#fragment
 
                     } else {
                       console.log(
