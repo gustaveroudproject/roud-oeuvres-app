@@ -61,7 +61,7 @@
       <div class="col-3 offset-1">
 
         <!-- ENTITIES -->
-        <mat-expansion-panel expanded="true">
+        <mat-expansion-panel expanded="false">
           <mat-expansion-panel-header>
               <mat-panel-title>Repères</mat-panel-title>
           </mat-expansion-panel-header>
@@ -119,8 +119,53 @@
         </mat-expansion-panel> <!-- end entities -->
 
 
+
+        <!-- MENTIONS OF HIS OWN WORKS -->
+        <mat-expansion-panel class="mt-5" expanded="false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>Allusions à ses propres textes</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="mentionsCheckbox" (click)="visualizeMentions()">
+                  <label class="form-check-label" for="mentionsCheckbox">
+                    Trouver dans le texte
+                  </label>
+                </div>
+              </div>
+              <div>
+                  <fa-icon [icon]="faFile"></fa-icon>&nbsp;
+                  <strong class="tei-ref">Publications</strong>
+                  <ul>
+                    <li *ngFor="let pubLight of pubsMentioned">
+                      {{ pubLight?.title }}, {{ pubLight?.date | knoradatesFormatting}} 
+                      <a routerLink="/archive/pub/{{ pubLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+              <div>
+                  <fa-icon [icon]="faStickyNote"></fa-icon>&nbsp;
+                  <strong class="tei-ref">Documents d'archive</strong>
+                  <ul>
+                    <li *ngFor="let msLight of mssMentioned">
+                      {{ msLight?.archive }}
+                      <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>,
+                      <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+                      <a routerLink="/archive/ms/{{ msLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+          </div>
+        </mat-expansion-panel> <!-- end mentions -->
+
+
         <!-- TEXT REUSE -->
-        <mat-expansion-panel class="mt-5" expanded="true">
+        <mat-expansion-panel class="mt-5" expanded="false">
           <mat-expansion-panel-header>
               <mat-panel-title>Reprises</mat-panel-title>
           </mat-expansion-panel-header>

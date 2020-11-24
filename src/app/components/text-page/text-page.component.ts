@@ -9,7 +9,8 @@ import { PublisherLight } from 'src/app/models/publisher.model';
 import { PlaceLight } from 'src/app/models/place.model';
 import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
-import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
+import { MsLight } from 'src/app/models/manuscript.model';
 
 @Component({
   selector: 'or-text-page',
@@ -22,6 +23,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   faMapMarkerAlt = faMapMarkerAlt;
   faPencilAlt = faPencilAlt;
   faRecycle = faRecycle;
+  faFile = faFile;
+  faStickyNote = faStickyNote;
   // faExternalLinkAlt = faExternalLinkAlt;
   // faLink = faLink;
   
@@ -38,6 +41,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
   textsMentioned: TextLight[];
+  pubsMentioned: PublicationLight[];
+  mssMentioned: MsLight[];
 
   id_fragment: string;
 
@@ -85,13 +90,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                 this.placesMentioned = placesMentioned;
               });
 
-              //// get places mentioned in the text
-              this.dataService
-              .getTextsInText(text.id)
-              .subscribe((textsMentioned: TextLight[]) => {
-                this.textsMentioned = textsMentioned;
-              });
-
+              
               //// get works mentioned in the text
               this.dataService
               .getWorksInText(text.id)
@@ -111,6 +110,31 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                   }
 
               });
+
+              
+              //// get publication mentioned in the text (mentions)
+              this.dataService
+              .getPubsInText(text.id)
+              .subscribe((pubsMentioned: PublicationLight[]) => {
+                this.pubsMentioned = pubsMentioned;
+              });
+
+              //// get mss mentioned in the text (mentions)
+              this.dataService
+              .getMssInText(text.id)
+              .subscribe((mssMentioned: MsLight[]) => {
+                this.mssMentioned = mssMentioned;
+              });
+
+
+
+              //// get texts mentioned in the text (reuse)
+              this.dataService
+              .getTextsInText(text.id)
+              .subscribe((textsMentioned: TextLight[]) => {
+                this.textsMentioned = textsMentioned;
+              });
+
 
               //// get base witness publication
               this.dataService
@@ -277,6 +301,27 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   };
 
 
+  /* MENTIONS DISPLAY
+  --------------------------------------------------------------------------*/
+  visualizeMentions(){
+    var checkBox = document.getElementById("mentionsCheckbox") as HTMLInputElement;
+    var entities = Array.from(document.getElementsByClassName("tei-ref") as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < entities.length; index++) {
+      const entity = entities[index];
+      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      entity.style.border = "1px solid lightGreen";
+      entity.style.borderRadius = "3px";
+      entity.style.padding = "1px";
+      entity.style.backgroundColor = "lightGreen";
+      }
+      else {
+        entity.style.border = "none";
+        entity.style.backgroundColor = "inherit";
+      }
+    }
+  };
+
+
   /* REUSE DISPLAY
   --------------------------------------------------------------------------*/
   visualizeReuse(){
@@ -289,7 +334,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       }
       else {
         entity.style.borderBottom = "none";
-        entity.style.backgroundColor = "inherit";
+        
       }
     }
   };
