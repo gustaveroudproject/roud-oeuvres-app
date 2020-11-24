@@ -302,6 +302,36 @@ return this.knoraApiConnection.v2.search
 
 
 
+getTextsInText(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?text knora-api:isMainResource true .
+    ?text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?text a roud-oeuvres:EstablishedText .
+    ?text roud-oeuvres:establishedTextHasTitle ?title .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?text .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
+
 getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {  
   const gravsearchQuery = `
 
