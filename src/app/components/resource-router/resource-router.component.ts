@@ -26,7 +26,7 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('Person', '/persons/');
         routeMapping.set('Place', '/places/');
         routeMapping.set('Manuscript', '/manuscripts/');
-        routeMapping.set('Critical texte', '/texts/');
+        routeMapping.set('Established text', '/texts/');
         routeMapping.set('Work', '/works/');
         routeMapping.set('Periodical article', '/archive/pub/');
         routeMapping.set('Book', '/archive/pub/');
