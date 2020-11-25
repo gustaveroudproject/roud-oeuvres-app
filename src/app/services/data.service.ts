@@ -302,6 +302,102 @@ return this.knoraApiConnection.v2.search
 
 
 
+getTextsInText(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?text knora-api:isMainResource true .
+    ?text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?text a roud-oeuvres:EstablishedText .
+    ?text roud-oeuvres:establishedTextHasTitle ?title .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?text .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
+
+getPubsInText(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?pub knora-api:isMainResource true .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+} WHERE {
+    ?pub a roud-oeuvres:Publication .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?pub .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2PublicationLight(r);
+      })
+    )
+  );
+}
+
+
+
+getMssInText(textIRI: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?ms knora-api:isMainResource true .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+    <${textIRI}> knora-api:hasStandoffLinkTo ?ms .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
+
+
 getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {  
   const gravsearchQuery = `
 

@@ -3,28 +3,7 @@
   
     <!-- TITLE -->
     <div class="py-4 page-title">
-      <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->
-        <h3>
-            « <span [innerHTML]="periodicalArticle?.title | removeTextAndPar | htmlSanitizer"></span> »,
-            <i>{{ periodicalLight?.title }}</i>
-            ({{ periodicalArticle?.date | knoradatesFormatting }})
-        </h3>
-      </div>
-
-      <div *ngIf="book != null"> 
-          <h3>
-              <i [innerHTML]="book?.title | htmlSanitizer"></i>
-              ({{ book?.date | knoradatesFormatting }})
-          </h3>
-      </div>
-
-      <div *ngIf="bookSection != null"> 
-          <h3>
-              « <span [innerHTML]="bookSection?.title | htmlSanitizer"></span> »,
-              <i>{{ bookSection?.book }}</i>,
-              ({{ book?.date | knoradatesFormatting }})
-          </h3>
-      </div>
+      <h3 [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></h3>
     </div> <!-- end title -->
 
 
@@ -78,11 +57,11 @@
       
 
       
-      <!-- ENTITIES -->
+      <!-- ENTITIES and TEXTE REUSE -->
       <div class="col-3 offset-1">
 
-
-        <mat-expansion-panel expanded="true">
+        <!-- ENTITIES -->
+        <mat-expansion-panel expanded="false">
           <mat-expansion-panel-header>
               <mat-panel-title>Repères</mat-panel-title>
           </mat-expansion-panel-header>
@@ -138,6 +117,82 @@
               </div>
           </div>
         </mat-expansion-panel> <!-- end entities -->
+
+
+
+        <!-- MENTIONS OF HIS OWN WORKS -->
+        <mat-expansion-panel class="mt-5" expanded="false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>Allusions à ses propres textes</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="mentionsCheckbox" (click)="visualizeMentions()">
+                  <label class="form-check-label" for="mentionsCheckbox">
+                    Trouver dans le texte
+                  </label>
+                </div>
+              </div>
+              <div>
+                  <fa-icon [icon]="faFile"></fa-icon>&nbsp;
+                  <strong class="tei-ref-pub">Publications</strong>
+                  <ul>
+                    <li *ngFor="let pubLight of pubsMentioned">
+                      {{ pubLight?.title }}, {{ pubLight?.date | knoradatesFormatting}} 
+                      <a routerLink="/archive/pub/{{ pubLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+              <div>
+                  <fa-icon [icon]="faStickyNote"></fa-icon>&nbsp;
+                  <strong class="tei-ref-ms">Documents d'archive</strong>
+                  <ul>
+                    <li *ngFor="let msLight of mssMentioned">
+                      {{ msLight?.archive }}
+                      <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>,
+                      <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+                      <a routerLink="/archive/ms/{{ msLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+          </div>
+        </mat-expansion-panel> <!-- end mentions -->
+
+
+        <!-- TEXT REUSE -->
+        <mat-expansion-panel class="mt-5" expanded="false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>Reprises</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="reuseCheckbox" (click)="visualizeReuse()">
+                  <label class="form-check-label" for="reuseCheckbox">
+                    Trouver dans le texte
+                  </label>
+                </div>
+              </div>
+              <div>
+                  <fa-icon [icon]="faRecycle"></fa-icon>&nbsp;
+                  <strong class="tei-seg">Textes en lien</strong>
+                  <ul>
+                    <li *ngFor="let textLight of textsMentioned">
+                      <span [innerHTML]="textLight?.title | removeTextAndPar | htmlSanitizer"></span>
+                      <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
+                        >&nbsp;🔗</a
+                      >
+                    </li>
+                  </ul>
+              </div>
+          </div>
+        </mat-expansion-panel> <!-- end reuse -->
+
 
         <!-- ARCHIVE ET GENÈSE-->
         <div class="my-5">

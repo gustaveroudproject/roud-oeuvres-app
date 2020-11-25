@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Text } from 'src/app/models/text.model';
+import { Text, TextLight } from 'src/app/models/text.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { PersonLight } from 'src/app/models/person.model';
@@ -9,7 +9,8 @@ import { PublisherLight } from 'src/app/models/publisher.model';
 import { PlaceLight } from 'src/app/models/place.model';
 import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
-import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
+import { MsLight } from 'src/app/models/manuscript.model';
 
 @Component({
   selector: 'or-text-page',
@@ -21,6 +22,9 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   faUser = faUser;
   faMapMarkerAlt = faMapMarkerAlt;
   faPencilAlt = faPencilAlt;
+  faRecycle = faRecycle;
+  faFile = faFile;
+  faStickyNote = faStickyNote;
   // faExternalLinkAlt = faExternalLinkAlt;
   // faLink = faLink;
   
@@ -36,6 +40,9 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   worksMentioned: Work[];
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
+  textsMentioned: TextLight[];
+  pubsMentioned: PublicationLight[];
+  mssMentioned: MsLight[];
 
   id_fragment: string;
 
@@ -83,6 +90,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                 this.placesMentioned = placesMentioned;
               });
 
+              
               //// get works mentioned in the text
               this.dataService
               .getWorksInText(text.id)
@@ -102,6 +110,31 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                   }
 
               });
+
+              
+              //// get publication mentioned in the text (mentions)
+              this.dataService
+              .getPubsInText(text.id)
+              .subscribe((pubsMentioned: PublicationLight[]) => {
+                this.pubsMentioned = pubsMentioned;
+              });
+
+              //// get mss mentioned in the text (mentions)
+              this.dataService
+              .getMssInText(text.id)
+              .subscribe((mssMentioned: MsLight[]) => {
+                this.mssMentioned = mssMentioned;
+              });
+
+
+
+              //// get texts mentioned in the text (reuse)
+              this.dataService
+              .getTextsInText(text.id)
+              .subscribe((textsMentioned: TextLight[]) => {
+                this.textsMentioned = textsMentioned;
+              });
+
 
               //// get base witness publication
               this.dataService
@@ -193,10 +226,10 @@ export class TextPageComponent implements OnInit, AfterViewInit {
         // console.log(document.querySelector('#' + this.id_fragment));
         document.querySelector('#' + this.id_fragment).scrollIntoView({block: "center"}); // option block defines vertical alignment
 
-        // check entities checkBox and visualize entities
-        var checkBox = document.getElementById("entitiesCheckbox") as HTMLInputElement;
+        // check reuse checkBox and visualize reuse passages
+        var checkBox = document.getElementById("reuseCheckbox") as HTMLInputElement;
         checkBox.checked = true;
-        this.visualizeEntities();
+        this.visualizeReuse();
 
       }, (1000)); 
       // setTimeout indicates the time it will wait before doing this. 1000ms = 1 second.
@@ -263,6 +296,50 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       else {
         entity.style.border = "none";
         entity.style.backgroundColor = "inherit";
+      }
+    }
+  };
+
+
+  /* MENTIONS DISPLAY
+  --------------------------------------------------------------------------*/
+  visualizeMentions(){
+    this.visualizeOneTypeOfMentions("tei-ref-ms", "lightGreen");
+    this.visualizeOneTypeOfMentions("tei-ref-pub", "#FFCCFF");
+  };
+
+  visualizeOneTypeOfMentions(teiElement: string, color: string) {
+    var checkBox = document.getElementById("mentionsCheckbox") as HTMLInputElement;
+    var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < entities.length; index++) {
+      const entity = entities[index];
+      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      entity.style.border = "1px solid" + color;;
+      entity.style.borderRadius = "3px";
+      entity.style.padding = "1px";
+      entity.style.backgroundColor = color;
+      }
+      else {
+        entity.style.border = "none";
+        entity.style.backgroundColor = "inherit";
+      }
+    }
+  };
+
+
+  /* REUSE DISPLAY
+  --------------------------------------------------------------------------*/
+  visualizeReuse(){
+    var checkBox = document.getElementById("reuseCheckbox") as HTMLInputElement;
+    var entities = Array.from(document.getElementsByClassName("tei-seg") as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < entities.length; index++) {
+      const entity = entities[index];
+      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+        entity.style.borderBottom = "3px solid red";
+      }
+      else {
+        entity.style.borderBottom = "none";
+        
       }
     }
   };
