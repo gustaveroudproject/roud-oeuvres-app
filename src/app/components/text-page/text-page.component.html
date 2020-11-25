@@ -136,7 +136,7 @@
               </div>
               <div>
                   <fa-icon [icon]="faFile"></fa-icon>&nbsp;
-                  <strong class="tei-ref">Publications</strong>
+                  <strong class="tei-ref-pub">Publications</strong>
                   <ul>
                     <li *ngFor="let pubLight of pubsMentioned">
                       {{ pubLight?.title }}, {{ pubLight?.date | knoradatesFormatting}} 
@@ -148,7 +148,7 @@
               </div>
               <div>
                   <fa-icon [icon]="faStickyNote"></fa-icon>&nbsp;
-                  <strong class="tei-ref">Documents d'archive</strong>
+                  <strong class="tei-ref-ms">Documents d'archive</strong>
                   <ul>
                     <li *ngFor="let msLight of mssMentioned">
                       {{ msLight?.archive }}

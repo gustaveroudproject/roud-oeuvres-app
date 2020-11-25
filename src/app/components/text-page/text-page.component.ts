@@ -304,15 +304,20 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   /* MENTIONS DISPLAY
   --------------------------------------------------------------------------*/
   visualizeMentions(){
+    this.visualizeOneTypeOfMentions("tei-ref-ms", "lightGreen");
+    this.visualizeOneTypeOfMentions("tei-ref-pub", "#FFCCFF");
+  };
+
+  visualizeOneTypeOfMentions(teiElement: string, color: string) {
     var checkBox = document.getElementById("mentionsCheckbox") as HTMLInputElement;
-    var entities = Array.from(document.getElementsByClassName("tei-ref") as HTMLCollectionOf<HTMLElement>);
+    var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < entities.length; index++) {
       const entity = entities[index];
       if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
-      entity.style.border = "1px solid lightGreen";
+      entity.style.border = "1px solid" + color;;
       entity.style.borderRadius = "3px";
       entity.style.padding = "1px";
-      entity.style.backgroundColor = "lightGreen";
+      entity.style.backgroundColor = color;
       }
       else {
         entity.style.border = "none";
