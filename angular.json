@@ -35,8 +35,7 @@
             ],
             "scripts": [
               "node_modules/leaflet/dist/leaflet.js"
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {
