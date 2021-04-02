@@ -6,6 +6,21 @@ VERSION=v0.0.0
 build: ## builds the web-app container
 	docker build -t ${ACCOUNT}/${CONTAINER}:${VERSION} .
 
+.PHONY: run
+run: ## run the freshly built container
+	docker run -p 8080:80 --name roud ${ACCOUNT}/${CONTAINER}:${VERSION}
+
+.PHONY: stop
+stop: ## stop the docker instance
+	docker stop roud
+
+.PHONY: rm
+rm: ## remove the container
+	docker rm roud
+
+.PHONY: rmi
+rmi: ## remove the build image
+	docker rmi ${ACCOUNT}/${CONTAINER}:${VERSION}
 
 .PHONY: help
 help: ## this help
