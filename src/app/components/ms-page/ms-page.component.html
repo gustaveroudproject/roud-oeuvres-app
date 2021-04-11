@@ -22,7 +22,7 @@
                 <div class="py-4" *ngIf="pages && pages.length > 0">   
                     <div *ngFor="let page of pages">
                         <img
-                            *ngIf="page.seqnum == selectedPageNum"
+                            *ngIf="+page.seqnum == selectedPageNum"
                             src="{{ page.imageURL }}"
                             width="80%"
                         />
