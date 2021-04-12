@@ -1,4 +1,4 @@
-ACCOUNT=roud
+ACCOUNT=platec
 CONTAINER=roud
 VERSION=v0.0.0
 
@@ -25,6 +25,14 @@ rm: ## remove the docker container instance
 .PHONY: rmi
 rmi: ## remove the built container image
 	docker rmi ${ACCOUNT}/${CONTAINER}:${VERSION}
+
+.PHONY: login
+login: ## docker hub login
+	docker login -u ${ACCOUNT}
+
+.PHONY: push
+push: ## push the image to docker hub
+	docker push ${ACCOUNT}/${CONTAINER}:${VERSION}
 
 .PHONY: help
 help: ## this help
