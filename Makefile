@@ -8,7 +8,11 @@ build: ## build the web-app container image
 
 .PHONY: run
 run: ## run a container instance with the freshly built image
-	docker run -p 8080:80 --name roud ${ACCOUNT}/${CONTAINER}:${VERSION}
+	docker run -p 80:80 --name roud ${ACCOUNT}/${CONTAINER}:${VERSION}
+
+.PHONY: start
+start: ## re-start an existing container instance (form a previous `run`)
+	docker start roud
 
 .PHONY: stop
 stop: ## stop the docker container instance
