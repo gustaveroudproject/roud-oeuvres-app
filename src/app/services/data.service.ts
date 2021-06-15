@@ -38,7 +38,7 @@ export class DataService {
   }
 
   getOntoPrefixPath() {
-    return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}:${this.kuiConfig.knora.apiPort}/ontology/0112/roud-oeuvres/v2#`;
+    return `${this.kuiConfig.knora.apiProtocol}://${this.kuiConfig.knora.apiHost}${this.kuiConfig.knora.apiPort?":"+this.kuiConfig.knora.apiPort:""}/ontology/0112/roud-oeuvres/v2#`;
   }
 
   fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {   //offset = 0, only first page
