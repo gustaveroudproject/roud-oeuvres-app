@@ -2,7 +2,7 @@
     "knora": {
         "apiProtocol": "https",
         "apiHost": "knora.unil.ch",
-        "apiPort": "",
+        "apiPort": null,
         "apiPath": "",
         "jsonWebToken": "",
         "logErrors": false
