@@ -7,8 +7,11 @@
     <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
         <h3>
             <span *ngFor="let workAuthor of workAuthors | sortBySurname">
-                {{ workAuthor?.name }} {{ workAuthor?.surname }}, </span>
-            <i [innerHtml]="work?.title | htmlSanitizer"></i></h3>
+                    {{ workAuthor?.name }} {{ workAuthor?.surname }}, </span>
+            <i [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></i>
+            <span *ngIf=work?.date>, {{ work?.date | knoradatesYmdFormatting }}</span>
+            
+        </h3>
     </div>
 
 
