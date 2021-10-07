@@ -26,11 +26,14 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('Person', '/persons/');
         routeMapping.set('Place', '/places/');
         routeMapping.set('Established text', '/texts/');
-        routeMapping.set('Work', '/works/');
         routeMapping.set('Periodical article', '/archive/pub/');
         routeMapping.set('Book', '/archive/pub/');
         routeMapping.set('Book section', '/archive/pub/');
         routeMapping.set('Archival document', '/archive/ms/');
+        routeMapping.set('Work of literature', '/works/');
+        routeMapping.set('Music work', '/works/');
+        routeMapping.set('Artwork', '/works/');
+
 
         // get resource class
         this.route.paramMap.subscribe(
