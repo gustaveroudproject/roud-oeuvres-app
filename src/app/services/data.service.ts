@@ -503,6 +503,37 @@ return this.knoraApiConnection.v2.search
 }
 
 
+
+getTextsMentioningWorks(workIRI: string, index: number = 0): Observable<TextLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Text knora-api:isMainResource true .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+} WHERE {
+    ?Text a roud-oeuvres:EstablishedText .
+    ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text knora-api:hasStandoffLinkTo <${workIRI}> .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
+
 getPartsLightOfPub(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
   const gravsearchQuery = `
 
@@ -1820,6 +1851,14 @@ return this.knoraApiConnection.v2.search
 
 
 
+getWork(iri: string): Observable<Work> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2Work(readResource))
+    );
+}
+
 
 
 
@@ -2532,6 +2571,10 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}workHasTitle`
       ),
       authorValue: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasAuthorValue`
+      ),
+      authorsValues: this.getArrayOfValues(
         readResource,
         `${this.getOntoPrefixPath()}workHasAuthorValue`
       ),

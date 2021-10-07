@@ -13,12 +13,14 @@ import { PersonPageComponent } from './components/person-page/person-page.compon
 import { PlacePageComponent } from './components/place-page/place-page.component';
 import { PubPageComponent } from './components/pub-page/pub-page.component';
 import { MsPageComponent } from './components/ms-page/ms-page.component';
+import { WorkPageComponent } from './components/work-page/work-page.component';
 
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'persons/:iri', component: PersonPageComponent },
   { path: 'places/:iri', component: PlacePageComponent },
+  { path: 'works/:iri', component: WorkPageComponent },
   {
     path: 'texts',
     children: [

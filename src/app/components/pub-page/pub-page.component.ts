@@ -81,7 +81,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                 .subscribe(
                   (publicationLight: PublicationLight) => {
                     this.publicationLight = publicationLight;
-                    
+
                     //// get authors from authors' IRIs
                     this.authors = [];
                     for (var autVal in publicationLight.authorsValues) {

@@ -1,0 +1,45 @@
+<div class="container">
+   <!-- ADD DATE AND LINK-->
+
+
+
+    <!-- NAME AND DATES -->
+    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+        <h3>
+            <span *ngFor="let workAuthor of workAuthors | sortBySurname">
+                    {{ workAuthor?.name }} {{ workAuthor?.surname }}, </span>
+            <i [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></i>
+            <span *ngIf=work?.date>, {{ work?.date | knoradatesYmdFormatting }}</span>
+            
+        </h3>
+    </div>
+
+
+    <!-- NOTICE -->
+    <div class="py-4" *ngIf=work?.notice>
+        <p [innerHtml]="work?.notice | htmlSanitizer" orResourceLink></p>
+    </div>
+
+
+    
+
+    <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
+    <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <strong>Œuvre mentionnée dans les textes suivants :</strong>
+        <ul style="list-style: none;">
+            <li *ngFor="let textLight of textsLight">
+            <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
+                [innerHTML]="textLight.title | htmlSanitizer"></a
+            >
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="my-5 permanentId">
+        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ work?.ark }}</p>
+        <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
+    </div>
+
+</div>
