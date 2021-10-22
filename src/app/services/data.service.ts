@@ -15,6 +15,7 @@ import { PublisherLight } from '../models/publisher.model';
 import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
 import { Work } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
+import SupportTypeJson from '../../assets/cache_lists/support_type.json';
 
 import {
   KnoraApiConnectionToken,
@@ -2167,6 +2168,12 @@ OFFSET ${index}
 
 
 
+  // lookup for the a ListNode label in french
+  support_type: {"id": string, "label": string }[] = SupportTypeJson;
+  getSupportType(key: string): string {
+    return this.support_type.find(kv => kv.id == key).label;
+  } 
+
   readRes2Manuscript(readResource: ReadResource): Manuscript {  
     return {
       ...this.readRes2MsLight(readResource),
@@ -2186,10 +2193,9 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedReadable`
       ),
-      supportType: this.getFirstValueAsStringOrNullOfProperty(
+      supportType: this.getSupportType(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}hasSupportType`
-      ),
+        `${this.getOntoPrefixPath()}hasSupportType`)),
       writingTool: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasWritingTool`
@@ -2638,13 +2644,38 @@ OFFSET ${index}
     return values && values.length >= 1 ? values[0] : null;
   }
   
-
-
   getArrayOfValues(
     readResource: ReadResource,
     property: string
   ) {
     return readResource.getValuesAsStringArray(property)
+  }
+
+  /**
+   * get the first value's IRI
+   */
+   getFirstValueId(
+    readResource: ReadResource,
+    property: string
+  ) {
+    const values = readResource
+     ? readResource.getValues(property)
+     : null;
+    return values && values.length >= 1 ? values[0].id : null;
+  }
+
+  /**
+   * get the first value's listNode
+   * property has to point to a liste
+   */
+  getFirstValueListNode(
+    readResource: ReadResource,
+    property: string
+  ) {
+    const values = readResource
+     ? readResource.getValues(property)
+     : null;
+    return values && values.length >= 1 ? values[0]["listNode"] : null;
   }
 
 }
