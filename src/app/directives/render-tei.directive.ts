@@ -44,7 +44,7 @@ export class RenderTeiDirective implements AfterContentChecked {
       const quote: HTMLElement = quotes[index];
       const quoteNote:any = quote.children[0];
       
-      // create book symbol node and add it and the end of quote
+      // create book symbol node and add it at the end of quote
       if (!quote.textContent.includes("🕮")) {
         const sourceSpan = document.createElement("span");
         sourceSpan.textContent += " 🕮";
@@ -52,11 +52,13 @@ export class RenderTeiDirective implements AfterContentChecked {
 
         // make the book clickable to open popup
         sourceSpan.addEventListener('click', function openPopup() {
+          quoteNote.classList.toggle("show");
+          /*
           if (quoteNote.getAttribute('style').includes('hidden') == true){
-            /* quoteNote.classList.toggle("show");
-            the problem with toggle the class is that it does not seem to read what's written in scss
-            when the class is activated. But where else to declare it?
-            */
+            // quoteNote.classList.toggle("show");
+            // the problem with toggle the class is that it does not seem to read what's written in scss
+            // when the class is activated. But where else to declare it?
+            
             
             // make it visible, the value of this property was 'hidden'
             quoteNote.style.visibility = "visible";
@@ -79,6 +81,7 @@ export class RenderTeiDirective implements AfterContentChecked {
               quoteNote.appendChild(div);
             }
           }
+          */
         });
       }
     }

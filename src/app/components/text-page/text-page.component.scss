@@ -8,3 +8,15 @@
 ul {
   list-style: disc;
 }
+
+
+
+
+:host ::ng-deep .tei-quote-note {
+  visibility:hidden;
+  position: absolute;
+}
+
+:host ::ng-deep .tei-quote-note .show {
+  visibility: visible
+}
