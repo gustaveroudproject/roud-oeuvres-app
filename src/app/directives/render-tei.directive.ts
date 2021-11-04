@@ -50,38 +50,9 @@ export class RenderTeiDirective implements AfterContentChecked {
         sourceSpan.textContent += " 🕮";
         quote.appendChild(sourceSpan);
 
-        // make the book clickable to open popup
+        // toggle on click
         sourceSpan.addEventListener('click', function openPopup() {
-          quoteNote.classList.toggle("show");
-          /*
-          if (quoteNote.getAttribute('style').includes('hidden') == true){
-            // quoteNote.classList.toggle("show");
-            // the problem with toggle the class is that it does not seem to read what's written in scss
-            // when the class is activated. But where else to declare it?
-            
-            
-            // make it visible, the value of this property was 'hidden'
-            quoteNote.style.visibility = "visible";
-            
-            // style the popup
-            quoteNote.style.backgroundColor = "black"; // should be ok also in dark mode in readers control
-            quoteNote.style.color = "white";
-            quoteNote.style.borderRadius = "6px";
-            quoteNote.style.padding = "8px";
-            quoteNote.style.left = "20%";
-
-            // create closing X in a div and add it to the popup
-            if (!quoteNote.textContent.includes("X")) {
-              var div = document.createElement("div");
-              div.textContent += "X";
-              div.style.textAlign = "right";
-              div.addEventListener('click', function closePopup() {
-                quoteNote.style.visibility = "hidden";
-              });
-              quoteNote.appendChild(div);
-            }
-          }
-          */
+          quoteNote.classList.toggle("show");          
         });
       }
     }

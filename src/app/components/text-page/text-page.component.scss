@@ -9,14 +9,35 @@ ul {
   list-style: disc;
 }
 
-
-
-
-:host ::ng-deep .tei-quote-note {
-  visibility:hidden;
-  position: absolute;
+:host ::ng-deep .tei-quote {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
 
-:host ::ng-deep .tei-quote-note .show {
+:host ::ng-deep .tei-quote .tei-quote-note {
+  visibility:hidden;
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+:host ::ng-deep .tei-quote .tei-quote-note::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+:host ::ng-deep .tei-quote .show {
   visibility: visible
 }
