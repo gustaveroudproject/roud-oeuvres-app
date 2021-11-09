@@ -15,7 +15,7 @@ import { PublisherLight } from '../models/publisher.model';
 import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
 import { Work } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
-import SupportTypeJson from '../../assets/cache_lists/support_type.json';
+import ListsFrench from '../../assets/cache/lists_fr.json';
 
 import {
   KnoraApiConnectionToken,
@@ -2169,36 +2169,36 @@ OFFSET ${index}
 
 
   // lookup for the a ListNode label in french
-  support_type: {"id": string, "label": string }[] = SupportTypeJson;
-  getSupportType(key: string): string {
-    return this.support_type.find(kv => kv.id == key).label;
+  listsFrenchLabel = ListsFrench;
+  getListsFrenchLabel(key: string): string {
+    return this.listsFrenchLabel[key];
   } 
 
   readRes2Manuscript(readResource: ReadResource): Manuscript {  
     return {
       ...this.readRes2MsLight(readResource),
-      documentType: this.getFirstValueAsStringOrNullOfProperty(
+      documentType: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}hasDocumentType`
+        `${this.getOntoPrefixPath()}hasDocumentType`)
       ),
       otherWritingTool: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}hasOtherWritingTool`
       ), 
-      geneticStage: this.getFirstValueAsStringOrNullOfProperty(
+      geneticStage: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}hasGeneticStage`
+        `${this.getOntoPrefixPath()}hasGeneticStage`)
       ),
       establishedDateReadable: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedReadable`
       ),
-      supportType: this.getSupportType(this.getFirstValueListNode(
+      supportType: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
         `${this.getOntoPrefixPath()}hasSupportType`)),
-      writingTool: this.getFirstValueAsStringOrNullOfProperty(
+      writingTool: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}hasWritingTool`
+        `${this.getOntoPrefixPath()}hasWritingTool`)
       ),
       establishedDateComputable: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
@@ -2216,13 +2216,13 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateComputable`
       ),
-      establishedDateAdd: this.getFirstValueAsStringOrNullOfProperty(
+      establishedDateAdd: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`
+        `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`)
       ),
-      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+      editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`
+        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`)
       ),
       annotations: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
@@ -2232,9 +2232,9 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasSupportInfo`
       ),
-      writingColor: this.getFirstValueAsStringOrNullOfProperty(
+      writingColor: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}hasWritingColor`
+        `${this.getOntoPrefixPath()}hasWritingColor`)
       ),
       isReusedInDossierValue: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
