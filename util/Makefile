@@ -1,30 +1,15 @@
-TEST_LIST="https://knora.unil.ch/admin/lists/http%3A%2F%2Frdfh.ch%2Flists%2F0112%2Froud-oeuvres-flatlist-hasDocumentType"
-LIST_SupportType="https://knora.unil.ch/admin/lists/http%3A%2F%2Frdfh.ch%2Flists%2F0112%2Froud-oeuvres-flatlist-hasSupportType"
+.PHONY: clean
+clean: ## clean the list cache files
+	rm -f cache/*
 
-
-.PHONY: test_start
-test_start: ## test_get a list, starting point
-	curl $(TEST_LIST) | jq -f list_start.jq
-
-.PHONY: test_filter_list
-test_filter_list: ## test_filter_list
-	curl $(TEST_LIST) | jq -f list_filter_test.jq
-
-.PHONY: test_compound
-test_compound: ## test_compound list elements
-	curl $(TEST_LIST) | jq -f list_compound.jq
-
-.PHONY: support_type.json
-support_type.json: ## build cache for list "supportType"
-	curl $(LIST_SupportType) | jq -f list_compound.jq > cache_list/support_type.json
+.PHONY: get_lists
+get_lists: ## get lists, generate the cache file
+	./getLists.sh
 
 .PHONY: copy
 copy: ## copy cache files to the app assets folder
-	cp cache_list/* ../src/assets/cache_lists/
+	cp cache/* ../src/assets/cache/
 
-.PHONY: clean
-clean: ## clean the list cache files
-	rm cache_list/*
 
 .PHONY: help
 help: ## this help
