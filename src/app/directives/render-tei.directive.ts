@@ -1,4 +1,4 @@
-import { Directive, ElementRef, DoCheck } from '@angular/core';
+import { Directive, ElementRef, AfterContentChecked } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { PublicationLight } from '../models/publication.model';
 
@@ -6,7 +6,7 @@ import { PublicationLight } from '../models/publication.model';
   selector: '[orRenderTei]'
 })
 
-export class RenderTeiDirective implements DoCheck {
+export class RenderTeiDirective implements AfterContentChecked {
 
   sourceLight: PublicationLight;
 
@@ -14,12 +14,15 @@ export class RenderTeiDirective implements DoCheck {
     private el: ElementRef,
     private dataService: DataService
   ) { }
-          
+         
   
-  ngDoCheck():void {
+
+  ngAfterContentChecked():void {
+    this.quotePopup(this.el);
     this.linkInheritColor(this.el);
-    this.quote(this.el);
   }
+
+  
 
 
  
@@ -33,10 +36,40 @@ export class RenderTeiDirective implements DoCheck {
     }
   }
 
+  
+
+  /* ------------------------------------------------------------------------------------*/
+  quotePopup(el:ElementRef) {
+    var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < quotes.length; index++) {
+      // for each quote, declare a variable quote and a variable quoteNote (the note contains the source of the quote)
+      const quote: HTMLElement = quotes[index];
+      // to find the quote note, iterate over the children of quote and take the one with class = "tei-quote-note"
+      const quoteNotes:any = quote.children      
+      for (let index = 0; index < quoteNotes.length; index++) {
+        if (quoteNotes[index].className == 'tei-quote-note') {
+          const quoteNote = quoteNotes[index];
+          // create icon node and add it at the end of quote
+          if (!quote.textContent.includes("🕮")) {
+            const sourceSpan = document.createElement("span");
+            sourceSpan.textContent += " 🕮";
+            quote.appendChild(sourceSpan);    
+            // toggle on click (add or remove class "show" on click)
+            sourceSpan.addEventListener('click', function openPopup() {
+              quoteNote.classList.toggle("show");          
+            });
+          }
+        }
+      }
+    }
+  }
+
+  
 
 
 
   /* ------------------------------------------------------------------------------------*/
+  /*
   quote(el:ElementRef) {
     
     var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLLinkElement>);
@@ -78,6 +111,7 @@ export class RenderTeiDirective implements DoCheck {
     };
     
   };
+  */
   
 
 }
