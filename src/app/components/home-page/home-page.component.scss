@@ -1,0 +1,7 @@
+@import 'src/styles.scss';
+ 
+// Use mat-color to extract individual colors from a palette as necessary.
+.test-style {
+    background-color: $primary;
+    border-color: $accent;
+}
