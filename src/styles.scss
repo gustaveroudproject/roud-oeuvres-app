@@ -13,9 +13,12 @@ for example of a component */
 // @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 
+
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond'); // Gelasio, alternative
 * {
     // font-family: "Helvetica Neue", Arial, sans-serif !important;
-    font-family: Reboto, sans-serif !important; 
+    font-family: 'EB Garamond', sans-serif !important; 
+    font-size:103%
   }
 
 .container-fluid {
@@ -49,7 +52,8 @@ ul {
 
 
 $primary:#bbe6e4;
-$dark:#133c55;
-$orange:#F79256;
+$blue:#133c55;
+$yellow:#dcbf85;
 $green:#84894a;
 $violet:#93748a;
+$darkGreen:#3f6c51;
