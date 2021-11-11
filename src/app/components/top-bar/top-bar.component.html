@@ -1,39 +1,70 @@
+<!--
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-  <div class="collapse navbar-collapse" id="navbarNav">
-    
+  <div class="container-fluid">
+
     <a class="navbar-brand" [routerLink]="['/']">{{
       'toolbar.home' | translate
     }}</a>
-    
+    <button
+      class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/texts']">{{
+            'toolbar.texts' | translate
+          }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/essays']">{{
+            'toolbar.essays' | translate
+          }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/search']">{{
+            'toolbar.search' | translate
+          }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+</nav>
+-->
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+  <a class="navbar-brand" [routerLink]="'.'">{{
+    'toolbar.home' | translate
+  }}</a>
+
+  <!-- Toggle the value of the property when the toggler button is clicked. -->
+  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    &#9776;
+  </button>
+
+  <!-- Add the ngbCollapse directive to the element below. -->
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/texts']">{{
+        <a class="nav-link" [routerLink]="['/texts']" (click)="isMenuCollapsed = true">{{
           'toolbar.texts' | translate
         }}</a>
       </li>
-      <!--
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/persons']">{{
-          'toolbar.persons' | translate
-        }}</a>
-      </li>-->
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/essays']">{{
+        <a class="nav-link" [routerLink]="['/essays']" (click)="isMenuCollapsed = true">{{
           'toolbar.essays' | translate
         }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/search']">{{
+        <a class="nav-link" [routerLink]="['/search']" (click)="isMenuCollapsed = true">{{
           'toolbar.search' | translate
         }}</a>
       </li>
     </ul>
   </div>
-
-
-  <h2 style="color:white;margin-right: 10%;">Site en construction</h2>
-
-  
 </nav>
-

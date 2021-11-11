@@ -4,12 +4,18 @@
 
 
 /* this is for Knora-ui */
+// but also for components using Material, for example the 'mat-expansion-panel' used in text-page
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+/* better what is above even if they are the same,
+because the following gives error when referencing
+this file with @import into another scss file,
+for example of a component */
 // @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 
 * {
-    font-family: "Helvetica Neue", Arial, sans-serif !important;
-    //font-family: Reboto, sans-serif !important; 
+    // font-family: "Helvetica Neue", Arial, sans-serif !important;
+    font-family: Reboto, sans-serif !important; 
   }
 
 .container-fluid {
