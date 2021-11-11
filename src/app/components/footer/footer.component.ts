@@ -7,9 +7,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  prodMode = environment.production;
-  knoraAppUrl = environment.knoraAppUrl;
-
+  //prodMode = environment.production;
+  //knoraAppUrl = environment.knoraAppUrl;
+  public isMenuCollapsed = true;
   constructor() { }
 
   ngOnInit() {
