@@ -11,8 +11,12 @@ ul {
 
 :host ::ng-deep .tei-quote {
   position: relative;
-  display: inline-block;
+  // display: inline-block;
   cursor: pointer;
+}
+
+:host ::ng-deep .tei-quote[rend="block"] {
+  display: block;
 }
 
 :host ::ng-deep .tei-quote .tei-quote-note {
@@ -27,16 +31,6 @@ ul {
   margin-left: -80px;
 }
 
-:host ::ng-deep .tei-quote .tei-quote-note::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
 
 :host ::ng-deep .tei-quote .show {
   visibility: visible
