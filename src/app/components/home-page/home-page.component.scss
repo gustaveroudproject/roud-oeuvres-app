@@ -1,3 +1,19 @@
 
 @import 'src/styles.scss';
  
+
+.row-intro {
+    margin:100px 0 100px 0;
+}
+
+.p-intro {
+    font-size: x-large;
+}
+
+.p-desc {
+    font-size: larger;
+}
+
+.col-pick {
+    background-color: $yellow;
+}
