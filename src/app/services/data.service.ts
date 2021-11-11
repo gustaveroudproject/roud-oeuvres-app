@@ -2543,10 +2543,10 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}establishedTextHasTitle`
       ),
-      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+      editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
         `${this.getOntoPrefixPath()}establishedTextHasEditorialSet`
-      )
+      ))
     } as TextLight;
   }
 
