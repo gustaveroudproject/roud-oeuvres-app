@@ -2220,9 +2220,9 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`)
       ),
-      editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`)
+        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`
       ),
       annotations: this.getFirstValueAsStringOrNullOfProperty(
         readResource,

@@ -3,7 +3,7 @@
 
   <div class="row">
     <ul>
-      <li *ngFor="let textLight of textLights">
+      <li *ngFor="let textLight of textLights" class="text-item">
         <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}" [innerHtml]="textLight.title | htmlSanitizer"
           >
         </a>
