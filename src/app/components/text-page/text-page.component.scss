@@ -25,6 +25,11 @@ ul {
   cursor: pointer;
 }
 
+
+:host ::ng-deep .tei-p {
+  text-indent:1cm;
+}
+
 :host ::ng-deep .tei-quote[rend="block"] {
   display: block;
 }
