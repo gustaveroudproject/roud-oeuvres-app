@@ -39,8 +39,7 @@ ul {
     color:white !important;
 }
 
-
-
+/*************************** COLOR PALETTE **************************/
 
 $primary:#bbe6e4;
 $blue:#133c55;  // primary
@@ -51,3 +50,22 @@ $orange: #e06d06;
 $rose: #F4BAB8; //ed9390
 
 $yellow:#dcbf85;
+
+
+/*************************** BREADCRUMBS **************************/
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+  }
+  .breadcrumb {
+    font-size: large;
+    background-color: $lightDarkGreen;
+  }
+  
+  .breadcrumb-item a {
+    color: inherit;
+  }
+
+
+
+  

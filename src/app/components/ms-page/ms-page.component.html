@@ -1,5 +1,18 @@
 <div class="container">
 
+    <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="/archive">Archives</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+            </li>
+          </ol>
+        </nav>
+    </div>
+
     <!-- TITLE and SHELFMARK -->
     <div class="py-4 page-title">
         <h3>

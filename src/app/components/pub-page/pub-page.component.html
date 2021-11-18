@@ -1,5 +1,18 @@
 <div class="container">
 
+    <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="/archive">Archives</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <span [innerHTML]="publicationLight?.title | htmlSanitizer"></span>
+            </li>
+          </ol>
+        </nav>
+    </div>
+
     <!-- TITLE, light version of the bibliographical reference -->
     <div class="py-4 page-title">
         <div *ngIf="periodicalArticle != null"> <!-- bootstrap class: vertical padding 4 -->

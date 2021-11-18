@@ -11,22 +11,6 @@
 
 
 
-/*************************** BREADCRUMBS **************************/
-
-.breadcrumb-item + .breadcrumb-item::before {
-  content: ">";
-}
-.breadcrumb {
-  font-size: large;
-  background-color: $lightDarkGreen;
-}
-
-.breadcrumb-item a {
-  color: inherit;
-}
-
-
-
 /*************************** RIGHT PANELS **************************/
 .mat-expansion-panel-header {
   font-size: larger;
