@@ -1,3 +1,6 @@
+@import 'src/styles.scss';
+
+
 .container-scrollable {
   overflow-y: scroll;
   background-color: #f8f8f8;
@@ -6,6 +9,25 @@
   font-size: larger;
 }
 
+
+
+/*************************** BREADCRUMBS **************************/
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}
+.breadcrumb {
+  font-size: large;
+  background-color: $lightDarkGreen;
+}
+
+.breadcrumb-item a {
+  color: inherit;
+}
+
+
+
+/*************************** RIGHT PANELS **************************/
 .mat-expansion-panel-header {
   font-size: larger;
   font-weight: bold;
@@ -19,12 +41,15 @@ ul {
   list-style: disc;
 }
 
+
+
+/*************************** TEXT **************************/
+
 :host ::ng-deep .tei-quote {
   position: relative;
   // display: inline-block;
   cursor: pointer;
 }
-
 
 :host ::ng-deep .tei-p {
   text-indent:1cm;
@@ -46,7 +71,7 @@ ul {
   margin-left: -80px;
 }
 
-
 :host ::ng-deep .tei-quote .show {
   visibility: visible
 }
+
