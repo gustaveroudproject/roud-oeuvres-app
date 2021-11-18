@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Essay } from 'src/app/models/essay.model';
+import { MsLight } from 'src/app/models/manuscript.model';
 import { Page } from 'src/app/models/page.model';
 import { Picture } from 'src/app/models/picture.model';
+import { PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class EssayPageComponent implements OnInit {
   photos: Picture[];
   page: Page;
   pages: Page[];
+  msContainingPage: MsLight;
+  pubContainingPage: PublicationLight;
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
@@ -58,6 +62,24 @@ export class EssayPageComponent implements OnInit {
                   (page: Page) => {
                     this.page = page;
                     this.pages.push(page);
+                    // page of a manuscript or page of a publication, need the container (pub or ms) to show in the legend of the image
+                    if (page.pageMs != ''){
+                      this.dataService.getMsLight(page.pageMs)
+                      .subscribe(
+                        (msContainingPage: MsLight) => {
+                          this.msContainingPage = msContainingPage;
+                        }
+                      )
+                    }
+                    if (page.pagePub != ''){
+                      this.dataService.getPublicationLight(page.pagePub)
+                      .subscribe(
+                        (pubContainingPage: PublicationLight) => {
+                          this.pubContainingPage = pubContainingPage;
+                        }
+                      )
+                    }
+                    
                   });
                 }
 
