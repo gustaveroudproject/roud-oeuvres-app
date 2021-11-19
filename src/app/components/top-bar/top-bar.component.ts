@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopBarComponent implements OnInit {
 
+  public isMenuCollapsed = true;
+  
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

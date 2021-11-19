@@ -1,12 +1,10 @@
-/*
-.top-bar {
-    background: dodgerblue;
-    color:lightgray;
-    border-radius: 5px;
-    padding: 15px 15px 15px 15px;
-    a {
-      color:inherit;
-    }
-  }
+@import 'src/styles.scss';
+
+.navbar {
+  background-color: $darkGreen;
   
-  */
+}
+
+.nav-item {
+  font-size: x-large;
+}

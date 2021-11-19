@@ -4,17 +4,20 @@
 
 
 /* this is for Knora-ui */
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+// but also for components using Material, for example the 'mat-expansion-panel' used in text-page
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+/* better what is above even if they are the same,
+because the following gives error when referencing
+this file with @import into another scss file,
+for example of a component */
+// @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 
+
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond'); // Gelasio, alternative  EB+Garamond
 * {
-    font-family: "Helvetica Neue", Arial, sans-serif !important;
-    //font-family: Reboto, sans-serif !important; 
-  }
-
-.container-fluid {
-    padding: 0 8% 0 8% !important;
-    //this is not responsive
+    // font-family: "Helvetica Neue", Arial, sans-serif !important;
+    font-family: 'EB Garamond', sans-serif !important; 
   }
 
 
@@ -32,13 +35,37 @@ ul {
     text-align: center;
 }
 
-.mat-expansion-panel-header {
-    font-size: medium;
-    font-weight: bold;
+.topBar-activeLink {
+    color:white !important;
 }
 
-.mat-expansion-panel-body {
-    font-size: medium;
-}
+/*************************** COLOR PALETTE **************************/
+
+$primary:#bbe6e4;
+$blue:#133c55;  // primary
+$green:#84894a;
+$darkGreen:#3f6c51; // primary
+$lightDarkGreen: #DFE7E1;
+$orange: #e06d06;
+$rose: #F4BAB8; //ed9390
+
+$yellow:#dcbf85;
 
 
+/*************************** BREADCRUMBS **************************/
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+  }
+  .breadcrumb {
+    font-size: large;
+    background-color: transparent// $lightDarkGreen;
+  }
+  
+  .breadcrumb-item a {
+    color: inherit;
+  }
+
+
+
+  

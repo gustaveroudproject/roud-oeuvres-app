@@ -1,9 +1,13 @@
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: lightsteelblue;
-    height: 60px; /* margin-bottom on main should correspond or be bigger, to avoid overlap*/
-    z-index: 1000;   /* viene davanti a tutto ciò che ha un z-index più basso, cioè tutto */
-  }
+@import 'src/styles.scss';
+
+
+.logo {
+    width: 8em;
+    margin-left: 2em;
+}
+
+.nav-item {
+    font-size: x-large;
+}
+
+

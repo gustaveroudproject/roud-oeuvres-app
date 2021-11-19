@@ -1,9 +1,23 @@
-<div class="container-fluid">
+<div class="container">
+
+  <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+          <li class="breadcrumb-item"><a href="/texts">Textes</a></li>
+          <li class="breadcrumb-item"><a href="/texts">{{text?.editorialSet}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <span [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></span>
+          </li>
+        </ol>
+      </nav>
+    </div>
     
   
     <!-- TITLE -->
     <div class="py-4 page-title">
-      <h3 [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></h3>
+      <h2 [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></h2>
     </div> <!-- end title -->
 
 

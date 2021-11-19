@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
-import { Page } from '../models/page.model';
+import { PageLight, Page } from '../models/page.model';
 import { Picture } from '../models/picture.model';
 import { Place, PlaceLight } from '../models/place.model';
 import { PublicationLight, Publication, PeriodicalArticle, Book, BookSection, PubPartLight, PubPart } from '../models/publication.model';
@@ -55,7 +55,7 @@ export class DataService {
   }
 
 // DELETE THIS IF NOT USED
-  getPagesOfText(textIRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
+  getPagesOfText(textIRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -80,7 +80,7 @@ OFFSET ${index}
       map((
         readResources: ReadResource[] 
       ) => readResources.map(r => {
-          return this.readRes2Page(r);
+          return this.readRes2PageLight(r);
         })
       )
     );
@@ -115,14 +115,14 @@ return this.knoraApiConnection.v2.search
     map((
       readResources: ReadResource[] 
     ) => readResources.map(r => {
-        return this.readRes2Page(r);
+        return this.readRes2PageLight(r);
       })
     )
   );
 }
 
 
-getPagesOfMs(IRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
+getPagesOfMs(IRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
   const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -148,7 +148,7 @@ return this.knoraApiConnection.v2.search
     map((
       readResources: ReadResource[] 
     ) => readResources.map(r => {
-        return this.readRes2Page(r);
+        return this.readRes2PageLight(r);
       })
     )
   );
@@ -156,6 +156,14 @@ return this.knoraApiConnection.v2.search
 
 
 
+
+getPageLight(iri: string): Observable<PageLight> {
+  return this.knoraApiConnection.v2.res
+    .getResource(iri)
+    .pipe(
+      map((readResource: ReadResource) => this.readRes2PageLight(readResource))
+    );
+}
 
 getPage(iri: string): Observable<Page> {
   return this.knoraApiConnection.v2.res
@@ -599,11 +607,11 @@ return this.knoraApiConnection.v2.search
 }
 
 
-getStartingPageOfPart(iri: string): Observable<Page> {
+getStartingPageOfPart(iri: string): Observable<PageLight> {
   return this.knoraApiConnection.v2.res
     .getResource(iri)
     .pipe(
-      map((readResource: ReadResource) => this.readRes2Page(readResource))
+      map((readResource: ReadResource) => this.readRes2PageLight(readResource))
     );
 }
 
@@ -2114,7 +2122,8 @@ OFFSET ${index}
     } as Resource;
   }
 
-  readRes2Page(readResource: ReadResource): Page {  
+
+  readRes2PageLight(readResource: ReadResource): Page {  
     return {
       ...this.readRes2Resource(readResource),
       seqnum: this.getFirstValueAsStringOrNullOfProperty(
@@ -2124,10 +2133,26 @@ OFFSET ${index}
       name: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}pageHasName`
-      ),      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+      ),
+      imageURL: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
       )
+    } as Page;   
+  }
+
+
+  readRes2Page(readResource: ReadResource): Page {  
+    return {
+      ...this.readRes2PageLight(readResource),
+      pageMs: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}pageIsPartOfManuscriptValue`
+      ),
+      pagePub: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}pageIsPartOfPublicationValue`
+      ),
     } as Page;   
   }
 
@@ -2220,9 +2245,9 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`)
       ),
-      editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`)
+        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`
       ),
       annotations: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
