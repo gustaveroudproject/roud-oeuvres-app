@@ -4,8 +4,8 @@
 <router-outlet></router-outlet> -->
 
 <div class="container">
-  <input style="width: 300px;" type="text" #searchInput />  <!-- # indicate variable -->
-  <button (click)="onSearch(searchInput.value)">Search</button>
+  <input style="width: 300px;" type="text" #searchInput (keyup.enter)="onSearch(searchInput.value)" />  <!-- # indicate variable -->
+  <button (click)="onSearch(searchInput.value)">chercher</button>
 
   <div class="row" *ngIf="persons && persons.length > 0">
     <div>
