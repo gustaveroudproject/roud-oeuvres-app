@@ -2176,9 +2176,9 @@ OFFSET ${index}
   readRes2MsLight(readResource: ReadResource): MsLight {  
     return {
       ...this.readRes2Resource(readResource),
-      archive: this.getFirstValueAsStringOrNullOfProperty(
+      archive: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptIsInArchive`
+        `${this.getOntoPrefixPath()}manuscriptIsInArchive`)
       ),
       shelfmark: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
@@ -2245,9 +2245,9 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}manuscriptHasDateEstablishedList`)
       ),
-      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+      editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,
-        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`
+        `${this.getOntoPrefixPath()}manuscriptHasEditorialSet`)
       ),
       annotations: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
