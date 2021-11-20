@@ -4,9 +4,11 @@
 <router-outlet></router-outlet> -->
 
 <div class="container">
-  <input style="width: 300px;" type="text" #searchInput (keyup.enter)="onSearch(searchInput.value)" />  <!-- # indicate variable -->
-  <button (click)="onSearch(searchInput.value)">chercher</button>
-
+  <form class="d-flex">
+    <input  class="form-control" style="width: 300px;" type="text" #searchInput (keyup.enter)="onSearch(searchInput.value)" />  <!-- # indicate variable -->
+    <button class="btn btn-outline-secondary" (click)="onSearch(searchInput.value)"><fa-icon [icon]="faSearch"></fa-icon></button>
+  </form>
+  
   <div class="row" *ngIf="persons && persons.length > 0">
     <div>
       <strong>Personnes</strong>
@@ -30,6 +32,22 @@
              [innerHTML]="text?.title | htmlSanitizer"></a
           >
           <!-- to do, delete <p> for better rendering-->
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="mss && mss.length > 0">
+    <div>
+      <strong>Documents d'archive</strong>
+      <ul>
+        <li *ngFor="let ms of mss">
+          <a routerLink="/archive/ms/{{ ms.id | encodeURIComponent }}">
+          <span [innerHTML]="ms?.title | htmlSanitizer"></span>
+            ({{ ms?.archive }}
+            <span [innerHTML]="ms?.shelfmark | htmlSanitizer"></span>)
+            </a
+          >
         </li>
       </ul>
     </div>

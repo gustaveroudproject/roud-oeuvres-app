@@ -1787,6 +1787,14 @@ OFFSET ${index}
       );
   }
 
+  getMssLight(iris: string[]): Observable<MsLight[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2MsLight(r)))
+      );
+  }
+
   
   getManuscript(iri: string): Observable<Manuscript> {
     return this.knoraApiConnection.v2.res

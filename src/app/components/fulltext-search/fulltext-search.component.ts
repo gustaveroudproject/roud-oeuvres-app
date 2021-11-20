@@ -3,6 +3,9 @@ import { Resource } from 'src/app/models/resource.model';
 import { DataService } from 'src/app/services/data.service';
 import { Person } from 'src/app/models/person.model';
 import { Text } from 'src/app/models/text.model';
+import { MsLight } from 'src/app/models/manuscript.model';
+import { faSearch} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'or-fulltext-search',
@@ -10,11 +13,15 @@ import { Text } from 'src/app/models/text.model';
   styleUrls: ['./fulltext-search.component.scss']
 })
 export class FulltextSearchComponent implements OnInit {
+
+  faSearch = faSearch;
   resources: Resource[];
   person: Person;
   persons: Person[] = [];
   text: Text;
   texts: Text[] = [];
+  ms: MsLight;
+  mss: MsLight[] = [];
   constructor(private dataService: DataService) {}
 
   ngOnInit() {}
@@ -37,7 +44,6 @@ export class FulltextSearchComponent implements OnInit {
           // if it is too slow, it is because multiple queries (get) at the same time (en parallel)
 
           const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
-
           this.dataService.getPersons(personsIRIs).subscribe(
             (persons: Person[]) => {
               this.persons = persons;
@@ -47,15 +53,23 @@ export class FulltextSearchComponent implements OnInit {
             }
           );
 
+          /*
           const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
-
           this.dataService.getTexts(textsIRIs).subscribe(
             (texts: Text[]) => {
               this.texts = texts;
             }
           );
+          */
 
-          // add texts
+          const mssIRIs = this.resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
+          this.dataService.getMssLight(mssIRIs).subscribe(
+            (mss: MsLight[]) => {
+              this.mss = mss;
+            }
+          );
+
+          
          
 
         },
