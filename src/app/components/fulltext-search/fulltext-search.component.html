@@ -14,8 +14,8 @@
       <strong>Personnes</strong>
       <ul>
         <li *ngFor="let person of persons">
-          <a routerLink="/persons/{{ person.id | encodeURIComponent }}"
-            >{{ person.name }} {{person.surname}}
+          <a routerLink="/persons/{{ person?.id | encodeURIComponent }}"
+            >{{ person?.name }} {{person?.surname}}
             ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})</a
           >
         </li>
@@ -28,7 +28,7 @@
       <strong>Textes</strong>
       <ul>
         <li *ngFor="let text of texts">
-          <a routerLink="/texts/{{ text.id | encodeURIComponent }}"
+          <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
              [innerHTML]="text?.title | htmlSanitizer"></a
           >
           <!-- to do, delete <p> for better rendering-->
@@ -42,7 +42,7 @@
       <strong>Documents d'archive</strong>
       <ul>
         <li *ngFor="let ms of mss">
-          <a routerLink="/archive/ms/{{ ms.id | encodeURIComponent }}">
+          <a routerLink="/archive/ms/{{ ms?.id | encodeURIComponent }}">
           <span [innerHTML]="ms?.title | htmlSanitizer"></span>
             ({{ ms?.archive }}
             <span [innerHTML]="ms?.shelfmark | htmlSanitizer"></span>)
@@ -53,13 +53,59 @@
     </div>
   </div>
 
+
+  <div class="row" *ngIf="msParts && msParts.length > 0">
+    <div>
+      <strong>Notes de journal</strong>
+      <ul>
+        <li *ngFor="let part of msParts">
+          {{ part?.title }}
+            (partie de 
+            <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
+                <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
+            </a>)
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="places && places.length > 0">
+    <div>
+      <strong>Lieux</strong>
+      <ul>
+        <li *ngFor="let place of places">
+          <a routerLink="/places/{{ place?.id | encodeURIComponent }}">
+            {{place?.name}}
+            </a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="works && works.length > 0">
+    <div>
+      <strong>Œuvres littéraires, d'art et de musique</strong>
+      <ul>
+        <li *ngFor="let work of works">
+          <span *ngIf="workAuthors && workAuthors.length > 0">
+            <span *ngFor="let workAuthor of workAuthors | sortBySurname">
+            {{ workAuthor?.name }} {{ workAuthor?.surname }}, </span>
+          </span>
+          <i [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></i>
+          <span *ngIf=work?.date>, {{ work?.date | knoradatesYmdFormatting }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="row" *ngIf="resources && resources.length > 0">
     <div>
       <strong>Tout</strong>
       <ul>
         <li *ngFor="let resource of resources">
-          <a routerLink="/resources/{{ resource.id | encodeURIComponent }}"
-            >{{resource.label}}</a
+          <a routerLink="/resources/{{ resource?.id | encodeURIComponent }}"
+            >{{resource?.label}}</a
           >
         </li>
       </ul>
