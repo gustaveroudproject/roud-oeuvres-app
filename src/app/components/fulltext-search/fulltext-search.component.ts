@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Resource } from 'src/app/models/resource.model';
 import { DataService } from 'src/app/services/data.service';
 import { Person } from 'src/app/models/person.model';
@@ -37,8 +37,13 @@ export class FulltextSearchComponent implements OnInit {
   workAuthors: AuthorLight[];
   // workAuthoroneAuthor: AuthorLight;
 
+  textDisabledState: Boolean = false;
+  personDisabledState: Boolean = false;
 
-  constructor(private dataService: DataService) {}
+
+  constructor(
+    private dataService: DataService,
+    private el: ElementRef) {}
 
   ngOnInit() {}
 
@@ -167,14 +172,51 @@ export class FulltextSearchComponent implements OnInit {
           }
           */
 
-          
-         
-
         },
         error => console.error(error)
       );
     }
+  } // end on search
 
-    
+
+  ngDoCheck() {
+    this.disableText(this.el);
   }
+
+
+  disableText(el: ElementRef) {
+    var texts = document.getElementById("textsResults")
+    if (texts === null) { this.textDisabledState = true; } else { this.textDisabledState = false; }
+  }
+
+
+  disablePersons(el: ElementRef) {
+    var persons = document.getElementById("personsResults")
+    if (persons === null) { this.personDisabledState = true; } else { this.personDisabledState = false; }
+  }
+  
+
+  showMss() {
+    var checkBox = document.getElementById("mssCheckbox") as HTMLInputElement;
+    var mssResults = document.getElementById("mssResults") as HTMLElement ;
+    if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      mssResults.style.display = "block";
+    }
+    else {
+      mssResults.style.display = "none";
+    }
+  }  // end show mss
+
+  showPersons() {
+    var checkBox = document.getElementById("personsCheckbox") as HTMLInputElement;
+    var mssResults = document.getElementById("personsResults") as HTMLElement ;
+    if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      mssResults.style.display = "block";
+    }
+    else {
+      mssResults.style.display = "none";
+    }
+  }  // end show persons
+
+
 }
