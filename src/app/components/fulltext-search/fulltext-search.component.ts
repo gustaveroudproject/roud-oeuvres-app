@@ -35,11 +35,9 @@ export class FulltextSearchComponent implements OnInit {
   work: WorkLight;
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
-  // workAuthoroneAuthor: AuthorLight;
 
-  textDisabledState: Boolean = false;
-  personDisabledState: Boolean = false;
-
+  checkedCategoriesArray: string[] = [];
+  
 
   constructor(
     private dataService: DataService,
@@ -179,44 +177,60 @@ export class FulltextSearchComponent implements OnInit {
   } // end on search
 
 
+  /*
   ngDoCheck() {
     this.disableText(this.el);
   }
-
-
-  disableText(el: ElementRef) {
-    var texts = document.getElementById("textsResults")
-    if (texts === null) { this.textDisabledState = true; } else { this.textDisabledState = false; }
-  }
-
-
   disablePersons(el: ElementRef) {
     var persons = document.getElementById("personsResults")
     if (persons === null) { this.personDisabledState = true; } else { this.personDisabledState = false; }
   }
-  
+  */
 
-  showMss() {
-    var checkBox = document.getElementById("mssCheckbox") as HTMLInputElement;
-    var mssResults = document.getElementById("mssResults") as HTMLElement ;
-    if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
-      mssResults.style.display = "block";
-    }
-    else {
-      mssResults.style.display = "none";
-    }
-  }  // end show mss
 
-  showPersons() {
-    var checkBox = document.getElementById("personsCheckbox") as HTMLInputElement;
-    var mssResults = document.getElementById("personsResults") as HTMLElement ;
-    if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
-      mssResults.style.display = "block";
-    }
+  show(cat: string) {
+    var checkBox = document.getElementById(cat+"Checkbox") as HTMLInputElement;
+    var checkedCat = cat + "Results"
+    var allResults = document.getElementById("allResults").children as HTMLCollectionOf<HTMLElement> ;
+    if (checkBox.checked == true){
+      // define a variable for the category that has been checked and
+      // push the category to the array of checked categories
+      this.checkedCategoriesArray.push(checkedCat);
+      // loop through children of the div containing all the results
+      // if it is not in the checked categories array, do not display it
+      // otherwise display it as block
+      for (let index = 0; index < allResults.length; index++) {
+        const eachCategResults = allResults[index];
+        if (!this.checkedCategoriesArray.includes(eachCategResults.id)) {
+          eachCategResults.style.display = "none";
+        } else {
+          eachCategResults.style.display = "block";
+        }
+      }
+    }  
     else {
-      mssResults.style.display = "none";
+      if (this.checkedCategoriesArray.length > 1) {
+        // remove unchecked categories from the array of checked categories
+        // (find its position in the array and then remove it)
+        var catToBeRemoved = this.checkedCategoriesArray.indexOf(checkedCat);
+        this.checkedCategoriesArray.splice(catToBeRemoved,1)
+        // do not display the unchecked category
+        var checkedCatResults = document.getElementById(checkedCat) as HTMLElement ;
+        checkedCatResults.style.display = "none";
+      } else {
+        // remove unchecked category from the array of checked categories
+        // pop method is ok, because there is only one object in the array
+        this.checkedCategoriesArray.pop();
+        // show all categories
+        for (let index = 0; index < allResults.length; index++) {
+          const eachCategResults = allResults[index];
+            eachCategResults.style.display = "block";
+        }
+      }
     }
-  }  // end show persons
+  } // end show function
+
+
 
 
 }

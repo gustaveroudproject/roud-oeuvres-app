@@ -15,10 +15,20 @@
       </div>
     </div>
 
+    <!-- if NO results -->
+    <div class="row">
+      <div class="col-md-6 offset-md-4 my-5">
+        <div *ngIf="resources && resources.length == 0">
+          <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
+        </div>
+      </div>
+    </div>
+
+
     <!-- RESULTS -->
     <div class="row my-5">
 
-      <!-- categories -->
+      <!-- filter categories -->
       <div class="col-md-3">
         <div *ngIf="resources && resources.length > 0">
 
@@ -26,7 +36,7 @@
             <!-- textes -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="showTexts()" [disabled]=textDisabledState>
+                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
                 <label class="custom-control-label" for="textsCheckbox">Textes</label>
               </div>
               <span class="badge badge-light badge-pill">{{texts.length}}</span>
@@ -34,7 +44,7 @@
             <!-- mss -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="mssCheckbox" (click)="showMss()">
+                <input type="checkbox" class="custom-control-input" id="mssCheckbox" (click)="show('mss')">
                 <label class="custom-control-label" for="mssCheckbox">Manuscrits</label>
               </div>
               <span class="badge badge-light badge-pill">{{mss.length}}</span>
@@ -42,7 +52,7 @@
             <!-- publications -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="pubsCheckbox" (click)="showPersons()">
+                <input type="checkbox" class="custom-control-input" id="pubsCheckbox" (click)="show('pubs')">
                 <label class="custom-control-label" for="pubsCheckbox">Publications</label>
               </div>
               <span class="badge badge-light badge-pill">0</span>
@@ -50,27 +60,34 @@
             <!-- persons -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="personsCheckbox" (click)="showPersons()" [disabled]=textDisabledState>
+                <input type="checkbox" class="custom-control-input" id="personsCheckbox" (click)="show('persons')">
                 <label class="custom-control-label" for="personsCheckbox">Personnes</label>
               </div>
               <span class="badge badge-light badge-pill">{{persons.length}}</span>
             </li>
             <!-- places -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              Lieux
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="placesCheckbox" (click)="show('places')">
+                <label class="custom-control-label" for="placesCheckbox">Lieux</label>
+              </div>
               <span class="badge badge-light badge-pill">{{places.length}}</span>
             </li>
             <!-- works -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              Œuvres
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="worksCheckbox" (click)="show('works')">
+                <label class="custom-control-label" for="worksCheckbox">Œuvres</label>
+              </div>
               <span class="badge badge-light badge-pill">{{works.length}}</span>
             </li>
           </ul>
         </div>
       </div>
 
+      
       <!-- list of results -->
-      <div class="col-md-8 offset-md-1">
+      <div id="allResults" class="col-md-8 offset-md-1">
         
         <div id="personsResults" *ngIf="persons && persons.length > 0">
           <div>
