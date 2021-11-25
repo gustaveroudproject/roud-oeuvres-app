@@ -7,7 +7,7 @@
 
     <!-- INPUT -->
     <div class="row">
-      <div class="col-md-6 offset-md-4 my-5">
+      <div class="col-md-6 offset-md-4 mt-5 mb-4">
         <form class="d-flex">
           <input  class="form-control form-control-lg mr-2" type="text" #searchInput (keyup.enter)="onSearch(searchInput.value)" />  <!-- # indicate variable -->
           <button class="btn btn-outline-secondary" (click)="onSearch(searchInput.value)"><fa-icon [icon]="faSearch"></fa-icon></button>
@@ -16,30 +16,37 @@
     </div>
 
     <!-- if NO results -->
-    <div class="row">
+    <div class="row" *ngIf="resources && resources.length == 0">
       <div class="col-md-6 offset-md-4 my-5">
-        <div *ngIf="resources && resources.length == 0">
           <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
-        </div>
       </div>
     </div>
 
 
     <!-- RESULTS -->
-    <div class="row my-5">
+    <div class="row">
 
       <!-- filter categories -->
-      <div class="col-md-3">
+      <div class="col-md-3 my-3">
         <div *ngIf="resources && resources.length > 0">
 
-          <ul class="list-group">
+          <ul class="list-group mb-1">
             <!-- textes -->
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Textes</b>
+            </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
-                <label class="custom-control-label" for="textsCheckbox">Textes</label>
+                <label class="custom-control-label" for="textsCheckbox">Textes critiques</label>
               </div>
               <span class="badge badge-light badge-pill">{{texts.length}}</span>
+            </li>
+          </ul>
+
+          <ul class="list-group mb-1">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Archives</b>
             </li>
             <!-- mss -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -56,6 +63,12 @@
                 <label class="custom-control-label" for="pubsCheckbox">Publications</label>
               </div>
               <span class="badge badge-light badge-pill">0</span>
+            </li>
+          </ul>
+
+          <ul class="list-group mb-1">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Entités</b>
             </li>
             <!-- persons -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -87,7 +100,7 @@
 
       
       <!-- list of results -->
-      <div id="allResults" class="col-md-8 offset-md-1">
+      <div id="allResults" class="col-md-8 offset-md-1 my-3">
         
         <div id="personsResults" *ngIf="persons && persons.length > 0">
           <div>
@@ -119,7 +132,7 @@
 
         <div id="mssResults" *ngIf="mss && mss.length > 0">
           <div>
-            <strong>Documents d'archive</strong>
+            <strong>Manuscrits</strong>
             <ul>
               <li *ngFor="let ms of mss">
                 <a routerLink="/archive/ms/{{ ms?.id | encodeURIComponent }}">
