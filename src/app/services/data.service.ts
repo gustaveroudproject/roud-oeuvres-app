@@ -13,7 +13,7 @@ import { AuthorLight } from '../models/author.model';
 import { PeriodicalLight, Periodical } from '../models/periodical.model';
 import { PublisherLight } from '../models/publisher.model';
 import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
-import { Work } from '../models/work.model';
+import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
 
@@ -1787,6 +1787,14 @@ OFFSET ${index}
       );
   }
 
+  getMssLight(iris: string[]): Observable<MsLight[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2MsLight(r)))
+      );
+  }
+
   
   getManuscript(iri: string): Observable<Manuscript> {
     return this.knoraApiConnection.v2.res
@@ -1796,6 +1804,14 @@ OFFSET ${index}
       );
   }
   
+
+  getMsPartsLight(iris: string[]): Observable<MsPartLight[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2MsPartLight(r)))
+      );
+  }
 
 
   
@@ -1865,6 +1881,15 @@ getWork(iri: string): Observable<Work> {
     .getResource(iri)
     .pipe(
       map((readResource: ReadResource) => this.readRes2Work(readResource))
+    );
+}
+
+
+getWorksLight(iris: string[]): Observable<WorkLight[]> {
+  return this.knoraApiConnection.v2.res
+    .getResources(iris)
+    .pipe(
+      map((readResources: ReadResource[]) => readResources.map(r => this.readRes2WorkLight(r)))
     );
 }
 
@@ -1952,6 +1977,14 @@ OFFSET ${index}
       .getResources(iris)
       .pipe(
         map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Place(r)))
+      );
+  }
+
+  getPlacesLight(iris: string[]): Observable<PlaceLight[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PlaceLight(r)))
       );
   }
 
@@ -2594,7 +2627,7 @@ OFFSET ${index}
   }
 
 
-  readRes2Work(readResource: ReadResource): Work {  
+  readRes2WorkLight(readResource: ReadResource): WorkLight {  
     return {
       ...this.readRes2Resource(readResource),
       title: this.getFirstValueAsStringOrNullOfProperty(
@@ -2613,6 +2646,16 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}workHasDate`
       ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}workHasNotice`
+      )
+    } as WorkLight;    
+  }
+
+  readRes2Work(readResource: ReadResource): Work {  
+    return {
+      ...this.readRes2WorkLight(readResource),
       notice: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}workHasNotice`
