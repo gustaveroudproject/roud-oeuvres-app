@@ -2110,10 +2110,12 @@ CONSTRUCT {
   ?essayLight knora-api:isMainResource true .
   ?essayLight roud-oeuvres:essayHasTitle ?title .
   ?essayLight roud-oeuvres:essayHasAuthor ?author .
+  ?essayLight roud-oeuvres:essayHasLinkToPhoto ?photo .
 } WHERE {
   ?essayLight a roud-oeuvres:Essay .
   ?essayLight roud-oeuvres:essayHasTitle ?title .
   ?essayLight roud-oeuvres:essayHasAuthor ?author .
+  ?essayLight roud-oeuvres:essayHasLinkToPhoto ?photo .
 } ORDER BY ASC(?title)
 OFFSET ${index}
 `;
@@ -2674,6 +2676,10 @@ OFFSET ${index}
       author: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}essayHasAuthor`
+      ),
+      photos: this.getArrayOfValues(
+        readResource,
+        `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       )
     } as EssayLight;    
   }
@@ -2684,10 +2690,6 @@ OFFSET ${index}
       textContent: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}essayHasTextContent`
-      ),
-      photos: this.getArrayOfValues(
-        readResource,
-        `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       ),
       scans: this.getArrayOfValues(
         readResource,
