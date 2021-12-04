@@ -1,187 +1,26 @@
 <div class="container">
-    <h2 class="p-5"><b>{{ 'essays.essays' | translate }}</b></h2>
+    <h2 class="m-5 text-center"><b>{{ 'essays.essays' | translate }}</b></h2>
 
-    <!-- row carousel 
-    <div class="row justify-content-center">         
-        <div class='col-8'>  
-            <ngb-carousel>  
-
-
-                <ng-template ngbSlide *ngFor="let essayLight of essaysLight">  
-                    <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
-                        <img class="carousel-img" src="assets/img/blue.jpeg" alt="{{essayLight?.title}}">  
-                        <div class="carousel-caption">  
-                            <h4>{{essayLight?.title}}</h4>  
-                        </div>  
-                    </a>
-                </ng-template>  
-                
-                
-                <ng-template ngbSlide>  
-                    <img class="carousel-img" src="assets/img/yellow.jpeg" alt="La mise en recueil chez Gustave Roud">  
-                    <div class="carousel-caption">  
-                        <h4>La mise en recueil chez Gustave Roud</h4>  
-                    </div>  
-                </ng-template>  
-                
-                
-                <ng-template ngbSlide>  
-                    <img class="carousel-img" src="assets/img/red.jpeg" alt="La campagne vaudoise au XXe siècle<">  
-                    <div class="carousel-caption">  
-                        <h4>La campagne vaudoise au XX<sup>e</sup> siècle</h4>  
-                    </div>  
-                </ng-template>  
-            </ngb-carousel>  
-        </div>  
-    </div>--> <!-- end row carousel -->
-
-    
-    <!-- first row cards -->
-    <div class="row">
-
-        <div class="card p-3 col-3" *ngFor="let essayLight of essaysLight">
-            <div>
-                <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
-                    <img class="card-img" src="assets/img/red.jpeg" width="100%">
-                </a>
-            </div>
-            <h5 class="pt-2">
-                <a routerLink="/essays/{{ essayLight.id | encodeURIComponent }}">
-                    {{essayLight?.title}}
-                </a>
-            </h5>
-        </div>
-
-        
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/test1.png" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Le chantier du traducteur
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/yellow.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Gustave Roud et la nature
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/blue.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Roud à sa table de travail
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
+    <div class="row mb-5">
+        <p class="col-md">Chacun de ces parcours vous emmène dans une brève visite guidée
+            pour se promener parmi les œuvres et les documents d'archives, dans le monde de Gustave Roud.
+        Les parcours sont des textes simples, adaptés à un public varié, qui offrent une porte
+        d'entrée dans les contenus de ce site et permettent de se rapprocher au style et aux thématiques
+        de l'écriture roudienne.</p>
     </div>
     
-    <!-- end first row cards-->
-
-
-    <!-- second row cards -->
     <div class="row">
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/yellow.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            La mise en recueil chez Gustave Roud
-                        </a>
-                    </h5>
-                </div>
+        <!-- use classes "d-flex align-items-stretch" to have same height for all cards-->
+        <div class="col-md-3" *ngFor="let essayLight of essaysLight">
+            <div class="card">
+                <a routerLink="/essays/{{ essayLight?.id | encodeURIComponent }}">
+                    <or-essay-photo [essayPhotoId]="essayLight?.photo"></or-essay-photo>
+                    <div class="card-body">
+                        <h5 class="card-title">{{essayLight?.title}}</h5>
+                    </div>
+                </a>
             </div>
         </div>
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/blue.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Gustave Roud et les étoiles
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/red.jpeg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            La campagne vaudoise au XX<sup>e</sup> siècle
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="card p-3 col-3">
-            <div>
-                <div>
-                    <a href="#">
-                        <img class="card-img" src="assets/img/test2.jpg" width="100%">
-                    </a>
-                </div>
-                <div>
-                    <h5 class="pt-2">
-                        <a href="#">
-                            Le rapport avec les médias
-                        </a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-    </div>  <!-- end second row cards-->
-
-
 
 </div>
 

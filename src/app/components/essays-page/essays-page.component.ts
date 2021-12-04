@@ -18,12 +18,9 @@ export class EssaysPageComponent implements OnInit {
     config.pauseOnHover = true;  
   }  
 
-
   essaysLight: EssayLight[] = [];
-  selectedEssay: Essay;
   index = 0;
   
-
   ngOnInit() {
 
     this.dataService.getEssaysLight(this.index).subscribe(
@@ -33,8 +30,6 @@ export class EssaysPageComponent implements OnInit {
       },
       error => console.error(error)
     );
-    
   }
   
-
 }

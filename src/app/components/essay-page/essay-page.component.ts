@@ -41,17 +41,13 @@ export class EssayPageComponent implements OnInit {
             (essay: Essay) => {
               this.essay = essay; // step 4    I give to the attribute essay the value of essay
 
-              //// get photos from photos' IRIs
-              this.photos = [];
-              for (var photoVal in essay.photos) {
-                this.dataService
-                .getPicture(essay.photos[photoVal])
-                .subscribe(
-                  (photo: Picture) => {
-                    this.photo = photo;
-                    this.photos.push(photo);
-                  });
-                }
+              this.dataService
+              .getPicture(essay.photo)
+              .subscribe(
+                (photo: Picture) => {
+                  this.photo = photo;
+                });
+              
 
               //// get scans from scans' IRIs
               this.pages = [];
@@ -63,7 +59,7 @@ export class EssayPageComponent implements OnInit {
                     this.page = page;
                     this.pages.push(page);
                     // page of a manuscript or page of a publication, need the container (pub or ms) to show in the legend of the image
-                    if (page.pageMs != ''){
+                    if (page.pageMs != null){
                       this.dataService.getMsLight(page.pageMs)
                       .subscribe(
                         (msContainingPage: MsLight) => {
@@ -71,7 +67,7 @@ export class EssayPageComponent implements OnInit {
                         }
                       )
                     }
-                    if (page.pagePub != ''){
+                    if (page.pagePub != null){
                       this.dataService.getPublicationLight(page.pagePub)
                       .subscribe(
                         (pubContainingPage: PublicationLight) => {

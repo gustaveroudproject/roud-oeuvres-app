@@ -14,13 +14,13 @@
             />
             <br/>
             <!-- scan legend, if ms or if pub -->
-            <span *ngIf="page?.pageMs != ''">
+            <span *ngIf="page?.pageMs != null">
                 <span [innerHTML]="msContainingPage?.title | removeTextAndPar"></span>
                 ({{msContainingPage?.archive}}
                 <span [innerHTML]="msContainingPage?.shelfmark | removeTextAndPar"></span>
                 ), {{page?.name}}
             </span>
-            <span *ngIf="page?.pagePub != ''">
+            <span *ngIf="page?.pagePub != null">
                 <!--maybe we don't need a legend for the image of a publication,
                     because it is self-explaining-->
             </span>
@@ -34,10 +34,10 @@
     </div>
 
     <!-- PICTURES -->
-    <div class="row" *ngIf="photos && photos.length > 0"> <!-- only show if there are pictures -->
-        <div class="col-md-7 offset-md-2" *ngFor="let photo of photos">
+    <div class="row">
+        <div class="col-md-7 offset-md-2">
             <img width="100%"
-            src="{{ photo.imageURL }}"
+            src="{{ photo?.imageURL }}"
             />
             <br/>
             <span>{{photo?.title}}</span>
