@@ -34,10 +34,10 @@
     </div>
 
     <!-- PICTURES -->
-    <div class="row" *ngIf="photos && photos.length > 0"> <!-- only show if there are pictures -->
-        <div class="col-md-7 offset-md-2" *ngFor="let photo of photos">
+    <div class="row">
+        <div class="col-md-7 offset-md-2">
             <img width="100%"
-            src="{{ photo.imageURL }}"
+            src="{{ photo?.imageURL }}"
             />
             <br/>
             <span>{{photo?.title}}</span>

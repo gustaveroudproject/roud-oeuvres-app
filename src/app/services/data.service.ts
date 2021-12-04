@@ -2677,7 +2677,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}essayHasAuthor`
       ),
-      photos: this.getArrayOfValues(
+      photo: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       )

@@ -25,7 +25,6 @@ export class EssaysPageComponent implements OnInit {
   selectedEssay: Essay;
   index = 0;
   photo: Picture;
-  photos: Picture[];
   
 
   ngOnInit() {
@@ -36,19 +35,14 @@ export class EssaysPageComponent implements OnInit {
         this.index = this.index + 1;
 
         for (var essay in essays) {
-        //// get photos from photos' IRIs
-        this.photos = [];
-        for (var photoVal in essays[essay].photos) {
+          //// get photos from photos' IRIs
           this.dataService
-          .getPicture(essays[essay].photos[photoVal])
-          .subscribe(
-            (photo: Picture) => {
-              this.photo = photo;
-              this.photos.push(photo);
-            });
-          }
+            .getPicture(essays[essay].photo)
+            .subscribe(
+              (photo: Picture) => {
+                this.photo = photo;
+          });
         }
-
       },
       error => console.error(error)
     );

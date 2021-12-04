@@ -3,7 +3,7 @@ import { Resource } from './resource.model';
 export interface EssayLight extends Resource {
   title: string;
   author: string;
-  photos: string[];
+  photo: string;
 }
 export interface Essay extends EssayLight {
   textContent: string;
