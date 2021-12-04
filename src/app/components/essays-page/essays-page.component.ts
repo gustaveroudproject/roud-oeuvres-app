@@ -21,7 +21,6 @@ export class EssaysPageComponent implements OnInit {
 
 
   essaysLight: EssayLight[] = [];
- // essay: EssayLight;
   index = 0;
   photo: Picture;
   
@@ -32,7 +31,11 @@ export class EssaysPageComponent implements OnInit {
       (essays: Essay[]) => {
         this.essaysLight.push(...essays);
         this.index = this.index + 1;
-        for (var essay in this.essaysLight) {
+
+        console.log(this.essaysLight)
+
+        /*
+        for (var essay in essays) {
           //// get photos from photos' IRIs
           this.dataService
             .getPicture(essays[essay].photo)
@@ -41,10 +44,10 @@ export class EssaysPageComponent implements OnInit {
                 this.photo = photo;
           });
         }
+        */
       },
       error => console.error(error)
     );
-    console.log(this.photo); // this is undefined
     
   }
   

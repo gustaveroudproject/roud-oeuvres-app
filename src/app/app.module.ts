@@ -63,7 +63,7 @@ import { MscPubsReusingPartComponent } from './components/msc-pubs-reusing-part/
 import { MscMssRewritingPartComponent } from './components/msc-mss-rewriting-part/msc-mss-rewriting-part.component';
 import { MscMssRewrittenPartComponent } from './components/msc-mss-rewritten-part/msc-mss-rewritten-part.component';
 import { WorkPageComponent } from './components/work-page/work-page.component';
-
+import { EssayPhotoComponent } from './components/essay-photo/essay-photo.component';
 
 
 /* PIPES */
@@ -127,7 +127,8 @@ export function initializeApp(appInitService: AppInitService) {
     MscMssRewrittenPartComponent,
     RenderTeiDirective,
     EssayPageComponent,
-    WorkPageComponent
+    WorkPageComponent,
+    EssayPhotoComponent
   ],
   imports: [
     MatExpansionModule,

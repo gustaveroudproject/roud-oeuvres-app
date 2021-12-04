@@ -42,7 +42,9 @@
         <div class="col-md-3" *ngFor="let essayLight of essaysLight">
             <div class="card">
                 <a routerLink="/essays/{{ essayLight?.id | encodeURIComponent }}">
-                    <img class="card-img-top" src="{{ photo?.imageURL }}" width="100%">
+
+                    <or-essay-photo [essayPhoto]="essayLight?.photo"></or-essay-photo>
+                    <!--<img class="card-img-top" src="{{ ppp?.imageURL }}" width="100%">-->
                     <div class="card-body">
                         <h5 class="card-title">{{essayLight?.title}}</h5>
                     </div>

@@ -40,12 +40,14 @@ export class EssayPageComponent implements OnInit {
           .subscribe(
             (essay: Essay) => {
               this.essay = essay; // step 4    I give to the attribute essay the value of essay
+
               this.dataService
               .getPicture(essay.photo)
               .subscribe(
                 (photo: Picture) => {
                   this.photo = photo;
                 });
+              
 
               //// get scans from scans' IRIs
               this.pages = [];
