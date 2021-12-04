@@ -11,7 +11,7 @@ export class EssayPhotoComponent implements OnInit {
 
   photo:Picture;
   @Input()
-  essayPhoto: string ;
+  essayPhotoId: string ;
 
   constructor(
     private dataService: DataService
@@ -20,7 +20,7 @@ export class EssayPhotoComponent implements OnInit {
   ngOnInit() {
 
     this.dataService
-      .getPicture(this.essayPhoto)
+      .getPicture(this.essayPhotoId)
       .subscribe(
         (photo: Picture) => {
           this.photo = photo;
