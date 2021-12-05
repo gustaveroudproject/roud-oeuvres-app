@@ -134,6 +134,7 @@ export class FulltextSearchComponent implements OnInit {
             this.dataService.getMssLight(mssIRIs).subscribe(
               (mss: MsLight[]) => {
                 this.mss = mss;
+                console.log(mss)
               }
             );
           }

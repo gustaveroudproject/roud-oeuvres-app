@@ -106,7 +106,7 @@
           <div>
             <strong>Personnes</strong>
             <ul>
-              <li *ngFor="let person of persons">
+              <li *ngFor="let person of persons | sortBySurname">
                 <a routerLink="/persons/{{ person?.id | encodeURIComponent }}"
                   >{{ person?.name }} {{person?.surname}}
                   ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})</a
@@ -134,11 +134,10 @@
           <div>
             <strong>Manuscrits</strong>
             <ul>
-              <li *ngFor="let ms of mss">
+              <li *ngFor="let ms of mss | sortByMsTitle">
                 <a routerLink="/archive/ms/{{ ms?.id | encodeURIComponent }}">
                 <span [innerHTML]="ms?.title | htmlSanitizer"></span>
-                  ({{ ms?.archive }}
-                  <span [innerHTML]="ms?.shelfmark | htmlSanitizer"></span>)
+                  ({{ ms?.archive }}<span *ngIf="ms.shelfmark != '/'" [innerHTML]="ms?.shelfmark | htmlSanitizer"></span>)
                   </a
                 >
               </li>

@@ -75,6 +75,8 @@ import { sortByShelfmarkPipe } from './pipes/sort-by-shelfmark.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { booleanPipe } from './pipes/boolean.pipe';
 import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
+import { sortByMsTitlePipe } from './pipes/sort-by-ms-title.pipe';
+
 
 
 /* DIRECTIVES */
@@ -99,6 +101,7 @@ export function initializeApp(appInitService: AppInitService) {
     knoradatesYmdFormattingPipe,
     sortBySurnamePipe,
     sortByShelfmarkPipe,
+    sortByMsTitlePipe,
     booleanPipe,
     removeTextAndParPipe,
     ResourceLinkDirective,
