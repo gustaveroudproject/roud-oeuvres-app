@@ -1,0 +1,6 @@
+<span>
+    <or-author [authorsId]="book?.authorsValues"></or-author>
+    <a routerLink="/archive/pub/{{ book?.id | encodeURIComponent }}">
+        <i [innerHTML]="book?.title | htmlSanitizer"></i></a>, {{ publisherLight?.name}},
+        {{ book?.date | knoradatesFormatting }}
+</span>

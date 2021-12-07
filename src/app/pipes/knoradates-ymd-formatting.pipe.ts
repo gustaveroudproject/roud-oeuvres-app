@@ -17,7 +17,7 @@ export class knoradatesYmdFormattingPipe implements PipeTransform {
     
 
 
-  transform(value: string): string {
+  transform(knoraDate: string): string {
 
       const monthsMap = new Map()
       monthsMap.set( "01", "janvier")
@@ -33,8 +33,8 @@ export class knoradatesYmdFormattingPipe implements PipeTransform {
       monthsMap.set( "11", "novembre")
       monthsMap.set( "12", "décembre")
 
-    const date: string = value.substring(10,value.indexOf(' ')); // string GREGORIAN and CE from knora-date
-    
+    const date: string = knoraDate.substring(10,knoraDate.indexOf(' ')); // string GREGORIAN and CE from knora-date
+
     const year:string = date.substring(0,4);
 
     if (date.length > 4 && date.length <= 7) {

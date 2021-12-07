@@ -7,7 +7,8 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
-import { AuthorLight } from 'src/app/models/author.model';
+import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
+import { result } from 'lodash';
 
 
 @Component({
@@ -33,9 +34,18 @@ export class FulltextSearchComponent implements OnInit {
   msFromParts: MsLight;
   works: WorkLight[];
   work: WorkLight;
-  workAuthor: AuthorLight;
-  workAuthors: AuthorLight[];
+  pubs: PublicationLight[];
+  books: Book[];
+  articles: PeriodicalArticle[];
+  roudPubs: PublicationLight[];
+  bookIRI: string;
+  booksIRIs: string[];
+  articleIRI: string;
+  articlesIRIs: string[];
+  bookSectionIRI: string;
+  bookSectionsIRIs: string[];
 
+  
   checkedCategoriesArray: string[] = [];
   
 
@@ -57,13 +67,15 @@ export class FulltextSearchComponent implements OnInit {
     this.places = [];
     this.msParts = [];
     this.works = [];
-    this.workAuthors = [];
+    this.pubs = [];
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
       this.dataService.fullTextSearch(searchText).subscribe(
         (resources: Resource[]) => {
           this.resources = resources;
+
+          // console.log(resources)
           
           // if it is too slow, it is because multiple queries (get) at the same time (en parallel)
 
@@ -96,24 +108,6 @@ export class FulltextSearchComponent implements OnInit {
             this.dataService.getWorksLight(worksIRIs).subscribe(
               (works: WorkLight[]) => {
                 this.works = works;
-
-                this.workAuthors = [];
-                //// get authors from authors' IRIs
-                for (var work in this.works) {
-                  for (var autVal in works[work].authorsValues) {
-                    this.dataService
-                    .getAuthorLight(works[work].authorsValues[autVal])
-                    .subscribe(
-                      (workAuthor: AuthorLight) => {
-                        this.workAuthor = workAuthor;
-                        this.workAuthors.push(this.workAuthor);
-                        // it might be called more than once and add the same author multiple times 
-                        // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects 
-                        this.workAuthors = this.workAuthors.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)                
-                      }
-                    );
-                  }
-                }
               }
             );
           }
@@ -154,21 +148,59 @@ export class FulltextSearchComponent implements OnInit {
               }
             );
           }
-          
-          
-
 
           // RESULTS: PUBLICATIONS
-          /*
-          const booksIRIs = this.resources.filter(r => r.resourceClassLabel === "Book").map(r => r.id);
-          if (placesIRIs && placesIRIs.length > 0) {
-            this.dataService.getPlaces(placesIRIs).subscribe(
-              (places: Place[]) => {
-                this.places = places;
+          const pubsIRIs = this.resources.filter
+            (r => r.resourceClassLabel === "Book" ||
+            r.resourceClassLabel === "Periodical article"  ||
+            r.resourceClassLabel === "Book section").map(r => r.id);
+          if (pubsIRIs && pubsIRIs.length > 0) {
+            this.dataService.getPublicationsLight(pubsIRIs).subscribe(
+              (pubs: PublicationLight[]) => {
+                this.pubs = pubs;
+
+                // filter only publications by Roud, before or in 1977
+                this.roudPubs = this.pubs.filter
+                  (pub => pub.authorsValues.indexOf
+                      ('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') > -1
+                      && pub.date.slice(10) <= '1977')
+                      /* slice to remove 'GREGORIAN:' and consider '1977' as string,
+                      otherwise cannot make comparison between number and string */
+
+                // RESULTS: BOOKS          
+                this.booksIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id);
+                for (var bookIRI in this.booksIRIs) {
+                  this.bookIRI = this.booksIRIs[bookIRI];
+                }
+
+                // RESULTS: ARTICLES  
+                this.articlesIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id);
+                for (var articleIRI in this.articlesIRIs) {
+                  this.articleIRI = this.articlesIRIs[articleIRI];
+                }
+                
+                // RESULTS: BOOK SECTIONS  
+                this.bookSectionsIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id);
+                for (var bookSectionIRI in this.bookSectionsIRIs) {
+                  this.bookSectionIRI = this.bookSectionsIRIs[bookSectionIRI];
+                }
+
+                /*
+                if (articlesIRIs && articlesIRIs.length > 0) {
+                  this.dataService.getPeriodicalArticles(articlesIRIs).subscribe(
+                    (articles: PeriodicalArticle[]) => {
+                      this.articles = articles;
+                    }
+                  );
+                }
+                */
+
+
+                
               }
             );
           }
-          */
+          
 
         },
         error => console.error(error)
@@ -177,15 +209,6 @@ export class FulltextSearchComponent implements OnInit {
   } // end on search
 
 
-  /*
-  ngDoCheck() {
-    this.disableText(this.el);
-  }
-  disablePersons(el: ElementRef) {
-    var persons = document.getElementById("personsResults")
-    if (persons === null) { this.personDisabledState = true; } else { this.personDisabledState = false; }
-  }
-  */
 
 
   show(cat: string) {
