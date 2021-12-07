@@ -1,0 +1,8 @@
+<span>
+    <or-author [authorsId]="article?.authorsValues"></or-author>
+    <a routerLink="/archive/pub/{{ article?.id | encodeURIComponent }}">
+        « <span [innerHTML]="article?.title | removeTextAndPar | htmlSanitizer"></span> »</a>,
+        <i>{{ periodical?.title }}</i>,
+        {{ (article?.date !== null) ? (article?.date | knoradatesYmdFormatting) : "" }}
+        <!-- the date data arrives too late for the pipe, which gives an error thinking value is null. Add this to handle it -->
+</span>

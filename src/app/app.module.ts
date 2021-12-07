@@ -64,6 +64,10 @@ import { MscMssRewritingPartComponent } from './components/msc-mss-rewriting-par
 import { MscMssRewrittenPartComponent } from './components/msc-mss-rewritten-part/msc-mss-rewritten-part.component';
 import { WorkPageComponent } from './components/work-page/work-page.component';
 import { EssayPhotoComponent } from './components/essay-photo/essay-photo.component';
+import { AuthorComponent } from './components/author/author.component';
+import { BookComponent } from './components/book/book.component';
+import { ArticleComponent } from './components/article/article.component';
+import { BookSectionComponent } from './components/book-section/book-section.component';
 
 
 /* PIPES */
@@ -75,6 +79,8 @@ import { sortByShelfmarkPipe } from './pipes/sort-by-shelfmark.pipe';
 import { HtmlSanitizerPipe } from './pipes/html-sanitizer.pipe';
 import { booleanPipe } from './pipes/boolean.pipe';
 import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
+import { sortByMsTitlePipe } from './pipes/sort-by-ms-title.pipe';
+
 
 
 /* DIRECTIVES */
@@ -99,6 +105,7 @@ export function initializeApp(appInitService: AppInitService) {
     knoradatesYmdFormattingPipe,
     sortBySurnamePipe,
     sortByShelfmarkPipe,
+    sortByMsTitlePipe,
     booleanPipe,
     removeTextAndParPipe,
     ResourceLinkDirective,
@@ -128,7 +135,11 @@ export function initializeApp(appInitService: AppInitService) {
     RenderTeiDirective,
     EssayPageComponent,
     WorkPageComponent,
-    EssayPhotoComponent
+    EssayPhotoComponent,
+    AuthorComponent,
+    BookComponent,
+    ArticleComponent,
+    BookSectionComponent
   ],
   imports: [
     MatExpansionModule,

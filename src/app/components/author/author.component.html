@@ -1,0 +1,5 @@
+<span *ngIf="authors && authors.length > 0">
+    <span *ngFor="let author of authors | sortBySurname">
+    {{ author?.name }} {{ author?.surname }}, </span>
+</span>
+  

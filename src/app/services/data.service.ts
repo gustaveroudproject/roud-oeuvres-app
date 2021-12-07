@@ -2007,6 +2007,16 @@ OFFSET ${index}
       );
   }
 
+
+  getPublicationsLight(iris: string[]): Observable<PublicationLight[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PublicationLight(r)))
+      );
+  }
+
+
   getPublication(iri: string): Observable<Publication> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
@@ -2023,6 +2033,16 @@ OFFSET ${index}
       );
   }
 
+  getPeriodicalArticles(iris: string[]): Observable<PeriodicalArticle[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PeriodicalArticle(r)))
+      );
+  }
+
+  
+
   getPeriodicalLight(iri: string): Observable<PeriodicalLight> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
@@ -2030,6 +2050,8 @@ OFFSET ${index}
         map((readResource: ReadResource) => this.readRes2PeriodicalLight(readResource))
       );
   }
+
+  
 
   getBook(iri: string): Observable<Book> {
     return this.knoraApiConnection.v2.res
@@ -2039,6 +2061,15 @@ OFFSET ${index}
       );
   }
 
+  getBooks(iris: string[]): Observable<Book[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Book(r)))
+      );
+  }
+
+
   getBookSection(iri: string): Observable<BookSection> {
     return this.knoraApiConnection.v2.res
       .getResource(iri)
@@ -2046,6 +2077,17 @@ OFFSET ${index}
         map((readResource: ReadResource) => this.readRes2BookSection(readResource))
       );
   }
+
+  getBookSections(iris: string[]): Observable<BookSection[]> {
+    return this.knoraApiConnection.v2.res
+      .getResources(iris)
+      .pipe(
+        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2BookSection(r)))
+      );
+  }
+
+
+
 
   getPublisherLight(iri: string): Observable<PublisherLight> {
     return this.knoraApiConnection.v2.res
