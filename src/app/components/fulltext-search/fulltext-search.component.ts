@@ -68,6 +68,10 @@ export class FulltextSearchComponent implements OnInit {
     this.msParts = [];
     this.works = [];
     this.pubs = [];
+    this.booksIRIs = [];
+    this.articlesIRIs = [];
+    this.bookSectionsIRIs = [];
+    this.roudPubs = [];
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
