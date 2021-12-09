@@ -1,0 +1,174 @@
+<div class="container">
+
+    <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/archive">Archives</a></li>
+            
+          </ol>
+        </nav>
+    </div>
+
+    <h2 class="mb-5 text-center"><b>Archives</b></h2>
+
+    <div class="row mb-5">
+        <p>Cette page propose une selection de documents d'archive
+            qui témoignent de la production littéraire de Gustave Roud.</p>
+    </div>
+
+
+    <!-- RECUEILS -->
+    <div class="mb-5">
+        <h3 class="sectionTitle">Publications et manuscrits des recueils poétiques</h3>
+        <p class="sectionIntro">Cliquez sur une image pour feuilleter la publication et accèder aux manuscrits de son dossier génétique.</p>
+        <div class="row my-2">
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1927adieu_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http://rdfh.ch/0112/K2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1929feuillets_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http://rdfh.ch/0112/K2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1932traite_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http://rdfh.ch/0112/K2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1933essai_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+        </div> <!-- end first row -->
+        <div class="row my-2">
+            
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http://rdfh.ch/0112/K2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1941moissonneur_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <a routerLink="/archive/pub/http://rdfh.ch/0112/K2OVZydJS42GUsMJvKhP-A">
+                        <img class="card-img-top" src="assets/img/couv/couv_1933essai_1.png" width="100%">
+                    </a>
+                </div>
+            </div>
+            
+        </div> <!-- end second row -->
+    </div> <!-- fin recueils -->
+
+    <!-- TRADUCTIONS -->
+    <div class="my-5">
+        <h3 class="sectionTitle">Les manuscrits du traducteur</h3>
+        <p class="sectionIntro">Cliquez sur une image pour accèder à la liste des manuscrits de traduction d'un auteur.</p>
+        
+        <div class="row">
+            
+            <!-- Hölderlin -->
+            <div class="col-md-3">
+                <div class="card">
+                    <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/6omSE-qVRTmIe0LlYxdsNA'}">
+                        <img class="card-image-top" src="assets/img/MissyDetail.png" width="100%">
+                        <div class="card-body">
+                            <h5 class="card-title">Hölderlin</h5>
+                        </div>
+                        </a>
+                </div>
+            </div>
+
+            <!-- Rilke -->
+            <div class="col-md-3">
+                <div class="card">
+                    <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/4BcTTNFYRLmtGyuv4Rgs0A'}">
+                        <img class="card-image-top" src="assets/img/MissyDetail.png" width="100%">
+                        <div class="card-body">
+                            <h5 class="card-title">Rilke</h5>
+                        </div>
+                        </a>
+                </div>
+            </div>
+
+            <!-- Trakl -->
+            <div class="col-md-3">
+                <div class="card">
+                    <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/yb8lDPz8Rsy0p_kprN9G4g'}">
+                        <img class="card-image-top" src="assets/img/MissyDetail.png" width="100%">
+                        <div class="card-body">
+                            <h5 class="card-title">Trakl</h5>
+                        </div>
+                        </a>
+                </div>
+            </div>
+
+            <!-- Novalis -->
+            <div class="col-md-3">
+                <div class="card">
+                    <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/zQNIeqPdSWOi5pY91FK80Q'}">
+                        <img class="card-image-top" src="assets/img/MissyDetail.png" width="100%">
+                        <div class="card-body">
+                            <h5 class="card-title">Novalis</h5>
+                        </div>
+                        </a>
+                </div>
+            </div>
+            
+        </div>
+    </div> <!-- end translations -->
+
+
+    <!-- JOURNAL -->
+    <div class="my-5">
+        <h3 class="sectionTitle">Les manuscrits du journal intime</h3>
+        <p class="sectionIntro">Cliquez sur les années pour accèder à la liste des manuscrits correspondants.</p>
+        
+        <div class="row">
+            
+            <div class="col-md-2">
+                <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ years: 'GREGORIAN:1890:1920'}">
+                    <button type="button" class="btn btn-secondary btn-lg">1910-1920</button>
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ years: 'GREGORIAN:1920:1930'}">
+                    <button type="button" class="btn btn-secondary btn-lg">1920-1930</button>
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a
+                    [routerLink]="['/archive/results']"
+                    [queryParams]="{ years: 'GREGORIAN:1930:1940'}">
+                    <button type="button" class="btn btn-secondary btn-lg">1930-1940</button>
+                </a>
+            </div>
+
+        </div> <!-- end row -->
+   
+</div>

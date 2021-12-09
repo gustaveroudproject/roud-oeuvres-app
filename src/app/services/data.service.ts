@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { KnoraApiConnection, ReadResource } from '@knora/api';
+import { KnoraApiConnection, ReadResource, CountQueryResponse } from '@knora/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
@@ -16,18 +16,19 @@ import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
 import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
-
-import {
-  KnoraApiConnectionToken,
-  KuiConfigToken,
-  KuiConfig
-} from '@knora/core';
+import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataService {
+
+
+  size: number;
+
+
   constructor(
     @Inject(KnoraApiConnectionToken)
     private knoraApiConnection: KnoraApiConnection,
@@ -172,6 +173,116 @@ getPage(iri: string): Observable<Page> {
       map((readResource: ReadResource) => this.readRes2Page(readResource))
     );
 }
+
+
+
+getMssTranslatedAuthor(translatedAuthor: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?ms knora-api:isMainResource true .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+    ?ms roud-oeuvres:hasTranslatedAuthor <${translatedAuthor}> .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
+
+
+
+
+getDiaryMssDate(years: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?ms knora-api:isMainResource true .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .    
+    ?ms roud-oeuvres:manuscriptHasDateComputable ?dateComputable .
+    FILTER(knora-api:toSimpleDate(?dateComputable) = "${years}"^^knora-api-simple:Date)
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
+
+getDiaryMssEstablishedDate(years: string, index: number = 0): Observable<MsLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?ms knora-api:isMainResource true .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .
+} WHERE {
+    ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    ?ms roud-oeuvres:manuscriptHasTitle ?title .    
+    ?ms roud-oeuvres:manuscriptHasDateEstablishedComputable ?dateEstablishedComputable .
+        FILTER(knora-api:toSimpleDate(?dateEstablishedComputable) = "${years}"^^knora-api-simple:Date)
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResource[] 
+    ) => readResources.map(r => {
+        return this.readRes2MsLight(r);
+      })
+    )
+  );
+}
+
+
+
 
 
 
