@@ -21,6 +21,8 @@ for example of a component */
   }
 
 
+
+
 ul {
     list-style: none;
     line-height: 1.5em;
@@ -48,7 +50,6 @@ $darkGreen:#3f6c51; // primary
 $lightDarkGreen: #DFE7E1;
 $orange: #e06d06;
 $rose: #F4BAB8; //ed9390
-
 $yellow:#dcbf85;
 
 
@@ -64,6 +65,10 @@ $yellow:#dcbf85;
   
   .breadcrumb-item a {
     color: inherit;
+  }
+
+  a {
+    color:#538d6a;
   }
 
 

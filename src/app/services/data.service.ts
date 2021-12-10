@@ -26,8 +26,7 @@ import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core'
 export class DataService {
 
 
-  size: number;
-
+  
 
   constructor(
     @Inject(KnoraApiConnectionToken)
