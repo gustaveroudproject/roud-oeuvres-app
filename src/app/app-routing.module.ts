@@ -14,7 +14,8 @@ import { PlacePageComponent } from './components/place-page/place-page.component
 import { PubPageComponent } from './components/pub-page/pub-page.component';
 import { MsPageComponent } from './components/ms-page/ms-page.component';
 import { WorkPageComponent } from './components/work-page/work-page.component';
-
+import { ArchivesPageComponent } from './components/archives-page/archives-page.component';
+import { ArchiveResultsPageComponent } from './components/archive-results-page/archive-results-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -28,8 +29,15 @@ const routes: Routes = [
       { path: ':iri', component: TextPageComponent }
     ]
   },
-  { path: 'archive/pub/:iri', component: PubPageComponent },
-  { path: 'archive/ms/:iri', component: MsPageComponent },
+  {
+    path: 'archive',
+    children: [
+      { path: '', component: ArchivesPageComponent },
+      { path: 'pub/:iri', component: PubPageComponent },
+      { path: 'ms/:iri', component: MsPageComponent },
+      { path: 'results', component: ArchiveResultsPageComponent }
+    ]
+  },
   {
     path: 'essays',
     children: [

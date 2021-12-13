@@ -8,7 +8,7 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
-import { result } from 'lodash';
+// import * as octicons from '@primer/octicons';
 
 
 @Component({
