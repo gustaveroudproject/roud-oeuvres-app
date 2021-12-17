@@ -67,7 +67,7 @@
 
 
             <!-- LIRE LE TEXTE -->
-            <div *ngIf="manuscript?.editorialSet == 'Diary'" class="readTheText">
+            <div *ngIf="manuscript?.editorialSet == 'Journal'" class="readTheText">
                 <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
             </div>
             <!--
@@ -162,7 +162,7 @@
 
                 <mat-expansion-panel id="panelPoeticPub" 
                 class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Poetic work'"
+                *ngIf="manuscript?.editorialSet == 'Œuvre poétique'"
                 [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
@@ -190,7 +190,7 @@
 
                 <mat-expansion-panel id="panelDiaryLevel" 
                 class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Diary'"
+                *ngIf="manuscript?.editorialSet == 'Journal'"
                 [disabled]="panelDiaryLevelDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Niveaux de journal</mat-panel-title>
@@ -270,7 +270,7 @@
 
                 <mat-expansion-panel id="panelDiaryPub" 
                 class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Diary'"
+                *ngIf="manuscript?.editorialSet == 'Journal'"
                 [disabled]="panelDiaryPubDisableState">
                     <mat-expansion-panel-header>
                     <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
@@ -308,7 +308,7 @@
                     </div>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Poetic work'">
+                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Œuvre poétique'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -323,7 +323,7 @@
                         </p>
                     </div>
                 </mat-expansion-panel>
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Diary'">
+                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Journal'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
