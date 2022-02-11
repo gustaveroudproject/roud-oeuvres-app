@@ -47,18 +47,7 @@ export class PubcDiaryReusedPartComponent implements OnInit {
       .subscribe((msPartsReusedInParts: MsPartLight[]) => {
           this.msPartsReusedInParts = msPartsReusedInParts;
 
-          this.reusedInParts.push(...msPartsReusedInParts);          
-
-          // asynchrone
-          //// get mss from ms' IRIs
-          for (var msPart in msPartsReusedInParts) {
-            this.dataService
-            .getMsOfMsPart(msPartsReusedInParts[msPart].isPartOfMsValue)
-            .subscribe(
-              (msLight2: MsLight) => {
-                this.msLight2 = msLight2;
-              });
-            }
+          this.reusedInParts.push(...msPartsReusedInParts);  
       });
 
       
