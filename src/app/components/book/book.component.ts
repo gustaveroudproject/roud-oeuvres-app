@@ -25,8 +25,6 @@ export class BookComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.withAuthor);
-    
     this.dataService
       .getBook(this.bookIRI)
       .subscribe(

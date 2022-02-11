@@ -1,5 +1,7 @@
 <span>
-    <or-author [authorsId]="article?.authorsValues"></or-author>
+    <span *ngIf="withAuthor == 'yes'">
+        <or-author [authorsId]="article?.authorsValues"></or-author>
+    </span>
     <a routerLink="/resources/{{ article?.id | encodeURIComponent }}">
         « <span [innerHTML]="article?.title | removeTextAndPar | htmlSanitizer"></span> »</a>,
         <i>{{ periodical?.title }}</i>,

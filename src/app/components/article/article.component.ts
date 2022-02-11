@@ -15,6 +15,8 @@ export class ArticleComponent implements OnInit {
 
   @Input()
   articleIRI: string ;
+  @Input()
+  withAuthor: string;
 
   constructor(
     private dataService: DataService,

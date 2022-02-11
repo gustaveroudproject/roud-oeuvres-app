@@ -15,6 +15,8 @@ export class BookSectionComponent implements OnInit {
 
   @Input()
   bookSectionIRI: string ;
+  @Input()
+  withAuthor: string;
 
   constructor(
     private dataService: DataService,
