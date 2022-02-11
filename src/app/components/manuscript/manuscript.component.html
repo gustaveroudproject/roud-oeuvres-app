@@ -1,6 +1,6 @@
 <span>
     <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
-    (<a routerLink="/archive/ms/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
+    (<a routerLink="/resources/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
         <span *ngIf="msLight?.shelfmark != '/'">
             <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
         </span>

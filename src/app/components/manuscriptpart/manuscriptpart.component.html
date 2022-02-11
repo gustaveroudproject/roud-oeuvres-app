@@ -1,7 +1,7 @@
 <span>
     {{ msPartLight?.title }}
     (partie de 
-    <a routerLink="/archive/ms/{{ msOfMsPart?.id | encodeURIComponent }}">{{ msOfMsPart?.archive }}
+    <a routerLink="/resources/{{ msOfMsPart?.id | encodeURIComponent }}">{{ msOfMsPart?.archive }}
         <span *ngIf="msLight?.shelfmark != '/'">
             <span [innerHTML]="msOfMsPart?.shelfmark | htmlSanitizer"></span>
         </span>

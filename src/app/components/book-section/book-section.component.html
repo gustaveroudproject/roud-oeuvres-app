@@ -1,6 +1,6 @@
 <span>
     <or-author [authorsId]="bookSection?.authorsValues"></or-author>
-    <a routerLink="/archive/pub/{{ bookSection?.id | encodeURIComponent }}">
+    <a routerLink="/resources/{{ bookSection?.id | encodeURIComponent }}">
     « <span [innerHTML]="bookSection?.title | removeTextAndPar | htmlSanitizer"></span> »</a>,
     <i>{{ bookSection?.book }}</i>,
     {{ bookSection?.date | knoradatesFormatting }}

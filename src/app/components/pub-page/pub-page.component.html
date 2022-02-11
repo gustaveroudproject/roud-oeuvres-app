@@ -123,14 +123,7 @@
                 <!-- if BOOK -->
                 <div *ngIf="book != null"> 
                     <p>
-                        <span *ngFor="let aut of authors | sortBySurname; last as isLast">
-                            {{ aut.name }} {{ aut.surname }}<span *ngIf="isLast == false">, </span>
-                        </span>,
-                        <i [innerHTML]="book?.title | htmlSanitizer"></i>,
-                        <span *ngIf="book?.collaborators != null">{{ book?.collaborators }},</span>
-                        {{ publisherLight?.location }},
-                        {{ publisherLight?.name }},
-                        {{ book?.date | knoradatesFormatting }}.
+                        <or-book [bookIRI]="book?.id"></or-book>.
                     </p>
                 </div>
 
@@ -249,6 +242,11 @@
                                     </a>,
                                     {{ pubReused?.date | knoradatesFormatting }}
                                 </span>
+
+                                <span *ngIf="pubReused?.resourceClassLabel == 'Book'">
+                                    <or-book [bookIRI]="pubReused?.id" [withAuthor]="'no'"></or-book>
+                                </span>
+
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReused?.title }}
                                     (partie de <a routerLink="/resources/{{ pubOfParts?.id | encodeURIComponent }}">
