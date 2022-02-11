@@ -128,7 +128,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
                     
-                      
+
+                    // GENESIS STARTS
                     
                     this.diaryNotes = [];
                     //// get diary notes (Manuscript) reused in this publication                    
@@ -147,17 +148,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       this.diaryNotesMsParts = diaryNotesMsParts;
 
                       this.diaryNotes.push(...diaryNotesMsParts);
-
-                      // asynchrone
-                      //// get mss from ms' IRIs
-                      for (var note in diaryNotesMsParts) {
-                        this.dataService
-                        .getMsOfMsPart(diaryNotesMsParts[note].isPartOfMsValue)
-                        .subscribe(
-                          (msLight: MsLight) => {
-                            this.msLight = msLight;
-                          });
-                        }
+                      
                     });
                     
                     

@@ -191,11 +191,7 @@
                                 </span>
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
-                                    {{ x?.title }}
-                                    (partie de 
-                                    <a routerLink="/archive/ms/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
-                                        <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
-                                    </a>)
+                                    <or-manuscriptpart [msPartIRI]="x?.id"></or-manuscriptpart>
                                 </span>
                             </li>
                         </ul>
