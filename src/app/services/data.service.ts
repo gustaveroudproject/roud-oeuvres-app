@@ -2209,7 +2209,6 @@ OFFSET ${index}
 
 
 
-
   getTextLights(index: number = 0): Observable<TextLight[]> {
     const gravsearchQuery = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
