@@ -187,11 +187,7 @@
                             <li class="liGenesis" *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
-                                    
-                                    <span [innerHTML]="x?.title | htmlSanitizer"></span>
-                                    (<a routerLink="/archive/ms/{{ x?.id | encodeURIComponent }}">{{ x?.archive }}
-                                        <span [innerHTML]="x?.shelfmark | htmlSanitizer"></span>
-                                    </a>)
+                                    <or-manuscript [msIRI]="x?.id"></or-manuscript>
                                 </span>
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
