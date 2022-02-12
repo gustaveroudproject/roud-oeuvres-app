@@ -180,7 +180,7 @@
                                 </span>
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubAT?.title }}
-                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
+                                    (partie de : <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubFromParts?.date | knoradatesFormatting }})
                                 </span>
                             </li>
@@ -211,7 +211,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <a routerLink="/resources/{{ msFromParts3?.id | encodeURIComponent }}">{{ msFromParts3?.archive }}
                                         <span [innerHTML]="msFromParts3?.shelfmark | htmlSanitizer"></span>
                                     </a>)
@@ -246,7 +246,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
                                         <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
                                     </a>)
@@ -288,7 +288,7 @@
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubD?.title }}
-                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
+                                    (partie de :<a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
                                         ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})
                                 </span>

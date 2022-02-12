@@ -253,7 +253,7 @@
 
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReused?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <span *ngIf="pubOfParts != null">
                                         <or-book [bookIRI]="pubOfParts?.id" [withAuthor]="'no'"></or-book>
                                     </span>)
@@ -314,7 +314,7 @@
 
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReusing?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <span *ngIf="pubOfParts3 != null">
                                         <or-book [bookIRI]="pubOfParts3?.id" [withAuthor]="'no'"></or-book>
                                     </span>)

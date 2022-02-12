@@ -149,7 +149,7 @@
             <ul>
               <li *ngFor="let part of msParts">
                 {{ part?.title }}
-                  (partie de 
+                  (partie de :
                   <a routerLink="/archive/ms/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
                       <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
                   </a>)
