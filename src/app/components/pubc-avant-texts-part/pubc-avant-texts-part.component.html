@@ -1,9 +1,5 @@
-<ul>
+<ul class="ulPourLaPartie">
     <li class="liGenesis" *ngFor="let avantTextPart of avantTextsParts">
-        <span [innerHTML]="avantTextPart?.title | htmlSanitizer"></span>
-        (<a routerLink="/archive/ms/{{ avantTextPart.id | encodeURIComponent }}"
-        >{{ avantTextPart?.archive }}
-        <span [innerHTML]="avantTextPart?.shelfmark | htmlSanitizer"></span>
-        </a>)
+        <or-manuscript [msIRI]="avantTextPart?.id"></or-manuscript>
     </li>
 </ul>

@@ -70,6 +70,8 @@ import { ArticleComponent } from './components/article/article.component';
 import { BookSectionComponent } from './components/book-section/book-section.component';
 import { ArchivesPageComponent } from './components/archives-page/archives-page.component';
 import { ArchiveResultsPageComponent } from './components/archive-results-page/archive-results-page.component';
+import { ManuscriptComponent } from './components/manuscript/manuscript.component';
+import { ManuscriptpartComponent } from './components/manuscriptpart/manuscriptpart.component';
 
 
 /* PIPES */
@@ -143,7 +145,9 @@ export function initializeApp(appInitService: AppInitService) {
     ArticleComponent,
     BookSectionComponent,
     ArchivesPageComponent,
-    ArchiveResultsPageComponent
+    ArchiveResultsPageComponent,
+    ManuscriptComponent,
+    ManuscriptpartComponent
   ],
   imports: [
     MatExpansionModule,

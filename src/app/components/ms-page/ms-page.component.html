@@ -168,7 +168,7 @@
                     <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liPoeticPub" *ngFor="let pubAT of pubsAvantTexte">
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Book'
                                     || pubAT?.resourceClassLabel == 'Periodical article'
@@ -180,7 +180,7 @@
                                 </span>
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubAT?.title }}
-                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
+                                    (partie de : <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubFromParts?.date | knoradatesFormatting }})
                                 </span>
                             </li>
@@ -200,7 +200,7 @@
                         <span>
                             <strong>Retranscription de</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liDiaryLevel" *ngFor="let x of rewrittenMs"> <!--  | sortByShelfmark -->
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
                                     <span [innerHTML]="x?.title | htmlSanitizer"></span>
@@ -211,7 +211,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <a routerLink="/resources/{{ msFromParts3?.id | encodeURIComponent }}">{{ msFromParts3?.archive }}
                                         <span [innerHTML]="msFromParts3?.shelfmark | htmlSanitizer"></span>
                                     </a>)
@@ -222,7 +222,7 @@
                         <ul *ngIf="msParts && msParts.length > 0">
                             <li *ngFor="let msPart of msParts">
                                 <span class="liPart">
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ msPart?.title }}</i>
                                     <or-msc-mss-rewritten-part [msPartId]="msPart.id"></or-msc-mss-rewritten-part>
@@ -235,7 +235,7 @@
                         <span>
                             <strong>Retranscription dans</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liDiaryLevel" *ngFor="let x of rewritingMs"> <!--  | sortByShelfmark -->
                                 <span *ngIf="x?.resourceClassLabel == 'Archival document'">
                                     <span [innerHTML]="x?.title | htmlSanitizer"></span>
@@ -246,7 +246,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de 
+                                    (partie de :
                                     <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
                                         <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
                                     </a>)
@@ -257,7 +257,7 @@
                         <ul *ngIf="msParts && msParts.length > 0">
                             <li *ngFor="let msPart of msParts">
                                 <span class="liPart">
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ msPart?.title }}</i>
                                     <or-msc-mss-rewriting-part [msPartId]="msPart.id"></or-msc-mss-rewriting-part>
@@ -276,7 +276,7 @@
                     <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liDiaryPub" *ngFor="let pubD of pubsDiary">
                                 <span *ngIf="pubD?.resourceClassLabel == 'Book'
                                     || pubD?.resourceClassLabel == 'Periodical article'
@@ -288,7 +288,7 @@
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubD?.title }}
-                                    (partie de <a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
+                                    (partie de :<a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
                                         ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})
                                 </span>
@@ -298,7 +298,7 @@
                         <ul *ngIf="msParts && msParts.length > 0">
                             <li *ngFor="let msPart of msParts">
                                 <span class="liPart">
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ msPart?.title }}</i>
                                     <or-msc-pubs-reusing-part [msPartId]="msPart.id"></or-msc-pubs-reusing-part>

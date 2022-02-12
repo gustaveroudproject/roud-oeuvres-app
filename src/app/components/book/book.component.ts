@@ -16,13 +16,15 @@ export class BookComponent implements OnInit {
 
   @Input()
   bookIRI: string ;
+  @Input()
+  withAuthor: string;
 
   constructor(
     private dataService: DataService,
   ) { }
 
   ngOnInit() {
-    
+
     this.dataService
       .getBook(this.bookIRI)
       .subscribe(

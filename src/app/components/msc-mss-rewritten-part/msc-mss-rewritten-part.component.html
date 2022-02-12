@@ -1,4 +1,4 @@
-<ul>
+<ul class="ulPourLaPartie">
     <li class="liDiaryLevel" *ngFor="let y of mssRewrittenParts"> <!--  | sortByShelfmark -->
 
         <span *ngIf="y?.resourceClassLabel == 'Archival document'">
@@ -10,7 +10,7 @@
 
         <span *ngIf="y?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
             {{ y?.title }}
-            (partie de 
+            (partie de :
             <a routerLink="/resources/{{ msFromParts4?.id | encodeURIComponent }}">{{ msFromParts4?.archive }}
                 <span [innerHTML]="msFromParts4?.shelfmark | htmlSanitizer"></span>
             </a>)

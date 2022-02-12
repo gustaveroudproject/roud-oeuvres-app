@@ -149,7 +149,7 @@
             <ul>
               <li *ngFor="let part of msParts">
                 {{ part?.title }}
-                  (partie de 
+                  (partie de :
                   <a routerLink="/archive/ms/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
                       <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
                   </a>)
@@ -164,14 +164,14 @@
             <strong>Publications</strong>
             <ul>
               <li *ngFor="let bookIRI of booksIRIs">
-                <or-book [bookIRI]="bookIRI"></or-book>
+                <or-book [bookIRI]="bookIRI" [withAuthor]="'yes'"></or-book>
               </li>
               <li *ngFor="let articleIRI of articlesIRIs">
-                <or-article [articleIRI]="articleIRI"></or-article>
+                <or-article [articleIRI]="articleIRI" [withAuthor]="'yes'"></or-article>
               </li>
               <li>
                 <li *ngFor="let bookSectionIRI of bookSectionsIRIs">
-                  <or-book-section [bookSectionIRI]="bookSectionIRI"></or-book-section>
+                  <or-book-section [bookSectionIRI]="bookSectionIRI" [withAuthor]="'yes'"></or-book-section>
                 </li>
             </ul>
           </div>

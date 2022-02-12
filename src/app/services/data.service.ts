@@ -1915,6 +1915,14 @@ OFFSET ${index}
   }
   
 
+  getMsPartLight(iri: string): Observable<MsPartLight> {
+    return this.knoraApiConnection.v2.res
+      .getResource(iri)
+      .pipe(
+        map((readResource: ReadResource) => this.readRes2MsPartLight(readResource))
+      );
+  }
+
   getMsPartsLight(iris: string[]): Observable<MsPartLight[]> {
     return this.knoraApiConnection.v2.res
       .getResources(iris)
@@ -2206,7 +2214,6 @@ OFFSET ${index}
         map((readResource: ReadResource) => this.readRes2PublisherLight(readResource))
       );
   }
-
 
 
 

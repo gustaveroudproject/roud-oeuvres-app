@@ -1,0 +1,8 @@
+<span>
+    <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
+    (<a routerLink="/resources/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
+        <span *ngIf="msLight?.shelfmark != '/'">
+            <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
+        </span>
+    </a>)
+</span>
