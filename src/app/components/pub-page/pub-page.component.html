@@ -182,7 +182,7 @@
                             So put together the results of two separated queries
                             into one array and then order by shelfmark with a pipe (as for surname)
                              -->
-                        <ul>
+                        <ul class="withListStyle">
                             <!-- for each ms or msPart (both are in the array diaryNotes) -->
                             <li class="liGenesis" *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
                         
@@ -199,7 +199,7 @@
                         <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
                             <li *ngFor="let pubPartLight of pubPartsLight">
                                 <span class="liPart"> 
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ pubPartLight?.title }}</i>
                                     <or-pubc-diary-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-diary-reused-part>
@@ -213,7 +213,7 @@
                         <span class="strong">
                             <strong>Avant-textes</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let avantText of avantTexts">
                                 <or-manuscript [msIRI]="avantText.id"></or-manuscript>
                             </li>
@@ -222,7 +222,7 @@
                         <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
                             <li *ngFor="let pubPartLight of pubPartsLight">
                                 <span class="liPart"> 
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ pubPartLight?.title }}</i>
                                     <or-pubc-avant-texts-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-avant-texts-part>
@@ -237,7 +237,7 @@
                         <span class="strong">
                             <strong>Publications antérieures</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let pubReused of pubsReused">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
@@ -264,7 +264,7 @@
                         <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
                             <li *ngFor="let pubPartLight of pubPartsLight">
                                 <span class="liPart"> 
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ pubPartLight?.title }}</i>
                                     <or-pubc-pubs-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-pubs-reused-part>
@@ -277,7 +277,7 @@
                         <span class="strong">
                             <strong>Réedition de</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let pubRepublished of publicationsRepublished">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
@@ -298,7 +298,7 @@
                         <span class="strong">
                             <strong>Réemploi du texte pour une nouvelle publication</strong>
                         </span>
-                        <ul>
+                        <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let pubReusing of pubsReusing">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->
@@ -325,7 +325,7 @@
                         <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
                             <li *ngFor="let pubPartLight of pubPartsLight">
                                 <span class="liPart">
-                                    <span>&#8226;</span>
+                                    <span></span>
                                     Pour la partie : 
                                     <i>{{ pubPartLight?.title }}</i>
                                     <or-pubc-pubs-reusing-part [pubPartId]="pubPartLight.id"></or-pubc-pubs-reusing-part>
@@ -344,7 +344,7 @@
                             <span class="strong">
                                 <strong>Réeditions</strong>
                             </span>
-                            <ul>
+                            <ul class="withListStyle">
                                 <li class="liGenesis" *ngFor="let pubRepublishing of publicationsRepublishingPub">
                                     <or-book [bookIRI]="pubRepublishing?.id" [withAuthor]="'no'"></or-book>
                                 </li>
