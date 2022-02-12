@@ -253,8 +253,10 @@
 
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReused?.title }}
-                                    (partie de <a routerLink="/resources/{{ pubOfParts?.id | encodeURIComponent }}">
-                                        <span [innerHTML]="pubOfParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubOfParts?.date | knoradatesFormatting }})
+                                    (partie de 
+                                    <span *ngIf="pubOfParts != null">
+                                        <or-book [bookIRI]="pubOfParts?.id" [withAuthor]="'no'"></or-book>
+                                    </span>)
                                 </span>
                             </li>
                         </ul>
@@ -279,12 +281,7 @@
                             <li class="liGenesis" *ngFor="let pubRepublished of publicationsRepublished">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
                                     because it is the same component, so need to pass through /resources -->  
-                                <span> <!-- can only be a book -->
-                                    <a routerLink="/resources/{{ pubRepublished.id | encodeURIComponent }}"
-                                        ><span [innerHTML]="pubRepublished?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>,
-                                    {{ pubRepublished?.date | knoradatesFormatting }}
-                                </span>
+                                <or-book [bookIRI]="pubRepublished?.id" [withAuthor]="'no'"></or-book>
                             </li>
                         </ul>
                     </div>
@@ -304,20 +301,23 @@
                         <ul>
                             <li class="liGenesis" *ngFor="let pubReusing of pubsReusing">
                                 <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
-                                    because it is the same component, so need to pass through /resources -->  
-                                <span *ngIf="pubReusing?.resourceClassLabel == 'Book'
-                                    || pubReusing?.resourceClassLabel == 'Periodical article'
-                                    || pubReusing?.resourceClassLabel == 'Book section'">
-                                    <a routerLink="/resources/{{ pubReusing.id | encodeURIComponent }}"
-                                        ><span [innerHTML]="pubReusing?.title | removeTextAndPar | htmlSanitizer"></span>
-                                    </a>,
-                                    {{ pubReusing?.date | knoradatesFormatting }}
+                                    because it is the same component, so need to pass through /resources -->
+                                <span *ngIf="pubReusing?.resourceClassLabel == 'Book'">
+                                    <or-book [bookIRI]="pubReusing?.id" [withAuthor]="'no'"></or-book>
                                 </span>
+                                <span *ngIf="pubReusing?.resourceClassLabel == 'Book section'">
+                                    <or-book-section [bookSectionIRI]="pubReusing?.id" [withAuthor]="'no'"></or-book-section>
+                                </span>
+                                <span *ngIf="pubReusing?.resourceClassLabel == 'Periodical article'">
+                                    <or-article [articleIRI]="pubReusing?.id" [withAuthor]="'no'"></or-article>
+                                </span>
+
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
                                     {{ pubReusing?.title }}
-                                    (partie de <a routerLink="/resources/{{ pubOfParts3?.id | encodeURIComponent }}">
-                                        <span [innerHTML]="pubOfParts3?.title | removeTextAndPar | htmlSanitizer"></span></a>, 
-                                        {{ pubOfParts3?.date | knoradatesFormatting }})
+                                    (partie de 
+                                    <span *ngIf="pubOfParts3 != null">
+                                        <or-book [bookIRI]="pubOfParts3?.id" [withAuthor]="'no'"></or-book>
+                                    </span>)
                                 </span>
                             </li>
                         </ul>
@@ -346,14 +346,7 @@
                             </span>
                             <ul>
                                 <li class="liGenesis" *ngFor="let pubRepublishing of publicationsRepublishingPub">
-                                    <!-- if routerLink=/archive/pub/iri, it will not refresh but add data
-                                        because it is the same component, so need to pass through /resources -->  
-                                    <span> <!-- can only be book -->
-                                        <a routerLink="/resources/{{ pubRepublishing.id | encodeURIComponent }}"
-                                            ><span [innerHTML]="pubRepublishing?.title | removeTextAndPar | htmlSanitizer"></span>
-                                        </a>,
-                                        {{ pubRepublishing?.date | knoradatesFormatting }}
-                                    </span>
+                                    <or-book [bookIRI]="pubRepublishing?.id" [withAuthor]="'no'"></or-book>
                                 </li>
                             </ul>
                             <!-- no parts, because republication is always of the entire book -->
