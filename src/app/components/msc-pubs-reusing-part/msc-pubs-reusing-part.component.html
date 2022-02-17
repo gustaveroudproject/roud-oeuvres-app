@@ -10,7 +10,7 @@
         </span>
         <span *ngIf="pubReusingPart?.resourceClassLabel == 'Part of a publication'">
             « {{ pubReusingPart?.title }} »
-            (partie de :<a routerLink="/archive/pub/{{ pubFromParts3?.id | encodeURIComponent }}">
+            (partie de : <a routerLink="/archive/pub/{{ pubFromParts3?.id | encodeURIComponent }}">
                 <span [innerHTML]="pubFromParts3?.title | removeTextAndPar | htmlSanitizer"></span></a>, 
                 {{ pubFromParts3?.date | knoradatesFormatting }})
         </span>

@@ -201,7 +201,7 @@
                                 <span class="liPart"> 
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ pubPartLight?.title }}</i>
+                                    <span>« {{ pubPartLight?.title }} »</span>
                                     <or-pubc-diary-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-diary-reused-part>
                                 </span>
                             </li>
@@ -224,7 +224,7 @@
                                 <span class="liPart"> 
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ pubPartLight?.title }}</i>
+                                    <span>« {{ pubPartLight?.title }} »</span>
                                     <or-pubc-avant-texts-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-avant-texts-part>
                                     <!-- without *ngIf, pubPartId is undefined in or-avant-texts-part -->
                                 </span>
@@ -253,8 +253,7 @@
 
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
                                     « {{ pubReused?.title }} »
-                                    (partie de :
-                                    <span *ngIf="pubOfParts != null">
+                                    (partie de : <span *ngIf="pubOfParts != null">
                                         <or-book [bookIRI]="pubOfParts?.id" [withAuthor]="'no'"></or-book>
                                     </span>)
                                 </span>
@@ -266,7 +265,7 @@
                                 <span class="liPart"> 
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ pubPartLight?.title }}</i>
+                                    <span>« {{ pubPartLight?.title }} »</span>
                                     <or-pubc-pubs-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-pubs-reused-part>
                                 </span>
                             </li>
@@ -296,7 +295,7 @@
 
                     <div class="mainCategory">
                         <span class="strong">
-                            <strong>Réemploi du texte pour une nouvelle publication</strong>
+                            <strong>Réemploi du texte dans la genèse d'une nouvelle publication</strong>
                         </span>
                         <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let pubReusing of pubsReusing">
@@ -314,8 +313,7 @@
 
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
                                     « {{ pubReusing?.title }} »
-                                    (partie de :
-                                    <span *ngIf="pubOfParts3 != null">
+                                    (partie de : <span *ngIf="pubOfParts3 != null">
                                         <or-book [bookIRI]="pubOfParts3?.id" [withAuthor]="'no'"></or-book>
                                     </span>)
                                 </span>
@@ -327,7 +325,7 @@
                                 <span class="liPart">
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ pubPartLight?.title }}</i>
+                                    <span>« {{ pubPartLight?.title }} »</span>
                                     <or-pubc-pubs-reusing-part [pubPartId]="pubPartLight.id"></or-pubc-pubs-reusing-part>
                                     <!--
                                         <or-pubs-reusing-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubs-reusing-part> 
