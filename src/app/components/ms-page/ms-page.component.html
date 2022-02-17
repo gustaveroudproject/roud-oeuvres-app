@@ -87,7 +87,7 @@
             <!-- lower cap -->
             <!-- links in comment, see directive -->
 
-            <div class="py-4">
+            <div class="py-4 msDesc">
                 <strong>Description du manuscrit</strong>
                 <div>
                     <div class="msDescItem">
@@ -162,10 +162,10 @@
 
                 <mat-expansion-panel id="panelPoeticPub" 
                 class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Œuvre poétique'"
+                *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'"
                 [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
+                    <mat-panel-title>Publications (ce document est un avant-texte de)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul class="withListStyle">
@@ -308,7 +308,7 @@
                     </div>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Œuvre poétique'">
+                <mat-expansion-panel id="panelInfo" expanded="false" *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -323,7 +323,7 @@
                         </p>
                     </div>
                 </mat-expansion-panel>
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Journal'">
+                <mat-expansion-panel id="panelInfo" expanded="false" *ngIf="manuscript?.editorialSet == 'Journal'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
