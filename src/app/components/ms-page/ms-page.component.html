@@ -179,7 +179,7 @@
                                     {{ pubAT?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubAT?.title }}
+                                    « {{ pubAT?.title }} »
                                     (partie de : <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubFromParts?.date | knoradatesFormatting }})
                                 </span>
@@ -287,7 +287,7 @@
                                     {{ pubD?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubD?.title }}
+                                    « {{ pubD?.title }} »
                                     (partie de :<a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
                                         ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})

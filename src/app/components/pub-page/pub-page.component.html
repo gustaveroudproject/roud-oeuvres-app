@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container largerPage">
 
     <!-- breadcrumbs -->
     <div class="breadcrumbNavbar my-4">
@@ -46,11 +46,11 @@
     <div class="row">
 
         <!-- start COLUMNS LEFT -->
-        <div class="col-7">
+        <div class="col-6">
         
             
             <!-- VIEWER -->
-            <div>
+            <div class="viewer">
                 <div class="py-4" *ngIf="pages && pages.length > 0">   
                     <div *ngFor="let page of pages">
                         <img
@@ -99,7 +99,7 @@
 -->
             
             <!-- BIBLIOGRAPHICAL REFERENCE -->
-            <div class="py-4">
+            <div class="py-4 biblioRef">
 
                 <strong class="test">Référence bibliographique</strong>
 
@@ -159,7 +159,7 @@
 
 
         <!-- start COLUMNS RIGHT -->
-        <div class="col-5">
+        <div class="col-6">
 
             <!-- GENÈSE ET REPRISES -->
             <div>
@@ -252,7 +252,7 @@
                                 </span>
 
                                 <span *ngIf="pubReused?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubReused?.title }}
+                                    « {{ pubReused?.title }} »
                                     (partie de :
                                     <span *ngIf="pubOfParts != null">
                                         <or-book [bookIRI]="pubOfParts?.id" [withAuthor]="'no'"></or-book>
@@ -313,7 +313,7 @@
                                 </span>
 
                                 <span *ngIf="pubReusing?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubReusing?.title }}
+                                    « {{ pubReusing?.title }} »
                                     (partie de :
                                     <span *ngIf="pubOfParts3 != null">
                                         <or-book [bookIRI]="pubOfParts3?.id" [withAuthor]="'no'"></or-book>
@@ -357,11 +357,11 @@
 
 
 
-                <mat-expansion-panel id="panelInfo" expanded="true">
+                <mat-expansion-panel id="panelInfo" expanded="false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div>
+                    <div id="panelInfoText">
                         <p>
                             <strong>… la section <i>Genèse</i></strong>. 
                             Elle est organisée en trois catégories qui ensemble
@@ -391,7 +391,7 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-7">
+        <div class="col-6">
             <!-- PERMANENT IDENTIFIERS -->
             <div class="my-5 permanentId">
                 <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ publicationLight?.ark }}</p>
