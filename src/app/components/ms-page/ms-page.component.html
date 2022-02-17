@@ -87,7 +87,7 @@
             <!-- lower cap -->
             <!-- links in comment, see directive -->
 
-            <div class="py-4">
+            <div class="py-4 msDesc">
                 <strong>Description du manuscrit</strong>
                 <div>
                     <div class="msDescItem">
@@ -162,10 +162,10 @@
 
                 <mat-expansion-panel id="panelPoeticPub" 
                 class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Œuvre poétique'"
+                *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'"
                 [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Publications (ce document est un avant-texte)</mat-panel-title>
+                    <mat-panel-title>Publications (ce document est un avant-texte de)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul class="withListStyle">
@@ -179,7 +179,7 @@
                                     {{ pubAT?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubAT?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubAT?.title }}
+                                    « {{ pubAT?.title }} »
                                     (partie de : <a routerLink="/archive/pub/{{ pubFromParts?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts?.title | removeTextAndPar | htmlSanitizer"></span></a>, {{ pubFromParts?.date | knoradatesFormatting }})
                                 </span>
@@ -211,8 +211,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de :
-                                    <a routerLink="/resources/{{ msFromParts3?.id | encodeURIComponent }}">{{ msFromParts3?.archive }}
+                                    (partie de : <a routerLink="/resources/{{ msFromParts3?.id | encodeURIComponent }}">{{ msFromParts3?.archive }}
                                         <span [innerHTML]="msFromParts3?.shelfmark | htmlSanitizer"></span>
                                     </a>)
                                 </span>
@@ -224,7 +223,7 @@
                                 <span class="liPart">
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ msPart?.title }}</i>
+                                    <span>« {{ msPart?.title }} »</span>
                                     <or-msc-mss-rewritten-part [msPartId]="msPart.id"></or-msc-mss-rewritten-part>
                                 </span>
                             </li>
@@ -246,8 +245,7 @@
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
                                     {{ x?.title }}
-                                    (partie de :
-                                    <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
+                                    (partie de : <a routerLink="/resources/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
                                         <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
                                     </a>)
                                 </span>
@@ -259,7 +257,7 @@
                                 <span class="liPart">
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ msPart?.title }}</i>
+                                    <span>« {{ msPart?.title }} »</span>
                                     <or-msc-mss-rewriting-part [msPartId]="msPart.id"></or-msc-mss-rewriting-part>
                                 </span>
                             </li>
@@ -287,7 +285,7 @@
                                     {{ pubD?.date | knoradatesFormatting }}
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
-                                    {{ pubD?.title }}
+                                    « {{ pubD?.title }} »
                                     (partie de :<a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
                                         <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
                                         ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})
@@ -300,7 +298,7 @@
                                 <span class="liPart">
                                     <span></span>
                                     Pour la partie : 
-                                    <i>{{ msPart?.title }}</i>
+                                    <span>« {{ msPart?.title }} »</span>
                                     <or-msc-pubs-reusing-part [msPartId]="msPart.id"></or-msc-pubs-reusing-part>
                                 </span>
                             </li>
@@ -308,7 +306,7 @@
                     </div>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Œuvre poétique'">
+                <mat-expansion-panel id="panelInfo" expanded="false" *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -323,7 +321,7 @@
                         </p>
                     </div>
                 </mat-expansion-panel>
-                <mat-expansion-panel id="panelInfo" expanded="true" *ngIf="manuscript?.editorialSet == 'Journal'">
+                <mat-expansion-panel id="panelInfo" expanded="false" *ngIf="manuscript?.editorialSet == 'Journal'">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Comment lire …</mat-panel-title>
                     </mat-expansion-panel-header>

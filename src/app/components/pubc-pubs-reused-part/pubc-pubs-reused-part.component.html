@@ -14,9 +14,8 @@
         </span>
 
         <span *ngIf="pbReused?.resourceClassLabel == 'Part of a publication'">
-            {{ pbReused?.title }}
-            (partie de :
-            <span *ngIf="pubOfParts2 != null">
+            « {{ pbReused?.title }} »
+            (partie de : <span *ngIf="pubOfParts2 != null">
                 <or-book [bookIRI]="pubOfParts2?.id" [withAuthor]="'no'"></or-book>
             </span>)
         </span>

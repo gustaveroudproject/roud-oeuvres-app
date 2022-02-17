@@ -23,33 +23,6 @@ for example of a component */
 
 
 
-ul {
-    list-style: none;
-    line-height: 1.5em;
-}
-
-.ulPourLaPartie {
-  list-style: circle;
-}
-
-.withListStyle {
-  list-style: circle;
-}
-
-  
-.permanentId {
-    border:1px solid black;
-    padding: 20px;
-}
-
-.page-title {
-    text-align: center;
-}
-
-.topBar-activeLink {
-    color:white !important;
-}
-
 /*************************** COLOR PALETTE **************************/
 
 $primary:#bbe6e4;
@@ -60,6 +33,37 @@ $lightDarkGreen: #DFE7E1;
 $orange: #e06d06;
 $rose: #F4BAB8; //ed9390
 $yellow:#dcbf85;
+
+
+/*************************** GENERAL **************************/
+
+
+ul {
+  list-style: none;
+  line-height: 1.5em;
+}
+
+.ulPourLaPartie {
+list-style: circle;
+}
+
+.withListStyle {
+list-style: circle;
+}
+
+
+.permanentId {
+  border:1px solid $lightDarkGreen;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+}
+
+.topBar-activeLink {
+  color:white !important;
+}
 
 
 /*************************** BREADCRUMBS **************************/
@@ -79,6 +83,25 @@ $yellow:#dcbf85;
   a {
     color:#538d6a;
   }
+
+
+/************************ ARCHIVES PAGES **************************/
+
+.viewer, .biblioRef, .msDesc {
+  font-size: larger;
+}
+
+.btn {
+  font-size: large;
+}
+
+.largerPage {
+  padding:0
+}
+
+.mat-expansion-panel-content, .mat-expansion-panel-header {
+  font-size: larger;
+}
 
 
 
