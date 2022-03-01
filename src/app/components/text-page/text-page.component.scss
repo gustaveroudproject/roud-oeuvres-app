@@ -7,6 +7,13 @@
   max-height: 2500px;
   padding: 2%;
   font-size: larger;
+  
+}
+
+@media screen and (max-width: 800px) {
+  .container-scrollable {
+    margin:30px 0;
+  }
 }
 
 
