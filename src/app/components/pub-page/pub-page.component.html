@@ -191,7 +191,7 @@
                                 </span>
                         
                                 <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
-                                    <or-manuscriptpart [msPartIRI]="x?.id"></or-manuscriptpart>
+                                    <or-manuscriptpart [msPartIRI]="x?.id" [msLightShelfmark]="x.shelfmark"></or-manuscriptpart>
                                 </span>
                             </li>
                         </ul>
