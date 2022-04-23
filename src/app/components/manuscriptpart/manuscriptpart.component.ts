@@ -15,6 +15,8 @@ export class ManuscriptpartComponent implements OnInit {
 
   @Input()
   msPartIRI: string ;
+  @Input()
+  msLightShelfmark: string ;
 
   
   constructor(
