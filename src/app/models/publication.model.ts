@@ -1,4 +1,4 @@
-import { KnoraApiConnection, ReadResource } from '@knora/api';
+import { KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
 import { Resource } from './resource.model';
 import { Inject } from '@angular/core';
 import {

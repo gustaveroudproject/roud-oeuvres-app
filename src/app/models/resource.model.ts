@@ -1,4 +1,4 @@
-import { ReadResource } from '@knora/api';
+import { ReadResource } from '@dasch-swiss/dsp-js';
 
 export interface Resource {
   id: string;
