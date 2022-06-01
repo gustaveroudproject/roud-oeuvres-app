@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { KnoraApiConnection, ReadResource, CountQueryResponse } from '@knora/api';
+import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
@@ -49,8 +49,8 @@ export class DataService {
       })
       .pipe(
         map((
-          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
-        ) => readResources.map(r => this.readRes2Resource(r)))
+          readResources: ReadResourceSequence // map = je transforme quelque chose en quelque chose
+        ) => readResources.resources.map(r => this.readRes2Resource(r)))
       );
   }
 
