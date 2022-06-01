@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* KNORA */
 import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
@@ -141,7 +142,7 @@ export function initializeApp(appInitService: AppInitService) {
     ArchivesPageComponent,
     ArchiveResultsPageComponent,
     ManuscriptComponent,
-    ManuscriptpartComponent
+    ManuscriptpartComponent,
   ],
   imports: [
     MatExpansionModule,
@@ -149,6 +150,7 @@ export function initializeApp(appInitService: AppInitService) {
     MatFormFieldModule,
     MatInputModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
