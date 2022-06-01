@@ -5,15 +5,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-/* KNORA AND KNORA-UI */
-import {
-  KnoraApiConnectionToken,
-  KuiConfigToken,
-  KuiCoreModule,
-  KnoraApiConfigToken
-} from '@knora/core';
-import { KuiSearchModule } from '@knora/search';
-import { KuiViewerModule } from '@knora/viewer';
+/* KNORA */
+import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
+
 
 /* TRANSLATION */
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -154,10 +148,7 @@ export function initializeApp(appInitService: AppInitService) {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    KuiCoreModule,
-    KuiViewerModule,
     BrowserModule,
-    KuiSearchModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
@@ -180,15 +171,11 @@ export function initializeApp(appInitService: AppInitService) {
       multi: true
     },
     {
-      provide: KuiConfigToken,
-      useFactory: () => AppInitService.kuiConfig
-    },
-    {
-      provide: KnoraApiConfigToken,
+      provide: KnoraApiConfig,
       useFactory: () => AppInitService.knoraApiConfig
     },
     {
-      provide: KnoraApiConnectionToken,
+      provide: KnoraApiConnection,
       useFactory: () => AppInitService.knoraApiConnection
     }
   ],
