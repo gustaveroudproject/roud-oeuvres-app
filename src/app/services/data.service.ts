@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
@@ -16,7 +16,6 @@ import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
 import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
-import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 
 @Injectable({
@@ -29,9 +28,9 @@ export class DataService {
   
 
   constructor(
-    @Inject(KnoraApiConnectionToken)
+    @Inject(KnoraApiConnection)
     private knoraApiConnection: KnoraApiConnection,
-    @Inject(KuiConfigToken) private kuiConfig: KuiConfig
+    @Inject(KnoraApiConfig) private knoraApiConfig: KnoraApiConfig
   ) {}
 
   getProjectIRI() {
@@ -39,7 +38,7 @@ export class DataService {
   }
 
   getOntoPrefixPath() {
-    return `http://${this.kuiConfig.knora.apiHost}${this.kuiConfig.knora.apiPort?":"+this.kuiConfig.knora.apiPort:""}/ontology/0112/roud-oeuvres/v2#`;
+    return `http://${this.knoraApiConfig.apiHost}${this.knoraApiConfig.apiPort?":"+this.knoraApiConfig.apiPort:""}/ontology/0112/roud-oeuvres/v2#`;
   }
 
   fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {   //offset = 0, only first page
