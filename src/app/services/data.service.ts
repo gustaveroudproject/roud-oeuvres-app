@@ -2454,19 +2454,19 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasWritingColor`)
       ),
-      isReusedInDossierValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInDossierValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsReusedInDossierValue`
       ),
-      isReusedInDossierPartValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInDossierPartValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsReusedInDossierPartValue`
       ),
-      isAvantTextInValue: this.getFirstValueAsStringOrNullOfProperty(
+      isAvantTextInValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierValue`
       ),
-      isAvantTextInPartValue: this.getFirstValueAsStringOrNullOfProperty(
+      isAvantTextInPartValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierPartValue`
       )
@@ -2481,7 +2481,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}pubPartHasTitle`
       ),
-      isPartOfPubValue: this.getFirstValueAsStringOrNullOfProperty(
+      isPartOfPubValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartIsPartOfValue`
       ),
@@ -2498,11 +2498,11 @@ OFFSET ${index}
   readRes2PubPart(readResource: ReadResource): PubPart {  
     return {
       ...this.readRes2PubPartLight(readResource),
-      startingPageValue: this.getFirstValueAsStringOrNullOfProperty(
+      startingPageValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartHasStartingPageValue`
       ),
-      isReusedInValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartIsReusedInValue`
       )
@@ -2517,7 +2517,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}msPartHasTitle`
       ),
-      isPartOfMsValue: this.getFirstValueAsStringOrNullOfProperty(
+      isPartOfMsValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msPartIsPartOfValue`
       ),
@@ -2525,7 +2525,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}msPartHasNumber`
       ),
-      startingPageValue: this.getFirstValueAsStringOrNullOfProperty(
+      startingPageValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msPartHasStartingPageValue`
       )
@@ -2540,7 +2540,7 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}publicationHasAuthorValue`
       ),
       
-      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+      authorValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}publicationHasAuthorValue`
       ), 
@@ -2573,7 +2573,7 @@ OFFSET ${index}
   readRes2PeriodicalArticle(readResource: ReadResource): PeriodicalArticle {  
     return {
       ...this.readRes2Publication(readResource),
-      periodicalValue: this.getFirstValueAsStringOrNullOfProperty(
+      periodicalValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}isPublishedInPeriodicalValue`
       ),
@@ -2616,7 +2616,7 @@ OFFSET ${index}
   readRes2Book(readResource: ReadResource): Book {  
     return {
       ...this.readRes2Publication(readResource),
-      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+      publisherValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasPublisherValue`
       ),
@@ -2631,7 +2631,7 @@ OFFSET ${index}
   readRes2BookSection(readResource: ReadResource): BookSection {  
     return {
       ...this.readRes2Publication(readResource),
-      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+      publisherValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}bookSectionHasPublisherValue`
       ),
@@ -2794,7 +2794,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}workHasTitle`
       ),
-      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+      authorValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}workHasAuthorValue`
       ),
@@ -2889,7 +2889,7 @@ OFFSET ${index}
     const values = readResource
      ? readResource.getValues(property)
      : null;
-    return values && values.length >= 1 ? values[0].id : null;
+    return values && values.length >= 1 ? values[0]["linkedResourceIri"] : null;
   }
 
   /**
