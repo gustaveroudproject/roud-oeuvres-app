@@ -2876,7 +2876,7 @@ OFFSET ${index}
     readResource: ReadResource,
     property: string
   ) {
-    return readResource.getValuesAsStringArray(property)
+    return readResource.getValues(property).map(r => r["linkedResourceIri"])
   }
 
   /**
