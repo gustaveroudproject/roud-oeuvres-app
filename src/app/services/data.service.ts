@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { KnoraApiConnection, ReadResource, CountQueryResponse } from '@knora/api';
+import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Person, PersonLight } from '../models/person.model';
@@ -16,7 +16,6 @@ import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
 import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
-import { KnoraApiConnectionToken, KuiConfigToken, KuiConfig } from '@knora/core';
 
 
 @Injectable({
@@ -29,9 +28,9 @@ export class DataService {
   
 
   constructor(
-    @Inject(KnoraApiConnectionToken)
+    @Inject(KnoraApiConnection)
     private knoraApiConnection: KnoraApiConnection,
-    @Inject(KuiConfigToken) private kuiConfig: KuiConfig
+    @Inject(KnoraApiConfig) private knoraApiConfig: KnoraApiConfig
   ) {}
 
   getProjectIRI() {
@@ -39,7 +38,7 @@ export class DataService {
   }
 
   getOntoPrefixPath() {
-    return `http://${this.kuiConfig.knora.apiHost}${this.kuiConfig.knora.apiPort?":"+this.kuiConfig.knora.apiPort:""}/ontology/0112/roud-oeuvres/v2#`;
+    return `http://${this.knoraApiConfig.apiHost}${this.knoraApiConfig.apiPort?":"+this.knoraApiConfig.apiPort:""}/ontology/0112/roud-oeuvres/v2#`;
   }
 
   fullTextSearch(searchText: string, offset = 0): Observable<Resource[]> {   //offset = 0, only first page
@@ -49,8 +48,8 @@ export class DataService {
       })
       .pipe(
         map((
-          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
-        ) => readResources.map(r => this.readRes2Resource(r)))
+          readResources: ReadResourceSequence // map = je transforme quelque chose en quelque chose
+        ) => readResources.resources.map(r => this.readRes2Resource(r)))
       );
   }
 
@@ -78,8 +77,8 @@ OFFSET ${index}
     .doExtendedSearch(gravsearchQuery)
     .pipe(
       map((
-        readResources: ReadResource[] 
-      ) => readResources.map(r => {
+        readResources: ReadResourceSequence 
+      ) => readResources.resources.map(r => {
           return this.readRes2PageLight(r);
         })
       )
@@ -113,8 +112,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PageLight(r);
       })
     )
@@ -146,8 +145,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PageLight(r);
       })
     )
@@ -199,8 +198,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -237,8 +236,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -272,8 +271,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -306,8 +305,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2Picture(r);
       })
     )
@@ -336,8 +335,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2Picture(r);
       })
     )
@@ -382,8 +381,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PersonLight(r);
       })
     )
@@ -411,8 +410,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PlaceLight(r);
       })
     )
@@ -441,8 +440,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2TextLight(r);
       })
     )
@@ -473,8 +472,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -507,8 +506,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -552,8 +551,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2Work(r);
       })
     )
@@ -583,8 +582,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2TextLight(r);
       })
     )
@@ -613,8 +612,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2TextLight(r);
       })
     )
@@ -643,8 +642,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2TextLight(r);
       })
     )
@@ -675,8 +674,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -708,8 +707,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPart(r);
       })
     )
@@ -753,8 +752,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -788,8 +787,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -821,8 +820,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -857,8 +856,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -890,8 +889,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -933,8 +932,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -969,8 +968,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1003,8 +1002,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1038,8 +1037,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1072,8 +1071,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1107,8 +1106,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1141,8 +1140,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1177,8 +1176,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1215,8 +1214,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1249,8 +1248,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1285,8 +1284,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1321,8 +1320,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1356,8 +1355,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1390,8 +1389,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1424,8 +1423,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1459,8 +1458,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1490,8 +1489,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1536,8 +1535,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1569,8 +1568,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1602,8 +1601,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1635,8 +1634,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1668,8 +1667,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1701,8 +1700,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1734,8 +1733,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsLight(r);
       })
     )
@@ -1767,8 +1766,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2MsPartLight(r);
       })
     )
@@ -1802,8 +1801,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PublicationLight(r);
       })
     )
@@ -1838,8 +1837,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2PubPartLight(r);
       })
     )
@@ -1872,7 +1871,7 @@ OFFSET ${index}
       .pipe(
         // on se met au milieu de ce flux de données qui arrivent dans l'observable et transforme chaque donnée à la volé
         map((
-          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
+          readResources: ReadResourceSequence // map = je transforme quelque chose en quelque chose
         ) =>
           // le suivant corréspond à
           // {
@@ -1882,7 +1881,7 @@ OFFSET ${index}
           //   }
           //   return res;
           // }
-          readResources.map(r => {
+          readResources.resources.map(r => {
             return this.readRes2PersonLight(r);
           })
         )
@@ -1901,7 +1900,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2MsLight(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2MsLight(r)))
       );
   }
 
@@ -1927,7 +1926,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2MsPartLight(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2MsPartLight(r)))
       );
   }
 
@@ -1983,8 +1982,8 @@ return this.knoraApiConnection.v2.search
   .doExtendedSearch(gravsearchQuery)
   .pipe(
     map((
-      readResources: ReadResource[] 
-    ) => readResources.map(r => {
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
         return this.readRes2Manuscript(r);
       })
     )
@@ -2007,7 +2006,7 @@ getWorksLight(iris: string[]): Observable<WorkLight[]> {
   return this.knoraApiConnection.v2.res
     .getResources(iris)
     .pipe(
-      map((readResources: ReadResource[]) => readResources.map(r => this.readRes2WorkLight(r)))
+      map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2WorkLight(r)))
     );
 }
 
@@ -2027,7 +2026,7 @@ getWorksLight(iris: string[]): Observable<WorkLight[]> {
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Person(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2Person(r)))
       );
   }
 
@@ -2064,7 +2063,7 @@ OFFSET ${index}
       .pipe(
         // on se met au milieu de ce flux de données qui arrivent dans l'observable et transforme chaque donnée à la volé
         map((
-          readResources: ReadResource[] // map = je transforme quelque chose en quelque chose
+          readResources: ReadResourceSequence // map = je transforme quelque chose en quelque chose
         ) =>
           // le suivant corréspond à
           // {
@@ -2074,7 +2073,7 @@ OFFSET ${index}
           //   }
           //   return res;
           // }
-          readResources.map(r => {
+          readResources.resources.map(r => {
             return this.readRes2PlaceLight(r);
           })
         )
@@ -2094,7 +2093,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Place(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2Place(r)))
       );
   }
 
@@ -2102,7 +2101,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PlaceLight(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2PlaceLight(r)))
       );
   }
 
@@ -2130,7 +2129,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PublicationLight(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2PublicationLight(r)))
       );
   }
 
@@ -2155,7 +2154,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2PeriodicalArticle(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2PeriodicalArticle(r)))
       );
   }
 
@@ -2183,7 +2182,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Book(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2Book(r)))
       );
   }
 
@@ -2200,7 +2199,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2BookSection(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2BookSection(r)))
       );
   }
 
@@ -2233,8 +2232,8 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.search
       .doExtendedSearch(gravsearchQuery)
       .pipe(
-        map((readResources: ReadResource[]) =>
-          readResources.map(r => this.readRes2TextLight(r))
+        map((readResources: ReadResourceSequence) =>
+          readResources.resources.map(r => this.readRes2TextLight(r))
         )
       );
   }
@@ -2252,7 +2251,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Text(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2Text(r)))
       );
   }
 
@@ -2281,8 +2280,8 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.search
       .doExtendedSearch(gravsearchQuery)
       .pipe(
-        map((readResources: ReadResource[]) =>
-          readResources.map(r => this.readRes2EssayLight(r))
+        map((readResources: ReadResourceSequence) =>
+          readResources.resources.map(r => this.readRes2EssayLight(r))
         )
       );
   }
@@ -2300,7 +2299,7 @@ OFFSET ${index}
     return this.knoraApiConnection.v2.res
       .getResources(iris)
       .pipe(
-        map((readResources: ReadResource[]) => readResources.map(r => this.readRes2Essay(r)))
+        map((readResources: ReadResourceSequence) => readResources.resources.map(r => this.readRes2Essay(r)))
       );
   }
 
@@ -2455,19 +2454,19 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasWritingColor`)
       ),
-      isReusedInDossierValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInDossierValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsReusedInDossierValue`
       ),
-      isReusedInDossierPartValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInDossierPartValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsReusedInDossierPartValue`
       ),
-      isAvantTextInValue: this.getFirstValueAsStringOrNullOfProperty(
+      isAvantTextInValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierValue`
       ),
-      isAvantTextInPartValue: this.getFirstValueAsStringOrNullOfProperty(
+      isAvantTextInPartValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msIsAvantTextInGeneticDossierPartValue`
       )
@@ -2482,7 +2481,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}pubPartHasTitle`
       ),
-      isPartOfPubValue: this.getFirstValueAsStringOrNullOfProperty(
+      isPartOfPubValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartIsPartOfValue`
       ),
@@ -2499,11 +2498,11 @@ OFFSET ${index}
   readRes2PubPart(readResource: ReadResource): PubPart {  
     return {
       ...this.readRes2PubPartLight(readResource),
-      startingPageValue: this.getFirstValueAsStringOrNullOfProperty(
+      startingPageValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartHasStartingPageValue`
       ),
-      isReusedInValue: this.getFirstValueAsStringOrNullOfProperty(
+      isReusedInValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}pubPartIsReusedInValue`
       )
@@ -2518,7 +2517,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}msPartHasTitle`
       ),
-      isPartOfMsValue: this.getFirstValueAsStringOrNullOfProperty(
+      isPartOfMsValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msPartIsPartOfValue`
       ),
@@ -2526,7 +2525,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}msPartHasNumber`
       ),
-      startingPageValue: this.getFirstValueAsStringOrNullOfProperty(
+      startingPageValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}msPartHasStartingPageValue`
       )
@@ -2541,7 +2540,7 @@ OFFSET ${index}
         `${this.getOntoPrefixPath()}publicationHasAuthorValue`
       ),
       
-      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+      authorValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}publicationHasAuthorValue`
       ), 
@@ -2574,7 +2573,7 @@ OFFSET ${index}
   readRes2PeriodicalArticle(readResource: ReadResource): PeriodicalArticle {  
     return {
       ...this.readRes2Publication(readResource),
-      periodicalValue: this.getFirstValueAsStringOrNullOfProperty(
+      periodicalValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}isPublishedInPeriodicalValue`
       ),
@@ -2617,7 +2616,7 @@ OFFSET ${index}
   readRes2Book(readResource: ReadResource): Book {  
     return {
       ...this.readRes2Publication(readResource),
-      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+      publisherValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasPublisherValue`
       ),
@@ -2632,7 +2631,7 @@ OFFSET ${index}
   readRes2BookSection(readResource: ReadResource): BookSection {  
     return {
       ...this.readRes2Publication(readResource),
-      publisherValue: this.getFirstValueAsStringOrNullOfProperty(
+      publisherValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}bookSectionHasPublisherValue`
       ),
@@ -2795,7 +2794,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}workHasTitle`
       ),
-      authorValue: this.getFirstValueAsStringOrNullOfProperty(
+      authorValue: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}workHasAuthorValue`
       ),
@@ -2877,7 +2876,7 @@ OFFSET ${index}
     readResource: ReadResource,
     property: string
   ) {
-    return readResource.getValuesAsStringArray(property)
+    return readResource.getValues(property).map(r => r["linkedResourceIri"])
   }
 
   /**
@@ -2890,7 +2889,7 @@ OFFSET ${index}
     const values = readResource
      ? readResource.getValues(property)
      : null;
-    return values && values.length >= 1 ? values[0].id : null;
+    return values && values.length >= 1 ? values[0]["linkedResourceIri"] : null;
   }
 
   /**

@@ -1,4 +1,3 @@
-import { ReadResource } from '@knora/api';
 
 export interface Resource {
   id: string;

@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/oeuvres-roud-app",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -30,7 +31,6 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@knora/search/assets/style/search.scss",
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
@@ -60,6 +60,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -92,7 +96,6 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@knora/search/assets/style/search.scss",
               "node_modules/leaflet/dist/leaflet.css"        ],
             "scripts": [
               "node_modules/leaflet/dist/leaflet.js"

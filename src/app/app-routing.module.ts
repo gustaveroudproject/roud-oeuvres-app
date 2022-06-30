@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { ResourceRouterComponent } from './components/resource-router/resource-router.component';
-import { SearchResultsComponent } from '@knora/viewer';
+//import { SearchResultsComponent } from '@knora/viewer';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { TextsPageComponent } from './components/texts-page/texts-page.component';
 import { TextPageComponent } from './components/text-page/text-page.component';
@@ -48,6 +48,7 @@ const routes: Routes = [
   {
     path: 'search',
     component: SearchPageComponent, // --> Component with the search panel
+  /*
     children: [
       {
         path: ':mode/:q/:project',
@@ -58,7 +59,9 @@ const routes: Routes = [
         component: SearchResultsComponent
       }
     ]
+  */
   },
+
   { path: 'resources/:iri', component: ResourceRouterComponent }, //this component only redirects to appropriate type (knora class) of resource
   { path: 'not-found', component: NotFoundComponent }, // '/not-found' route open NotFoundComponent
   { path: '**', redirectTo: '/not-found' } // means any route got to route 'not found'
