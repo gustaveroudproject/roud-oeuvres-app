@@ -39,7 +39,7 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "jdnconvertiblecalendar": "0.0.5",
-    "jdnconvertiblecalendardateadapter": "0.0.10",
+    "jdnconvertiblecalendardateadapter": "0.0.13",
     "jquery": "^3.5.1",
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
