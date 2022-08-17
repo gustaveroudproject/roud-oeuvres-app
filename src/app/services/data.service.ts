@@ -1786,7 +1786,6 @@ CONSTRUCT {
   ?pub knora-api:isMainResource true .
   ?pub roud-oeuvres:publicationHasTitle ?title .
   ?pub roud-oeuvres:publicationHasDate ?date .
-  ?pubPart roud-oeuvres:pubPartIsPartOf ?pub .
 } WHERE {
   ?pub a roud-oeuvres:Publication .
   ?pub roud-oeuvres:publicationHasTitle ?title .
