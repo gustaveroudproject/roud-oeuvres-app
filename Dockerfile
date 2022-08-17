@@ -15,4 +15,3 @@ FROM nginx:alpine
 COPY --from=builder /app/dist/oeuvres-roud-app/* /usr/share/nginx/html/
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY pwd_file /etc/apache2/.htpasswd
