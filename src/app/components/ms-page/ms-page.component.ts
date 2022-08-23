@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript } from 'src/app/models/manuscript.model';
 import { Page } from 'src/app/models/page.model';
 import { PublicationLight, Publication, PubPartLight, PubPart } from 'src/app/models/publication.model';
-import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 
 
 

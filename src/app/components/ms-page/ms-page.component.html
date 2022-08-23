@@ -124,7 +124,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.otherWritingTool != null">
                         <span class="msDescHeader">Autres outils d'écriture</span> :
-                        <span [innerHTML]="manuscript?.otherWritingTool | removeTextAndPar | htmlSanitizer"></span>
+                        <span [innerHTML]="manuscript?.otherWritingTool | removeTextAndPar | removeInternalPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem">
                         <span class="msDescHeader">Manuscrit annoté</span> :
