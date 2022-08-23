@@ -112,7 +112,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.supportInfo != null">
                         <span class="msDescHeader">Informations sur le support</span> :
-                        <span [innerHTML]="manuscript?.supportInfo | removeTextAndPar | htmlSanitizer"></span>
+                        <span [innerHTML]="manuscript?.supportInfo | removeTextAndPar | removeInternalPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.writingTool != null">
                         <span class="msDescHeader">Outil d'écriture</span> :
