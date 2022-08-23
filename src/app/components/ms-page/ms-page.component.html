@@ -145,7 +145,7 @@
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.comment">
                         <span class="msDescHeader">Commentaire</span> :
-                        <span [innerHTML]="manuscript?.comment | removeTextAndPar | htmlSanitizer" orResourceLink></span>
+                        <span [innerHTML]="manuscript?.comment | removeTextAndPar | replaceParWithBr | htmlSanitizer" orResourceLink></span>
                     </div>
                 </div>
             </div> <!-- end manuscript description -->

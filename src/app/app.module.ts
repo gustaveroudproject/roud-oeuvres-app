@@ -80,6 +80,7 @@ import { booleanPipe } from './pipes/boolean.pipe';
 import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
 import { removeInternalParPipe } from './pipes/removeInternalPar.pipe';
 import { sortByMsTitlePipe } from './pipes/sort-by-ms-title.pipe';
+import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe'
 
 
 
@@ -109,6 +110,7 @@ export function initializeApp(appInitService: AppInitService) {
     booleanPipe,
     removeTextAndParPipe,
     removeInternalParPipe,
+    replaceParWithBrPipe,
     ResourceLinkDirective,
     ResourceRouterComponent,
     FulltextSearchComponent,
