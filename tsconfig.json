@@ -17,8 +17,7 @@
     ],
     "lib": [
       "es2018",
-      "dom",
-      "ES2021.String"
+      "dom"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true

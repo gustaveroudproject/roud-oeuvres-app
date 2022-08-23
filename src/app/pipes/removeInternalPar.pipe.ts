@@ -6,8 +6,8 @@ export class removeInternalParPipe implements PipeTransform {
 
   transform(value: any) {
     return value = String(value)
-    .replaceAll("<p>", ". <span>")
-    .replaceAll("</p>", "</span>");
+    .replace(/<p>/g, ". <span>")
+    .replace(/<\/p>/g, "</span>");
   }
   
 }
