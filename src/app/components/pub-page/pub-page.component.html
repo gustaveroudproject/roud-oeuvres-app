@@ -55,10 +55,11 @@
                     <div *ngFor="let page of pages">
                         <img
                             *ngIf="page.seqnum == selectedPageNum"
-                            src="{{ page.imageURL }}"
+                            [src]="sanitizer.bypassSecurityTrustUrl(page.imageURL)"
                             width="80%"
                             style="padding:10px; border: 1px solid lightgray;"
-                        />
+                        /><!--it is possible to sanitize here because the method is public in the constructor. Tried with a pipe, but did not work ...
+                        Same happens in ms-page -->
                     </div>
                     
                     <select
