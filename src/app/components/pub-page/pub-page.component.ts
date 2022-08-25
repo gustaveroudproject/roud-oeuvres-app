@@ -7,6 +7,7 @@ import { PeriodicalLight } from 'src/app/models/periodical.model';
 import { PublisherLight } from 'src/app/models/publisher.model';
 import { Page } from 'src/app/models/page.model';
 import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -66,7 +67,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
-    private el: ElementRef
+    private el: ElementRef,
+    public sanitizer: DomSanitizer
   ) {}
 
   
