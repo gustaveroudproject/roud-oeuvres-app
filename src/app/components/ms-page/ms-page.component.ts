@@ -45,6 +45,8 @@ export class MsPageComponent implements OnInit, DoCheck {
   panelDiaryPubDisableState: boolean = false;
   panelDiaryLevelDisableState: boolean = false;
 
+  loadingResults = false;
+
 
   constructor(
     private dataService: DataService,
@@ -55,15 +57,20 @@ export class MsPageComponent implements OnInit, DoCheck {
 
   ngOnInit() {
 
+    console.log(this.loadingResults)
     this.route.paramMap.subscribe(
       params => {
         if (params.has('iri')) {
+          this.loadingResults = true;
+          console.log(this.loadingResults)
+                  
           //// get basic properties (msLight) of the manuscript
           this.dataService
             .getMsLight(decodeURIComponent(params.get('iri')))
             .subscribe(
               (msLight: MsLight) => {
                 this.msLight = msLight;
+                console.log(this.msLight)
 
                 //// get facsimiles scans from publication IRI
                 this.dataService
@@ -72,6 +79,10 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.pages = pages;
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
+                  console.log(this.pages)
+                  this.loadingResults = false;
+                  console.log(this.loadingResults)
+                  
                 });
 
                 //// get complete manuscript
@@ -80,6 +91,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .subscribe(
                   (manuscript: Manuscript) => {
                     this.manuscript = manuscript;
+                    console.log(this.manuscript)
                 });
 
 
@@ -100,6 +112,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.pubPartsAvantTexte = pubPartsAvantTexte;
 
                   this.pubsAvantTexte.push(...pubPartsAvantTexte);
+                  console.log(this.pubsAvantTexte)
 
                   for (var pubPart in pubPartsAvantTexte) {
                     this.dataService
@@ -129,6 +142,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.pubPartsDiary = pubPartsDiary;
 
                   this.pubsDiary.push(...pubPartsDiary);
+                  console.log(this.pubsDiary)
 
                   for (var pubPart in pubPartsDiary) {
                     this.dataService
@@ -145,6 +159,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getMsPartsFromMs(msLight.id)
                 .subscribe((msParts: MsPartLight[]) => {
                   this.msParts = msParts;
+                  console.log(msParts)
                 });
 
 
@@ -194,6 +209,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.msPartsReWrittenMs = msPartsReWrittenMs;
 
                   this.rewrittenMs.push(...msPartsReWrittenMs);
+                  console.log(this.rewrittenMs)
 
                   for (var msPart in msPartsReWrittenMs) {
                     this.dataService
@@ -201,6 +217,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                     .subscribe(
                       (msFromParts3: MsLight) => {
                         this.msFromParts3 = msFromParts3;
+                        console.log(this.msFromParts3)
                       });
                     }
                 });
@@ -300,7 +317,10 @@ export class MsPageComponent implements OnInit, DoCheck {
         //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
       };
     }); 
+    
   }
+
+  
 
 
 
