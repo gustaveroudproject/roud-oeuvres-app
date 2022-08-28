@@ -5,6 +5,7 @@ export interface PublicationLight extends Resource {  //pour construire une publ
   authorsValues: string[];
   title: string;
   date: string;
+  editorialSet: string;
 }
 
 export interface Publication extends PublicationLight {
