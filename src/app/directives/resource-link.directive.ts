@@ -28,6 +28,7 @@ export class ResourceLinkDirective implements DoCheck {
       var iri = encodeURIComponent(link.href);
       if (! (iri.includes("resources"))) {
         link.setAttribute("href", `resources/${iri}`);
+        link.setAttribute("style", "color: #538d6a;")
       };
     }
   }
@@ -39,6 +40,7 @@ export class ResourceLinkDirective implements DoCheck {
       var iri = encodeURIComponent(link.href);
       if (! (iri.includes("resources"))) {
         link.setAttribute("href", `resources/${iri}`);
+        link.setAttribute("style", "color: #538d6a;")
       };
     }
   }
