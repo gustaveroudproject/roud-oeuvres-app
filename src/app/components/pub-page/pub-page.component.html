@@ -163,7 +163,7 @@
         <div class="col-6">
 
             <!-- GENÈSE ET REPRISES -->
-            <div>
+            <div *ngIf="publicationLight?.editorialSet == 'Poetic work' || publicationLight?.editorialSet == 'Diary'">
 
                 <!-- disable panel if empty -->
                 <mat-expansion-panel id="panelGenesis" class="my-4" [disabled]="panelGenesisDisableState">

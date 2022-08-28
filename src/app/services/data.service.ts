@@ -2550,6 +2550,10 @@ OFFSET ${index}
       date: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}publicationHasDate`
+      ),
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasPublicationType`
       )
     } as PublicationLight;    
   }
