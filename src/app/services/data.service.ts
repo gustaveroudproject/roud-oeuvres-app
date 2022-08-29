@@ -2809,11 +2809,11 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       ),
-      baseWitMs: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitMs: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourceManuscriptValue`
       ),
-      baseWitPub: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitPub: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourcePublicationValue`
       ) 
