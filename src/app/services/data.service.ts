@@ -174,6 +174,37 @@ getPage(iri: string): Observable<Page> {
 
 
 
+
+getEstablishedTextFromBasePub(pubIri: string):Observable<TextLight[]> {
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?text knora-api:isMainResource true .
+    ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+  } WHERE {
+    ?text a roud-oeuvres:EstablishedText .
+    ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+    ?text roud-oeuvres:hasDirectSourcePublication <${pubIri}> .
+}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
+
+
+
 getMssTranslatedAuthor(translatedAuthor: string, index: number = 0): Observable<MsLight[]> {  
   const gravsearchQuery = `
 
@@ -2778,11 +2809,11 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       ),
-      baseWitMs: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitMs: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourceManuscriptValue`
       ),
-      baseWitPub: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitPub: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourcePublicationValue`
       ) 
