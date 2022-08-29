@@ -113,7 +113,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .subscribe((establishedTexts: TextLight[]) => {
                         this.establishedTexts = establishedTexts;
                         this.establishedText = this.establishedTexts[0] // there will be only one item anyway
-                        console.log(this.establishedText.editorialSet)
                       });
 
 
