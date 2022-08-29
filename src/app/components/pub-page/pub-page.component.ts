@@ -8,6 +8,7 @@ import { PublisherLight } from 'src/app/models/publisher.model';
 import { Page } from 'src/app/models/page.model';
 import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TextLight } from 'src/app/models/text.model';
 
 
 @Component({
@@ -54,7 +55,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
   publicationsRepublishingPub: PublicationLight[];
   publicationsRepublished: PublicationLight[];
-
+  establishedTexts: TextLight[];
+  establishedText: TextLight;
 
 
   panelReprisesDisableState: boolean = false;
@@ -103,6 +105,15 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         this.pages = pages;
                         //console.log(pages.length);
                         //console.log(this.selectedPageNum);
+                      });
+
+                    //// get established text
+                    this.dataService
+                      .getEstablishedTextFromBasePub(publicationLight.id)
+                      .subscribe((establishedTexts: TextLight[]) => {
+                        this.establishedTexts = establishedTexts;
+                        this.establishedText = this.establishedTexts[0] // there will be only one item anyway
+                        console.log(this.establishedText.editorialSet)
                       });
 
 

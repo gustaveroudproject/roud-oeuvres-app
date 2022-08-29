@@ -87,8 +87,10 @@
 
             <!-- LIRE LE TEXTE -->
             <!---->
-            <div class="readTheText">
-                <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
+            <div class="readTheText" *ngIf="establishedText.editorialSet == 'Œuvre poétique'">
+                <a routerLink="/texts/{{ establishedText?.id | encodeURIComponent }}">
+                    <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
+                </a>
             </div>
 
             <!--
