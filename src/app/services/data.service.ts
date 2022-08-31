@@ -2869,7 +2869,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}essayHasAuthor`
       ),
-      photo: this.getFirstValueAsStringOrNullOfProperty(
+      photo: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       )
