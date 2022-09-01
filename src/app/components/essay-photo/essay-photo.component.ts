@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Picture } from 'src/app/models/picture.model';
 import { DataService } from 'src/app/services/data.service';
 
@@ -14,7 +15,8 @@ export class EssayPhotoComponent implements OnInit {
   essayPhotoId: string ;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    public sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
