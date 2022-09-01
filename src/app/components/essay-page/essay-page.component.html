@@ -1,9 +1,20 @@
 <div class="container">
 
+    <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="/essays">Parcours</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{essay?.title}}</li>
+          </ol>
+        </nav>
+    </div>
+
     <!-- HEADER -->
     <div class="py-4 page-title">
         <h3>{{essay?.title}}</h3>
-        <h5>par {{essay?.author}}</h5>
+        <h5>{{essay?.author}}</h5>
     </div>
 
     <!-- SCANS -->
