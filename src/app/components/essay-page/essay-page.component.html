@@ -47,8 +47,8 @@
     <!-- PICTURES -->
     <div class="row">
         <div class="col-md-7 offset-md-2">
-            <img width="100%"
-            [src]="sanitizer.bypassSecurityTrustUrl(photo?.imageURL)"
+            <img *ngIf="photo" width="100%"
+            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
             />
             <br/>
             Gustave Roud, <i>{{photo?.title}}</i>, {{photo?.shelfmark}}
