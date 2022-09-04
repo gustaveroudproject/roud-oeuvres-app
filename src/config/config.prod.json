@@ -1,11 +1,11 @@
 {
     "knora": {
-        "apiProtocol": "https",
-        "apiHost": "api.ls-prod-server.dasch.swiss", 
-        "apiPort": null,
+        "apiProtocol": "http",
+        "apiHost": "0.0.0.0",
+        "apiPort": 3333,
         "apiPath": "",
         "jsonWebToken": "",
-        "logErrors": false
+        "logErrors": true       
 
     },
     "app": {
