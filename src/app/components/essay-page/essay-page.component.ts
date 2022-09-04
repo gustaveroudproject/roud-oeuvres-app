@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Essay } from 'src/app/models/essay.model';
 import { MsLight } from 'src/app/models/manuscript.model';
@@ -24,7 +25,8 @@ export class EssayPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
-    private dataService: DataService
+    private dataService: DataService,
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {

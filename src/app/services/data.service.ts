@@ -2390,6 +2390,10 @@ OFFSET ${index}
       imageURL: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      ),
+      shelfmark: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}photoHasShelfmark`
       )
     } as Picture;   
   }
@@ -2869,7 +2873,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}essayHasAuthor`
       ),
-      photo: this.getFirstValueAsStringOrNullOfProperty(
+      photo: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       )
