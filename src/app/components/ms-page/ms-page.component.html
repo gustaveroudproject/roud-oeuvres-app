@@ -54,9 +54,11 @@
                     </select>
 
                     <select *ngIf="msParts && msParts.length > 0"
-                    id="selectorPart">
-                        <option *ngFor="let msPart of msParts">
-                            <span>{{ msPart?.title }}</span>
+                    id="selectorPart"
+                    [(ngModel)]="selectedPageNum"
+                    >
+                        <option [value]="msPart.startingPageSeqnum" *ngFor="let msPart of msParts">
+                            <span>{{ msPart.title }}</span>
                         </option>
                     </select>
                 </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, DoCheck } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { MsLight, MsPartLight, Manuscript } from 'src/app/models/manuscript.model';
-import { Page } from 'src/app/models/page.model';
+import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
+import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, Publication, PubPartLight, PubPart } from 'src/app/models/publication.model';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -17,8 +17,9 @@ export class MsPageComponent implements OnInit, DoCheck {
 
 
   msLight: MsLight;
-  msParts: MsPartLight[];
+  msParts: MsPartLightWithStartingPageSeqnum[];
   pages: Page[];
+  msPartStartingPage: PageLight;
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   manuscript: Manuscript;
   manuscripts: Manuscript[];
@@ -143,7 +144,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get ms parts (diary notes)
                 this.dataService
                 .getMsPartsFromMs(msLight.id)
-                .subscribe((msParts: MsPartLight[]) => {
+                .subscribe((msParts: MsPartLightWithStartingPageSeqnum[]) => {
                   this.msParts = msParts;
                 });
 
