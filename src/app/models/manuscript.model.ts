@@ -32,8 +32,12 @@ export interface MsPartLight extends Resource {
   title: string;
   isPartOfMsValue: string;
   number: string;
-  startingPageValue: string;
 }
+
+export interface MsPartLightWithStartingPageSeqnum extends MsPartLight {  
+  startingPageSeqnum: string;
+}
+
 
 export interface MsPart extends MsPartLight {  
   isReusedInValue: string;
