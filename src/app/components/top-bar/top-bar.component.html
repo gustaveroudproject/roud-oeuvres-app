@@ -23,10 +23,13 @@
           'toolbar.essays' | translate
         }}</a>
       </li>
-      <li class="nav-item mr-5">
+      <li class="nav-item mr-3">
         <a class="nav-link" [routerLink]="['/search']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">{{
           'toolbar.search' | translate
         }}</a>
+      </li>
+      <li class="nav-item mr-5">
+        <a class="nav-link" [routerLink]="['/bio']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">Biographie</a>
       </li>
     </ul>
   </div>
