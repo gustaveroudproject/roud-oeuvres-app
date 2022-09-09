@@ -75,7 +75,7 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
-      this.dataService.fullTextSearch(searchText).subscribe(
+      this.dataService.fullTextSearchCompounded(searchText).subscribe(
         (resources: Resource[]) => {
           this.resources = resources;
 
