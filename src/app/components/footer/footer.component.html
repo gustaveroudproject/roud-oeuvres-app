@@ -12,18 +12,12 @@
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <ul class="navbar-nav">
             <li class="nav-item ml-5">
-                <a class="nav-link" [routerLink]="['/texts']" (click)="isMenuCollapsed = true">Le projet</a>
+                <a class="nav-link" [routerLink]="['/project']" routerLinkActive="footer-activeLink" (click)="isMenuCollapsed = true">À propos</a>
             </li>
             <li class="nav-item ml-5">
-                <a class="nav-link" [routerLink]="['/essays']" (click)="isMenuCollapsed = true">Impressum</a>
+                <a class="nav-link" [routerLink]="['/tech']" routerLinkActive="footer-activeLink" (click)="isMenuCollapsed = true">Technical documentation</a>
             </li>
         </ul>
     </div>
-    <!--
-    <img src="assets/img/logos/aagr.png" class="d-inline-block align-top logo" alt="">
-    <img src="assets/img/logos/unilCLSR_black.png" class="d-inline-block align-top logo" alt="">
-    <img src="assets/img/logos/dasch.png" class="d-inline-block align-top logo" alt="">
-    <img src="assets/img/logos/fns.gif" class="d-inline-block align-top logo" alt="">
-    -->
 </nav>
 

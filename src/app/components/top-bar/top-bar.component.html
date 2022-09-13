@@ -10,23 +10,26 @@
   <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item mr-3">
+        <a class="nav-link" [routerLink]="['/archive']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">Archives</a>
+        <!-- [routerLink]="['/archive']" routerLinkActive="topBar-activeLink" -->
+      </li>
+      <li class="nav-item mr-3">
         <a class="nav-link" [routerLink]="'.'" (click)="isMenuCollapsed = true">{{
           'toolbar.texts' | translate
         }}</a> <!--[routerLink]="['/texts']" routerLinkActive="topBar-activeLink"-->
-      </li>
-      <li class="nav-item mr-3">
-        <a class="nav-link" [routerLink]="['/archive']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">Archives</a>
-        <!-- [routerLink]="['/archive']" routerLinkActive="topBar-activeLink" -->
       </li>
       <li class="nav-item mr-3">
         <a class="nav-link" [routerLink]="['/essays']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">{{
           'toolbar.essays' | translate
         }}</a>
       </li>
-      <li class="nav-item mr-5">
+      <li class="nav-item mr-3">
         <a class="nav-link" [routerLink]="['/search']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">{{
           'toolbar.search' | translate
         }}</a>
+      </li>
+      <li class="nav-item mr-5">
+        <a class="nav-link" [routerLink]="['/bio']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">Biographie</a>
       </li>
     </ul>
   </div>
