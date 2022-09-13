@@ -18,6 +18,7 @@ import { ArchivesPageComponent } from './components/archives-page/archives-page.
 import { ArchiveResultsPageComponent } from './components/archive-results-page/archive-results-page.component';
 import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
+import { TechPageComponent } from './components/tech-page/tech-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -70,6 +71,10 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectPageComponent
+  },
+  {
+    path: 'tech',
+    component: TechPageComponent
   },
 
   { path: 'resources/:iri', component: ResourceRouterComponent }, //this component only redirects to appropriate type (knora class) of resource

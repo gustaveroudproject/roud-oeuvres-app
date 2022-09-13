@@ -69,6 +69,7 @@ import { ManuscriptComponent } from './components/manuscript/manuscript.componen
 import { ManuscriptpartComponent } from './components/manuscriptpart/manuscriptpart.component';
 import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
+import { TechPageComponent } from './components/tech-page/tech-page.component';
 
 
 
@@ -152,6 +153,7 @@ export function initializeApp(appInitService: AppInitService) {
     ManuscriptpartComponent,
     BioPageComponent,
     ProjectPageComponent,
+    TechPageComponent
   ],
   imports: [
     MatExpansionModule,
