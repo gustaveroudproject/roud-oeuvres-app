@@ -386,6 +386,12 @@
 
             </div>  <!-- end genèse et reprises-->
 
+            <div class="thumbnail">
+                <img width="60%" *ngIf="dataViz"
+                    [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
+            </div>
+            
+
         </div> <!-- end columns right-->
 
     
