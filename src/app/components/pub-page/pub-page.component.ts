@@ -9,6 +9,7 @@ import { Page } from 'src/app/models/page.model';
 import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
+import { DataViz } from 'src/app/models/dataviz.model';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   publicationsRepublished: PublicationLight[];
   establishedTexts: TextLight[];
   establishedText: TextLight;
+  dataViz: DataViz;
 
 
   panelReprisesDisableState: boolean = false;
@@ -114,6 +116,14 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         this.establishedTexts = establishedTexts;
                         this.establishedText = this.establishedTexts[0] // there will be only one item anyway
                       });
+
+                    //// get data viz
+                    this.dataService
+                      .getDataViz(publicationLight.id)
+                      .subscribe((dataVizs: DataViz[]) => {
+                        this.dataViz = dataVizs[0]; // there will be only one item anyway
+                      });
+
 
 
                     //// get publication parts light

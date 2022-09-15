@@ -16,6 +16,7 @@ import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } f
 import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
+import { DataViz } from '../models/dataviz.model';
 
 
 @Injectable({
@@ -2289,6 +2290,34 @@ OFFSET ${index}
 
 
 
+  getDataViz(pubIri: string): Observable<DataViz[]> {
+    const gravsearchQuery = `
+
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?dataviz knora-api:isMainResource true .
+        ?dataviz knora-api:hasStillImageFileValue ?imageURL .
+      } WHERE {
+        ?dataviz a roud-oeuvres:DataViz .
+        ?dataviz knora-api:hasStillImageFileValue ?imageURL .
+        ?dataviz roud-oeuvres:isVisualisationOf <${pubIri}> .
+    }
+    `
+    ;
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((
+          readResources: ReadResourceSequence 
+        ) => readResources.resources.map(r => {
+            return this.readRes2DataViz(r);
+          })
+        )
+      );
+    }
+    
+
 
 
 
@@ -2399,6 +2428,22 @@ OFFSET ${index}
       )
     } as Picture;   
   }
+
+
+  readRes2DataViz(readResource: ReadResource): DataViz {  
+    return {
+      ...this.readRes2Resource(readResource),
+      pub: this.getFirstValueId(
+        readResource,
+        `${this.getOntoPrefixPath()}isVisualisationOfValue`
+      ),
+      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      )
+    } as DataViz;   
+  }
+
 
 
 
