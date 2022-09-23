@@ -45,7 +45,7 @@ export class MsPageComponent implements OnInit, DoCheck {
   panelDiaryPubDisableState: boolean = false;
   panelDiaryLevelDisableState: boolean = false;
 
-  loadingResults = false;
+  loadingResults = 0;
 
 
   constructor(
@@ -56,12 +56,13 @@ export class MsPageComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit() {
+    this.loadingResults++;
 
     console.log(this.loadingResults)
     this.route.paramMap.subscribe(
       params => {
         if (params.has('iri')) {
-          this.loadingResults = true;
+          this.loadingResults++;
           console.log(this.loadingResults)
                   
           //// get basic properties (msLight) of the manuscript
@@ -75,105 +76,147 @@ export class MsPageComponent implements OnInit, DoCheck {
                 //// get facsimiles scans from publication IRI
                 this.dataService
                 .getPagesOfMs(msLight.id)
-                .subscribe((pages: Page[]) => {
-                  this.pages = pages;
-                  //console.log(pages.length);
-                  //console.log(this.selectedPageNum);
-                  console.log(this.pages)
-                  this.loadingResults = false;
-                  console.log(this.loadingResults)
-                  
-                });
+                .subscribe(
+                  (pages: Page[]) => {
+                    this.pages = pages;
+                    //console.log(pages.length);
+                    //console.log(this.selectedPageNum);
+                    console.log(this.pages)
+                    console.log(this.loadingResults)                  
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
                 //// get complete manuscript
+                this.loadingResults++;
                 this.dataService
                 .getManuscript(msLight.id)
                 .subscribe(
                   (manuscript: Manuscript) => {
                     this.manuscript = manuscript;
                     console.log(this.manuscript)
-                });
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
 
                 this.pubsAvantTexte = [];
                 /// get publications with this ms as avant-texte
+                this.loadingResults++;
                 this.dataService
                 .getPublicationsWithThisAvantTexte(msLight.id)
-                .subscribe((publicationsAvantTexte: PublicationLight[]) => {
-                  this.publicationsAvantTexte = publicationsAvantTexte;
+                .subscribe(
+                  (publicationsAvantTexte: PublicationLight[]) => {
+                    this.publicationsAvantTexte = publicationsAvantTexte;
 
-                  this.pubsAvantTexte.push(...publicationsAvantTexte);
-                });
+                    this.pubsAvantTexte.push(...publicationsAvantTexte);
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
                 /// get parts of publications with this ms as avant-texte
+                this.loadingResults++;
                 this.dataService
                 .getPublicationPartsWithThisAvantTexte(msLight.id)
-                .subscribe((pubPartsAvantTexte: PubPartLight[]) => {
-                  this.pubPartsAvantTexte = pubPartsAvantTexte;
+                .subscribe(
+                  (pubPartsAvantTexte: PubPartLight[]) => {
+                    this.pubPartsAvantTexte = pubPartsAvantTexte;
 
-                  this.pubsAvantTexte.push(...pubPartsAvantTexte);
-                  console.log(this.pubsAvantTexte)
+                    this.pubsAvantTexte.push(...pubPartsAvantTexte);
+                    console.log(this.pubsAvantTexte)
 
-                  for (var pubPart in pubPartsAvantTexte) {
-                    this.dataService
-                    .getPubOfPubPart(pubPartsAvantTexte[pubPart].isPartOfPubValue)
-                    .subscribe(
-                      (pubFromParts: PublicationLight) => {
-                        this.pubFromParts = pubFromParts;
-                      });
+                    for (var pubPart in pubPartsAvantTexte) {
+                      this.loadingResults++;
+                      this.dataService
+                      .getPubOfPubPart(pubPartsAvantTexte[pubPart].isPartOfPubValue)
+                      .subscribe(
+                        (pubFromParts: PublicationLight) => {
+                          this.pubFromParts = pubFromParts;
+                        },
+                        error => console.log(error),
+                        () => this.loadingResults--
+                      );
                     }
-                });
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--);
 
 
                 this.pubsDiary = [];
                 /// get publications reusing diary
+                this.loadingResults++;
                 this.dataService
                 .getPubsReusingDiary(msLight.id)
-                .subscribe((publicationsDiary: PublicationLight[]) => {
-                  this.publicationsDiary = publicationsDiary;
+                .subscribe(
+                  (publicationsDiary: PublicationLight[]) => {
+                    this.publicationsDiary = publicationsDiary;
 
-                  this.pubsDiary.push(...publicationsDiary);
-                });
+                    this.pubsDiary.push(...publicationsDiary);
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
                 /// get pub parts reusing diary
+                this.loadingResults++;
                 this.dataService
                 .getPubPartsReusingDiary(msLight.id)
-                .subscribe((pubPartsDiary: PubPartLight[]) => {
-                  this.pubPartsDiary = pubPartsDiary;
+                .subscribe(
+                  (pubPartsDiary: PubPartLight[]) => {
+                    this.pubPartsDiary = pubPartsDiary;
 
-                  this.pubsDiary.push(...pubPartsDiary);
-                  console.log(this.pubsDiary)
+                    this.pubsDiary.push(...pubPartsDiary);
+                    console.log(this.pubsDiary)
 
-                  for (var pubPart in pubPartsDiary) {
-                    this.dataService
-                    .getPubOfPubPart(pubPartsDiary[pubPart].isPartOfPubValue)
-                    .subscribe(
-                      (pubFromParts2: PublicationLight) => {
-                        this.pubFromParts2 = pubFromParts2;
-                      });
+                    for (var pubPart in pubPartsDiary) {
+                      this.loadingResults++;
+                      this.dataService
+                      .getPubOfPubPart(pubPartsDiary[pubPart].isPartOfPubValue)
+                      .subscribe(
+                        (pubFromParts2: PublicationLight) => {
+                          this.pubFromParts2 = pubFromParts2;
+                        },
+                        error => console.log(error),
+                        () => this.loadingResults--
+                      );
                     }
-                });
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
                 /// get ms parts (diary notes)
+                this.loadingResults++;
                 this.dataService
                 .getMsPartsFromMs(msLight.id)
-                .subscribe((msParts: MsPartLight[]) => {
-                  this.msParts = msParts;
-                  console.log(msParts)
-                });
+                .subscribe(
+                  (msParts: MsPartLight[]) => {
+                    this.msParts = msParts;
+                    console.log(msParts)
+                  },
+                  error => console.log(error),
+                  () => this.loadingResults--
+                );
 
 
                 this.rewritingMs = [];
                 /// get ms rewriting ms
+                this.loadingResults++;
                 this.dataService
                 .getMssRewritingMs(msLight.id)
                 .subscribe((msReWritingMs: MsLight[]) => {
                   this.msReWritingMs = msReWritingMs;
 
                   this.rewritingMs.push(...msReWritingMs);
-                });
+                },
+                error => console.log(error),
+                () => this.loadingResults--);
 
                 /// get ms parts rewriting ms
+                this.loadingResults++;
                 this.dataService
                 .getMsPartsRewritingMs(msLight.id)
                 .subscribe((msPartsReWritingMs: MsPartLight[]) => {
@@ -182,27 +225,36 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.rewritingMs.push(...msPartsReWritingMs);
 
                   for (var msPart in msPartsReWritingMs) {
+                    this.loadingResults++;
                     this.dataService
                     .getMsOfMsPart(msPartsReWritingMs[msPart].isPartOfMsValue)
                     .subscribe(
                       (msFromParts: MsLight) => {
                         this.msFromParts = msFromParts;
-                      });
+                      },
+                      error => console.log(error),
+                      () => this.loadingResults--);
                     }
-                });
+                },
+                error => console.log(error),
+                () => this.loadingResults--);
 
 
                 this.rewrittenMs = [];
                 /// get ms from which this ms is rewritten
+                this.loadingResults++;
                 this.dataService
                 .getMssRewrittenMs(msLight.id)
                 .subscribe((msRewrittenMs: MsLight[]) => {
                   this.msRewrittenMs = msRewrittenMs;
 
                   this.rewrittenMs.push(...msRewrittenMs);
-                });
+                },
+                error => console.log(error),
+                () => this.loadingResults--);
 
                 /// get ms parts from which this ms is rewritten
+                this.loadingResults++;
                 this.dataService
                 .getMsPartsRewrittenMs(msLight.id)
                 .subscribe((msPartsReWrittenMs: MsPartLight[]) => {
@@ -212,21 +264,27 @@ export class MsPageComponent implements OnInit, DoCheck {
                   console.log(this.rewrittenMs)
 
                   for (var msPart in msPartsReWrittenMs) {
+                    this.loadingResults++;
                     this.dataService
                     .getMsOfMsPart(msPartsReWrittenMs[msPart].isPartOfMsValue)
                     .subscribe(
                       (msFromParts3: MsLight) => {
                         this.msFromParts3 = msFromParts3;
                         console.log(this.msFromParts3)
-                      });
+                      },
+                      error => console.log(error),
+                      () => this.loadingResults--);
                     }
-                });
+                },
+                error => console.log(error),
+                () => this.loadingResults--);
 
           });
 
         }
       },
-      error => console.error(error)
+      error => console.error(error),
+
     );
   } 
 
