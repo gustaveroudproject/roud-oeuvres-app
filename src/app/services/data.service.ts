@@ -89,6 +89,39 @@ export class DataService {
     return new Observable(compound);
   };
 
+  fullTextSearchPaged(searchText: string): Observable<Resource[]> {
+    // variables that remains in the same context as the function `compound()`
+    const service = this;
+    let offset = 0;
+
+    // the compound function:
+    // - calls `fullTextSearch()`
+    // - knows the observer and pushes to it the pages of results
+    // - and calls itself recursively until the end of the results
+    function iterate(observer) {
+      // calls the search
+      service.fullTextSearch(searchText, offset).subscribe(
+        (page: Resource[]) => {
+          if (page.length > 0) {
+            // send the (ongoing) concatenated results 
+            observer.next(page);
+          }
+          if (page.length == 25) {
+            // there is probably more, call `iterate()` recursively
+            offset = ++offset;
+            iterate(observer);
+          } else {
+            // or end the recursion
+            observer.complete();
+          }
+        },
+        (e) => { console.log("fullTextSearchPaged error: " + e) }
+      );
+    };
+
+    // we return an Observable that calls `compound()`
+    return new Observable(iterate);
+  };
 
 // DELETE THIS IF NOT USED
   getPagesOfText(textIRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
