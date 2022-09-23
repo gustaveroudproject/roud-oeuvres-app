@@ -8,6 +8,7 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
+import { map } from 'rxjs/operators';
 // import * as octicons from '@primer/octicons';
 
 
@@ -75,20 +76,19 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
-      this.dataService.fullTextSearchCompounded(searchText).subscribe(
-        (resources: Resource[]) => {
-          this.resources = resources;
+      this.dataService.fullTextSearchPaged(searchText).pipe(
+        map( (resources: Resource[]) => {
 
           // console.log(resources)
           
           // if it is too slow, it is because multiple queries (get) at the same time (en parallel)
 
           // RESULTS: PERSONS
-          const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
+          const personsIRIs = resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
           if (personsIRIs && personsIRIs.length > 0) {
             this.dataService.getPersons(personsIRIs).subscribe(
               (persons: Person[]) => {
-                this.persons = persons;
+                persons.forEach( e => this.persons.push(e) );
 
                 // if parallel is too slow, put the following get here, once persons have finished 
 
@@ -97,94 +97,98 @@ export class FulltextSearchComponent implements OnInit {
           }
 
           // RESULTS: PLACES
-          const placesIRIs = this.resources.filter(r => r.resourceClassLabel === "Place").map(r => r.id);
+          const placesIRIs = resources.filter(r => r.resourceClassLabel === "Place").map(r => r.id);
           if (placesIRIs && placesIRIs.length > 0) {
             this.dataService.getPlacesLight(placesIRIs).subscribe(
               (places: PlaceLight[]) => {
-                this.places = places;
+                places.forEach( e => this.places.push(e) );
               }
             );
           }
 
           // RESULTS: WORKS
-          const worksIRIs = this.resources.filter(r => r.resourceClassLabel === "Artwork" || r.resourceClassLabel === "Music work" || r.resourceClassLabel === "Work of literature").map(r => r.id);
+          const worksIRIs = resources.filter(r => r.resourceClassLabel === "Artwork" || r.resourceClassLabel === "Music work" || r.resourceClassLabel === "Work of literature").map(r => r.id);
           if (worksIRIs && worksIRIs.length > 0) {
             this.dataService.getWorksLight(worksIRIs).subscribe(
               (works: WorkLight[]) => {
-                this.works = works;
+                works.forEach( e => this.works.push(e) );
               }
             );
           }
 
           // RESULTS: TEXTS
-          const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
+          const textsIRIs = resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
           if (textsIRIs && textsIRIs.length > 0) {
             this.dataService.getTexts(textsIRIs).subscribe(
               (texts: Text[]) => {
-                this.texts = texts;
+                texts.forEach( e => this.texts.push(e) );
               }
             );
           }
 
           // RESULTS: MSS AND MSS PARTS
-          const mssIRIs = this.resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
+          const mssIRIs = resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
           if (mssIRIs && mssIRIs.length > 0) {
             this.dataService.getMssLight(mssIRIs).subscribe(
               (mss: MsLight[]) => {
-                this.mss = mss;
+                mss.forEach( e => this.mss.push(e) );
               }
             );
           }
-          const msPartsIRIs = this.resources.filter(r => r.resourceClassLabel === "Part of a manuscript (for diary only)").map(r => r.id);
+          const msPartsIRIs = resources.filter(r => r.resourceClassLabel === "Part of a manuscript (for diary only)").map(r => r.id);
           if (msPartsIRIs && msPartsIRIs.length > 0) {
             this.dataService.getMsPartsLight(msPartsIRIs).subscribe(
               (msParts: MsPartLight[]) => {
-                this.msParts = msParts;
+                msParts.forEach( e => {
+                  this.msParts.push(e);
 
-                for (var msPart in msParts) {
                   this.dataService
-                  .getMsOfMsPart(msParts[msPart].isPartOfMsValue)
+                  .getMsOfMsPart(e.isPartOfMsValue)
                   .subscribe(
                     (msFromParts: MsLight) => {
                       this.msFromParts = msFromParts;
                     });
-                  }
+
+                });
+
               }
             );
           }
 
           // RESULTS: PUBLICATIONS
-          const pubsIRIs = this.resources.filter
+          const pubsIRIs = resources.filter
             (r => r.resourceClassLabel === "Book" ||
             r.resourceClassLabel === "Periodical article"  ||
             r.resourceClassLabel === "Book section").map(r => r.id);
           if (pubsIRIs && pubsIRIs.length > 0) {
             this.dataService.getPublicationsLight(pubsIRIs).subscribe(
               (pubs: PublicationLight[]) => {
-                this.pubs = pubs;
+                pubs.forEach( e => this.pubs.push(e) );
 
                 // filter only publications by Roud, before or in 1977
-                this.roudPubs = this.pubs.filter
+                
+                let roudPubs = pubs.filter
                   (pub => pub.authorsValues.indexOf
                       ('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') > -1
                       && pub.date.slice(10) <= '1977')
                       /* slice to remove 'GREGORIAN:' and consider '1977' as string,
                       otherwise cannot make comparison between number and string */
+                      roudPubs.forEach( e => this.roudPubs.push() );
 
                 // RESULTS: BOOKS          
-                this.booksIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id);
+                this.booksIRIs = roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id);
                 for (var bookIRI in this.booksIRIs) {
                   this.bookIRI = this.booksIRIs[bookIRI];
                 }
 
                 // RESULTS: ARTICLES  
-                this.articlesIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id);
+                this.articlesIRIs = roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id);
                 for (var articleIRI in this.articlesIRIs) {
                   this.articleIRI = this.articlesIRIs[articleIRI];
                 }
                 
                 // RESULTS: BOOK SECTIONS  
-                this.bookSectionsIRIs = this.roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id);
+                this.bookSectionsIRIs = roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id);
                 for (var bookSectionIRI in this.bookSectionsIRIs) {
                   this.bookSectionIRI = this.bookSectionsIRIs[bookSectionIRI];
                 }
@@ -206,9 +210,10 @@ export class FulltextSearchComponent implements OnInit {
           }
           
 
-        },
-        error => console.error(error)
-      );
+        }))
+        .subscribe()
+//        error => console.error(error)
+//      );
     }
   } // end on search
 
