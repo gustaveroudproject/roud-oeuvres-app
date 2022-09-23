@@ -48,6 +48,7 @@ export class FulltextSearchComponent implements OnInit {
   
   checkedCategoriesArray: string[] = [];
   
+  expectingResults = 0;
 
   constructor(
     private dataService: DataService,
@@ -59,6 +60,8 @@ export class FulltextSearchComponent implements OnInit {
 
 
   onSearch(searchText: string) {
+
+    this.expectingResults++;
 
     // empty results arrays to reinitalize search
     this.persons = [];
@@ -86,70 +89,91 @@ export class FulltextSearchComponent implements OnInit {
           // RESULTS: PERSONS
           const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
           if (personsIRIs && personsIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getPersons(personsIRIs).subscribe(
               (persons: Person[]) => {
                 this.persons = persons;
 
                 // if parallel is too slow, put the following get here, once persons have finished 
 
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
 
           // RESULTS: PLACES
           const placesIRIs = this.resources.filter(r => r.resourceClassLabel === "Place").map(r => r.id);
           if (placesIRIs && placesIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getPlacesLight(placesIRIs).subscribe(
               (places: PlaceLight[]) => {
                 this.places = places;
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
 
           // RESULTS: WORKS
           const worksIRIs = this.resources.filter(r => r.resourceClassLabel === "Artwork" || r.resourceClassLabel === "Music work" || r.resourceClassLabel === "Work of literature").map(r => r.id);
           if (worksIRIs && worksIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getWorksLight(worksIRIs).subscribe(
               (works: WorkLight[]) => {
                 this.works = works;
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
 
           // RESULTS: TEXTS
           const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
           if (textsIRIs && textsIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getTexts(textsIRIs).subscribe(
               (texts: Text[]) => {
                 this.texts = texts;
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
 
           // RESULTS: MSS AND MSS PARTS
           const mssIRIs = this.resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
           if (mssIRIs && mssIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getMssLight(mssIRIs).subscribe(
               (mss: MsLight[]) => {
                 this.mss = mss;
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
           const msPartsIRIs = this.resources.filter(r => r.resourceClassLabel === "Part of a manuscript (for diary only)").map(r => r.id);
           if (msPartsIRIs && msPartsIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getMsPartsLight(msPartsIRIs).subscribe(
               (msParts: MsPartLight[]) => {
                 this.msParts = msParts;
 
                 for (var msPart in msParts) {
+                  this.expectingResults++;
                   this.dataService
                   .getMsOfMsPart(msParts[msPart].isPartOfMsValue)
                   .subscribe(
                     (msFromParts: MsLight) => {
                       this.msFromParts = msFromParts;
-                    });
-                  }
-              }
+                    },
+                    error => console.error(error),
+                    () => this.expectingResults--
+                  );}
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
 
@@ -159,6 +183,7 @@ export class FulltextSearchComponent implements OnInit {
             r.resourceClassLabel === "Periodical article"  ||
             r.resourceClassLabel === "Book section").map(r => r.id);
           if (pubsIRIs && pubsIRIs.length > 0) {
+            this.expectingResults++;
             this.dataService.getPublicationsLight(pubsIRIs).subscribe(
               (pubs: PublicationLight[]) => {
                 this.pubs = pubs;
@@ -201,13 +226,14 @@ export class FulltextSearchComponent implements OnInit {
 
 
                 
-              }
+              },
+              error => console.error(error),
+              () => this.expectingResults--
             );
           }
-          
-
         },
-        error => console.error(error)
+        error => console.error(error),
+        () => { this.expectingResults-- }
       );
     }
   } // end on search
