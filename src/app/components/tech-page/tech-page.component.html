@@ -16,12 +16,192 @@
     <div class="my-5" id="toc">
         <ul>
             <li><a href="/tech#infra">Infrastructure and code</a></li>
-            <li><a href="/tech#api">DSP API</a></li>
+            <li><a href="/tech#proto">Prototype</a></li>
+            <li><a href="/tech#geno">GENO (a GENetic criticism Ontology)</a></li>
+            <li><a href="/tech#dataviz">Data visualization</a></li>
+            <li><a href="/tech#api">The API</a></li>
             <li><a href="/tech#data">Data dumps</a></li>
-            <li><a href="/tech#geno">GEN-O (a GENetic criticism Ontology)</a></li>
         </ul>
     </div>
 
-    <div>More to come</div>
+    <div> <!-- INFRASTRUCTURE -->
+      <div id="infra" class="py-4 page-title">
+          <h3>Infrastructure and code</h3>
+      </div>
+      <div>
+        <p>
+          <i>Gustave Roud. Textes & Archives</i> is an <a href="https://github.com/gustaveroudproject/roud-oeuvres-app" target="_blank">open source</a> Angular 9.0 <strong>web application</strong>.
+        <br/>The <strong>back-end framework</strong> is the DaSCH Service Platform (DSP), see <a href="https://admin.dasch.swiss/" target="_blank">platform</a> and 
+          <a href="https://docs.dasch.swiss" target="_blank">docs</a>.
+          <br/>
+          DSP is a content management system for the long-term preservation and reuse of humanities data.
+          Non-binary data is stored as Resource Description Framework (RDF).
+          Binary media files (images, audio, and video) are stored on the IIIF media server SIPI.
+          Text markup is stored as standoff/RDF data.
+        </p>
+
+        <div class="m-3" style="text-align: center">
+          <a href="https://docs.dasch.swiss/2022.09.01/developers/introduction/" target="_blank">
+            <img width="550px" src="https://docs.dasch.swiss/2022.09.01/assets/images/knora/KnoraArchitecture.jpeg"/>
+          </a>
+          <div class="caption">DaSCH Service Platform architecture, from <a href="https://docs.dasch.swiss" target="_blank">docs.dasch.swiss</a></div>
+        </div>
+
+        <p>DSP has a base ontology with pre-defined basic data types (<code>knora-base</code>). The project "Gustave Roud. <i>Œuvres complètes</i>" created its own data model, as an extension of the <code>knora-base</code> ontology.
+          <br/>Project specific <strong>ontologies and lists</strong> are available on the Université de Lausanne LaDHUL <a href="https://github.com/LaDHUL/oeuvres-roud">repo</a>.
+        </p>
+
+        <p>In addition to this web application, a <strong>generic interface</strong> to the data of all DSP projects is available in
+          <a href="https://admin.ls-prod-server.dasch.swiss/" target="_blank">DSP-APP</a>
+          (temporary <a href="https://admin.ls-prod-server.dasch.swiss/" target="_blank">URL</a>).
+        DSP-APP will also provide long-term access to the data.</p>
+
+
+      </div>
+      <h2 class="toTop"><a href="/tech#toc">&#8593;</a></h2>
+    </div>
+
+
+    <div> <!-- PROTOTYPE -->
+      <div id="proto" class="py-4 page-title">
+          <h3>Prototype</h3>
+      </div>
+      <div>
+        <p>
+          A <a href="https://espadini.gitbook.io/roudwebappprototype" target="_blank">prototype</a> of the web application was created during the first year of the project, in 2018.</p>
+      </div>
+      <h2 class="toTop"><a href="/tech#toc">&#8593;</a></h2>
+    </div>
+
+    <div> <!-- GENO -->
+      <div id="geno" class="py-4 page-title">
+          <h3>GENO (a GENetic criticism Ontology)</h3>
+      </div>
+      <div>
+        <p>Find out more on <a href="https://gen-o.github.io/" target="_blank">GENO portal</a>.</p>
+        <p>GENO is an ontology for the field of Genetic Criticism and Editing. With GENO you can describe the <i>avant-textes</i>,
+          their relationships in and outside the genetic dossier
+          and with the publications.</p>
+      </div>
+      <h2 class="toTop"><a href="/tech#toc">&#8593;</a></h2>
+    </div>
+
+
+    <div> <!-- DATA VIZ -->
+      <div id="geno" class="py-4 page-title">
+          <h3>Data visualizations</h3>
+      </div>
+      <div>
+        <p>More to come ...</p>
+      </div>
+      <h2 class="toTop"><a href="/tech#toc">&#8593;</a></h2>
+    </div>
+
+    <div id="api"> <!-- API -->
+      <div class="py-4 page-title">
+          <h3>The API</h3>
+      </div>
+      <div>
+        <p>See DSP-API v2 <a href="https://docs.dasch.swiss/2022.09.01/DSP-API/03-apis/api-v2/" target="_blank">documentation</a>.
+          Below are some examples of how to read and search resources (using <code>curl</code>). For more complex queries, see Gravsearch examples below.</p>
+        <p class="p-api">
+          <strong>Get all resources of a class</strong>
+          <br/>Specify the encoded class IRI, for example <code>http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#Manuscript</code>. Pagination is required (25 results for page).
+          <!--
+          <br/>Header. <code>x-knora-accept-project: http://rdfh.ch/projects/0112</code>
+          <br/>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/resources?resourceClass=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0</code>-->
+        </p>
+        <div class="codeblockTitle">Example with curl</div>
+        <div class="codeblock"><code>curl --header "x-knora-accept-project: http://rdfh.ch/projects/0112" "https://api.ls-prod-server.dasch.swiss/v2/resources?resourceClass=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0"</code></div>
+        
+        <p class="p-api">
+          <strong>Get one resource with ID</strong>
+          <br/>Use the encoded internal IRI to get the resource, for example the book <i>Adieu</i> published in 1927.
+          <!--
+          <br>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code>
+        -->
+        </p>
+        <div class="codeblockTitle">Example with curl</div>
+        <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code></div>
+        
+
+        <p class="p-api">
+          <strong>Get the value of a text resource property in XML/TEI</strong>
+          <br/>Specfiy the encoded internal IRI of the resource, plus the property name as 'textProperty'. Only valid for text property (no numeric values, no dates, etc.). For example, information about the person Olivier Cherpillod.
+          <!--<br>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code>-->
+          </p>
+          <div class="codeblockTitle">Example with curl</div>
+          <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code></div>
+        
+
+        <p class="p-api">
+          <strong>Full-text search</strong>
+          <br/>For example, find occurrences of 'Jaccottet'
+          <!--<br/>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/search/Jaccottet</code>-->
+          </p>
+          <div class="codeblockTitle">Example with curl</div>
+          <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/search/Jaccottet</code></div>
+
+        
+        <p>
+          More complex queries can be handled using <strong>Gravsearch</strong>, the Virtual Graph Search.
+          Gravsearch is based on the SPARQL query language, but only supports CONSTRUCT queries.
+          For more information, refer to the <a href="https://docs.dasch.swiss/2022.09.01/DSP-API/03-apis/api-v2/query-language/" target="_blank">doc</a>.
+          <br/>This web application uses
+          <a href="https://github.com/gustaveroudproject/roud-oeuvres-app/blob/master/src/app/services/data.service.ts" target="_blank">Gravsearch queries</a>
+          (and <a href="https://docs.dasch.swiss/2022.09.01/developers/libraries/" target="_blank">DSP-JS</a>)
+          to retrieve the data to be displayed.
+          Gravsearch is also available in the 'Expert search' tab in <a href="https://admin.dasch.swiss/">DSP-APP</a>.
+          Below are some examples of Gravsearch queries on the project data.
+        <br/>Gravsearch queries can be submitted via HTTP POST to <code>https://api.ls-prod-server.dasch.swiss/v2/searchextended</code>
+        or HTTP GET to the same endpoint, adding the URL encoded query (see curl example below).</p>
+
+          
+        <p class="p-api">
+          <strong>Get person record using VIAF id</strong>
+          <br/>For example, get record of http://viaf.org/viaf/69021635.
+        </p>
+
+        <div class="codeblockTitle">Example of Gravsearch query</div>
+        <div class="codeblock"><pre><code>
+PREFIX knora-api: &lt;http://api.knora.org/ontology/knora-api/v2#&gt;
+PREFIX roud-oeuvres: &lt;http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt;
+CONSTRUCT &#123;
+    ?person knora-api:isMainResource true .
+    ?person roud-oeuvres:personHasGivenName ?name .
+    ?person roud-oeuvres:personHasFamilyName ?familyName .
+    ?person roud-oeuvres:personHasNotice ?info .
+&#125; WHERE &#123;
+    ?person a roud-oeuvres:Person .
+    ?person roud-oeuvres:personHasGivenName ?name .
+    ?person roud-oeuvres:personHasFamilyName ?familyName .
+    ?person roud-oeuvres:personHasNotice ?info .
+    ?person roud-oeuvres:personHasAuthorityID ?idiri .
+    ?idiri knora-api:valueAsString "http://viaf.org/viaf/69021635" .
+&#125;</code></pre></div>
+
+          <div class="codeblockTitle">Example with curl</div>
+          <div class="codeblock"><code>curl -X POST https://api.ls-prod-server.dasch.swiss/v2/searchextended -d "PREFIX knora-api: &lt;ttp://api.knora.org/ontology/knora-api/v2#&gt; PREFIX roud-oeuvres: &lt;http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt; CONSTRUCT &#123; ?person knora-api:isMainResource true . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . &#125; WHERE &#123; ?person a roud-oeuvres:Person . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . ?person roud-oeuvres:personHasAuthorityID ?idiri . ?idiri knora-api:valueAsString 'http://viaf.org/viaf/69021635' . &#125;"</code></div>
+
+
+
+
+      </div> <!-- end API content -->
+
+    </div> <!-- end API -->
+
+
+    <div> <!-- DATA VIZ -->
+      <div id="data" class="py-4 page-title">
+          <h3>Data dump</h3>
+      </div>
+      <div>
+        <p>More to come ...</p>
+      </div>
+      <h2 class="toTop"><a href="/tech#toc">&#8593;</a></h2>
+    </div>
+
+
+
 
 </div>
