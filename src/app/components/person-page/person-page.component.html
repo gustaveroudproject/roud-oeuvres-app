@@ -14,7 +14,7 @@
     </div>
 
     <!-- NAME AND DATES -->
-    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+    <div class="py-4 row"> <!-- bootstrap class: vertical padding 3 -->
         <h3>
             {{ person?.name }} {{ person?.surname }}
             ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
@@ -23,13 +23,13 @@
 
 
     <!-- NOTICE -->
-    <div class="py-4 notice">
+    <div class="py-4 notice row">
         <p [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
 
     <!-- PICTURES -->
-    <div class="py-4" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
+    <div class="py-4 row" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
         <div *ngFor="let picture of pictures">
             <img width="full"
             src="{{ picture.imageURL }}"
@@ -39,7 +39,7 @@
 
 
     <!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
-    <div class="py-4" *ngIf="person?.DhsID != null || person?.Viaf != null">
+    <div class="py-4 row" *ngIf="person?.DhsID != null || person?.Viaf != null">
         <a 
             *ngIf="person?.DhsID != null" 
             href="{{ person?.DhsID }}"
@@ -56,8 +56,8 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <strong>Personne mentionnée dans les textes suivants :</strong>
+    <div class="py-4 mention row" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <span>Textes :</span>
         <ul style="list-style: none;">
             <li *ngFor="let textLight of textsLight">
             <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
@@ -69,9 +69,18 @@
 
 
     <!-- PERMANENT IDENTIFIERS -->
-    <div class="my-5 permanentId">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ person?.ark }}</p>
-        <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
+    <div class="my-5 permanentId row">
+        <p>
+            <strong>Comment citer</strong>
+            <br/>« {{ person?.name }} {{ person?.surname }} », <i>Gustave Roud. Textes & Archives</i>, dir. Claire Jaquier et Daniel Maggetti, 2022. ARK: {{ person?.ark }}. URL: https://roud.unil.ch/resources/{{ person?.id | encodeURIComponent }}
+        </p>
+        <p>
+            <strong>ARK (permalien)</strong> : {{ person?.ark }}
+            <br/>
+            <strong>URL</strong> : https://roud.unil.ch/resources/{{ person?.id | encodeURIComponent }}
+            <br/>
+            <strong>IRI interne</strong> : {{ person?.id }}
+        </p>
     </div>
 
 </div>

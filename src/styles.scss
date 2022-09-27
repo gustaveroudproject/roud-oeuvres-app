@@ -53,8 +53,9 @@ list-style: circle;
 
 
 .permanentId {
-  border:1px solid $lightDarkGreen;
   padding: 20px;
+  font-size: larger;
+  background-color: #F2F5F3;
 }
 
 .page-title {
@@ -67,6 +68,10 @@ list-style: circle;
 
 .footer-activeLink {
   color:#2d2d2d !important;
+}
+
+code {
+  font-family: monospace !important;
 }
 
 

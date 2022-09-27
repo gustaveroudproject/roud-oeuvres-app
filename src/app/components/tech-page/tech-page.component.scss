@@ -16,3 +16,26 @@ p, #toc, ul {
 .pub-li {
     text-indent: -1.6em;
 }
+
+.p-api {
+    margin: 0;
+    padding: 0;
+}
+
+.codeblockTitle {
+    border: 1px solid lightgrey;
+    border-bottom: 0;
+    background-color: #f7f7f7;
+    padding: 0.8em;
+    margin-top: 1em;
+    font-size: larger;
+}
+.codeblock {
+    border:1px solid lightgrey;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+
+pre code {
+    color: #e83e8c !important; 
+}
