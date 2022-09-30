@@ -62,8 +62,12 @@ ul {
   display: none;
   background-color: #555;
   color: #fff;
-  
 }
+
+:host ::ng-deep .tei-quote-note.block .tei-ref {
+  color: #83f96a !important;
+}
+
 
 :host ::ng-deep .tei-quote .block {
   display: block
