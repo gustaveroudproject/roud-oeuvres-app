@@ -15,11 +15,32 @@
 }
 
 #selectorPart {
-    float: right;
-    margin-right: 20%;  // because viewer occupies 80%
+    width: 50%;
+    text-overflow: ellipsis;
 }
 
 .msDescItem {
     text-indent: -30px;
     margin-left: 30px;
+}
+
+.viewer {
+    width: 80%;
+}
+
+.page {
+    background-image: url("/assets/img/olivier-flou.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    aspect-ratio: 1 / 1;
+}
+
+.page-img {
+    width: 100%;
+}
+
+.selects {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
