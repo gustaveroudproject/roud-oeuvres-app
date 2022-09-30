@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
 import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, Publication, PubPartLight, PubPart } from 'src/app/models/publication.model';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+
 
 
 
@@ -20,7 +21,9 @@ export class MsPageComponent implements OnInit, DoCheck {
   msParts: MsPartLightWithStartingPageSeqnum[];
   pages: Page[];
   msPartStartingPage: PageLight;
+  prevSelectedPageNum: number = -1;
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+  imageUrl: SafeUrl;
   manuscript: Manuscript;
   manuscripts: Manuscript[];
   publicationsAvantTexte: PublicationLight[];
@@ -63,7 +66,7 @@ export class MsPageComponent implements OnInit, DoCheck {
           this.dataService
             .getMsLight(decodeURIComponent(params.get('iri')))
             .subscribe(
-              (msLight: MsLight) => {
+              { next: (msLight: MsLight) => {        
                 this.msLight = msLight;
 
                 //// get facsimiles scans from publication IRI
@@ -71,6 +74,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getPagesOfMs(msLight.id)
                 .subscribe((pages: Page[]) => {
                   this.pages = pages;
+                  this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[1].imageURL);        
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
                 });
@@ -205,9 +209,8 @@ export class MsPageComponent implements OnInit, DoCheck {
                       });
                     }
                 });
-
-          });
-
+              }}
+            );
         }
       },
       error => console.error(error)
@@ -303,8 +306,12 @@ export class MsPageComponent implements OnInit, DoCheck {
     }); 
   }
 
-
-
+  selectOnChange(value) {
+    if (this.selectedPageNum != value) {
+      this.selectedPageNum = value;
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[value].imageURL);
+    }
+  }
 
 }
 
