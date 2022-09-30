@@ -10,6 +10,6 @@
     },
     "app": {
         "name": "Knora-APP",
-        "url": "localhost:4200"
+        "url": "https://admin.ls-prod-server.dasch.swiss/"
     }
 }

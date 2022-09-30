@@ -16,6 +16,9 @@ import { MsPageComponent } from './components/ms-page/ms-page.component';
 import { WorkPageComponent } from './components/work-page/work-page.component';
 import { ArchivesPageComponent } from './components/archives-page/archives-page.component';
 import { ArchiveResultsPageComponent } from './components/archive-results-page/archive-results-page.component';
+import { BioPageComponent } from './components/bio-page/bio-page.component';
+import { ProjectPageComponent } from './components/project-page/project-page.component';
+import { TechPageComponent } from './components/tech-page/tech-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -47,7 +50,7 @@ const routes: Routes = [
   },
   {
     path: 'search',
-    component: SearchPageComponent, // --> Component with the search panel
+    component: SearchPageComponent // --> Component with the search panel
   /*
     children: [
       {
@@ -60,6 +63,18 @@ const routes: Routes = [
       }
     ]
   */
+  },
+  {
+    path: 'bio',
+    component: BioPageComponent
+  },
+  {
+    path: 'project',
+    component: ProjectPageComponent
+  },
+  {
+    path: 'tech',
+    component: TechPageComponent
   },
 
   { path: 'resources/:iri', component: ResourceRouterComponent }, //this component only redirects to appropriate type (knora class) of resource

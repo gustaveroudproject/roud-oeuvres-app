@@ -1,1 +1,3 @@
-<img class="card-img-top" src="{{ photo?.imageURL }}" width="100%" height="280em">
+<img *ngIf="photo" class="card-img-top"
+    [src]="sanitizer.bypassSecurityTrustUrl(photo?.imageURL)"
+    width="100%" height="auto">

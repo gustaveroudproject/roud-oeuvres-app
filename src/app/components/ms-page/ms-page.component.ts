@@ -1,10 +1,11 @@
 import { Component, OnInit, ElementRef, DoCheck } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { MsLight, MsPartLight, Manuscript } from 'src/app/models/manuscript.model';
-import { Page } from 'src/app/models/page.model';
+import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
+import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, Publication, PubPartLight, PubPart } from 'src/app/models/publication.model';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+
 
 
 
@@ -17,9 +18,12 @@ export class MsPageComponent implements OnInit, DoCheck {
 
 
   msLight: MsLight;
-  msParts: MsPartLight[];
+  msParts: MsPartLightWithStartingPageSeqnum[];
   pages: Page[];
+  msPartStartingPage: PageLight;
+  prevSelectedPageNum: number = -1;
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
+  imageUrl: SafeUrl;
   manuscript: Manuscript;
   manuscripts: Manuscript[];
   publicationsAvantTexte: PublicationLight[];
@@ -56,9 +60,7 @@ export class MsPageComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit() {
-    this.loadingResults++;
 
-    console.log(this.loadingResults)
     this.route.paramMap.subscribe(
       params => {
         if (params.has('iri')) {
@@ -69,23 +71,21 @@ export class MsPageComponent implements OnInit, DoCheck {
           this.dataService
             .getMsLight(decodeURIComponent(params.get('iri')))
             .subscribe(
-              (msLight: MsLight) => {
+              (msLight: MsLight) => {        
                 this.msLight = msLight;
                 console.log(this.msLight)
 
                 //// get facsimiles scans from publication IRI
                 this.dataService
                 .getPagesOfMs(msLight.id)
-                .subscribe(
-                  (pages: Page[]) => {
-                    this.pages = pages;
-                    //console.log(pages.length);
-                    //console.log(this.selectedPageNum);
-                    console.log(this.pages)
-                    console.log(this.loadingResults)                  
-                  },
-                  error => console.log(error),
-                  () => this.loadingResults--
+                .subscribe((pages: Page[]) => {
+                  this.pages = pages;
+                  this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[1].imageURL);        
+                  //console.log(pages.length);
+                  //console.log(this.selectedPageNum);
+                },
+                error => { console.log(error); this.loadingResults--; },
+                () => this.loadingResults--
                 );
 
                 //// get complete manuscript
@@ -97,7 +97,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                     this.manuscript = manuscript;
                     console.log(this.manuscript)
                   },
-                  error => console.log(error),
+                  error => { console.log(error); this.loadingResults--; },
                   () => this.loadingResults--
                 );
 
@@ -113,7 +113,7 @@ export class MsPageComponent implements OnInit, DoCheck {
 
                     this.pubsAvantTexte.push(...publicationsAvantTexte);
                   },
-                  error => console.log(error),
+                  error => { console.log(error); this.loadingResults--; },
                   () => this.loadingResults--
                 );
 
@@ -136,12 +136,12 @@ export class MsPageComponent implements OnInit, DoCheck {
                         (pubFromParts: PublicationLight) => {
                           this.pubFromParts = pubFromParts;
                         },
-                        error => console.log(error),
+                        error => { console.log(error); this.loadingResults--; },
                         () => this.loadingResults--
                       );
                     }
                   },
-                  error => console.log(error),
+                  error => { console.log(error); this.loadingResults--; },
                   () => this.loadingResults--);
 
 
@@ -156,7 +156,7 @@ export class MsPageComponent implements OnInit, DoCheck {
 
                     this.pubsDiary.push(...publicationsDiary);
                   },
-                  error => console.log(error),
+                  error => { console.log(error); this.loadingResults--; },
                   () => this.loadingResults--
                 );
 
@@ -179,12 +179,12 @@ export class MsPageComponent implements OnInit, DoCheck {
                         (pubFromParts2: PublicationLight) => {
                           this.pubFromParts2 = pubFromParts2;
                         },
-                        error => console.log(error),
+                        error => { console.log(error); this.loadingResults--; },
                         () => this.loadingResults--
                       );
                     }
                   },
-                  error => console.log(error),
+                  error => { console.log(error); this.loadingResults--; },
                   () => this.loadingResults--
                 );
 
@@ -192,13 +192,11 @@ export class MsPageComponent implements OnInit, DoCheck {
                 this.loadingResults++;
                 this.dataService
                 .getMsPartsFromMs(msLight.id)
-                .subscribe(
-                  (msParts: MsPartLight[]) => {
-                    this.msParts = msParts;
-                    console.log(msParts)
-                  },
-                  error => console.log(error),
-                  () => this.loadingResults--
+                .subscribe((msParts: MsPartLightWithStartingPageSeqnum[]) => {
+                  this.msParts = msParts;
+                },
+                error => { console.log(error); this.loadingResults--; },
+                () => this.loadingResults--
                 );
 
 
@@ -212,7 +210,7 @@ export class MsPageComponent implements OnInit, DoCheck {
 
                   this.rewritingMs.push(...msReWritingMs);
                 },
-                error => console.log(error),
+                error => { console.log(error); this.loadingResults--; },
                 () => this.loadingResults--);
 
                 /// get ms parts rewriting ms
@@ -232,11 +230,11 @@ export class MsPageComponent implements OnInit, DoCheck {
                       (msFromParts: MsLight) => {
                         this.msFromParts = msFromParts;
                       },
-                      error => console.log(error),
+                      error => { console.log(error); this.loadingResults--; },
                       () => this.loadingResults--);
                     }
                 },
-                error => console.log(error),
+                error => { console.log(error); this.loadingResults--; },
                 () => this.loadingResults--);
 
 
@@ -250,7 +248,7 @@ export class MsPageComponent implements OnInit, DoCheck {
 
                   this.rewrittenMs.push(...msRewrittenMs);
                 },
-                error => console.log(error),
+                error => { console.log(error); this.loadingResults--; },
                 () => this.loadingResults--);
 
                 /// get ms parts from which this ms is rewritten
@@ -272,21 +270,23 @@ export class MsPageComponent implements OnInit, DoCheck {
                         this.msFromParts3 = msFromParts3;
                         console.log(this.msFromParts3)
                       },
-                      error => console.log(error),
+                      error => { console.log(error); this.loadingResults--; },
                       () => this.loadingResults--);
                     }
                 },
-                error => console.log(error),
-                () => this.loadingResults--);
-
-          });
-
+                error => { console.log(error); this.loadingResults--; },
+                () => this.loadingResults--
+                );
+              },
+              error => { console.log(error); this.loadingResults--; },
+              () => this.loadingResults--
+            );
         }
       },
-      error => console.error(error),
-
+      error => { console.log(error); this.loadingResults--; },
+      () => this.loadingResults--
     );
-  } 
+  }
 
 
 
@@ -378,10 +378,12 @@ export class MsPageComponent implements OnInit, DoCheck {
     
   }
 
-  
-
-
-
+  selectOnChange(value) {
+    if (this.selectedPageNum != value) {
+      this.selectedPageNum = value;
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[value].imageURL);
+    }
+  }
 
 }
 

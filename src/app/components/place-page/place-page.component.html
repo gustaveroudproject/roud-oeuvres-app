@@ -1,4 +1,17 @@
 <div class="container">
+
+    <!-- breadcrumbs -->
+    <div class="breadcrumbNavbar my-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item">Lieux</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <span>{{ place?.name }}</span>
+            </li>
+          </ol>
+        </nav>
+    </div>
    
     <!-- NAME  -->
     <div class="py-4"> <!-- bootstrap class: vertical padding 4 -->
@@ -13,7 +26,7 @@
     <div class="row py-5">
 
          <!-- NOTICE -->
-        <div class="col-6">
+        <div class="col-6 notice">
             <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
         </div>
     

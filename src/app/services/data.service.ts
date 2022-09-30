@@ -12,10 +12,11 @@ import { PublicationLight, Publication, PeriodicalArticle, Book, BookSection, Pu
 import { AuthorLight } from '../models/author.model';
 import { PeriodicalLight, Periodical } from '../models/periodical.model';
 import { PublisherLight } from '../models/publisher.model';
-import { MsLight, MsPartLight, Manuscript } from '../models/manuscript.model';
+import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from '../models/manuscript.model';
 import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
+import { DataViz } from '../models/dataviz.model';
 
 
 @Injectable({
@@ -171,6 +172,37 @@ getPage(iri: string): Observable<Page> {
       map((readResource: ReadResource) => this.readRes2Page(readResource))
     );
 }
+
+
+
+
+getEstablishedTextFromBasePub(pubIri: string):Observable<TextLight[]> {
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?text knora-api:isMainResource true .
+    ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+  } WHERE {
+    ?text a roud-oeuvres:EstablishedText .
+    ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+    ?text roud-oeuvres:hasDirectSourcePublication <${pubIri}> .
+}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
+        return this.readRes2TextLight(r);
+      })
+    )
+  );
+}
+
 
 
 
@@ -1467,7 +1499,7 @@ return this.knoraApiConnection.v2.search
 }
 
 
-getMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLight[]> {  
+getMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLightWithStartingPageSeqnum[]> {  
   const gravsearchQuery = `
 
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -1476,11 +1508,13 @@ CONSTRUCT {
     ?msPart knora-api:isMainResource true .
     ?msPart roud-oeuvres:msPartHasTitle ?title .
     ?msPart roud-oeuvres:msPartHasNumber ?number .
+    ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
 } WHERE {
     ?msPart a roud-oeuvres:MsPart .
     ?msPart roud-oeuvres:msPartIsPartOf <${msIRI}> .
     ?msPart roud-oeuvres:msPartHasTitle ?title .
     ?msPart roud-oeuvres:msPartHasNumber ?number .
+    ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
 } ORDER BY ASC(?number)
 OFFSET ${index}
 `
@@ -1491,7 +1525,7 @@ return this.knoraApiConnection.v2.search
     map((
       readResources: ReadResourceSequence 
     ) => readResources.resources.map(r => {
-        return this.readRes2MsPartLight(r);
+        return this.readRes2MsPartLightWithStartingPageSeqnum(r);
       })
     )
   );
@@ -2256,6 +2290,34 @@ OFFSET ${index}
 
 
 
+  getDataViz(pubIri: string): Observable<DataViz[]> {
+    const gravsearchQuery = `
+
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?dataviz knora-api:isMainResource true .
+        ?dataviz knora-api:hasStillImageFileValue ?imageURL .
+      } WHERE {
+        ?dataviz a roud-oeuvres:DataViz .
+        ?dataviz knora-api:hasStillImageFileValue ?imageURL .
+        ?dataviz roud-oeuvres:isVisualisationOf <${pubIri}> .
+    }
+    `
+    ;
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(gravsearchQuery)
+      .pipe(
+        map((
+          readResources: ReadResourceSequence 
+        ) => readResources.resources.map(r => {
+            return this.readRes2DataViz(r);
+          })
+        )
+      );
+    }
+    
+
 
 
 
@@ -2359,9 +2421,29 @@ OFFSET ${index}
       imageURL: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      ),
+      shelfmark: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}photoHasShelfmark`
       )
     } as Picture;   
   }
+
+
+  readRes2DataViz(readResource: ReadResource): DataViz {  
+    return {
+      ...this.readRes2Resource(readResource),
+      pub: this.getFirstValueId(
+        readResource,
+        `${this.getOntoPrefixPath()}isVisualisationOfValue`
+      ),
+      imageURL: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue`
+      )
+    } as DataViz;   
+  }
+
 
 
 
@@ -2508,7 +2590,6 @@ OFFSET ${index}
     } as PubPart;    
   }
 
-
   readRes2MsPartLight(readResource: ReadResource): MsPartLight {  
     return {
       ...this.readRes2Resource(readResource),
@@ -2523,12 +2604,31 @@ OFFSET ${index}
       number: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}msPartHasNumber`
-      ),
-      startingPageValue: this.getFirstValueId(
-        readResource,
-        `${this.getOntoPrefixPath()}msPartHasStartingPageValue`
       )
     } as MsPartLight;    
+  }
+
+
+  readRes2MsPartLightWithStartingPageSeqnum(readResource: ReadResource): MsPartLightWithStartingPageSeqnum {  
+    return {
+      ...this.readRes2Resource(readResource),
+      title: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msPartHasTitle`
+      ),
+      isPartOfMsValue: this.getFirstValueId(
+        readResource,
+        `${this.getOntoPrefixPath()}msPartIsPartOfValue`
+      ),
+      number: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msPartHasNumber`
+      ),
+      startingPageSeqnum: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}msPartHasStartingPageValue`
+      ).split('_').pop()
+    } as MsPartLightWithStartingPageSeqnum;    
   }
 
   readRes2PublicationLight(readResource: ReadResource): PublicationLight {  
@@ -2550,6 +2650,10 @@ OFFSET ${index}
       date: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}publicationHasDate`
+      ),
+      editorialSet: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}hasPublicationType`
       )
     } as PublicationLight;    
   }
@@ -2774,11 +2878,11 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}hasTextContent`
       ),
-      baseWitMs: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitMs: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourceManuscriptValue`
       ),
-      baseWitPub: this.getFirstValueAsStringOrNullOfProperty(
+      baseWitPub: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}hasDirectSourcePublicationValue`
       ) 
@@ -2834,7 +2938,7 @@ OFFSET ${index}
         readResource,
         `${this.getOntoPrefixPath()}essayHasAuthor`
       ),
-      photo: this.getFirstValueAsStringOrNullOfProperty(
+      photo: this.getFirstValueId(
         readResource,
         `${this.getOntoPrefixPath()}essayHasLinkToPhotoValue`
       )

@@ -68,6 +68,10 @@ import { ArchiveResultsPageComponent } from './components/archive-results-page/a
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ManuscriptpartComponent } from './components/manuscriptpart/manuscriptpart.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
+import { BioPageComponent } from './components/bio-page/bio-page.component';
+import { ProjectPageComponent } from './components/project-page/project-page.component';
+import { TechPageComponent } from './components/tech-page/tech-page.component';
+
 
 
 /* PIPES */
@@ -149,6 +153,9 @@ export function initializeApp(appInitService: AppInitService) {
     ManuscriptComponent,
     ManuscriptpartComponent,
     ProgressIndicatorComponent,
+    BioPageComponent,
+    ProjectPageComponent,
+    TechPageComponent
   ],
   imports: [
     MatExpansionModule,

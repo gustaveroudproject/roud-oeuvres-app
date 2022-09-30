@@ -1,6 +1,19 @@
 <div class="container">
    <!-- ADD DATE AND LINK-->
 
+   <!-- breadcrumbs -->
+   <div class="breadcrumbNavbar my-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+        <li class="breadcrumb-item">Œuvres cités (pas de Gustave Roud)</li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <span [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></span>
+        </li>
+      </ol>
+    </nav>
+</div>
+
 
 
     <!-- NAME AND DATES -->
@@ -16,7 +29,7 @@
 
 
     <!-- NOTICE -->
-    <div class="py-4" *ngIf=work?.notice>
+    <div class="py-4 notice" *ngIf=work?.notice>
         <p [innerHtml]="work?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
