@@ -32,40 +32,41 @@
         
             
             <!-- VIEWER -->
-            <div>
-                <div class="py-4" *ngIf="pages && pages.length > 0">   
-                    <div *ngFor="let page of pages">
-                        <img
-                            *ngIf="+page.seqnum == selectedPageNum"
-                            [src]="sanitizer.bypassSecurityTrustUrl(page.imageURL)"
-                            width="80%"
-                        /><!--it is possible to sanitize here because the method is public in the constructor. Tried with a pipe, but did not work ...
-                        Same happens in pub-page -->
-                    </div>
-                    
-                    <select
-                    name="page-numbers"
-                    [(ngModel)]="selectedPageNum" 
-                    > <!-- ngModel binds the value of the select to an angular variable -->
+            <div class="viewer">
+                <div class="page" *ngIf="imageUrl">
+                    <img class="page-img" [src]="imageUrl"/>
+                </div>
 
-                        <option [value]="page.seqnum" *ngFor="let page of pages">
-                            {{ page.name }}</option
+                <div *ngIf="pages && pages.length > 0; else noImage">
+    
+                    <div class="selects">
+                        <select
+                        name="page-numbers"
+                        [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)" 
+                        > <!-- ngModel binds the value of the select to an angular variable -->
+    
+                            <option [value]="page.seqnum" *ngFor="let page of pages">
+                                {{ page.name }}</option
+                            >
+                        </select>
+    
+                        <select *ngIf="msParts && msParts.length > 0"
+                        id="selectorPart"
+                        [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"
                         >
-                    </select>
-
-                    <select *ngIf="msParts && msParts.length > 0"
-                    id="selectorPart"
-                    [(ngModel)]="selectedPageNum"
-                    >
-                        <option [value]="msPart.startingPageSeqnum" *ngFor="let msPart of msParts">
-                            <span>{{ msPart.title }}</span>
-                        </option>
-                    </select>
+                            <option [value]="msPart.startingPageSeqnum" *ngFor="let msPart of msParts">
+                                <span>{{ msPart.title }}</span>
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="py-4" *ngIf="pages && pages.length == 0">   
-                    <p>La reproduction de l'original n'est pas disponible.</p>
-                </div>
+                <ng-template #noImage>
+                    <div class="py-4" *ngIf="pages && pages.length == 0">   
+                        <p>La reproduction de l'original n'est pas disponible.</p>
+                    </div>
+                </ng-template>
+
             </div> <!-- end Viewer -->
 
 
