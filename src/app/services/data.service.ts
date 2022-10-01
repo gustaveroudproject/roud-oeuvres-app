@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Person, PersonLight } from '../models/person.model';
+import { Person, PersonLight, PersonSemiLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
 import { PageLight, Page } from '../models/page.model';
@@ -400,10 +400,12 @@ CONSTRUCT {
     ?Person knora-api:isMainResource true .
     ?Person roud-oeuvres:personHasFamilyName ?surname .
     ?Person roud-oeuvres:personHasGivenName ?name .
+    ?Person roud-oeuvres:personHasNotice ?notice .
 } WHERE {
     ?Person a roud-oeuvres:Person .
-    ?Person roud-oeuvres:personHasFamilyName ?surname .
-    ?Person roud-oeuvres:personHasGivenName ?name .
+    optional {?Person roud-oeuvres:personHasFamilyName ?surname }.
+    optional {?Person roud-oeuvres:personHasGivenName ?name }.
+    optional {?Person roud-oeuvres:personHasNotice ?notice }.
     <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
 }
 OFFSET ${index}
@@ -560,20 +562,12 @@ getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {
       ?work roud-oeuvres:workHasDate ?date .
       ?work roud-oeuvres:workHasNotice ?notice .
   } WHERE {
-    ?work a roud-oeuvres:Work .
-    <${textIRI}> knora-api:hasStandoffLinkTo ?work .
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-      }
-      UNION
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-        ?work roud-oeuvres:workHasNotice ?notice .
-      }
+      ?work a roud-oeuvres:Work .
+      <${textIRI}> knora-api:hasStandoffLinkTo ?work .
+      ?work roud-oeuvres:workHasTitle ?title .
+      optional {?work roud-oeuvres:workHasAuthor ?authorValue .}
+      optional {?work roud-oeuvres:workHasDate ?date .}
+      optional {?work roud-oeuvres:workHasNotice ?notice .}
   }
   OFFSET ${index}
 `
@@ -2259,6 +2253,8 @@ CONSTRUCT {
 } WHERE {
   ?text a roud-oeuvres:EstablishedText .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
+  ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+  ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-oeuvrePoetique> .
 } ORDER BY ASC(?title)
 OFFSET ${index}
 `;
@@ -2769,7 +2765,7 @@ OFFSET ${index}
 
 
 
-  readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
+  readRes2PersonLight(readResource: ReadResource): PersonSemiLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
     return {
       ...this.readRes2Resource(readResource),
       surname: this.getFirstValueAsStringOrNullOfProperty(
@@ -2779,8 +2775,12 @@ OFFSET ${index}
       name: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}personHasGivenName`
+      ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}personHasNotice`
       )
-    } as PersonLight;    //this indicates the interface declared in person.model.ts
+    } as PersonSemiLight;    //this indicates the interface declared in person.model.ts
   }
 
   readRes2Person(readResource: ReadResource): Person {
