@@ -2253,6 +2253,8 @@ CONSTRUCT {
 } WHERE {
   ?text a roud-oeuvres:EstablishedText .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
+  ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+  ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-oeuvrePoetique> .
 } ORDER BY ASC(?title)
 OFFSET ${index}
 `;

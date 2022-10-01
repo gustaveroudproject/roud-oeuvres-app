@@ -111,7 +111,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
               });
 
-              
+              /*
               //// get publication mentioned in the text (mentions)
               this.dataService
               .getPubsInText(text.id)
@@ -129,11 +129,13 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
 
               //// get texts mentioned in the text (reuse)
+              
               this.dataService
               .getTextsInText(text.id)
               .subscribe((textsMentioned: TextLight[]) => {
                 this.textsMentioned = textsMentioned;
               });
+              */
 
 
               //// get base witness publication
