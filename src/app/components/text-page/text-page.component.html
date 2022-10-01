@@ -237,13 +237,19 @@
 
 
 
-    <div class="row">
-      <div class="col-7">
-          <!-- PERMANENT IDENTIFIERS -->
-          <div class="my-5 permanentId">
-              <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ text?.ark }}</p>
-          </div>
-      </div>
-    </div>
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="my-5 permanentId row">
+      <p> 
+          <strong>Comment citer</strong> (voir <a href="/project">À propos</a> pour plus d'informations)
+          <br/>Gustave Roud, <i><span [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></span></i>, in <i>Gustave Roud. Textes & Archives</i>, dir. Claire Jaquier et Daniel Maggetti, 2022.
+      </p>
+      <p>
+          <strong>ARK (permalien)</strong> : {{ text.ark }}
+          <br/>
+          <strong>URL</strong> : https://roud.unil.ch/resources/{{ text.id | encodeURIComponent }}
+          <br/>
+          <strong>IRI interne</strong> : {{ text.id }}
+      </p>
+  </div>
 
 </div>
