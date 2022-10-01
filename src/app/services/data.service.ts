@@ -17,7 +17,6 @@ import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
 import { DataViz } from '../models/dataviz.model';
-import { read } from 'fs';
 
 
 @Injectable({
@@ -563,20 +562,12 @@ getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {
       ?work roud-oeuvres:workHasDate ?date .
       ?work roud-oeuvres:workHasNotice ?notice .
   } WHERE {
-    ?work a roud-oeuvres:Work .
-    <${textIRI}> knora-api:hasStandoffLinkTo ?work .
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-      }
-      UNION
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-        ?work roud-oeuvres:workHasNotice ?notice .
-      }
+      ?work a roud-oeuvres:Work .
+      <${textIRI}> knora-api:hasStandoffLinkTo ?work .
+      ?work roud-oeuvres:workHasTitle ?title .
+      optional {?work roud-oeuvres:workHasAuthor ?authorValue .}
+      optional {?work roud-oeuvres:workHasDate ?date .}
+      optional {?work roud-oeuvres:workHasNotice ?notice .}
   }
   OFFSET ${index}
 `

@@ -129,7 +129,7 @@
                       <span *ngFor="let workAuthor of workAuthors">
                         <span *ngIf="workAuthor?.id == work?.authorValue">{{ workAuthor?.name}} {{ workAuthor?.surname }}, </span>
                       </span>
-                      <span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span>
+                      <em><span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span></em>
                       <span *ngIf="work?.date">, {{ work?.date | knoradatesFormatting }}</span>
                       
                       <span *ngIf="work?.notice != null">
