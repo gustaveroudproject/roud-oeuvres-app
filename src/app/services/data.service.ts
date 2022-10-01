@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Person, PersonLight } from '../models/person.model';
+import { Person, PersonLight, PersonSemiLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
 import { PageLight, Page } from '../models/page.model';
@@ -17,6 +17,7 @@ import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
 import { DataViz } from '../models/dataviz.model';
+import { read } from 'fs';
 
 
 @Injectable({
@@ -400,10 +401,12 @@ CONSTRUCT {
     ?Person knora-api:isMainResource true .
     ?Person roud-oeuvres:personHasFamilyName ?surname .
     ?Person roud-oeuvres:personHasGivenName ?name .
+    ?Person roud-oeuvres:personHasNotice ?notice .
 } WHERE {
     ?Person a roud-oeuvres:Person .
-    ?Person roud-oeuvres:personHasFamilyName ?surname .
-    ?Person roud-oeuvres:personHasGivenName ?name .
+    optional {?Person roud-oeuvres:personHasFamilyName ?surname }.
+    optional {?Person roud-oeuvres:personHasGivenName ?name }.
+    optional {?Person roud-oeuvres:personHasNotice ?notice }.
     <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
 }
 OFFSET ${index}
@@ -2769,7 +2772,7 @@ OFFSET ${index}
 
 
 
-  readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
+  readRes2PersonLight(readResource: ReadResource): PersonSemiLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
     return {
       ...this.readRes2Resource(readResource),
       surname: this.getFirstValueAsStringOrNullOfProperty(
@@ -2779,8 +2782,12 @@ OFFSET ${index}
       name: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}personHasGivenName`
+      ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}personHasNotice`
       )
-    } as PersonLight;    //this indicates the interface declared in person.model.ts
+    } as PersonSemiLight;    //this indicates the interface declared in person.model.ts
   }
 
   readRes2Person(readResource: ReadResource): Person {
