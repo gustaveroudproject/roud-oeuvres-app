@@ -166,10 +166,20 @@
                   <strong class="tei-ref-pub">Publications</strong>
                   <ul>
                     <li *ngFor="let pubLight of pubsMentioned">
+                      <span *ngIf="pubLight?.resourceClassLabel == 'Book'">
+                        <or-book [bookIRI]="pubLight?.id" [withAuthor]="'no'"></or-book>
+                      </span>
+                      <span *ngIf="pubLight?.resourceClassLabel == 'Book section'">
+                          <or-book-section [bookSectionIRI]="pubLight?.id" [withAuthor]="'no'"></or-book-section>
+                      </span>
+                      <span *ngIf="pubLight?.resourceClassLabel == 'Periodical article'">
+                          <or-article [articleIRI]="pubLight?.id" [withAuthor]="'no'"></or-article>
+                      </span>
+                    <!--
                       {{ pubLight?.title }}, {{ pubLight?.date | knoradatesFormatting}} 
                       <a routerLink="/archive/pub/{{ pubLight.id | encodeURIComponent }}"
                         >&nbsp;🔗</a
-                      >
+                      >-->
                     </li>
                   </ul>
               </div>
@@ -181,12 +191,7 @@
                   <strong class="tei-ref-ms">Manuscrits</strong>
                   <ul>
                     <li *ngFor="let msLight of mssMentioned">
-                      {{ msLight?.archive }}
-                      <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>,
-                      <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
-                      <a routerLink="/archive/ms/{{ msLight.id | encodeURIComponent }}"
-                        >&nbsp;🔗</a
-                      >
+                      <or-manuscript [msIRI]="msLight.id"></or-manuscript>
                     </li>
                   </ul>
               </div>
