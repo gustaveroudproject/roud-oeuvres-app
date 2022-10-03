@@ -4,6 +4,7 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'or-person-page',
@@ -19,7 +20,8 @@ export class PersonPageComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute // it gives me the current route (URL)
+    private route: ActivatedRoute, // it gives me the current route (URL)
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {

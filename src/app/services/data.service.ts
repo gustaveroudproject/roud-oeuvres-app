@@ -2853,6 +2853,10 @@ OFFSET ${index}
       notice: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}placeHasNotice`
+      ),
+      photo: this.getFirstValueId(
+        readResource,
+        `${this.getOntoPrefixPath()}placeHasPhotoValue`
       )
     } as Place;
   }
