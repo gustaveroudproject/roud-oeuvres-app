@@ -21,7 +21,6 @@ export class FulltextSearchComponent implements OnInit {
 
   faSearch = faSearch;
 
-  resources: Resource[];
   person: Person;
   persons: Person[];
   text: Text;
@@ -46,6 +45,7 @@ export class FulltextSearchComponent implements OnInit {
   bookSectionIRI: string;
   bookSectionsIRIs: string[];
 
+  results = false;
   
   checkedCategoriesArray: string[] = [];
   
@@ -56,10 +56,8 @@ export class FulltextSearchComponent implements OnInit {
 
   ngOnInit() {}
 
-
-
-
   onSearch(searchText: string) {
+    this.results = false;
 
     // empty results arrays to reinitalize search
     this.persons = [];
@@ -76,8 +74,10 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
-      this.dataService.fullTextSearchPaged(searchText).pipe(
+      this.dataService.fullTextSearchPaged(searchText)
+      .pipe(
         map( (resources: Resource[]) => {
+          this.results = true;
 
           // console.log(resources)
           

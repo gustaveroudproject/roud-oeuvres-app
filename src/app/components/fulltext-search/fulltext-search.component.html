@@ -17,7 +17,7 @@
     </div>
 
     <!-- if NO results -->
-    <div class="row" *ngIf="resources && resources.length == 0">
+    <div class="row" *ngIf="!results">
       <div class="col-md-6 offset-md-4 my-5">
           <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
       </div>
@@ -29,7 +29,7 @@
 
       <!-- filter categories -->
       <div class="col-md-3 my-3">
-        <div *ngIf="resources && resources.length > 0">
+        <div *ngIf="results">
 
           
 
@@ -238,7 +238,7 @@
         </div>
         -->
 
-        <nav *ngIf="resources && resources.length > 0" aria-label="Page navigation example">
+        <nav *ngIf="results" aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item">
               <a class="page-link" href="#" aria-label="Previous">
