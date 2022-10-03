@@ -50,7 +50,7 @@ export class EssayPageComponent implements OnInit {
                   this.photo = photo;
                 });
               
-
+                  /*
               //// get scans from scans' IRIs
               this.pages = [];
               for (var pageVal in essay.scans) {
@@ -80,6 +80,8 @@ export class EssayPageComponent implements OnInit {
                     
                   });
                 }
+
+                */
 
 
             },
