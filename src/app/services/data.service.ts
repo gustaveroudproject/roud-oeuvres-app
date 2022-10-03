@@ -108,7 +108,7 @@ export class DataService {
           }
           if (page.length == 25) {
             // there is probably more, call `iterate()` recursively
-            offset = ++offset;
+            offset = offset + 1;
             iterate(observer);
           } else {
             // or end the recursion
