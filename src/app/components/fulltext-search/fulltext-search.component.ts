@@ -8,6 +8,7 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
+import { finalize } from 'rxjs/operators';
 // import * as octicons from '@primer/octicons';
 
 
@@ -57,6 +58,10 @@ export class FulltextSearchComponent implements OnInit {
   ngOnInit() {}
 
 
+  finalizeWait() {
+    this.expectingResults--;
+    console.log("finalize: "+ this.expectingResults);
+  }
 
 
   onSearch(searchText: string) {
@@ -78,7 +83,9 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (searchText && searchText.length > 0) {  // check is not empty
-      this.dataService.fullTextSearch(searchText).subscribe(
+      this.dataService.fullTextSearch(searchText)
+      .pipe(finalize(() => this.finalizeWait()))
+      .subscribe(
         (resources: Resource[]) => {
           this.resources = resources;
 
@@ -90,15 +97,16 @@ export class FulltextSearchComponent implements OnInit {
           const personsIRIs = this.resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
           if (personsIRIs && personsIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getPersons(personsIRIs).subscribe(
+            this.dataService.getPersons(personsIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (persons: Person[]) => {
                 this.persons = persons;
 
                 // if parallel is too slow, put the following get here, once persons have finished 
 
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
 
@@ -106,12 +114,13 @@ export class FulltextSearchComponent implements OnInit {
           const placesIRIs = this.resources.filter(r => r.resourceClassLabel === "Place").map(r => r.id);
           if (placesIRIs && placesIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getPlacesLight(placesIRIs).subscribe(
+            this.dataService.getPlacesLight(placesIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (places: PlaceLight[]) => {
                 this.places = places;
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
 
@@ -119,12 +128,13 @@ export class FulltextSearchComponent implements OnInit {
           const worksIRIs = this.resources.filter(r => r.resourceClassLabel === "Artwork" || r.resourceClassLabel === "Music work" || r.resourceClassLabel === "Work of literature").map(r => r.id);
           if (worksIRIs && worksIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getWorksLight(worksIRIs).subscribe(
+            this.dataService.getWorksLight(worksIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (works: WorkLight[]) => {
                 this.works = works;
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
 
@@ -132,12 +142,13 @@ export class FulltextSearchComponent implements OnInit {
           const textsIRIs = this.resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
           if (textsIRIs && textsIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getTexts(textsIRIs).subscribe(
+            this.dataService.getTexts(textsIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (texts: Text[]) => {
                 this.texts = texts;
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
 
@@ -145,18 +156,21 @@ export class FulltextSearchComponent implements OnInit {
           const mssIRIs = this.resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
           if (mssIRIs && mssIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getMssLight(mssIRIs).subscribe(
+            this.dataService.getMssLight(mssIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (mss: MsLight[]) => {
                 this.mss = mss;
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
           const msPartsIRIs = this.resources.filter(r => r.resourceClassLabel === "Part of a manuscript (for diary only)").map(r => r.id);
           if (msPartsIRIs && msPartsIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getMsPartsLight(msPartsIRIs).subscribe(
+            this.dataService.getMsPartsLight(msPartsIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (msParts: MsPartLight[]) => {
                 this.msParts = msParts;
 
@@ -164,16 +178,15 @@ export class FulltextSearchComponent implements OnInit {
                   this.expectingResults++;
                   this.dataService
                   .getMsOfMsPart(msParts[msPart].isPartOfMsValue)
+                  .pipe(finalize(() => this.finalizeWait()))
                   .subscribe(
                     (msFromParts: MsLight) => {
                       this.msFromParts = msFromParts;
                     },
-                    error => console.error(error),
-                    () => this.expectingResults--
+                    error => console.error(error)
                   );}
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
 
@@ -184,7 +197,9 @@ export class FulltextSearchComponent implements OnInit {
             r.resourceClassLabel === "Book section").map(r => r.id);
           if (pubsIRIs && pubsIRIs.length > 0) {
             this.expectingResults++;
-            this.dataService.getPublicationsLight(pubsIRIs).subscribe(
+            this.dataService.getPublicationsLight(pubsIRIs)
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
               (pubs: PublicationLight[]) => {
                 this.pubs = pubs;
 
@@ -227,13 +242,11 @@ export class FulltextSearchComponent implements OnInit {
 
                 
               },
-              error => console.error(error),
-              () => this.expectingResults--
+              error => console.error(error)
             );
           }
         },
-        error => console.error(error),
-        () => { this.expectingResults-- }
+        error => console.error(error)
       );
     }
   } // end on search
