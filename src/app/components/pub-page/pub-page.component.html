@@ -277,7 +277,7 @@
 
                     <div class="mainCategory">
                         <span class="strong">
-                            <strong>Réedition de</strong>
+                            <strong>Réédition de</strong>
                         </span>
                         <ul class="withListStyle">
                             <li class="liGenesis" *ngFor="let pubRepublished of publicationsRepublished">
@@ -343,7 +343,7 @@
                     <div class="mainCategory">
                         <div *ngIf="publicationLight?.resourceClassLabel == 'Book'">
                             <span class="strong">
-                                <strong>Réeditions</strong>
+                                <strong>Rééditions</strong>
                             </span>
                             <ul class="withListStyle">
                                 <li class="liGenesis" *ngFor="let pubRepublishing of publicationsRepublishingPub">
@@ -355,6 +355,12 @@
                     </div>
 
                 </mat-expansion-panel>
+
+
+                <div>
+                    <img width="50%" *ngIf="dataViz"
+                        [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
+                </div>
 
 
 
@@ -375,9 +381,16 @@
                         <p>
                             <strong>… la section <i>Reprises</i></strong>. 
                             Gustave Roud réutilise ses propres textes pour de nouvelles genèses, en créant 
-                            un réseau de reprises. La liste présentée ici inclut les nouveaux textes qui reprennent
+                            un réseau de reprises. La liste inclut les nouveaux textes qui reprennent
                             cette publication intégralement ou en partie. La couleur grise indique l'absence de 
                             matériaux.
+                        </p>
+                        <p>
+                            <strong>… la visualisation du réseau génétique</strong>. 
+                            La genèse des dix publications principales (recueils et poèmes) est
+                            représentée dans une visualisation du réseau de publications et manuscrits.
+                            Les liens énumérés dans les sections <i>Genèse</i> et <i>Reprises</i> sont 
+                            présentés ici de manière graphique.
                         </p>
                     </div>
                 </mat-expansion-panel>
@@ -385,6 +398,9 @@
 
 
             </div>  <!-- end genèse et reprises-->
+            
+            
+            
 
         </div> <!-- end columns right-->
 

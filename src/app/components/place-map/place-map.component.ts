@@ -15,8 +15,8 @@ export class PlaceMapComponent implements OnInit {
 
   
   private defaultIcon: Icon = icon({
-    iconUrl: 'assets/leaflet_img/leaf-red.png',
-    shadowUrl: 'assets/leaflet_img/leaf-shadow.png',
+    iconUrl: 'assets/leaflet_img/leaf-red.png', // marker-icon.png
+    shadowUrl: 'assets/leaflet_img/leaf-shadow.png',  //marker-shadow.png
     iconSize:     [38, 95], // size of the icon
     shadowSize:   [50, 64], // size of the shadow
     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location

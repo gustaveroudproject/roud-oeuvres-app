@@ -4,6 +4,8 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
+import { EssayPhotoComponent } from '../essay-photo/essay-photo.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -14,11 +16,12 @@ import { Picture } from 'src/app/models/picture.model';
 export class PlacePageComponent implements OnInit {
   place: Place;
   textsLight : TextLight[];
-  pictures : Picture[];
+  photo: Picture;
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute // it gives me the current route (URL)
+    private route: ActivatedRoute, // it gives me the current route (URL)
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -36,22 +39,22 @@ export class PlacePageComponent implements OnInit {
             (place: Place) => {
               this.place = place; // step 4    I give to the attribute place the value of place
 
+              if (this.place.photo != null) {
+              this.dataService
+              .getPicture(place.photo)
+              .subscribe(
+                (photo: Picture) => {
+                  this.photo = photo;
+                });
+              };
 
-                // asynchrone, we need text to ask texts mentioning places
-                this.dataService
-                .getTextsMentioningPlaces(place.id)
-                .subscribe((textsLight: TextLight[]) => {
-                  this.textsLight = textsLight;
-                  // console.log(textsLight);
-                  });
-
-
-                this.dataService
-                .getPicturesOfPlace(place.id)
-                .subscribe((pictures: Picture[]) => {
-                  this.pictures = pictures;
-                  // console.log(pictures);
-                    });
+              // asynchrone, we need text to ask texts mentioning places
+              this.dataService
+              .getTextsMentioningPlaces(place.id)
+              .subscribe((textsLight: TextLight[]) => {
+                this.textsLight = textsLight;
+                // console.log(textsLight);
+                });
                     
                     
               },

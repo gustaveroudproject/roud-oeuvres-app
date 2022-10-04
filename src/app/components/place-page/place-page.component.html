@@ -14,7 +14,7 @@
     </div>
    
     <!-- NAME  -->
-    <div class="py-4"> <!-- bootstrap class: vertical padding 4 -->
+    <div class="row py-4"> <!-- bootstrap class: vertical padding 4 -->
         <h3>
             {{ place?.name }}
             
@@ -22,50 +22,58 @@
     </div>
 
 
-   
-    <div class="row py-5">
-
-         <!-- NOTICE -->
-        <div class="col-6 notice">
-            <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
-        </div>
-    
-        <!-- PICTURES -->
-        <div class="col-5" *ngIf="pictures && pictures.length > 0">  <!-- only show if there are pictures -->
-            <div *ngFor="let picture of pictures">
-                <img
-                src="{{ picture.imageURL }}"
-                />
-            </div>
-        </div>
-        
+    <!-- NOTICE -->
+    <div class="pt-4 notice row">
+        <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
     </div>
-    
+
 
     <!-- MAP -->
-    <or-place-map *ngIf="place" [placeVar]="place"></or-place-map>  
-        <!-- without *ngIf, place is undefined in or-place-map -->
+    <or-place-map *ngIf="place?.lat" [placeVar]="place"></or-place-map>  
+    <!-- without *ngIf, place is undefined in or-place-map -->
+    
 
+
+    <div class="row py-4" *ngIf="photo">
+        <!-- PICTURES -->
+        <img [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
+            />
+    </div>
 
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <strong>Lieu mentionné dans les textes suivants :</strong>
-        <ul style="list-style: none;">
-            <li *ngFor="let textLight of textsLight">
-            <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
-                [innerHTML]="textLight.title | htmlSanitizer"></a
-            >
-            </li>
-        </ul>
+    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <div>
+            <strong>Ce lieu est mentionné dans :</strong>
+            <br/>(seulement les occurrences dans les recueils poétiques)
+        </div>
+        <br/>
+        <div class="col-12">
+            <ul class="mention-item">
+                <li *ngFor="let textLight of textsLight">
+                    - <em
+                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
+                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
+                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
+                </li>
+            </ul>
+        </div>
     </div>
 
 
     <!-- PERMANENT IDENTIFIERS -->
-    <div class="my-5 permanentId">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ place?.ark }}</p>
-        <!-- coordinates -->
-        <p>Lat : {{ place?.lat}}. Long : {{ place?.long }}.</p>
+    <div class="my-5 permanentId row">
+        <p>
+            <strong>Comment citer</strong> (voir <a href="/project">À propos</a> pour plus d'informations)
+            <br/>« {{ place?.name }} », <i>Gustave Roud. Textes & Archives</i>, dir. Claire Jaquier et Daniel Maggetti, 2022.
+        </p>
+        <p>
+            <strong>ARK (permalien)</strong> : {{ place?.ark }}
+            <br/>
+            <strong>URL</strong> : https://roud.unil.ch/resources/{{ place?.id | encodeURIComponent }}
+            <br/>
+            <strong>IRI interne</strong> : {{ place?.id }}
+        </p>
     </div>
     
 

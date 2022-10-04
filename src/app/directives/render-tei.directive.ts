@@ -38,7 +38,7 @@ export class RenderTeiDirective implements AfterContentChecked {
 
   
 
-  /* ------------------------------------------------------------------------------------*/
+  /* ------------------------------------------------------------------------------------
   quotePopup(el:ElementRef) {
     var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < quotes.length; index++) {
@@ -63,8 +63,45 @@ export class RenderTeiDirective implements AfterContentChecked {
       }
     }
   }
+  */
 
   
+ /* ------------------------------------------------------------------------------------*/
+ quotePopup(el:ElementRef) {
+  var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLElement>);
+  for (let index = 0; index < quotes.length; index++) {
+    // for each quote, declare a variable quote and a variable quoteNote (the note contains the source of the quote)
+    const quote: HTMLElement = quotes[index];
+    // to find the quote note, iterate over the children of quote and take the one with class = "tei-quote-note"
+    const quoteNotes:any = quote.children      
+    for (let index = 0; index < quoteNotes.length; index++) {
+      if (quoteNotes[index].className == 'tei-quote-note') {
+        const quoteNote = quoteNotes[index];
+        // remove <br> before note, so the icon appears on the same line
+        if (quoteNote.previousElementSibling) {
+          if (quoteNote.previousElementSibling.nodeName == 'BR') {
+            quoteNote.previousElementSibling.remove()
+          }
+        }
+        // create icon node and add it at the end of quote
+        if (!quote.textContent.includes("◂")) {
+          const sourceSpan = document.createElement("span");
+          sourceSpan.textContent += " ◂";
+          quote.appendChild(sourceSpan);    
+          // toggle on click (add or remove class "block" on click)
+          sourceSpan.addEventListener('click', function show() {
+            quoteNote.classList.toggle("block");          
+          });
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
 
 
 

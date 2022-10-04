@@ -46,23 +46,41 @@ ul {
   text-indent:1cm;
 }
 
+:host ::ng-deep .tei-lg {
+  margin:1em 0 1em 0;
+}
+
+
 :host ::ng-deep .tei-quote[rend="block"] {
   display: block;
 }
 
 :host ::ng-deep .tei-quote .tei-quote-note {
+  /*
   visibility:hidden;
   position: absolute;
-  background-color: #555;
-  color: #fff;
   border-radius: 6px;
   padding: 8px;
   bottom: 125%;
   left: 50%;
-  margin-left: -80px;
+  margin-left: -80px;*/
+  display: none;
+  background-color: #555;
+  color: #fff;
 }
 
-:host ::ng-deep .tei-quote .show {
-  visibility: visible
+:host ::ng-deep .tei-quote-note.block .tei-ref {
+  color: #83f96a !important;
 }
+
+
+:host ::ng-deep .tei-quote .block {
+  display: block
+}
+
+/* TO CHECK THAT NOTES ARE NOT DISPLAYED, IF PROBLEMS CORRECT IN THE ENCODING */
+:host ::ng-deep .tei-quote-note {
+  background-color: red;
+  color: #fff;
+} 
 
