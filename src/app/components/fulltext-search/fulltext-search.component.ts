@@ -159,6 +159,7 @@ export class FulltextSearchComponent implements OnInit {
                   .getMsOfMsPart(e.isPartOfMsValue)
                   .subscribe(
                     (msFromParts: MsLight) => {
+                      // TODO: Loic: to be checked, shouldn't it be concatenated into an array?
                       this.msFromParts = msFromParts;
                     });
 
