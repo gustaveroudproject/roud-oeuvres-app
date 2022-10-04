@@ -38,11 +38,8 @@ export class FulltextSearchComponent implements OnInit {
   books: Book[];
   articles: PeriodicalArticle[];
   roudPubs: PublicationLight[];
-  bookIRI: string;
   booksIRIs: string[];
-  articleIRI: string;
   articlesIRIs: string[];
-  bookSectionIRI: string;
   bookSectionsIRIs: string[];
 
   results = false;
@@ -180,25 +177,16 @@ export class FulltextSearchComponent implements OnInit {
                       && pub.date.slice(10) <= '1977')
                       /* slice to remove 'GREGORIAN:' and consider '1977' as string,
                       otherwise cannot make comparison between number and string */
-                      roudPubs.forEach( e => this.roudPubs.push() );
+                      roudPubs.forEach( e => this.roudPubs.push(e) );
 
                 // RESULTS: BOOKS          
-                this.booksIRIs = roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id);
-                for (var bookIRI in this.booksIRIs) {
-                  this.bookIRI = this.booksIRIs[bookIRI];
-                }
+                this.booksIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id));
 
                 // RESULTS: ARTICLES  
-                this.articlesIRIs = roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id);
-                for (var articleIRI in this.articlesIRIs) {
-                  this.articleIRI = this.articlesIRIs[articleIRI];
-                }
+                this.articlesIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id));
                 
                 // RESULTS: BOOK SECTIONS  
-                this.bookSectionsIRIs = roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id);
-                for (var bookSectionIRI in this.bookSectionsIRIs) {
-                  this.bookSectionIRI = this.bookSectionsIRIs[bookSectionIRI];
-                }
+                this.bookSectionsIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id));
 
                 /*
                 if (articlesIRIs && articlesIRIs.length > 0) {
