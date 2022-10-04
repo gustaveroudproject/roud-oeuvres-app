@@ -14,9 +14,7 @@
         <!-- [routerLink]="['/archive']" routerLinkActive="topBar-activeLink" -->
       </li>
       <li class="nav-item mr-3">
-        <a class="nav-link" [routerLink]="'.'" (click)="isMenuCollapsed = true">{{
-          'toolbar.texts' | translate
-        }}</a> <!--[routerLink]="['/texts']" routerLinkActive="topBar-activeLink"-->
+        <a class="nav-link" [routerLink]="['/texts']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">Recueils</a>
       </li>
       <li class="nav-item mr-3">
         <a class="nav-link" [routerLink]="['/essays']" routerLinkActive="topBar-activeLink" (click)="isMenuCollapsed = true">{{
