@@ -147,7 +147,7 @@
               <mat-panel-title>Table des matières</mat-panel-title>
           </mat-expansion-panel-header>
           <div>
-            <ul *ngIf="toc != null">
+            <ul *ngIf="toc != null" style="padding-left: 0px;">
               <li style="list-style: none;" *ngFor="let tocitem of toc">
                 <span *ngIf="tocitem != null">{{ tocitem }}</span>
               </li>

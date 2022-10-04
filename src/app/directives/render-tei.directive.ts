@@ -20,6 +20,7 @@ export class RenderTeiDirective implements AfterContentChecked {
   ngAfterContentChecked():void {
     this.quotePopup(this.el);
     this.linkInheritColor(this.el);
+    this.noDisplayEditorialHead(this.el);
   }
 
   
@@ -33,6 +34,21 @@ export class RenderTeiDirective implements AfterContentChecked {
     for (let index = 0; index < links.length; index++) {
       const link: HTMLLinkElement = links[index];
       link.style.color = "inherit";
+    }
+  }
+
+
+
+  /* ------------------------------------------------------------------------------------*/
+  noDisplayEditorialHead(el: ElementRef){
+    var editorialHeads = Array.from(el.nativeElement.getElementsByClassName('tei-head-rendH1') as HTMLCollectionOf<HTMLLinkElement>);
+    for (let index = 0; index < editorialHeads.length; index++) {
+      const editorialHead: HTMLLinkElement = editorialHeads[index];
+      
+      if (editorialHead.innerText.charAt(0) == "[") {
+        editorialHead.style.display = "none";
+      }
+      
     }
   }
 

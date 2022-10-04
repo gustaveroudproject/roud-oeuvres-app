@@ -251,7 +251,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       var heads = document.getElementsByClassName('tei-head-rendH1')
       for (var head in heads) {
         var tocItem = (heads[head] as HTMLElement).innerText
-        /*
+        /* not needed with innerText
         if (tocItem != undefined) {
           if (tocItem.includes('<br>')) {
             tocItem = tocItem.replace('\n', ' ')
@@ -371,14 +371,5 @@ export class TextPageComponent implements OnInit, AfterViewInit {
     }
   };
 
-  showToc(){
-    this.toc = []
-      var heads = document.getElementsByClassName('tei-head-rendH1')
-      for (var head in heads) {
-        var tocItem = heads[head].innerHTML
-        this.toc.push(tocItem)
-      }
-      console.log(this.toc)
-  }
 
 }
