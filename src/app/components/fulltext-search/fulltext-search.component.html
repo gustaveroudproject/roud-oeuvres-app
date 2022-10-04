@@ -186,8 +186,10 @@
               <li *ngFor="let person of persons | sortBySurname">
                 <a routerLink="/persons/{{ person?.id | encodeURIComponent }}"
                   >{{ person?.name }} {{person?.surname}}
-                  ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})</a
-                >
+                  </a
+                ><span *ngIf="person?.dateOfBirth != null || person?.dateOfDeath != null">
+                  ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
+              </span>
               </li>
             </ul>
           </div>
