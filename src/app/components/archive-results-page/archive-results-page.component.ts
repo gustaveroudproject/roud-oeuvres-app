@@ -44,6 +44,7 @@ export class ArchiveResultsPageComponent implements OnInit {
             this.translatedAuthor = translatedAuthor;
           }
         );
+        // TODO: Loic: add paging results
         this.dataService.getMssTranslatedAuthor(this.translatedAuthorIRI).subscribe(
           (mssTranslatedAuthor: MsLight[]) => {
             this.mssTranslatedAuthor = mssTranslatedAuthor;
@@ -58,12 +59,15 @@ export class ArchiveResultsPageComponent implements OnInit {
         this.mssDiaryYears = [];
 
         // TODO: limit to diary !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO: Loic: add paging results
         this.dataService.getDiaryMssDate(this.years).subscribe(
           (mssDiaryDate: MsLight[]) => {
             this.mssDiaryDate = mssDiaryDate;
             this.mssDiaryYears = [ ...this.mssDiaryYears, ...mssDiaryDate];
           }
         );
+        // TODO: Loic: add paging results
+        // check: http://localhost:4200/archive/results?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
         this.dataService.getDiaryMssEstablishedDate(this.years).subscribe(
           (mssDiaryEstablishedDate: MsLight[]) => {
             this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
