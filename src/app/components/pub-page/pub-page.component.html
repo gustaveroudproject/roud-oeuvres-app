@@ -71,11 +71,13 @@
                         >
                     </select>
 
+                    <!--
                     <select id="selectorPart" *ngIf="pubPartsLight && pubPartsLight.length > 0">
                         <option *ngFor="let p of pubPartsLight">
                             <span>{{ p?.title }}</span>
                         </option>
                     </select>
+                    -->
                     
                 </div>
 
@@ -163,6 +165,11 @@
 
         <!-- start COLUMNS RIGHT -->
         <div class="col-6">
+
+            <div>
+                <img width="50%" *ngIf="dataViz"
+                    [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
+            </div>
 
             <!-- GENÈSE ET REPRISES -->
             <div *ngIf="publicationLight?.editorialSet == 'Poetic work' || publicationLight?.editorialSet == 'Diary'">
@@ -355,13 +362,6 @@
                     </div>
 
                 </mat-expansion-panel>
-
-
-                <div>
-                    <img width="50%" *ngIf="dataViz"
-                        [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
-                </div>
-
 
 
                 <mat-expansion-panel id="panelInfo" expanded="false">
