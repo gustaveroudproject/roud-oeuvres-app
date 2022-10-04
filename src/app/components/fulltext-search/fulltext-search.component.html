@@ -8,16 +8,16 @@
     <!-- INPUT -->
     <div class="row">
       <div class="col-md-6 offset-md-3 mt-5 mb-4">
-        <form class="d-flex">
-          <input  class="form-control form-control-lg mr-2" type="text" #searchInput (keyup.enter)="onSearch(searchInput.value)" />  <!-- # indicate variable -->
-          <button class="btn btn-outline-secondary" (click)="onSearch(searchInput.value)"><fa-icon [icon]="faSearch"></fa-icon></button>
+        <form class="d-flex" (ngSubmit)="onSearch()">
+          <input  class="form-control form-control-lg mr-2" type="text" name="searchText" [(ngModel)]="searchText"/>  <!-- # indicate variable -->
+          <button class="btn btn-outline-secondary" type="submit"><fa-icon [icon]="faSearch"></fa-icon></button>
         </form>
         <p class="mt-3">Tapez un ou plusieurs mots.<br/>Pour une sequence précise de mots, entourez-les par "".</p>
       </div>
     </div>
 
     <!-- if NO results -->
-    <div class="row" *ngIf="resources && resources.length == 0">
+    <div class="row" *ngIf="!results && search && !pending">
       <div class="col-md-6 offset-md-4 my-5">
           <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
       </div>
@@ -29,7 +29,7 @@
 
       <!-- filter categories -->
       <div class="col-md-3 my-3">
-        <div *ngIf="resources && resources.length > 0">
+        <div *ngIf="results">
 
           
 
@@ -238,25 +238,27 @@
         </div>
         -->
 
-        <nav *ngIf="resources && resources.length > 0" aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <!--
+          <nav *ngIf="results" aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        -->
 
 
       </div> <!-- end list of results -->
