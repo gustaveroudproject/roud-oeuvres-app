@@ -11,6 +11,7 @@ import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
 import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
 import { MsLight } from 'src/app/models/manuscript.model';
+import { head } from 'lodash';
 
 @Component({
   selector: 'or-text-page',
@@ -45,6 +46,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   mssMentioned: MsLight[];
 
   id_fragment: string;
+  toc: string[];
+  
 
   
   constructor(
@@ -111,7 +114,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
               });
 
-              
+              /*
               //// get publication mentioned in the text (mentions)
               this.dataService
               .getPubsInText(text.id)
@@ -129,11 +132,13 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
 
               //// get texts mentioned in the text (reuse)
+              
               this.dataService
               .getTextsInText(text.id)
               .subscribe((textsMentioned: TextLight[]) => {
                 this.textsMentioned = textsMentioned;
               });
+              */
 
 
               //// get base witness publication
@@ -209,6 +214,9 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       },
       error => console.error(error)
     );
+
+
+    
     
   };
 
@@ -235,6 +243,25 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       // setTimeout indicates the time it will wait before doing this. 1000ms = 1 second.
       // If it does not wait that long, the text is not yet initialized so nothing will work.
     }; 
+
+
+    setTimeout(() => {
+
+      this.toc = []
+      var heads = document.getElementsByClassName('tei-head-rendH1')
+      for (var head in heads) {
+        var tocItem = (heads[head] as HTMLElement).innerText
+        /*
+        if (tocItem != undefined) {
+          if (tocItem.includes('<br>')) {
+            tocItem = tocItem.replace('\n', ' ')
+          }
+        }*/
+        this.toc.push(tocItem)
+      }
+    }, (10000)); 
+
+    
 
   };
   
@@ -343,5 +370,15 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       }
     }
   };
+
+  showToc(){
+    this.toc = []
+      var heads = document.getElementsByClassName('tei-head-rendH1')
+      for (var head in heads) {
+        var tocItem = heads[head].innerHTML
+        this.toc.push(tocItem)
+      }
+      console.log(this.toc)
+  }
 
 }

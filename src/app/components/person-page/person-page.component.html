@@ -17,7 +17,9 @@
     <div class="py-4 row"> <!-- bootstrap class: vertical padding 3 -->
         <h3>
             {{ person?.name }} {{ person?.surname }}
-            ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
+            <span *ngIf="person?.dateOfBirth != null || person?.dateOfDeath != null">
+                ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
+            </span>
         </h3>
     </div>
 
@@ -31,8 +33,8 @@
     <!-- PICTURES -->
     <div class="py-4 row" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
         <div *ngFor="let picture of pictures">
-            <img width="full"
-            src="{{ picture.imageURL }}"
+            <img *ngIf="picture"
+            [src]="sanitizer.bypassSecurityTrustUrl(picture.imageURL)"
             />
         </div>
     </div>
@@ -56,23 +58,31 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4 mention row" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <span>Textes :</span>
-        <ul style="list-style: none;">
-            <li *ngFor="let textLight of textsLight">
-            <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
-                [innerHTML]="textLight.title | htmlSanitizer"></a
-            >
-            </li>
-        </ul>
+    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <div>
+            <strong>Cette personne est mentionnée dans :</strong>
+            <br/>(seulement les occurrences dans les recueils poétiques)
+        </div>
+        <br/>
+        <div class="col-12">
+            <ul class="mention-item">
+                <li *ngFor="let textLight of textsLight">
+                    - <em
+                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
+                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
+                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
+                </li>
+            </ul>
+        </div>
     </div>
+
 
 
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">
         <p>
-            <strong>Comment citer</strong>
-            <br/>« {{ person?.name }} {{ person?.surname }} », <i>Gustave Roud. Textes & Archives</i>, dir. Claire Jaquier et Daniel Maggetti, 2022. ARK: {{ person?.ark }}. URL: https://roud.unil.ch/resources/{{ person?.id | encodeURIComponent }}
+            <strong>Comment citer</strong> (voir <a href="/project">À propos</a> pour plus d'informations)
+            <br/>« {{ person?.name }} {{ person?.surname }} », <i>Gustave Roud. Textes & Archives</i>, dir. Claire Jaquier et Daniel Maggetti, 2022.
         </p>
         <p>
             <strong>ARK (permalien)</strong> : {{ person?.ark }}

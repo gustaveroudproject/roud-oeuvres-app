@@ -13,4 +13,5 @@ export interface Place extends PlaceLight {
     */
   long: any; // same as lat
   notice: string;
+  photo:string;
 }

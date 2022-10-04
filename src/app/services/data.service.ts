@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Person, PersonLight } from '../models/person.model';
+import { Person, PersonLight, PersonSemiLight } from '../models/person.model';
 import { Resource } from '../models/resource.model';
 import { Text, TextLight } from '../models/text.model';
 import { PageLight, Page } from '../models/page.model';
@@ -53,6 +53,76 @@ export class DataService {
         ) => readResources.resources.map(r => this.readRes2Resource(r)))
       );
   }
+  fullTextSearchCompounded(searchText: string): Observable<Resource[]> {
+    // variables that remains in the same context as the function `compound()`
+    const service = this;
+    let results: Resource[] = [];
+    let offset = 0;
+
+    // the compound function:
+    // - calls `fullTextSearch()`
+    // - knows the observer and pushes to it the pages of results
+    // - and calls itself recursively until the end of the results
+    function compound(observer) {
+      // calls the search
+      service.fullTextSearch(searchText, offset).subscribe(
+        (page: Resource[]) => {
+          if (page.length > 0) {
+            // concatenante the pages
+            results = results.concat(page);
+            // send the (ongoing) concatenated results 
+            observer.next(results);
+          }
+          if (page.length == 25) {
+            // there is probably more, call `compound()` recursively
+            offset = ++offset;
+            compound(observer);
+          } else {
+            // or end the recursion
+            observer.complete();
+          }
+        },
+        (e) => { console.log("fullTextSearchCompounded error: " + e) }
+      );
+    };
+
+    // we return an Observable that calls `compound()`
+    return new Observable(compound);
+  };
+
+  fullTextSearchPaged(searchText: string): Observable<Resource[]> {
+    // variables that remains in the same context as the function `compound()`
+    const service = this;
+    let offset = 0;
+
+    // the compound function:
+    // - calls `fullTextSearch()`
+    // - knows the observer and pushes to it the pages of results
+    // - and calls itself recursively until the end of the results
+    function iterate(observer) {
+      // calls the search
+      service.fullTextSearch(searchText, offset).subscribe(
+        (page: Resource[]) => {
+          if (page.length > 0) {
+            // send the (ongoing) concatenated results 
+            observer.next(page);
+          }
+          if (page.length == 25) {
+            // there is probably more, call `iterate()` recursively
+            offset = offset + 1;
+            iterate(observer);
+          } else {
+            // or end the recursion
+            observer.complete();
+          }
+        },
+        (e) => { console.log("fullTextSearchPaged error: " + e) }
+      );
+    };
+
+    // we return an Observable that calls `compound()`
+    return new Observable(iterate);
+  };
 
 // DELETE THIS IF NOT USED
   getPagesOfText(textIRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
@@ -400,10 +470,12 @@ CONSTRUCT {
     ?Person knora-api:isMainResource true .
     ?Person roud-oeuvres:personHasFamilyName ?surname .
     ?Person roud-oeuvres:personHasGivenName ?name .
+    ?Person roud-oeuvres:personHasNotice ?notice .
 } WHERE {
     ?Person a roud-oeuvres:Person .
-    ?Person roud-oeuvres:personHasFamilyName ?surname .
-    ?Person roud-oeuvres:personHasGivenName ?name .
+    optional {?Person roud-oeuvres:personHasFamilyName ?surname }.
+    optional {?Person roud-oeuvres:personHasGivenName ?name }.
+    optional {?Person roud-oeuvres:personHasNotice ?notice }.
     <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
 }
 OFFSET ${index}
@@ -560,20 +632,12 @@ getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {
       ?work roud-oeuvres:workHasDate ?date .
       ?work roud-oeuvres:workHasNotice ?notice .
   } WHERE {
-    ?work a roud-oeuvres:Work .
-    <${textIRI}> knora-api:hasStandoffLinkTo ?work .
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-      }
-      UNION
-      {
-        ?work roud-oeuvres:workHasTitle ?title .
-        ?work roud-oeuvres:workHasAuthor ?authorValue .
-        ?work roud-oeuvres:workHasDate ?date .
-        ?work roud-oeuvres:workHasNotice ?notice .
-      }
+      ?work a roud-oeuvres:Work .
+      <${textIRI}> knora-api:hasStandoffLinkTo ?work .
+      ?work roud-oeuvres:workHasTitle ?title .
+      optional {?work roud-oeuvres:workHasAuthor ?authorValue .}
+      optional {?work roud-oeuvres:workHasDate ?date .}
+      optional {?work roud-oeuvres:workHasNotice ?notice .}
   }
   OFFSET ${index}
 `
@@ -2259,6 +2323,8 @@ CONSTRUCT {
 } WHERE {
   ?text a roud-oeuvres:EstablishedText .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
+  ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
+  ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-oeuvrePoetique> .
 } ORDER BY ASC(?title)
 OFFSET ${index}
 `;
@@ -2769,7 +2835,7 @@ OFFSET ${index}
 
 
 
-  readRes2PersonLight(readResource: ReadResource): PersonLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
+  readRes2PersonLight(readResource: ReadResource): PersonSemiLight {  //this will populate PersonLight, following indications in the interface in person.mmodel.ts
     return {
       ...this.readRes2Resource(readResource),
       surname: this.getFirstValueAsStringOrNullOfProperty(
@@ -2779,8 +2845,12 @@ OFFSET ${index}
       name: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}personHasGivenName`
+      ),
+      notice: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}personHasNotice`
       )
-    } as PersonLight;    //this indicates the interface declared in person.model.ts
+    } as PersonSemiLight;    //this indicates the interface declared in person.model.ts
   }
 
   readRes2Person(readResource: ReadResource): Person {
@@ -2853,6 +2923,10 @@ OFFSET ${index}
       notice: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}placeHasNotice`
+      ),
+      photo: this.getFirstValueId(
+        readResource,
+        `${this.getOntoPrefixPath()}placeHasPhotoValue`
       )
     } as Place;
   }
