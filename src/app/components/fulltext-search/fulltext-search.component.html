@@ -17,7 +17,7 @@
     </div>
 
     <!-- if NO results -->
-    <div class="row" *ngIf="!results">
+    <div class="row" *ngIf="!results && search && !pending">
       <div class="col-md-6 offset-md-4 my-5">
           <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
       </div>

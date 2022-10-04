@@ -8,7 +8,7 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 // import * as octicons from '@primer/octicons';
 
 
@@ -46,6 +46,8 @@ export class FulltextSearchComponent implements OnInit {
   bookSectionsIRIs: string[];
 
   results = false;
+  search = false;
+  pending = false;
   searchText = "";
   
   checkedCategoriesArray: string[] = [];
@@ -59,6 +61,8 @@ export class FulltextSearchComponent implements OnInit {
 
   onSearch() {
     this.results = false;
+    this.search = true;
+    this.pending = true;
 
     // empty results arrays to reinitalize search
     this.persons = [];
@@ -76,9 +80,11 @@ export class FulltextSearchComponent implements OnInit {
 
     if (this.searchText && this.searchText.length > 0) {  // check is not empty
       this.dataService.fullTextSearchPaged(this.searchText)
+      .pipe( finalize(() => {this.pending=false;}) )
       .pipe(
         map( (resources: Resource[]) => {
           this.results = true;
+          this.pending = false;
 
           // console.log(resources)
           
