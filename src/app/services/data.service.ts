@@ -275,8 +275,8 @@ getAllPagesOfMs(IRI: string): Observable<PageLight[]> {  //Observable va retourn
     .getPagesOfExtendedSearch(this.pagesOfMsGravsearchQuery(IRI))
     .pipe(
       map(
-        (readResources: ReadResourceSequence) => 
-          readResources.resources.map(this.readRes2PageLight)
+        (readResources: ReadResourceSequence) =>
+          readResources.resources.map( r => {return this.readRes2PageLight(r)})
       )
     );
 }
