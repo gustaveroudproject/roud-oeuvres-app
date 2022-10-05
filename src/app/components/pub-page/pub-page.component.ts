@@ -10,6 +10,7 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
+import { ReplaySubject } from 'rxjs';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   bookSection: BookSection;
   publisherLight: PublisherLight;
   pages: Page[];
+  firstPageSwitch = true;
+  firstPageUrl = new ReplaySubject<string>();
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   selectedPartNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   pubPartsLight: PubPartLight[];
@@ -104,6 +107,9 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     this.dataService
                       .getPagesOfPub(publicationLight.id)
                       .subscribe((pages: Page[]) => {
+                        this.firstPageSwitch = false;
+                        this.firstPageUrl.next(pages[0].imageURL);
+    
                         this.pages = pages;
                         //console.log(pages.length);
                         //console.log(this.selectedPageNum);

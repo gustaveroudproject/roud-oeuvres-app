@@ -50,39 +50,7 @@
         
             
             <!-- VIEWER -->
-            <div class="viewer">
-                <div class="py-4" *ngIf="pages && pages.length > 0">   
-                    <div *ngFor="let page of pages">
-                        <img
-                            *ngIf="page.seqnum == selectedPageNum"
-                            [src]="sanitizer.bypassSecurityTrustUrl(page.imageURL)"
-                            width="80%"
-                            style="padding:10px; border: 1px solid lightgray;"
-                        /><!--it is possible to sanitize here because the method is public in the constructor. Tried with a pipe, but did not work ...
-                        Same happens in ms-page -->
-                    </div>
-                    
-                    <select
-                    name="page-numbers"
-                    [(ngModel)]="selectedPageNum" 
-                    > <!-- ngModel binds the value of the option to an angular variable -->
-                        <option [value]="page?.seqnum" *ngFor="let page of pages">
-                            {{ page?.name }}</option
-                        >
-                    </select>
-
-                    <select id="selectorPart" *ngIf="pubPartsLight && pubPartsLight.length > 0">
-                        <option *ngFor="let p of pubPartsLight">
-                            <span>{{ p?.title }}</span>
-                        </option>
-                    </select>
-                    
-                </div>
-
-                <div class="py-4" *ngIf="pages && pages.length == 0">   
-                    <p>La reproduction de l'original n'est pas disponible.</p>
-                </div>
-            </div> <!-- end Viewer section -->
+            <or-page-viewer [pages]="pages" [firstPageUrl]="firstPageUrl" [parts]="pubPartsLight"></or-page-viewer>
 
 
             <!-- LIRE LE TEXTE -->

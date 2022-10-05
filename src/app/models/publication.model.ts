@@ -1,3 +1,4 @@
+import { BookPart } from './page.model';
 import { Resource } from './resource.model';
 
 export interface PublicationLight extends Resource {  //pour construire une publication
@@ -35,7 +36,7 @@ export interface BookSection extends Publication {
 }
 
 
-export interface PubPartLight extends Resource {  
+export interface PubPartLight extends Resource, BookPart {  
   title: string;
   isPartOfPubValue: string;
   number: string;

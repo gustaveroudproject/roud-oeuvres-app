@@ -12,5 +12,6 @@ export interface Page extends PageLight {
 }
 
 export interface BookPart {
+    title: string;
     startingPageSeqnum: string;
 }
