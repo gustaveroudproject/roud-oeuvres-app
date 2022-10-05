@@ -94,6 +94,7 @@ import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe'
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
 import { RenderTeiDirective } from './directives/render-tei.directive';
+import { ImageResizePipe } from './pipes/image-resize.pipe';
 
 
 export function initializeApp(appInitService: AppInitService) {
@@ -157,7 +158,8 @@ export function initializeApp(appInitService: AppInitService) {
     BioPageComponent,
     ProjectPageComponent,
     TechPageComponent,
-    PageViewerComponent
+    PageViewerComponent,
+    ImageResizePipe
   ],
   imports: [
     MatExpansionModule,
@@ -194,7 +196,8 @@ export function initializeApp(appInitService: AppInitService) {
     {
       provide: KnoraApiConnection,
       useFactory: () => AppInitService.knoraApiConnection
-    }
+    },
+    ImageResizePipe
   ],
   bootstrap: [AppComponent]
 })

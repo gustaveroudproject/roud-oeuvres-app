@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
+import { ImageResizePipe } from 'src/app/pipes/image-resize.pipe';
 import { Page } from '../../models/page.model';
 
 @Component({
@@ -19,12 +20,13 @@ export class PageViewerComponent implements OnInit {
 
 
   constructor(
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private imageResizePipe: ImageResizePipe
   ) { }
 
   ngOnInit(): void {
     this.firstPageUrl.subscribe(
-      url => this.imageUrl.next(this.sanitizer.bypassSecurityTrustUrl(url))
+      url => this.imageUrl.next(this.sanitizer.bypassSecurityTrustUrl(this.imageResizePipe.transform(url)))
     );
   }
 
@@ -32,7 +34,7 @@ export class PageViewerComponent implements OnInit {
     let us = this;
     if (us.selectedPageNum != value) {
       us.selectedPageNum = value;
-      us.imageUrl.next(us.sanitizer.bypassSecurityTrustUrl(us.pages[value].imageURL));
+      us.imageUrl.next(us.sanitizer.bypassSecurityTrustUrl(this.imageResizePipe.transform(us.pages[value].imageURL)));
     }
   }
 
