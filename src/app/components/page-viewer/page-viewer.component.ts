@@ -3,7 +3,7 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
 import { ImageResizePipe } from 'src/app/pipes/image-resize.pipe';
-import { Page } from '../../models/page.model';
+import { BookPart, Page } from '../../models/page.model';
 
 @Component({
   selector: 'or-page-viewer',
@@ -13,7 +13,7 @@ import { Page } from '../../models/page.model';
 export class PageViewerComponent implements OnInit {
   @Input() pages: Page[];
   @Input() firstPageUrl: ReplaySubject<string>;
-  @Input() msParts: MsPartLightWithStartingPageSeqnum[];
+  @Input() parts: BookPart[];
  
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   imageUrl = new BehaviorSubject<SafeUrl>(null);

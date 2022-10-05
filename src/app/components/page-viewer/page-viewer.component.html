@@ -17,12 +17,12 @@
                 >
             </select>
 
-            <select *ngIf="msParts && msParts.length > 0"
+            <select *ngIf="parts && parts.length > 0"
             id="selectorPart"
             [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"
             >
-                <option [value]="msPart.startingPageSeqnum" *ngFor="let msPart of msParts">
-                    <span>{{ msPart.title }}</span>
+                <option [value]="part.startingPageSeqnum" *ngFor="let part of parts">
+                    <span>{{ part.title }}</span>
                 </option>
             </select>
         </div>
