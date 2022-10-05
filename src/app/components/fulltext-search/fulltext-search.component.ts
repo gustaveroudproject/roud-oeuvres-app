@@ -185,9 +185,14 @@ export class FulltextSearchComponent implements OnInit {
                 // filter only publications by Roud, before or in 1977
                 
                 let roudPubs = pubs.filter
-                  (pub => pub.authorsValues.indexOf
-                      ('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') > -1
-                      && pub.date.slice(10) <= '1977');
+                  (pub => pub.editorialSet != 'About Roud' &&  pub.editorialSet != 'Photography'
+                  &&  pub.editorialSet != 'correspondance' &&  pub.editorialSet != 'Disc' 
+                    //pub.authorsValues.includes('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') 
+                    //||
+                    //pub.authorsValues.includes('http://rdfh.ch/0112/3Bz6u6y7RYS5_whDRR4FYw') ||
+                    // pub.authorsValues.includes('  etc. pseudonyms
+                      && pub.date.slice(10) <= '1977'
+                      );
                       /* slice to remove 'GREGORIAN:' and consider '1977' as string,
                       otherwise cannot make comparison between number and string */
                 this.roudPubs.push(...roudPubs);
