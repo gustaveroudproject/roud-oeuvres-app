@@ -71,6 +71,7 @@ import { ProgressIndicatorComponent } from './components/progress-indicator/prog
 import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TechPageComponent } from './components/tech-page/tech-page.component';
+import { PageViewerComponent } from './components/page-viewer/page-viewer.component';
 
 
 
@@ -155,7 +156,8 @@ export function initializeApp(appInitService: AppInitService) {
     ProgressIndicatorComponent,
     BioPageComponent,
     ProjectPageComponent,
-    TechPageComponent
+    TechPageComponent,
+    PageViewerComponent
   ],
   imports: [
     MatExpansionModule,

@@ -1,0 +1,28 @@
+@import 'src/styles.scss';
+
+.viewer {
+    width: 80%;
+}
+
+
+#selectorPart {
+    width: 50%;
+    text-overflow: ellipsis;
+}
+
+.page {
+    background-image: url("/assets/img/olivier-flou.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    aspect-ratio: 1 / 1;
+}
+
+.page-img {
+    width: 100%;
+}
+
+.selects {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}

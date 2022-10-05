@@ -3,9 +3,10 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
 import { Page, PageLight } from 'src/app/models/page.model';
-import { PublicationLight, Publication, PubPartLight, PubPart } from 'src/app/models/publication.model';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { finalize } from 'rxjs/operators';
+import { PublicationLight, PubPartLight } from 'src/app/models/publication.model';
+import { finalize, map } from 'rxjs/operators';
+import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { ReplaySubject } from 'rxjs';
 
 
 
@@ -20,11 +21,10 @@ export class MsPageComponent implements OnInit, DoCheck {
 
   msLight: MsLight;
   msParts: MsPartLightWithStartingPageSeqnum[];
-  pages: Page[];
+  pages: Page[] = [];
+  firstPageSwitch = true;
+  firstPageUrl = new ReplaySubject<string>();
   msPartStartingPage: PageLight;
-  prevSelectedPageNum: number = -1;
-  selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
-  imageUrl: SafeUrl;
   manuscript: Manuscript;
   manuscripts: Manuscript[];
   publicationsAvantTexte: PublicationLight[];
@@ -57,7 +57,6 @@ export class MsPageComponent implements OnInit, DoCheck {
     private dataService: DataService,
     private route: ActivatedRoute ,// it gives me the current route (URL)
     private el: ElementRef,
-    public sanitizer: DomSanitizer
   ) {}
 
   finalizeWait() {
@@ -89,11 +88,26 @@ export class MsPageComponent implements OnInit, DoCheck {
                 //// get facsimiles scans from publication IRI
                 this.loadingResults++;
                 this.dataService
-                .getPagesOfMs(msLight.id)
+                .getPagesOfExtendedSearch(this.dataService.pagesOfMsGravsearchQuery(msLight.id))
                 .pipe(finalize(() => this.finalizeWait()))
+                .pipe(
+                  map(
+                    (readResources: ReadResourceSequence) => 
+                      readResources.resources.map(
+                        r => {
+                          let page: Page = this.dataService.readRes2PageLight(r);
+                          // set the first page as soon as possible
+                          if (this.firstPageSwitch) {
+                            this.firstPageSwitch = false;
+                            this.firstPageUrl.next(page.imageURL);
+                          }
+                          return page;
+                        } 
+                      )
+                  )
+                )
                 .subscribe((pages: Page[]) => {
-                  this.pages = pages;
-                  this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[1].imageURL);        
+                  this.pages.push(...pages);
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
                 },
@@ -384,13 +398,6 @@ export class MsPageComponent implements OnInit, DoCheck {
       };
     }); 
     
-  }
-
-  selectOnChange(value) {
-    if (this.selectedPageNum != value) {
-      this.selectedPageNum = value;
-      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(this.pages[value].imageURL);
-    }
   }
 
 }
