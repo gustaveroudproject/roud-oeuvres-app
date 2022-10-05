@@ -123,7 +123,45 @@ export class DataService {
     // we return an Observable that calls `compound()`
     return new Observable(iterate);
   };
+ 
 
+  /**
+   * getPagesOfExtendedSearch
+   * generic gravsearch recursive caller
+   * 
+   * @param gravsearchQuery 
+   * @returns 
+   */
+  getPagesOfExtendedSearch(gravsearchQuery: string): Observable<ReadResourceSequence | ApiResponseError> {
+    const service = this;
+    let offset = 0;
+  
+    function iterate(observer) {
+      let query = gravsearchQuery + " OFFSET " + offset;
+      service.knoraApiConnection.v2.search
+        .doExtendedSearch(query)
+        .subscribe(
+          (page: ReadResourceSequence) => {
+            if (page.resources.length > 0) {
+              // send the (ongoing) concatenated results 
+              observer.next(page);
+            }
+            if (page.resources.length == 25) {
+              // there is probably more, call `iterate()` recursively
+              offset = offset + 1;
+              iterate(observer);
+            } else {
+              // or end the recursion
+              observer.complete();
+            }
+          },
+          (e) => { console.log("getPagesOfExtendedSearch error: " + e) }
+        );
+    };
+  
+    return new Observable(iterate);
+  }
+  
 // DELETE THIS IF NOT USED
   getPagesOfText(textIRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
     const gravsearchQuery = `
@@ -191,6 +229,12 @@ return this.knoraApiConnection.v2.search
   );
 }
 
+/**
+ * pagesOfMsGravsearchQuery
+ * returns the gravsearch query for getting Pages
+ * @param IRI 
+ * @returns 
+ */
 pagesOfMsGravsearchQuery(IRI: string): string {
   return `
     PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -210,6 +254,8 @@ pagesOfMsGravsearchQuery(IRI: string): string {
     ORDER BY ?seqnum`;
 }
 
+
+
 getPagesOfMs(IRI: string, index: number = 0): Observable<PageLight[]> {  //Observable va retourner table of Pages
   const gravsearchQuery = this.pagesOfMsGravsearchQuery(IRI) + " OFFSET "+ index;
   return this.knoraApiConnection.v2.search
@@ -224,34 +270,15 @@ getPagesOfMs(IRI: string, index: number = 0): Observable<PageLight[]> {  //Obser
     );
 }
 
-getPagesOfExtendedSearch(gravsearchQuery: string): Observable<ReadResourceSequence | ApiResponseError> {
-  const service = this;
-  let offset = 0;
-
-  function iterate(observer) {
-    let query = gravsearchQuery + " OFFSET " + offset;
-    service.knoraApiConnection.v2.search
-      .doExtendedSearch(query)
-      .subscribe(
-        (page: ReadResourceSequence) => {
-          if (page.resources.length > 0) {
-            // send the (ongoing) concatenated results 
-            observer.next(page);
-          }
-          if (page.resources.length == 25) {
-            // there is probably more, call `iterate()` recursively
-            offset = offset + 1;
-            iterate(observer);
-          } else {
-            // or end the recursion
-            observer.complete();
-          }
-        },
-        (e) => { console.log("doExtendedSearch error: " + e) }
-      );
-  };
-
-  return new Observable(iterate);
+getAllPagesOfMs(IRI: string): Observable<PageLight[]> {  //Observable va retourner table of Pages
+  return this
+    .getPagesOfExtendedSearch(this.pagesOfMsGravsearchQuery(IRI))
+    .pipe(
+      map(
+        (readResources: ReadResourceSequence) => 
+          readResources.resources.map(this.readRes2PageLight)
+      )
+    );
 }
 
 

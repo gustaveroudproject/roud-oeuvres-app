@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
 import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, PubPartLight } from 'src/app/models/publication.model';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ReplaySubject } from 'rxjs';
 
@@ -88,25 +88,13 @@ export class MsPageComponent implements OnInit, DoCheck {
                 //// get facsimiles scans from publication IRI
                 this.loadingResults++;
                 this.dataService
-                .getPagesOfExtendedSearch(this.dataService.pagesOfMsGravsearchQuery(msLight.id))
+                .getAllPagesOfMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
-                .pipe(
-                  map(
-                    (readResources: ReadResourceSequence) => 
-                      readResources.resources.map(
-                        r => {
-                          let page: Page = this.dataService.readRes2PageLight(r);
-                          // set the first page as soon as possible
-                          if (this.firstPageSwitch) {
-                            this.firstPageSwitch = false;
-                            this.firstPageUrl.next(page.imageURL);
-                          }
-                          return page;
-                        } 
-                      )
-                  )
-                )
                 .subscribe((pages: Page[]) => {
+                  if (this.firstPageSwitch) {
+                    this.firstPageSwitch = false;
+                    this.firstPageUrl.next(pages[0].imageURL);
+                  }
                   this.pages.push(...pages);
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
@@ -401,8 +389,3 @@ export class MsPageComponent implements OnInit, DoCheck {
   }
 
 }
-
-
-
-
-     
