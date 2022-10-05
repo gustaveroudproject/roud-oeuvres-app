@@ -83,6 +83,7 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (this.searchText && this.searchText.length > 0) {  // check is not empty
+      this.searchText = this.searchText.replace("'","’")
       this.dataService.fullTextSearchPaged(this.searchText)
       .pipe( finalize(() => {
         this.pending=false;
