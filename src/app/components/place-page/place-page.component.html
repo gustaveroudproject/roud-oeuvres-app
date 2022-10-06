@@ -34,10 +34,15 @@
     
 
 
-    <div class="row py-4" *ngIf="photo">
-        <!-- PICTURES -->
-        <img [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
+    <!-- PICTURES -->
+    <div class="row caption m-5">
+        <div class="col-md-7 offset-md-2">
+            <img *ngIf="photo" width="100%"
+            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
             />
+            <br/>
+            {{photo?.title}}
+        </div>
     </div>
 
 
