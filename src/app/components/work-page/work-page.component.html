@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Accueil</a></li>
-        <li class="breadcrumb-item">Œuvres cités (pas de Gustave Roud)</li>
+        <li class="breadcrumb-item">Œuvres citées (pas de Gustave Roud)</li>
         <li class="breadcrumb-item active" aria-current="page">
             <span [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></span>
         </li>
@@ -17,7 +17,7 @@
 
 
     <!-- NAME AND DATES -->
-    <div class="py-4"> <!-- bootstrap class: vertical padding 3 -->
+    <div class="py-4 row"> <!-- bootstrap class: vertical padding 3 -->
         <h3>
             <span *ngFor="let workAuthor of workAuthors | sortBySurname">
                     {{ workAuthor?.name }} {{ workAuthor?.surname }}, </span>
@@ -29,7 +29,7 @@
 
 
     <!-- NOTICE -->
-    <div class="py-4 notice" *ngIf=work?.notice>
+    <div class="py-4 notice row" *ngIf=work?.notice>
         <p [innerHtml]="work?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
@@ -37,22 +37,33 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <strong>Œuvre mentionnée dans les textes suivants :</strong>
-        <ul style="list-style: none;">
-            <li *ngFor="let textLight of textsLight">
-            <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}"
-                [innerHTML]="textLight.title | htmlSanitizer"></a
-            >
-            </li>
-        </ul>
+    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <div>
+            <strong>Occurrences dans les recueils :</strong>
+        </div>
+        <br/>
+        <div class="col-12">
+            <ul class="mention-item">
+                <li *ngFor="let textLight of textsLight">
+                    - <em
+                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
+                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
+                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
+                </li>
+            </ul>
+        </div>
     </div>
 
 
     <!-- PERMANENT IDENTIFIERS -->
-    <div class="my-5 permanentId">
-        <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ work?.ark }}</p>
-        <!-- <p class="p-0"><strong>{{ 'person.iri' | translate }}</strong> : {{ person?.id }}</p> -->
+    <div class="my-5 permanentId row">
+        <p>
+            <strong>ARK (permalien)</strong> : {{ work?.ark }}
+            <br/>
+            <strong>URL</strong> : https://roud.unil.ch/resources/{{ work?.id | encodeURIComponent }}
+            <br/>
+            <strong>IRI interne</strong> : {{ work?.id }}
+        </p>
     </div>
 
 </div>

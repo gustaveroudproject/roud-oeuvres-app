@@ -1,1 +1,10 @@
 @import 'src/styles.scss';
+
+.notice, .mention {
+    font-size: x-large;
+}
+
+
+.mention-item {
+    list-style: none;
+}
