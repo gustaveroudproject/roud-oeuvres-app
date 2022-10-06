@@ -139,7 +139,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     .subscribe((pubPartsLight: PubPartLight[]) => {
                       this.pubPartsLight = pubPartsLight;
                       });
-
+                      /*
                     //// get publication parts
                     this.dataService
                     .getPartsOfPub(publicationLight.id)
@@ -155,6 +155,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         });
                       }
                       });
+                      */
 
                     
 

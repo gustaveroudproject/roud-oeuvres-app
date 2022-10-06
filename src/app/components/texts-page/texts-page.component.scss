@@ -1,5 +1,13 @@
 @import 'src/styles.scss';
 
-.text-item {
-    font-size: larger;
+p {
+    font-size: x-large;
+    display: block;
+    width: 100%;
 }
+
+img {
+    width:100%;
+    opacity: 60%;
+}
+

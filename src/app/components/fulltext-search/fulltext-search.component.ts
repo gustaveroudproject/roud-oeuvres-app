@@ -83,6 +83,7 @@ export class FulltextSearchComponent implements OnInit {
 
 
     if (this.searchText && this.searchText.length > 0) {  // check is not empty
+      this.searchText = this.searchText.replace("'","’")
       this.dataService.fullTextSearchPaged(this.searchText)
       .pipe( finalize(() => {
         this.pending=false;
@@ -129,7 +130,7 @@ export class FulltextSearchComponent implements OnInit {
           }
 
           // RESULTS: TEXTS
-          const textsIRIs = resources.filter(r => r.resourceClassLabel === "Website page").map(r => r.id);
+          const textsIRIs = resources.filter(r => r.resourceClassLabel === "Established text").map(r => r.id);
           if (textsIRIs && textsIRIs.length > 0) {
             this.expectingResults++;
             this.dataService.getTexts(textsIRIs)
@@ -150,8 +151,7 @@ export class FulltextSearchComponent implements OnInit {
             this.expectingResults++;
             this.dataService.getMsPartsLight(msPartsIRIs)
             .pipe(finalize(() => this.finalizeWait()))
-            .subscribe(
-              (msParts: MsPartLight[]) => {
+            .subscribe((msParts: MsPartLight[]) => {
                 msParts.forEach( e => {
                   this.msParts.push(e);
 
@@ -185,9 +185,14 @@ export class FulltextSearchComponent implements OnInit {
                 // filter only publications by Roud, before or in 1977
                 
                 let roudPubs = pubs.filter
-                  (pub => pub.authorsValues.indexOf
-                      ('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') > -1
-                      && pub.date.slice(10) <= '1977');
+                  (pub => pub.editorialSet != 'About Roud' &&  pub.editorialSet != 'Photography'
+                  &&  pub.editorialSet != 'correspondance' &&  pub.editorialSet != 'Disc' 
+                    //pub.authorsValues.includes('http://rdfh.ch/0112/Rxsb1pyNS36BLLROVhIthQ') 
+                    //||
+                    //pub.authorsValues.includes('http://rdfh.ch/0112/3Bz6u6y7RYS5_whDRR4FYw') ||
+                    // pub.authorsValues.includes('  etc. pseudonyms
+                      && pub.date.slice(10) <= '1977'
+                      );
                       /* slice to remove 'GREGORIAN:' and consider '1977' as string,
                       otherwise cannot make comparison between number and string */
                 this.roudPubs.push(...roudPubs);
@@ -212,7 +217,7 @@ export class FulltextSearchComponent implements OnInit {
                 */
 
 
-                
+
               },
               error => console.error(error)
             );
@@ -236,13 +241,15 @@ export class FulltextSearchComponent implements OnInit {
     if (checkBox.checked == true){
       // define a variable for the category that has been checked and
       // push the category to the array of checked categories
-      this.checkedCategoriesArray.push(checkedCat);
+      this.checkedCategoriesArray.push(checkedCat)
       // loop through children of the div containing all the results
       // if it is not in the checked categories array, do not display it
       // otherwise display it as block
       for (let index = 0; index < allResults.length; index++) {
         const eachCategResults = allResults[index];
-        if (!this.checkedCategoriesArray.includes(eachCategResults.id)) {
+        // to string, so it works also for mss and msParts together
+        // actually throws an error when checking multiple cats and then unchecking the mssAndMsParts once, but works good for the rest
+        if (!this.checkedCategoriesArray.toString().includes(eachCategResults.id)) { 
           eachCategResults.style.display = "none";
         } else {
           eachCategResults.style.display = "block";
@@ -270,6 +277,13 @@ export class FulltextSearchComponent implements OnInit {
       }
     }
   } // end show function
+
+  
+
+  showMssAndNotes() {
+    this.show('msParts');
+    this.show('mss');
+  }
 
 
 
