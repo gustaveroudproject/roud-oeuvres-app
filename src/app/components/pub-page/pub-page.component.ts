@@ -11,6 +11,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
 import { ReplaySubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
 
 
 @Component({
@@ -69,6 +71,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   partsFullness: string[];
   partsFullness2: string[];
 
+  loadingResults = 0;
+
 
   constructor(
     
@@ -78,15 +82,26 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     public sanitizer: DomSanitizer
   ) {}
 
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
+
+
   
   ngOnInit() {
 
-    this.route.paramMap.subscribe(
+    this.route.paramMap
+    .pipe(finalize(() => this.finalizeWait())).
+    subscribe(
+      
           params => {
             if (params.has('iri')) {
+              this.loadingResults++;
               //// get basic properties (publicationLight) of the publication
               this.dataService
                 .getPublicationLight(decodeURIComponent(params.get('iri')))
+                .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (publicationLight: PublicationLight) => {
                     this.publicationLight = publicationLight;
@@ -104,8 +119,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       }
                       
                     //// get facsimiles scans from publication IRI
+                    this.loadingResults++;
                     this.dataService
                       .getAllPagesOfPub(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pages: Page[]) => {
                         if (this.firstPageSwitch) {
                           this.firstPageSwitch = false;
@@ -117,16 +134,20 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
                     //// get established text
+                    this.loadingResults++;
                     this.dataService
                       .getEstablishedTextFromBasePub(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((establishedTexts: TextLight[]) => {
                         this.establishedTexts = establishedTexts;
                         this.establishedText = this.establishedTexts[0] // there will be only one item anyway
                       });
 
                     //// get data viz
+                    this.loadingResults++;
                     this.dataService
                       .getDataViz(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((dataVizs: DataViz[]) => {
                         this.dataViz = dataVizs[0]; // there will be only one item anyway
                       });
@@ -134,8 +155,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
 
                     //// get publication parts light
+                    this.loadingResults++;
                     this.dataService
                     .getPartsLightOfPub(publicationLight.id)
+                    .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((pubPartsLight: PubPartLight[]) => {
                       this.pubPartsLight = pubPartsLight;
                       });
@@ -162,9 +185,11 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     // GENESIS STARTS
                     
                     this.diaryNotes = [];
-                    //// get diary notes (Manuscript) reused in this publication                    
+                    //// get diary notes (Manuscript) reused in this publication   
+                    this.loadingResults++;                 
                     this.dataService
                     .getMssReusedInPublication(publicationLight.id)
+                    .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((diaryNotesMss: MsLight[]) => {
                       this.diaryNotesMss = diaryNotesMss;
 
@@ -172,8 +197,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     });   
 
                     //// get diary notes (MsPart) reused in this publication
+                    this.loadingResults++;
                     this.dataService
                     .getMsPartsReusedInPublication(publicationLight.id)
+                    .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((diaryNotesMsParts: MsPartLight[]) => {
                       this.diaryNotesMsParts = diaryNotesMsParts;
 
@@ -183,16 +210,20 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     
                     
                     //// get avant-textes
+                    this.loadingResults++;
                     this.dataService
                     .getAvantTexts(publicationLight.id)
+                    .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((avantTexts: MsLight[]) => {
                       this.avantTexts = avantTexts;
                     });
 
                     this.pubsReused = [];
                     //// get publications reused in this publication
+                    this.loadingResults++;
                     this.dataService
                       .getPublicationsReusedInPublication(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsReused: PublicationLight[]) => {
                         this.publicationsReused = publicationsReused;
 
@@ -201,8 +232,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
                     //// get publication parts reused in this publication
+                    this.loadingResults++;
                     this.dataService
                       .getPublicationPartsReusedInPublication(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pubPartsReused: PubPartLight[]) => {
                         this.pubPartsReused = pubPartsReused;
 
@@ -219,15 +252,20 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                             });
                           }
                       });
-
+                      
+                      this.loadingResults++;
                       this.dataService
                       .getPublicationsRepublishingPublication(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsRepublishingPub: PublicationLight[]) => {
                         this.publicationsRepublishingPub = publicationsRepublishingPub;
                       });
 
+
+                      this.loadingResults++;
                     this.dataService
                     .getPublicationsRepublishedInPublication(publicationLight.id)
+                    .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((publicationsRepublished: PublicationLight[]) => {
                       this.publicationsRepublished = publicationsRepublished;
 
@@ -236,8 +274,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
                     this.pubsReusing = [];
                     //// get publications reusing this publication
+                    this.loadingResults++;
                     this.dataService
                       .getPublicationsReusingPublication(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsReusingPub: PublicationLight[]) => {
                         this.publicationsReusingPub = publicationsReusingPub;
 
@@ -246,8 +286,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
 
                     //// get publication parts reusing this publication
+                    this.loadingResults++;
                     this.dataService
                       .getPublicationPartsReusingPublication(publicationLight.id)
+                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pubPartsReusingPub: PubPartLight[]) => {
                         this.pubPartsReusingPub = pubPartsReusingPub;
 
@@ -270,8 +312,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
                     //// if it is a PERIODICAL ARTICLE, retrieve its properties
                     if (publicationLight.resourceClassLabel == 'Periodical article') {
+                      this.loadingResults++;
                       this.dataService
                         .getPeriodicalArticle(publicationLight.id)  // = iri
+                        .pipe(finalize(() => this.finalizeWait()))
                         .subscribe(
                           (periodicalArticle: PeriodicalArticle) => {
                             this.periodicalArticle = periodicalArticle;
@@ -292,8 +336,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
                       //// if it is a BOOK, retrieve its properties
                       if (publicationLight.resourceClassLabel == 'Book') {
+                        this.loadingResults++;
                         this.dataService
                           .getBook(publicationLight.id)  // = iri
+                          .pipe(finalize(() => this.finalizeWait()))
                           .subscribe(
                             (book: Book) => {
                               this.book = book;
@@ -313,8 +359,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
                         //// if it is a BOOK SECTION, retrieve its properties
                         if (publicationLight.resourceClassLabel == 'Book section') {
+                          this.loadingResults++;
                           this.dataService
                             .getBookSection(publicationLight.id)  // = iri
+                            .pipe(finalize(() => this.finalizeWait()))
                             .subscribe(
                               (bookSection: BookSection) => {
                                 this.bookSection = bookSection;

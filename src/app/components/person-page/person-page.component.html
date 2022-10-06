@@ -1,4 +1,6 @@
 <div class="container">
+
+    <or-progress-indicator *ngIf="loadingResults>0" ></or-progress-indicator>
    
     <!-- breadcrumbs -->
     <div class="breadcrumbNavbar my-4">
@@ -61,7 +63,7 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+    <div class="py-4 row mention mt-5" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
         <div>
             <strong>Occurrences dans les recueils :</strong>
         </div>

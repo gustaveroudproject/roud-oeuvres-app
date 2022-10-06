@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'or-person-page',
@@ -17,12 +18,19 @@ export class PersonPageComponent implements OnInit {
   textsLight : TextLight[];
   pictures : Picture[];
 
+  loadingResults = 0;
+
 
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     public sanitizer: DomSanitizer
   ) {}
+
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
 
   ngOnInit() {
 
@@ -31,10 +39,14 @@ export class PersonPageComponent implements OnInit {
     //3. construire un objet de la classe person
     //4. l'affecter à cette variable
 
-    this.route.paramMap.subscribe(
+    this.route.paramMap
+    .pipe(finalize(() => this.finalizeWait()))
+    .subscribe(
       params => {
+        this.loadingResults++;
         this.dataService
           .getPerson(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          .pipe(finalize(() => this.finalizeWait()))
           .subscribe(
             (person: Person) => {
               this.person = person; // step 4    I give to the attribute person the value of person
@@ -43,15 +55,19 @@ export class PersonPageComponent implements OnInit {
                 // console.log(person.Viaf != null)
 
                 // asynchrone, we need text to ask texts mentioning persons
+                this.loadingResults++;
                 this.dataService
                 .getTextsMentioningPersons(person.id)
+                .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((textsLight: TextLight[]) => {
                   this.textsLight = textsLight;
                   // console.log(textsLight);
                   });
-
+                
+                this.loadingResults++;
                 this.dataService
                 .getPicturesOfPerson(person.id)
+                .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((pictures: Picture[]) => {
                   this.pictures = pictures;
                   // console.log(pictures);

@@ -6,6 +6,7 @@ import { TextLight } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
 import { EssayPhotoComponent } from '../essay-photo/essay-photo.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -18,11 +19,18 @@ export class PlacePageComponent implements OnInit {
   textsLight : TextLight[];
   photo: Picture;
 
+  loadingResults = 0;
+
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     public sanitizer: DomSanitizer
   ) {}
+
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
 
   ngOnInit() {
 
@@ -31,17 +39,23 @@ export class PlacePageComponent implements OnInit {
     //3. construire un objet de la classe place
     //4. l'affecter à cette variable
 
-    this.route.paramMap.subscribe(
+    this.route.paramMap
+    .pipe(finalize(() => this.finalizeWait()))
+    .subscribe(
       params => {
+        this.loadingResults++;
         this.dataService
           .getPlace(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          .pipe(finalize(() => this.finalizeWait()))
           .subscribe(
             (place: Place) => {
               this.place = place; // step 4    I give to the attribute place the value of place
 
               if (this.place.photo != null) {
+                this.loadingResults++;
               this.dataService
               .getPicture(place.photo)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe(
                 (photo: Picture) => {
                   this.photo = photo;
@@ -49,8 +63,10 @@ export class PlacePageComponent implements OnInit {
               };
 
               // asynchrone, we need text to ask texts mentioning places
+              this.loadingResults++;
               this.dataService
               .getTextsMentioningPlaces(place.id)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((textsLight: TextLight[]) => {
                 this.textsLight = textsLight;
                 // console.log(textsLight);
