@@ -195,38 +195,50 @@ OFFSET ${index}
 }
 
 
-
+pagesOfPubGravsearchQuery(IRI: string): string {
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+    ?fac knora-api:isMainResource true .
+    ?fac roud-oeuvres:hasSeqnum ?seqnum .
+    ?fac roud-oeuvres:pageHasName ?name .
+    ?fac knora-api:hasStillImageFileValue ?imageURL .
+    } WHERE {
+    ?fac a roud-oeuvres:Page .
+    ?fac roud-oeuvres:pageIsPartOfPublication <${IRI}> .
+    ?fac roud-oeuvres:hasSeqnum ?seqnum .
+    ?fac roud-oeuvres:pageHasName ?name .
+    ?fac knora-api:hasStillImageFileValue ?imageURL .
+    }
+    ORDER BY ?seqnum`;
+}
 
 getPagesOfPub(IRI: string, index: number = 0): Observable<Page[]> {  //Observable va retourner table of Pages
-  const gravsearchQuery = `
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-?fac knora-api:isMainResource true .
-?fac roud-oeuvres:hasSeqnum ?seqnum .
-?fac roud-oeuvres:pageHasName ?name .
-?fac knora-api:hasStillImageFileValue ?imageURL .
-} WHERE {
-?fac a roud-oeuvres:Page .
-?fac roud-oeuvres:pageIsPartOfPublication <${IRI}> .
-?fac roud-oeuvres:hasSeqnum ?seqnum .
-?fac roud-oeuvres:pageHasName ?name .
-?fac knora-api:hasStillImageFileValue ?imageURL .
+  const gravsearchQuery = this.pagesOfPubGravsearchQuery(IRI) + " OFFSET " + index;
+  return this.knoraApiConnection.v2.search
+    .doExtendedSearch(gravsearchQuery)
+    .pipe(
+      map(
+        (readResources: ReadResourceSequence) => 
+          readResources.resources.map(
+            r => {
+             return this.readRes2PageLight(r);
+            }
+          )
+      )
+    );
 }
-ORDER BY ?seqnum
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PageLight(r);
-      })
-    )
-  );
+
+getAllPagesOfPub(IRI: string): Observable<PageLight[]> {  //Observable va retourner table of Pages
+  return this
+    .getPagesOfExtendedSearch(this.pagesOfPubGravsearchQuery(IRI))
+    .pipe(
+      map(
+        (readResources: ReadResourceSequence) =>
+          readResources.resources.map( r => {return this.readRes2PageLight(r)})
+      )
+    );
 }
 
 /**
