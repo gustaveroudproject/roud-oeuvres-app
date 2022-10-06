@@ -7,6 +7,7 @@ import { Page } from 'src/app/models/page.model';
 import { Picture } from 'src/app/models/picture.model';
 import { PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'or-essay-page',
@@ -23,11 +24,20 @@ export class EssayPageComponent implements OnInit {
   msContainingPage: MsLight;
   pubContainingPage: PublicationLight;
 
+  loadingResults = 0;
+
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
     private dataService: DataService,
     public sanitizer: DomSanitizer
   ) {}
+
+
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
+
 
   ngOnInit() {
     //1. recuperer IRI du URL courent (ActivatedRoute)
@@ -35,16 +45,22 @@ export class EssayPageComponent implements OnInit {
     //3. construire un objet de la classe essay
     //4. l'affecter à cette variable
 
-    this.route.paramMap.subscribe(
+    this.route.paramMap.
+    pipe(finalize(() => this.finalizeWait())).
+    subscribe(
       params => {
+        this.loadingResults++;
         this.dataService
           .getEssay(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          .pipe(finalize(() => this.finalizeWait()))
           .subscribe(
             (essay: Essay) => {
               this.essay = essay; // step 4    I give to the attribute essay the value of essay
 
+              this.loadingResults++;
               this.dataService
               .getPicture(essay.photo)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe(
                 (photo: Picture) => {
                   this.photo = photo;

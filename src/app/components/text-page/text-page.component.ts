@@ -12,6 +12,8 @@ import { AuthorLight } from 'src/app/models/author.model';
 import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
 import { MsLight } from 'src/app/models/manuscript.model';
 import { head } from 'lodash';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'or-text-page',
@@ -47,6 +49,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
   id_fragment: string;
   toc: string[];
+
+  loadingResults = 0;
   
 
   
@@ -54,6 +58,11 @@ export class TextPageComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute, // it gives me the current route (URL)
     private dataService: DataService
   ) { }
+
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
 
   
 
@@ -70,33 +79,43 @@ export class TextPageComponent implements OnInit, AfterViewInit {
     //2. recuperer la ressource de Knora
     //3. construire un objet de la classe text
     //4. l'affecter à cette variable
-    this.route.paramMap.subscribe(
+    this.route.paramMap
+    .pipe(finalize(() => this.finalizeWait()))
+    .subscribe(
       params => {
+        this.loadingResults++;
         this.dataService
           .getText(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          .pipe(finalize(() => this.finalizeWait()))
           .subscribe(
             (text: Text) => {
               this.text = text; // step 4    I give to the attribute text the value of text
 
               // asynchrone
               //// get persons mentioned in the text
+              this.loadingResults++;
               this.dataService
               .getPersonsInText(text.id)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((personsMentioned: PersonLight[]) => {
                 this.personsMentioned = personsMentioned;
               });
 
               //// get places mentioned in the text
+              this.loadingResults++;
               this.dataService
               .getPlacesInText(text.id)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((placesMentioned: PlaceLight[]) => {
                 this.placesMentioned = placesMentioned;
               });
 
               
               //// get works mentioned in the text
+              this.loadingResults++;
               this.dataService
               .getWorksInText(text.id)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((worksMentioned: Work[]) => {
                 this.worksMentioned = worksMentioned;
 
@@ -142,8 +161,10 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
 
               //// get base witness publication
+              this.loadingResults++;
               this.dataService
               .getPublicationLight(text.baseWitPub)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((baseWitPubLight: PublicationLight) => {
                 this.baseWitPubLight = baseWitPubLight;
 

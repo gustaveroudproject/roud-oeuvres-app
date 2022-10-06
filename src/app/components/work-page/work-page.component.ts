@@ -4,6 +4,7 @@ import { Work } from 'src/app/models/work.model';
 import { DataService } from 'src/app/services/data.service';
 import { TextLight } from 'src/app/models/text.model';
 import { AuthorLight } from 'src/app/models/author.model';
+import { finalize } from 'rxjs/operators';
 
 
 
@@ -19,10 +20,17 @@ export class WorkPageComponent implements OnInit {
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
 
+  loadingResults = 0;
+
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute // it gives me the current route (URL)
   ) { }
+
+  finalizeWait() {
+    this.loadingResults--;
+    console.log("finalize: "+ this.loadingResults);
+  }
 
   ngOnInit() {
 
@@ -31,10 +39,14 @@ export class WorkPageComponent implements OnInit {
     //3. construire un objet de la classe work
     //4. l'affecter à cette variable
 
-    this.route.paramMap.subscribe(
+    this.route.paramMap
+    .pipe(finalize(() => this.finalizeWait()))
+    .subscribe(
       params => {
+        this.loadingResults++;
         this.dataService
           .getWork(decodeURIComponent(params.get('iri'))) // step 1, 2 and 3
+          .pipe(finalize(() => this.finalizeWait()))
           .subscribe(
             (work: Work) => {
               this.work = work; // step 4    
@@ -43,8 +55,10 @@ export class WorkPageComponent implements OnInit {
                 //// get authors from authors' IRIs
                 this.workAuthors = [];
                 for (var autVal in work.authorsValues) {
+                  this.loadingResults++;
                   this.dataService
                   .getAuthorLight(work.authorsValues[autVal])
+                  .pipe(finalize(() => this.finalizeWait()))
                   .subscribe(
                     (workAuthor: AuthorLight) => {
                       this.workAuthor = workAuthor;
@@ -56,8 +70,10 @@ export class WorkPageComponent implements OnInit {
                 
 
               // asynchrone, we need text to ask texts mentioning the work
+              this.loadingResults++;
               this.dataService
               .getTextsMentioningWorks(work.id)
+              .pipe(finalize(() => this.finalizeWait()))
               .subscribe((textsLight: TextLight[]) => {
                 this.textsLight = textsLight;
                 // console.log(textsLight);

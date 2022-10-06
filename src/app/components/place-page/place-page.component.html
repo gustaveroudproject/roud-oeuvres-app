@@ -1,5 +1,7 @@
 <div class="container">
 
+    <or-progress-indicator *ngIf="loadingResults>0" ></or-progress-indicator>
+    
     <!-- breadcrumbs -->
     <div class="breadcrumbNavbar my-4">
         <nav aria-label="breadcrumb">
@@ -34,18 +36,22 @@
     
 
 
-    <div class="row py-4" *ngIf="photo">
-        <!-- PICTURES -->
-        <img [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
+    <!-- PICTURES -->
+    <div class="row caption m-5">
+        <div class="col-md-7 offset-md-2">
+            <img *ngIf="photo" width="100%"
+            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
             />
+            <br/>
+            {{photo?.title}}
+        </div>
     </div>
 
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
         <div>
-            <strong>Ce lieu est mentionné dans :</strong>
-            <br/>(seulement les occurrences dans les recueils poétiques)
+            <strong>Occurrences dans les recueils :</strong>
         </div>
         <br/>
         <div class="col-12">

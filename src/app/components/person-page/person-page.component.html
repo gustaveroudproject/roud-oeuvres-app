@@ -1,4 +1,6 @@
 <div class="container">
+
+    <or-progress-indicator *ngIf="loadingResults>0" ></or-progress-indicator>
    
     <!-- breadcrumbs -->
     <div class="breadcrumbNavbar my-4">
@@ -31,15 +33,18 @@
 
 
     <!-- PICTURES -->
-    <div class="py-4 row" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
-        <div *ngFor="let picture of pictures">
-            <img *ngIf="picture"
+    <div class="row caption" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
+        <div class="col-md-7 offset-md-2" *ngFor="let picture of pictures">
+            <img *ngIf="picture" width="100%"
             [src]="sanitizer.bypassSecurityTrustUrl(picture.imageURL)"
             />
+            <br/>
+            {{picture?.title}}
         </div>
     </div>
 
 
+    
     <!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
     <div class="py-4 row" *ngIf="person?.DhsID != null || person?.Viaf != null">
         <a 
@@ -58,10 +63,9 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+    <div class="py-4 row mention mt-5" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
         <div>
-            <strong>Cette personne est mentionnée dans :</strong>
-            <br/>(seulement les occurrences dans les recueils poétiques)
+            <strong>Occurrences dans les recueils :</strong>
         </div>
         <br/>
         <div class="col-12">
