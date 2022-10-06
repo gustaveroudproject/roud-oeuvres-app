@@ -35,7 +35,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   book: Book;
   bookSection: BookSection;
   publisherLight: PublisherLight;
-  pages: Page[];
+  pages: Page[] = [];
   firstPageSwitch = true;
   firstPageUrl = new ReplaySubject<string>();
   selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
@@ -105,12 +105,13 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       
                     //// get facsimiles scans from publication IRI
                     this.dataService
-                      .getPagesOfPub(publicationLight.id)
+                      .getAllPagesOfPub(publicationLight.id)
                       .subscribe((pages: Page[]) => {
-                        this.firstPageSwitch = false;
-                        this.firstPageUrl.next(pages[0].imageURL);
-    
-                        this.pages = pages;
+                        if (this.firstPageSwitch) {
+                          this.firstPageSwitch = false;
+                          this.firstPageUrl.next(pages[0].imageURL);
+                        }
+                        this.pages.push(...pages);
                         //console.log(pages.length);
                         //console.log(this.selectedPageNum);
                       });
