@@ -1,3 +1,4 @@
+import { BookPart } from './page.model';
 import { Resource } from './resource.model';
 
 export interface MsLight extends Resource {  
@@ -34,9 +35,7 @@ export interface MsPartLight extends Resource {
   number: string;
 }
 
-export interface MsPartLightWithStartingPageSeqnum extends MsPartLight {  
-  startingPageSeqnum: string;
-}
+export interface MsPartLightWithStartingPageSeqnum extends MsPartLight, BookPart {  }
 
 
 export interface MsPart extends MsPartLight {  

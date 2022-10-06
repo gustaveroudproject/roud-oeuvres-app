@@ -71,6 +71,7 @@ import { ProgressIndicatorComponent } from './components/progress-indicator/prog
 import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TechPageComponent } from './components/tech-page/tech-page.component';
+import { PageViewerComponent } from './components/page-viewer/page-viewer.component';
 
 
 
@@ -93,6 +94,7 @@ import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe'
 import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
 import { RenderTeiDirective } from './directives/render-tei.directive';
+import { ImageResizePipe } from './pipes/image-resize.pipe';
 
 
 export function initializeApp(appInitService: AppInitService) {
@@ -155,7 +157,9 @@ export function initializeApp(appInitService: AppInitService) {
     ProgressIndicatorComponent,
     BioPageComponent,
     ProjectPageComponent,
-    TechPageComponent
+    TechPageComponent,
+    PageViewerComponent,
+    ImageResizePipe
   ],
   imports: [
     MatExpansionModule,
@@ -192,7 +196,8 @@ export function initializeApp(appInitService: AppInitService) {
     {
       provide: KnoraApiConnection,
       useFactory: () => AppInitService.knoraApiConnection
-    }
+    },
+    ImageResizePipe
   ],
   bootstrap: [AppComponent]
 })
