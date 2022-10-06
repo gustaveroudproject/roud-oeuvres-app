@@ -373,13 +373,18 @@
     
     </div> <!-- end row -->
 
-    <div class="row">
-        <div class="col-6">
-            <!-- PERMANENT IDENTIFIERS -->
-            <div class="my-5 permanentId">
-                <p><strong>{{ 'resource.ark' | translate }}</strong> : {{ publicationLight?.ark }}</p>
-            </div>
-        </div>
+    <!-- PERMANENT IDENTIFIERS -->
+    <div class="my-5 permanentId row">
+        <p>
+            <strong>Comment citer</strong> (voir <a href="/project">À propos</a> pour plus d'informations)
+        </p>
+        <p>
+            <strong>ARK (permalien)</strong> : {{ publicationLight?.ark }}
+            <br/>
+            <strong>URL</strong> : https://roud.unil.ch/resources/{{ publicationLight?.id | encodeURIComponent }}
+            <br/>
+            <strong>IRI interne</strong> : {{ publicationLight?.id }}
+        </p>
     </div>
 
 
