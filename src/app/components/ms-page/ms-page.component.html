@@ -33,43 +33,6 @@
         <div class="col-7">
         
             
-            <!-- VIEWER -->
-            <div class="viewer">
-                <div class="page" *ngIf="imageUrl">
-                    <img class="page-img" [src]="imageUrl"/>
-                </div>
-
-                <div *ngIf="pages && pages.length > 0; else noImage">
-    
-                    <div class="selects">
-                        <select
-                        name="page-numbers"
-                        [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)" 
-                        > <!-- ngModel binds the value of the select to an angular variable -->
-    
-                            <option [value]="page.seqnum" *ngFor="let page of pages">
-                                {{ page.name }}</option
-                            >
-                        </select>
-    
-                        <select *ngIf="msParts && msParts.length > 0"
-                        id="selectorPart"
-                        [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"
-                        >
-                            <option [value]="msPart.startingPageSeqnum" *ngFor="let msPart of msParts">
-                                <span>{{ msPart.title }}</span>
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <ng-template #noImage>
-                    <div class="py-4" *ngIf="pages && pages.length == 0">   
-                        <p>La reproduction de l'original n'est pas disponible.</p>
-                    </div>
-                </ng-template>
-
-            </div> <!-- end Viewer -->
 
 
             <!-- LIRE LE TEXTE 
@@ -85,7 +48,7 @@
             </div>
             -->
 
-
+            <or-page-viewer [pages]="pages" [firstPageUrl]="firstPageUrl" [parts]="msParts"></or-page-viewer>
 
             <!-- MANUSCRIPT DESCRIPTION -->
 

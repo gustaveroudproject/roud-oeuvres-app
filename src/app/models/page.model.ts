@@ -10,3 +10,8 @@ export interface Page extends PageLight {
     pageMs: string;
     pagePub: string;
 }
+
+export interface BookPart {
+    title: string;
+    startingPageSeqnum: string;
+}
