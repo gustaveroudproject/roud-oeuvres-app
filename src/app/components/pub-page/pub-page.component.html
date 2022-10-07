@@ -139,6 +139,26 @@
                     [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
             </div>
 
+            <!-- see https://github.com/dasch-swiss/dsp-app/blob/main/src/app/workspace/resource/resource.component.html -->
+            <or-still-image  *ngIf="dataVizs" #stillImage class="dsp-representation stillimage"
+                [images]="dataVizs"
+                [iiifUrl]="dataViz.imageURL"
+                [resourceIri]="dataViz.id"
+                >
+            </or-still-image>
+
+            <!-- 
+                [project]="resource.res.attachedToProject"
+                [currentTab]="selectedTabLabel"
+                [compoundNavigation]="compoundPosition" 
+                [imageCaption]="(pub.label + ': ' + incomingResource.res.label : resource.res.label)"
+                [parentResource]="incomingResource ? incomingResource.res : resource.res"
+
+                (loaded)="representationLoaded($event)"
+                (goToPage)="compoundNavigation($event)"
+            -->
+
+
             <!-- GENÈSE ET REPRISES -->
             <div *ngIf="publicationLight?.editorialSet == 'Poetic work' || publicationLight?.editorialSet == 'Diary'">
 

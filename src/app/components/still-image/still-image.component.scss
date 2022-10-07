@@ -1,0 +1,77 @@
+.osd-container {
+    // color: $bright;
+    background-color: #292929; // $dark;
+    height: calc(100% - 64px);
+    border-radius: 8px 8px 0px 0px;
+
+    &.fullscreen {
+      max-width: 100vw;
+    }
+  }
+
+  .toolbar {
+    // color: $primary_50
+    background-color: #292929; // $dark;
+    height: 64px;
+
+    .action {
+      height: 40px;
+      bottom: 0;
+      padding: 8px 0;
+
+      .active {
+        background: rgba(128,128,128,.39);
+        font-weight: bolder;
+      }
+    }
+
+  }
+
+  .navigation {
+    position: absolute;
+    z-index: 1;
+
+    // vertical navigation
+    // on the left resp. on the right hand side of osd viewer
+    &.vertical {
+      height: 200px; // calc(100% - #{$panel-height});
+      width: 200px; // $panel-height;
+      top: 200px; // $panel-height;
+      &.previous {
+        left: 0;
+      }
+      &.next {
+        right: 0;
+      }
+      .mat-button.full-size {
+        height: 100% !important;
+        width: 300px; // $panel-height !important;
+
+        padding: 0 !important;
+        min-width: 300px; // $panel-height !important;
+      }
+    }
+
+    // horizontal navigation
+    // slider control container
+    &.horizontal {
+      width: 100%;
+
+      .mat-slider {
+        width: 100%;
+        height: 4px;
+        bottom: 20px;
+      }
+
+    }
+  }
+
+
+/*
+ Openseadragon styling
+ */
+
+::ng-deep .openseadragon-container {
+  border-radius: 8px 8px 0px 0px;
+}
+

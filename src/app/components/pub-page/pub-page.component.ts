@@ -64,6 +64,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   establishedTexts: TextLight[];
   establishedText: TextLight;
   dataViz: DataViz;
+  dataVizs: DataViz[];
 
 
   panelReprisesDisableState: boolean = false;
@@ -150,7 +151,9 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((dataVizs: DataViz[]) => {
                         this.dataViz = dataVizs[0]; // there will be only one item anyway
+                        this.dataVizs = dataVizs;
                       });
+                      
 
 
 
