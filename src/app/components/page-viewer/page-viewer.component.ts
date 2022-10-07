@@ -34,7 +34,7 @@ export class PageViewerComponent implements OnInit {
     let us = this;
     if (us.selectedPageNum != value) {
       us.selectedPageNum = value;
-      us.imageUrl.next(us.sanitizer.bypassSecurityTrustUrl(this.imageResizePipe.transform(us.pages[value].imageURL)));
+      us.imageUrl.next(us.sanitizer.bypassSecurityTrustUrl(this.imageResizePipe.transform(us.pages[value-1].imageURL)));
     }
   }
 
