@@ -113,7 +113,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.images)
       if (changes['images'] && changes['images'].isFirstChange()) {
           this._setupViewer();
       }

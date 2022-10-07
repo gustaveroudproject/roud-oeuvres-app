@@ -17,6 +17,7 @@ import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
 import { DataViz } from '../models/dataviz.model';
+import { DspResource } from '../components/dsp-resource';
 
 
 @Injectable({
@@ -309,6 +310,23 @@ getPage(iri: string): Observable<Page> {
       map((readResource: ReadResource) => this.readRes2Page(readResource))
     );
 }
+
+
+// this should give back DspResource
+getDspResource(iri: string) {
+  return this.knoraApiConnection.v2.res.
+  getResource(iri).
+  subscribe(
+      (response: ReadResource) => {
+          //const res = new DspResource(response);
+          //this.resource = res;
+      }
+  );
+}
+
+
+
+
 
 
 

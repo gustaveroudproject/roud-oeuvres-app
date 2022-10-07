@@ -140,14 +140,16 @@
             </div>
 
             <!-- see https://github.com/dasch-swiss/dsp-app/blob/main/src/app/workspace/resource/resource.component.html -->
-            <or-still-image  *ngIf="dataVizs" #stillImage class="dsp-representation stillimage"
-                [images]="dataVizs"
-                [iiifUrl]="dataViz.imageURL"
+            <or-still-image  *ngIf="dataViz" #stillImage class="dsp-representation stillimage"
+                [images]="images"
+                [iiifUrl]="iiifURL" 
                 [resourceIri]="dataViz.id"
+                [project]="project"
                 >
             </or-still-image>
 
             <!-- 
+                [images]=""
                 [project]="resource.res.attachedToProject"
                 [currentTab]="selectedTabLabel"
                 [compoundNavigation]="compoundPosition" 

@@ -38,7 +38,7 @@ export class DspCompoundPosition {
     }
 }
 
-/*
+
 export interface PropIriToNameMapping {
     [index: string]: string;
 }
@@ -46,4 +46,4 @@ export interface PropIriToNameMapping {
 export interface PropertyValues {
     [index: string]: ReadValue[];
 }
-*/
+
