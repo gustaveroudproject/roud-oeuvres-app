@@ -10,8 +10,8 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
-import { ReplaySubject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { BehaviorSubject, ReplaySubject, concat } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
 
 
 
@@ -30,7 +30,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 */
    
   publicationLight: PublicationLight;
-  authorLight: AuthorLight;
   authors: AuthorLight[];
   periodicalArticle: PeriodicalArticle;
   periodicalLight: PeriodicalLight;
@@ -40,22 +39,14 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pages: Page[] = [];
   firstPageSwitch = true;
   firstPageUrl = new ReplaySubject<string>();
-  selectedPageNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
-  selectedPartNum: number = 1; // default value, so it visualizes the first scan when arriving on the page
   pubPartsLight: PubPartLight[];
-  pubParts: PubPart[];
   startingPage: Page;
   msLight: MsLight;
   avantTexts: MsLight[];
   avantTextsParts: MsLight[];
-  diaryNotesMsParts: MsPartLight[];
-  diaryNotesMss: MsLight[];
   diaryNotes: any[]; // array with MsLight and MsPartLight together
-  publicationsReused: PublicationLight[];
-  pubPartsReused: PubPartLight[];
   pubOfParts: PublicationLight;
   pubsReused: any[]; // array with publicationsReused and pubPartsReused together
-  publicationsReusingPub: PublicationLight[];
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
   pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
@@ -113,7 +104,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getAuthorLight(publicationLight.authorsValues[autVal])
                       .subscribe(
                         (authorLight: AuthorLight) => {
-                          this.authorLight = authorLight;
                           this.authors.push(authorLight);
                         });
                       }
@@ -191,8 +181,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     .getMssReusedInPublication(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((diaryNotesMss: MsLight[]) => {
-                      this.diaryNotesMss = diaryNotesMss;
-
                       this.diaryNotes.push(...diaryNotesMss);
                     });   
 
@@ -202,10 +190,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     .getMsPartsReusedInPublication(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((diaryNotesMsParts: MsPartLight[]) => {
-                      this.diaryNotesMsParts = diaryNotesMsParts;
-
                       this.diaryNotes.push(...diaryNotesMsParts);
-                      
                     });
                     
                     
@@ -225,10 +210,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getPublicationsReusedInPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsReused: PublicationLight[]) => {
-                        this.publicationsReused = publicationsReused;
-
                         this.pubsReused.push(...publicationsReused);
-
                       });
 
                     //// get publication parts reused in this publication
@@ -237,20 +219,19 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getPublicationPartsReusedInPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pubPartsReused: PubPartLight[]) => {
-                        this.pubPartsReused = pubPartsReused;
+                        this.pubsReused.push(...pubPartsReused);                        
 
-                        this.pubsReused.push(...pubPartsReused);
+                        // map => turn the array of PubPartLight into and array of observables ready to run the query to get parts
+                        // ... => turns array of observables into a list of them
+                        // concat => RxJs chains the observables and unify their result as if they came from one
+                        // take(1) => stops at the first result
+                        concat(...pubPartsReused.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                        .pipe(take(1))
+                        .subscribe((pubOfParts) => {
+                          // if we have a candidate, we keep it
+                          this.pubOfParts = pubOfParts;
+                        });
 
-                        // asynchrone
-                        //// get publications from publications' IRIs
-                        for (var pub in pubPartsReused) {
-                          this.dataService
-                          .getPubOfPubPart(pubPartsReused[pub].isPartOfPubValue)
-                          .subscribe(
-                            (pubOfParts: PublicationLight) => {
-                              this.pubOfParts = pubOfParts;
-                            });
-                          }
                       });
                       
                       this.loadingResults++;
@@ -262,7 +243,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
 
-                      this.loadingResults++;
+                    this.loadingResults++;
                     this.dataService
                     .getPublicationsRepublishedInPublication(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
@@ -279,8 +260,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getPublicationsReusingPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsReusingPub: PublicationLight[]) => {
-                        this.publicationsReusingPub = publicationsReusingPub;
-
                         this.pubsReusing.push(...publicationsReusingPub);
                       });
 
@@ -291,20 +270,14 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getPublicationPartsReusingPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pubPartsReusingPub: PubPartLight[]) => {
-                        this.pubPartsReusingPub = pubPartsReusingPub;
-
                         this.pubsReusing.push(...pubPartsReusingPub);
 
-                        // asynchrone
-                        //// get publications from publications' IRIs
-                        for (var pub in pubPartsReusingPub) {
-                          this.dataService
-                          .getPubOfPubPart(pubPartsReusingPub[pub].isPartOfPubValue)
-                          .subscribe(
-                            (pubOfParts3: PublicationLight) => {
-                              this.pubOfParts3 = pubOfParts3;
-                            });
-                          }
+                        concat(...pubPartsReusingPub.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                        .pipe(take(1))
+                        .subscribe((pubOfParts) => {
+                          this.pubOfParts3 = pubOfParts;
+                        });
+
                       });
 
 
@@ -323,6 +296,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                             // asynchrone
                             this.dataService
                             .getPeriodicalLight(periodicalArticle.periodicalValue)
+                            .pipe(take(1))
                             .subscribe(
                               (periodicalLight: PeriodicalLight) => {
                               this.periodicalLight = periodicalLight;
@@ -347,6 +321,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                               // asynchrone
                               this.dataService
                               .getPublisherLight(book.publisherValue)
+                              .pipe(take(1))
                               .subscribe(
                                 (publisherLight: PublisherLight) => {
                                 this.publisherLight = publisherLight;
@@ -370,6 +345,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                                 // asynchrone
                                 this.dataService
                                 .getPublisherLight(bookSection.publisherValue)
+                                .pipe(take(1))
                                 .subscribe(
                                   (publisherLight: PublisherLight) => {
                                   this.publisherLight = publisherLight;
