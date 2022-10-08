@@ -1,7 +1,11 @@
+// this component from https://github.com/dasch-swiss/dsp-app/tree/main/src/app/workspace/resource/representation/still-image
+
+@import 'src/styles.scss';
+
 .osd-container {
     // color: $bright;
     background-color: #292929; // $dark;
-    height: calc(100% - 64px);
+    height: calc(100% - 300px);  // calc(100% - 64px);
     border-radius: 8px 8px 0px 0px;
 
     &.fullscreen {
@@ -13,6 +17,8 @@
     // color: $primary_50
     background-color: #292929; // $dark;
     height: 64px;
+    text-align: center;
+    border-radius: 0px 0px 8px 8px;
 
     .action {
       height: 40px;
@@ -34,9 +40,9 @@
     // vertical navigation
     // on the left resp. on the right hand side of osd viewer
     &.vertical {
-      height: 200px; // calc(100% - #{$panel-height});
-      width: 200px; // $panel-height;
-      top: 200px; // $panel-height;
+      height: calc(100% - #{$panel-height});
+      width: $panel-height;
+      top: $panel-height;
       &.previous {
         left: 0;
       }
@@ -45,10 +51,10 @@
       }
       .mat-button.full-size {
         height: 100% !important;
-        width: 300px; // $panel-height !important;
+        width: $panel-height !important;
 
         padding: 0 !important;
-        min-width: 300px; // $panel-height !important;
+        min-width: $panel-height !important;
       }
     }
 
@@ -66,6 +72,8 @@
     }
   }
 
+  
+
 
 /*
  Openseadragon styling
@@ -75,3 +83,10 @@
   border-radius: 8px 8px 0px 0px;
 }
 
+
+// added 
+button {
+  fill:white;
+  background-color: #292929;
+  border: 0px;
+}

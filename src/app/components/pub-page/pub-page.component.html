@@ -134,12 +134,14 @@
         <!-- start COLUMNS RIGHT -->
         <div class="col-6">
 
+            <!--
             <div>
                 <img width="50%" *ngIf="dataViz"
                     [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
             </div>
+            -->
 
-            <!-- see https://github.com/dasch-swiss/dsp-app/blob/main/src/app/workspace/resource/resource.component.html -->
+            
             <or-still-image  *ngIf="dataViz" #stillImage class="dsp-representation stillimage"
                 [images]="images"
                 [iiifUrl]="iiifURL" 
@@ -147,8 +149,7 @@
                 [project]="project"
                 >
             </or-still-image>
-
-            <!-- 
+            <!--
                 [images]=""
                 [project]="resource.res.attachedToProject"
                 [currentTab]="selectedTabLabel"

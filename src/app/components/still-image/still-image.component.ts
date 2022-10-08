@@ -1,3 +1,6 @@
+// this component from https://github.com/dasch-swiss/dsp-app/tree/main/src/app/workspace/resource/representation/still-image
+
+
 import { Component, OnInit } from '@angular/core';
 import {
   AfterViewInit,
