@@ -6,7 +6,7 @@
 
 
 .readTheText {
-    margin: 8% 0 10% 0;
+    margin: 10% 0 10% 0;
 }
 
 #panelInfo {
@@ -16,4 +16,14 @@
 #selectorPart {
     float: right;
     margin-right: 20%;  // because viewer occupies 80%
+}
+
+.btn {
+    background-color: #bed3db;
+    color: black;
+    padding: 10px 24px 10px 24px;
+}
+
+.caption {
+    font-size: large;
 }

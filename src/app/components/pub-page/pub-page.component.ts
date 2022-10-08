@@ -160,10 +160,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
                     //// get data viz
-                    this.loadingResults++;
                     this.dataService
                       .getDataViz(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((dataVizs: DataViz[]) => {
                         this.dataViz = dataVizs[0]; // there will be only one item anyway
 
