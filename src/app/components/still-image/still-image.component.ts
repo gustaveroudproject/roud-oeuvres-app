@@ -64,7 +64,7 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   // @Input() imageCaption?: string;
   @Input() iiifUrl?: string;
   @Input() resourceIri: string;
-  // @Input() project: string;
+  @Input() project: string;
   // @Input() activateRegion?: string; // highlight a region
   @Input() compoundNavigation?: DspCompoundPosition;
   // @Input() currentTab: string;

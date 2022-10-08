@@ -111,9 +111,27 @@
 
 
         <div class="row row-intro">
-            <img width="100%" src="https://iiif.ls-prod-server.dasch.swiss:443/0112/7t9L4NjERQ0-CskdKam1ShX.jp2/full/8000,5658/0/default.jpg">
+
+            <div class="col-12">
+                <or-still-image #stillImage class="dsp-representation stillimage"
+                    [images]="images"
+                    [iiifUrl]="iiifURL" 
+                    [resourceIri]="dataVizIri_PourUnMoissonneur"
+                    [project]="projectIri"
+                    >
+                </or-still-image>
+                <!--
+                    [currentTab]="selectedTabLabel"
+                    [compoundNavigation]="compoundPosition" 
+                    [imageCaption]="(pub.label + ': ' + incomingResource.res.label : resource.res.label)"
+                    [parentResource]="incomingResource ? incomingResource.res : resource.res"
+    
+                    (loaded)="representationLoaded($event)"
+                    (goToPage)="compoundNavigation($event)"
+                -->
+            </div>
             <p class="p-dataviz mt-3">Constellation génétique de 
-                <a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2F0q4rNxoVTqCek3FOwULnpg']">
+                <a [routerLink]="['/archive/pub/http%3A%2F%2Frdfh.ch%2F0112%2FD2oSkK2-QA-gw4ZVemxIBQ']">
                     <em>Pour un moissonneur</em></a>&nbsp;&nbsp;(1941).
                 </p>
         </div>
