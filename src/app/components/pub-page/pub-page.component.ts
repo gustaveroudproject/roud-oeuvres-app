@@ -13,7 +13,7 @@ import { DataViz } from 'src/app/models/dataviz.model';
 import { ReplaySubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { FileRepresentation } from '../file-representation';
-import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource, CountQueryResponse, ReadResourceSequence, KnoraApiConfig, ApiResponseError } from '@dasch-swiss/dsp-js';
+import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
 
 import { DspResource } from '../dsp-resource';
 
@@ -166,33 +166,19 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((dataVizs: DataViz[]) => {
                         this.dataViz = dataVizs[0]; // there will be only one item anyway
-                      });
 
-                    //// get data viz
-                    this.dataService
-                      .getDataViz(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((dataVizs: DataViz[]) => {
-                        this.dataViz = dataVizs[0]; // there will be only one item anyway
-
-                        /*
-                        // something like this, to create a resource of type DspResource 
-                        // and then give it to collectRepresentationsAndAnnotations to create the content
-                            // for the attribute [images] in <or-still-image> in the template
-
-                        this.dataService
-                        .getDspResource(this.dataViz.id)
+                        
+                        this.knoraApiConnection.v2.res
+                        .getResource(this.dataViz.id)
                         .subscribe(
-                          (resource: DspResource) => {
-                            this.resource = resource
-                          })
+                          (response: ReadResource) => {
+                            const res = new DspResource(response);
+                            this.resource = res;
+                        
+                            this.images = this.collectRepresentationsAndAnnotations(this.resource);
+                          });
 
-                        this.images = this.collectRepresentationsAndAnnotations(this.resource);
-                        */
-                      
-                      });
-
-                      
+                      });                                          
 
 
 
@@ -538,68 +524,44 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   }
 
 
-
-
-
-
-  
+ 
 
 
 // FROM https://github.com/dasch-swiss/dsp-app/blob/9bb63d71234fc49f2afcb959603b8bcd4deb4429/src/app/workspace/resource/resource.component.ts#L355
+// only taken a part of it relevant for still images
 
-  /**
+    /**
      * creates a collection of [[StillImageRepresentation]] belonging to the given resource and assigns it to it.
-     * each [[StillImageRepresentation]] represents an image including regions.
-     *
+     * each [[StillImageRepresentation]] represents an image including regions.     *
      * @param resource The resource to get the images for.
      * @returns A collection of images for the given resource.
      */
    protected collectRepresentationsAndAnnotations(resource: DspResource): FileRepresentation[] {
-
     if (!resource) {
         return;
     }
-
-    // general object for all kind of representations
     const representations: FileRepresentation[] = [];
-
         const fileValues: ReadStillImageFileValue[] = resource.res.properties[Constants.HasStillImageFileValue] as ReadStillImageFileValue[];
-
         for (const img of fileValues) {
 
             //const regions: Region[] = [];
-
+            const regions: any[] = [] // we do not have type Region
             const annotations: DspResource[] = [];
-
-            const regions: any[] = []
-
-            /* 
+            /*  // comment out all about regions
             for (const incomingRegion of resource.incomingAnnotations) {
-
                 const region = new Region(incomingRegion);
                 regions.push(region);
-
                 const annotation = new DspResource(incomingRegion);
-
                 // gather region property information
                 annotation.resProps = this.initProps(incomingRegion);
-
                 // gather system property information
                 annotation.systemProps = incomingRegion.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
-
                 annotations.push(annotation);
-
             }*/
-
             const stillImage = new FileRepresentation(img);
-
             representations.push(stillImage);
-
-            this.annotationResources = annotations;
-
-            // developer feature: this keeps the annotations tab open, if you add "/annotations" to the end of the URL
-            // e.g. http://0.0.0.0:4200/resource/[project-shortcode]/[resource-iri]/annotations
-            /*
+            this.annotationResources = annotations; 
+            /* // comment out all about annotations and dsp-app interface
             if (this.valueUuid === 'annotations' || this.selectedRegion === this.resourceIri) {
                 this.selectedTab = (this.incomingResource ? 2 : 1);
                 this.selectedTabLabel = 'annotations';
@@ -607,13 +569,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
         }
 
     return representations;
-
 }
 
-
-
-
-
-    
 }
-      

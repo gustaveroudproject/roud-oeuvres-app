@@ -312,23 +312,6 @@ getPage(iri: string): Observable<Page> {
 }
 
 
-// this should give back DspResource
-getDspResource(iri: string) {
-  return this.knoraApiConnection.v2.res.
-  getResource(iri).
-  subscribe(
-      (response: ReadResource) => {
-          //const res = new DspResource(response);
-          //this.resource = res;
-      }
-  );
-}
-
-
-
-
-
-
 
 
 getEstablishedTextFromBasePub(pubIri: string):Observable<TextLight[]> {
