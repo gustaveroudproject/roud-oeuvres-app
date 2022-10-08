@@ -11,7 +11,6 @@ import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
 import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
 import { MsLight } from 'src/app/models/manuscript.model';
-import { head } from 'lodash';
 import { finalize } from 'rxjs/operators';
 
 
