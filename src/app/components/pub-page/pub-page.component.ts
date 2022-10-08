@@ -10,8 +10,6 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
-import { ReplaySubject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { FileRepresentation } from '../file-representation';
 import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
 import { DspResource } from '../dsp-resource';
