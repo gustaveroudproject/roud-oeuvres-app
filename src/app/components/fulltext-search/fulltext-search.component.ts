@@ -83,14 +83,20 @@ export class FulltextSearchComponent implements OnInit {
       this.years = params.years;
 
       if (this.translatedAuthorIRI != null) {
-        this.dataService.getAuthorLight(this.translatedAuthorIRI).subscribe(
+        this.expectingResults++;
+        this.dataService.getAuthorLight(this.translatedAuthorIRI)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
           (translatedAuthor: AuthorLight) => {
             this.translatedAuthor = translatedAuthor;
           }
         );
         // TODO: Loic: add paging results
         this.mss = []
-        this.dataService.getMssTranslatedAuthor(this.translatedAuthorIRI).subscribe(
+        this.expectingResults++;
+        this.dataService.getMssTranslatedAuthor(this.translatedAuthorIRI)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
           (mssTranslatedAuthor: MsLight[]) => {
             this.mssTranslatedAuthor = mssTranslatedAuthor;
             this.mss.push(...mssTranslatedAuthor)
@@ -106,7 +112,10 @@ export class FulltextSearchComponent implements OnInit {
         this.mssDiaryYears = [];
 
         // TODO: Loic: add paging results
-        this.dataService.getDiaryMssDate(this.years).subscribe(
+        this.expectingResults++;
+        this.dataService.getDiaryMssDate(this.years)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
           (mssDiaryDate: MsLight[]) => {
             this.mssDiaryDate = mssDiaryDate;
            // this.mss = [ ...mssDiaryDate];
@@ -116,7 +125,11 @@ export class FulltextSearchComponent implements OnInit {
         );
         // TODO: Loic: add paging results
         // check: http://localhost:4200/archive/results?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
-        this.dataService.getDiaryMssEstablishedDate(this.years).subscribe(
+        // moved to http://localhost:4200/search?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
+        this.expectingResults++;
+        this.dataService.getDiaryMssEstablishedDate(this.years)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
           (mssDiaryEstablishedDate: MsLight[]) => {
             this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
             //this.mssDiaryYears = [ ...this.mssDiaryEstablishedDate];
