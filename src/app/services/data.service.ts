@@ -2387,12 +2387,14 @@ PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
   ?text knora-api:isMainResource true .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
+  ?text roud-oeuvres:establishedTextHasInternalComment ?date .
 } WHERE {
   ?text a roud-oeuvres:EstablishedText .
   ?text roud-oeuvres:establishedTextHasTitle ?title .
   ?text roud-oeuvres:establishedTextHasEditorialSet ?editorialSet .
   ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-oeuvrePoetique> .
-} ORDER BY ASC(?title)
+  ?text roud-oeuvres:establishedTextHasInternalComment ?date .
+} ORDER BY ASC(?date)
 OFFSET ${index}
 `;
     return this.knoraApiConnection.v2.search
@@ -3004,6 +3006,10 @@ OFFSET ${index}
       title: this.getFirstValueAsStringOrNullOfProperty(
         readResource,
         `${this.getOntoPrefixPath()}establishedTextHasTitle`
+      ),
+      date: this.getFirstValueAsStringOrNullOfProperty(
+        readResource,
+        `${this.getOntoPrefixPath()}establishedTextHasInternalComment`
       ),
       editorialSet: this.getListsFrenchLabel(this.getFirstValueListNode(
         readResource,

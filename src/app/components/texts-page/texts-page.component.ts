@@ -8,7 +8,7 @@ import { Text, TextLight } from '../../models/text.model';
   styleUrls: ['./texts-page.component.scss']
 })
 export class TextsPageComponent implements OnInit {
-  textLights: TextLight[] = [];
+  textsLight: TextLight[] = [];
   selectedText: Text;
   // index = 0;
 
@@ -23,14 +23,20 @@ export class TextsPageComponent implements OnInit {
     //this.onLoadNextPage();
     //this.dataService.getTextLights(this.index).subscribe(
     
-    /*
-    this.dataService.getTextLights().subscribe(
-      (texts: Text[]) => {
-        this.textLights.push(...texts);
+    
+    this.dataService.getTextLights()
+    //.subscribe(
+     // (texts: Text[]) => {
+       // this.textLights.push(...texts);
         //this.index = this.index + 1;
+        .subscribe((textsLight: TextLight[]) => {
+          this.textsLight = textsLight;
+          
+          console.log(this.textsLight)
+
       },
       error => console.error(error)
-    );*/
+    );
 
   }
 }
