@@ -45,19 +45,7 @@
 
           
 
-          <!-- textes -->
-          <ul class="list-group mb-1">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Recueils</b>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
-                <label class="custom-control-label" for="textsCheckbox">Textes critiques</label>
-              </div>
-              <span class="badge badge-light badge-pill">{{ (texts !== undefined) ? (texts?.length) : "0" }}</span>
-            </li>
-          </ul>
+          
           
 
           <!-- archives -->
@@ -93,6 +81,23 @@
                 <!-- the data arrives too late, which gives an error thinking value is undefined. Add this to handle it --></span>
             </li>
           </ul>
+
+
+          <!-- textes -->
+          <ul class="list-group mb-1">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Recueils</b>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
+                <label class="custom-control-label" for="textsCheckbox">Textes critiques</label>
+              </div>
+              <span class="badge badge-light badge-pill">{{ (texts !== undefined) ? (texts?.length) : "0" }}</span>
+            </li>
+          </ul>
+
+          
 
           <ul class="list-group mb-1">
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -184,6 +189,21 @@
           </div>
         </div>
 
+
+        <div id="textsResults" *ngIf="texts && texts.length > 0">
+          <div>
+            <strong>Recueils</strong>
+            <ul>
+              <li *ngFor="let text of texts | sortByTextDate">
+                <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
+                  [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></a
+                >, <span [innerHtml]="text?.date | removeTextAndPar | htmlSanitizer"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
         
         <div id="personsResults" *ngIf="persons && persons.length > 0">
           <div>
@@ -201,20 +221,6 @@
           </div>
         </div>
         
-
-        <div id="textsResults" *ngIf="texts && texts.length > 0">
-          <div>
-            <strong>Textes</strong>
-            <ul>
-              <li *ngFor="let text of texts">
-                <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
-                  [innerHTML]="text?.title | htmlSanitizer"></a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
         
 
         <div id="placesResults" *ngIf="places && places.length > 0">

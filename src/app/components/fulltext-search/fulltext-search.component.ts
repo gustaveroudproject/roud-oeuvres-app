@@ -42,7 +42,7 @@ export class FulltextSearchComponent implements OnInit {
   roudPubs: PublicationLight[];
   booksIRIs: string[];
   articlesIRIs: string[];
-  bookSectionsIRIs: string[];
+  bookSectionsIRIs: string[];  
 
   results = false;
   search = false;
@@ -65,6 +65,7 @@ export class FulltextSearchComponent implements OnInit {
   titleYears: string;
 
   about: string;
+  
 
 
   
@@ -213,7 +214,14 @@ export class FulltextSearchComponent implements OnInit {
               this.expectingResults++;
               this.dataService.getTexts(textsIRIs)
               .pipe(finalize(() => this.finalizeWait()))
-              .subscribe((texts: Text[]) => this.texts.push(...texts));
+              .subscribe(
+                (texts: Text[]) => {
+                  this.texts.push(...texts);
+                  let poeticTexts = this.texts.filter
+                        (text => text.editorialSet == 'Œuvre poétique');
+                  this.texts = [];
+                  this.texts.push(...poeticTexts);
+                });
             }
             // RESULTS: MSS AND MSS PARTS
             const mssIRIs = resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
@@ -353,12 +361,19 @@ export class FulltextSearchComponent implements OnInit {
 
           // RESULTS: TEXTS
           const textsIRIs = resources.filter(r => r.resourceClassLabel === "Established text").map(r => r.id);
-          if (textsIRIs && textsIRIs.length > 0) {
-            this.expectingResults++;
-            this.dataService.getTexts(textsIRIs)
-            .pipe(finalize(() => this.finalizeWait()))
-            .subscribe((texts: Text[]) => this.texts.push(...texts));
-          }
+            if (textsIRIs && textsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getTexts(textsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe(
+                (texts: Text[]) => {
+                  this.texts.push(...texts);
+                  let poeticTexts = this.texts.filter
+                        (text => text.editorialSet == 'Œuvre poétique');
+                  this.texts = [];
+                  this.texts.push(...poeticTexts);
+                });
+            }
 
           // RESULTS: MSS AND MSS PARTS
           const mssIRIs = resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
