@@ -9,6 +9,8 @@ import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
 import { finalize, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { AuthorLight } from 'src/app/models/author.model';
 // import * as octicons from '@primer/octicons';
 
 
@@ -51,15 +53,85 @@ export class FulltextSearchComponent implements OnInit {
   
   expectingResults = 0;
 
+  translatedAuthorIRI: string;
+  translatedAuthor: AuthorLight;
+  mssTranslatedAuthor: MsLight[];
+
+  mssDiaryDate: MsLight[];
+  mssDiaryEstablishedDate: MsLight[];
+  mssDiaryYears: any;
+  
+  years: string;
+  titleYears: string;
+
+
   constructor(
     private dataService: DataService,
-    private el: ElementRef) {}
+    private el: ElementRef,
+    private route: ActivatedRoute) {}
+    
 
-  ngOnInit() {}
+    finalizeWait() {
+      this.expectingResults--;
+    }
 
-  finalizeWait() {
-    this.expectingResults--;
-  }
+  ngOnInit() {
+
+    this.route.queryParams
+    .subscribe(params => { 
+      this.translatedAuthorIRI = params.translatedAuthorIRI;
+      this.years = params.years;
+
+      if (this.translatedAuthorIRI != null) {
+        this.dataService.getAuthorLight(this.translatedAuthorIRI).subscribe(
+          (translatedAuthor: AuthorLight) => {
+            this.translatedAuthor = translatedAuthor;
+          }
+        );
+        // TODO: Loic: add paging results
+        this.mss = []
+        this.dataService.getMssTranslatedAuthor(this.translatedAuthorIRI).subscribe(
+          (mssTranslatedAuthor: MsLight[]) => {
+            this.mssTranslatedAuthor = mssTranslatedAuthor;
+            this.mss.push(...mssTranslatedAuthor)
+          }
+        );
+      }
+
+      if (this.years != null) {
+
+        this.titleYears = this.years.slice(10).replace(":", "–");
+        
+        this.mss = []
+        this.mssDiaryYears = [];
+
+        // TODO: Loic: add paging results
+        this.dataService.getDiaryMssDate(this.years).subscribe(
+          (mssDiaryDate: MsLight[]) => {
+            this.mssDiaryDate = mssDiaryDate;
+           // this.mss = [ ...mssDiaryDate];
+           this.mss.push(...this.mssDiaryDate)
+            
+          }
+        );
+        // TODO: Loic: add paging results
+        // check: http://localhost:4200/archive/results?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
+        this.dataService.getDiaryMssEstablishedDate(this.years).subscribe(
+          (mssDiaryEstablishedDate: MsLight[]) => {
+            this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
+            //this.mssDiaryYears = [ ...this.mssDiaryEstablishedDate];
+            //this.mss.push(...this.mssDiaryYears)
+            this.mss.push(...this.mssDiaryEstablishedDate)
+            
+            
+          }
+        );
+      }
+    }
+  );
+}
+
+  
 
   onSearch() {
     this.results = false;

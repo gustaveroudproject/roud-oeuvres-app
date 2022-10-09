@@ -392,6 +392,8 @@ CONSTRUCT {
     ?ms roud-oeuvres:manuscriptHasTitle ?title .
 } WHERE {
     ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptHasEditorialSet ?editorialSet .
+    ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-journal> .
     ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
     ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
     ?ms roud-oeuvres:manuscriptHasTitle ?title .    
@@ -427,6 +429,8 @@ CONSTRUCT {
     ?ms roud-oeuvres:manuscriptHasTitle ?title .
 } WHERE {
     ?ms a roud-oeuvres:Manuscript .
+    ?ms roud-oeuvres:manuscriptHasEditorialSet ?editorialSet .
+    ?editorialSet knora-api:listValueAsListNode <http://rdfh.ch/lists/0112/roud-oeuvres-flatlist-hasEditorialSet-journal> .
     ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
     ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
     ?ms roud-oeuvres:manuscriptHasTitle ?title .    
