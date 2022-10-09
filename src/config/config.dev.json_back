@@ -1,0 +1,15 @@
+{
+    "knora": {
+        "apiProtocol": "https",
+        "apiHost": "api.ls-prod-server.dasch.swiss", 
+        "apiPort": null,
+        "apiPath": "",
+        "jsonWebToken": "",
+        "logErrors": false
+
+    },
+    "app": {
+        "name": "Knora-APP",
+        "url": "localhost:4200"
+    }
+}

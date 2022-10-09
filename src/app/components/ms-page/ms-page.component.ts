@@ -27,10 +27,9 @@ export class MsPageComponent implements OnInit, DoCheck {
   msPartStartingPage: PageLight;
   manuscript: Manuscript;
   manuscripts: Manuscript[];
-  publicationsAvantTexte: PublicationLight[];
   pubPartsAvantTexte: PubPartLight[];
   pubFromParts: PublicationLight;
-  pubsAvantTexte: any[]; // array with PublicationLight and PubPartLight together
+  pubsAvantTexte: any[] = []; // array with PublicationLight and PubPartLight together
   publicationsDiary: PublicationLight[];
   pubPartsDiary: PubPartLight[];
   pubFromParts2: PublicationLight;
@@ -116,7 +115,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 );
 
 
-                this.pubsAvantTexte = [];
                 /// get publications with this ms as avant-texte
                 this.loadingResults++;
                 this.dataService
@@ -124,8 +122,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (publicationsAvantTexte: PublicationLight[]) => {
-                    this.publicationsAvantTexte = publicationsAvantTexte;
-
                     this.pubsAvantTexte.push(...publicationsAvantTexte);
                   },
                   error => console.log(error)
