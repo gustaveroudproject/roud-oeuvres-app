@@ -18,8 +18,7 @@ export class PageViewerComponent implements OnInit {
   @Input() parts?: BookPart[] = [];
  
   allPages: Page[] = [];
-  selectedPageNum: 1; // default value, so it visualizes the first scan when arriving on the page
-  selectedPageNumberForwarder = new BehaviorSubject<number>(1);
+  selectedPageNum = 1; // default value, so it visualizes the first scan when arriving on the page
 
   // for viewer DataViz
   iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
