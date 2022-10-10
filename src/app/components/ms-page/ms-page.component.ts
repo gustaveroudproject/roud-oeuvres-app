@@ -27,21 +27,14 @@ export class MsPageComponent implements OnInit, DoCheck {
   msPartStartingPage: PageLight;
   manuscript: Manuscript;
   manuscripts: Manuscript[];
-  pubPartsAvantTexte: PubPartLight[];
   pubFromParts: PublicationLight;
   pubsAvantTexte: any[] = []; // array with PublicationLight and PubPartLight together
-  publicationsDiary: PublicationLight[];
-  pubPartsDiary: PubPartLight[];
   pubFromParts2: PublicationLight;
   pubsDiary: any[]; // array with PublicationLight and PubPartLight together
 
-  msReWritingMs: MsLight[];
-  msPartsReWritingMs: MsPartLight[];
-  rewritingMs: any[];
+  rewritingMs: any[] = [];
   msFromParts: MsLight;
 
-  msRewrittenMs: MsLight[];
-  msPartsReWrittenMs: MsPartLight[];
   rewrittenMs: any[];
   msFromParts3: MsLight;
 
@@ -134,8 +127,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (pubPartsAvantTexte: PubPartLight[]) => {
-                    this.pubPartsAvantTexte = pubPartsAvantTexte;
-
                     this.pubsAvantTexte.push(...pubPartsAvantTexte);
                     console.log(this.pubsAvantTexte)
 
@@ -162,8 +153,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (publicationsDiary: PublicationLight[]) => {
-                    this.publicationsDiary = publicationsDiary;
-
                     this.pubsDiary.push(...publicationsDiary);
                   },
                   error => console.log(error));
@@ -175,8 +164,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (pubPartsDiary: PubPartLight[]) => {
-                    this.pubPartsDiary = pubPartsDiary;
-
                     this.pubsDiary.push(...pubPartsDiary);
                     console.log(this.pubsDiary)
 
@@ -208,15 +195,12 @@ export class MsPageComponent implements OnInit, DoCheck {
                 );
 
 
-                this.rewritingMs = [];
                 /// get ms rewriting ms
                 this.loadingResults++;
                 this.dataService
                 .getMssRewritingMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msReWritingMs: MsLight[]) => {
-                  this.msReWritingMs = msReWritingMs;
-
                   this.rewritingMs.push(...msReWritingMs);
                 },
                 error => console.log(error));
@@ -227,8 +211,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getMsPartsRewritingMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msPartsReWritingMs: MsPartLight[]) => {
-                  this.msPartsReWritingMs = msPartsReWritingMs;
-
                   this.rewritingMs.push(...msPartsReWritingMs);
 
                   for (var msPart in msPartsReWritingMs) {
@@ -253,8 +235,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getMssRewrittenMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msRewrittenMs: MsLight[]) => {
-                  this.msRewrittenMs = msRewrittenMs;
-
                   this.rewrittenMs.push(...msRewrittenMs);
                 },
                 error => console.log(error));
@@ -265,8 +245,6 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getMsPartsRewrittenMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msPartsReWrittenMs: MsPartLight[]) => {
-                  this.msPartsReWrittenMs = msPartsReWrittenMs;
-
                   this.rewrittenMs.push(...msPartsReWrittenMs);
                   console.log(this.rewrittenMs)
 
