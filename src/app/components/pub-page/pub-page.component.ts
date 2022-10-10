@@ -41,8 +41,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   bookSection: BookSection;
   publisherLight: PublisherLight;
   pages: Page[] = [];
-  firstPageSwitch = true;
-  firstPageUrl = new ReplaySubject<string>();
   pubPartsLight: PubPartLight[];
   startingPage: Page;
   msLight: MsLight;
@@ -58,9 +56,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   publicationsRepublished: PublicationLight[];
   establishedTexts: TextLight[];
   establishedText: TextLight;
-  dataViz: DataViz;
-  dataVizs: DataViz[];
-
 
   panelReprisesDisableState: boolean = false;
   panelGenesisDisableState: boolean = false;
@@ -69,16 +64,11 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
   loadingResults = 0;
 
-  // for viewer
-  iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
-  project:string = "http://rdfh.ch/projects/0112";
-  images: FileRepresentation[] = [];
+  // for viewer Pub
+  imagesPubForwarder = new ReplaySubject<Page[]>();
+  imagesDataVizForwarder = new ReplaySubject<Page[]>();
 
-  // for the annotations e.g. regions in a still image representation
-  annotationResources: DspResource[];
-  resource: DspResource;
-
-
+  dataViz: DataViz;
 
   constructor(
     
@@ -122,21 +112,16 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         (authorLight: AuthorLight) => {
                           this.authors.push(authorLight);
                         });
-                      }
-                      
+                    }
+                    
                     //// get facsimiles scans from publication IRI
                     this.loadingResults++;
                     this.dataService
                       .getAllPagesOfPub(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pages: Page[]) => {
-                        if (this.firstPageSwitch) {
-                          this.firstPageSwitch = false;
-                          this.firstPageUrl.next(pages[0].imageURL);
-                        }
-                        this.pages.push(...pages);
-                        //console.log(pages.length);
-                        //console.log(this.selectedPageNum);
+                        this.imagesPubForwarder.next(pages);
+                        this.pages.push(...pages);              
                       });
 
                     //// get established text
@@ -153,21 +138,11 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     this.dataService
                       .getDataViz(publicationLight.id)
                       .subscribe((dataVizs: DataViz[]) => {
-                        this.dataViz = dataVizs[0]; // there will be only one item anyway
-
-                        
-                        this.knoraApiConnection.v2.res
-                        .getResource(this.dataViz.id)
-                        .subscribe(
-                          (response: ReadResource) => {
-                            const res = new DspResource(response);
-                            this.resource = res;
-                        
-                            this.images = this.collectRepresentationsAndAnnotations(this.resource);
-                          });
-
+                        // there will be only one item anyway
+                        this.imagesDataVizForwarder.next(dataVizs);
+                        // need one for the ark
+                        this.dataViz = dataVizs[0];
                       });                                          
-
 
 
                     //// get publication parts light
@@ -496,53 +471,5 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
       };
     }); 
   }
-
-
- 
-
-
-// FROM https://github.com/dasch-swiss/dsp-app/blob/9bb63d71234fc49f2afcb959603b8bcd4deb4429/src/app/workspace/resource/resource.component.ts#L355
-// only taken a part of it relevant for still images
-
-    /**
-     * creates a collection of [[StillImageRepresentation]] belonging to the given resource and assigns it to it.
-     * each [[StillImageRepresentation]] represents an image including regions.     *
-     * @param resource The resource to get the images for.
-     * @returns A collection of images for the given resource.
-     */
-   protected collectRepresentationsAndAnnotations(resource: DspResource): FileRepresentation[] {
-    if (!resource) {
-        return;
-    }
-    const representations: FileRepresentation[] = [];
-        const fileValues: ReadStillImageFileValue[] = resource.res.properties[Constants.HasStillImageFileValue] as ReadStillImageFileValue[];
-        for (const img of fileValues) {
-
-            //const regions: Region[] = [];
-            const regions: any[] = [] // we do not have type Region
-            const annotations: DspResource[] = [];
-            /*  // comment out all about regions
-            for (const incomingRegion of resource.incomingAnnotations) {
-                const region = new Region(incomingRegion);
-                regions.push(region);
-                const annotation = new DspResource(incomingRegion);
-                // gather region property information
-                annotation.resProps = this.initProps(incomingRegion);
-                // gather system property information
-                annotation.systemProps = incomingRegion.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
-                annotations.push(annotation);
-            }*/
-            const stillImage = new FileRepresentation(img);
-            representations.push(stillImage);
-            this.annotationResources = annotations; 
-            /* // comment out all about annotations and dsp-app interface
-            if (this.valueUuid === 'annotations' || this.selectedRegion === this.resourceIri) {
-                this.selectedTab = (this.incomingResource ? 2 : 1);
-                this.selectedTabLabel = 'annotations';
-            }*/
-        }
-
-    return representations;
-}
 
 }

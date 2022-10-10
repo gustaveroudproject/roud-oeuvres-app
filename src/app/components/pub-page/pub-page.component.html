@@ -49,12 +49,9 @@
 
         <!-- start COLUMNS LEFT -->
         <div class="col-6">
-        
-            
+                    
             <!-- VIEWER -->
-            <or-page-viewer [pages]="pages" [firstPageUrl]="firstPageUrl"></or-page-viewer>
-
-
+            <or-page-viewer [pages]="imagesPubForwarder"></or-page-viewer>
             
             <!-- BIBLIOGRAPHICAL REFERENCE -->
             <div class="py-5 my-2 biblioRef">
@@ -372,17 +369,21 @@
     </div> <!-- end row -->
 
 
-
-    <div class="row mb-5" *ngIf="dataViz">
+    <!-- *ngIf="dataVizs.length>0" -->
+    <div class="row mb-5">
 
         <div class="col-12">
-            <or-still-image #stillImage class="dsp-representation stillimage"
+
+            <!-- <or-still-image #stillImage class="dsp-representation stillimage"
                 [images]="images"
                 [iiifUrl]="iiifURL" 
                 [resourceIri]="dataViz.id"
                 [project]="project"
                 >
-            </or-still-image>
+            </or-still-image> -->
+
+            <or-page-viewer [pages]="imagesDataVizForwarder"></or-page-viewer>
+
             <!--
                 [currentTab]="selectedTabLabel"
                 [compoundNavigation]="compoundPosition" 
@@ -396,7 +397,7 @@
 
         <!-- caption -->
         <div class="col-12 caption m-2">DensityDesign (Politecnico di Milano) + Unil, <em>Constellation génétique de</em>
-            {{ publicationLight?.title }}<em> de Gustave Roud</em>, 2022. CC-BY 4-0.<br/>Cette image est disponible dans <a target="_blank" href="{{dataViz.ark}}">DSP</a>.</div>
+            {{ publicationLight?.title }}<em> de Gustave Roud</em>, 2022. CC-BY 4-0.<br/>Cette image est disponible dans <a target="_blank" href="{{dataViz?.ark}}">DSP</a>.</div>
 
     </div>
     

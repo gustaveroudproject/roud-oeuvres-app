@@ -1,18 +1,24 @@
 <!-- VIEWER -->
 <div class="viewer">
-    <div class="page" *ngIf="imageUrl |async as img">
-        <img class="page-img" [src]="img"/>
-    </div>
 
-    <div *ngIf="pages && pages.length > 0; else noImage">
+    <or-still-image #stillImage class="dsp-representation stillimage"
+    [images]="images"
+    [iiifUrl]="iiifURL" 
+    [resourceIri]="pubIRI"
+    [project]="project"
+    [selectedPageNumber]="selectedPageNumberForwarder"
+    >
+    </or-still-image>
 
-        <div class="selects">
+    <div *ngIf="images && images.length > 0; else noImage">
+
+        <div class="selects" *ngIf="allPages.length > 1">
             <select
             name="page-numbers"
             [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)" 
             > <!-- ngModel binds the value of the select to an angular variable -->
 
-                <option [value]="page.seqnum" *ngFor="let page of pages">
+                <option [value]="page.seqnum" *ngFor="let page of allPages">
                     {{ page.name }}</option
                 >
             </select>
