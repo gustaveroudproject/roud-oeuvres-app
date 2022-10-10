@@ -15,3 +15,9 @@ export interface Person extends PersonSemiLight {
   DhsID: string;
   Viaf: string;
 }
+
+
+export interface Entity {
+  id: string;
+  photo: string;
+}
