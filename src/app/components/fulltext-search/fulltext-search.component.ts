@@ -9,6 +9,8 @@ import { PlaceLight } from 'src/app/models/place.model';
 import { WorkLight } from 'src/app/models/work.model';
 import { Book, PublicationLight, PeriodicalArticle } from 'src/app/models/publication.model'
 import { finalize, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { AuthorLight } from 'src/app/models/author.model';
 // import * as octicons from '@primer/octicons';
 
 
@@ -40,7 +42,7 @@ export class FulltextSearchComponent implements OnInit {
   roudPubs: PublicationLight[];
   booksIRIs: string[];
   articlesIRIs: string[];
-  bookSectionsIRIs: string[];
+  bookSectionsIRIs: string[];  
 
   results = false;
   search = false;
@@ -51,15 +53,238 @@ export class FulltextSearchComponent implements OnInit {
   
   expectingResults = 0;
 
+  translatedAuthorIRI: string;
+  translatedAuthor: AuthorLight;
+  mssTranslatedAuthor: MsLight[];
+
+  mssDiaryDate: MsLight[];
+  mssDiaryEstablishedDate: MsLight[];
+  mssDiaryYears: any;
+  
+  years: string;
+  titleYears: string;
+
+  about: string;
+  
+
   constructor(
     private dataService: DataService,
-    private el: ElementRef) {}
+    private el: ElementRef,
+    private route: ActivatedRoute) {}
+    
 
-  ngOnInit() {}
+    finalizeWait() {
+      this.expectingResults--;
+      console.log("finalize: "+ this.expectingResults);
+    }
 
-  finalizeWait() {
-    this.expectingResults--;
-  }
+  ngOnInit() {
+    
+    this.route.queryParams
+    .pipe(finalize(() => this.finalizeWait()))
+    .subscribe(params => { 
+      this.translatedAuthorIRI = params.translatedAuthorIRI;
+      this.years = params.years;
+      this.about = params.about;
+
+
+      // QUERY COMING FROM ARCHIVES: TRANSLATIONS
+      if (this.translatedAuthorIRI != null) {
+        this.dataService.getAuthorLight(this.translatedAuthorIRI)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
+          (translatedAuthor: AuthorLight) => {
+            this.translatedAuthor = translatedAuthor;
+          }
+        );
+        // TODO: Loic: add paging results
+        this.mss = []
+        this.expectingResults++;
+        this.dataService.getMssTranslatedAuthor(this.translatedAuthorIRI)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
+          (mssTranslatedAuthor: MsLight[]) => {
+            this.mssTranslatedAuthor = mssTranslatedAuthor;
+            this.mss.push(...mssTranslatedAuthor)
+          }
+        );
+      }
+
+
+      // QUERY COMING FROM ARCHIVES: DIARY
+      if (this.years != null) {
+
+        this.titleYears = this.years.slice(10).replace(":", "–");
+        
+        this.mss = []
+        this.mssDiaryYears = [];
+
+        // TODO: Loic: add paging results
+        this.dataService.getDiaryMssDate(this.years)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
+          (mssDiaryDate: MsLight[]) => {
+            this.mssDiaryDate = mssDiaryDate;
+           // this.mss = [ ...mssDiaryDate];
+           this.mss.push(...this.mssDiaryDate)
+            
+          }
+        );
+        // TODO: Loic: add paging results
+        this.expectingResults++;
+        this.dataService.getDiaryMssEstablishedDate(this.years)
+        .pipe(finalize(() => this.finalizeWait()))
+        .subscribe(
+          (mssDiaryEstablishedDate: MsLight[]) => {
+            this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
+            //this.mssDiaryYears = [ ...this.mssDiaryEstablishedDate];
+            //this.mss.push(...this.mssDiaryYears)
+            this.mss.push(...this.mssDiaryEstablishedDate)
+          }
+        );
+      }
+
+
+      // QUERY COMING FROM ARCHIVES: ART AND LIT CRITICISM
+      // same code is used below onSearch (with additional comments)
+      this.results = false;
+      this.search = true;
+      this.pending = true;
+      this.expectingResults++;
+      // empty results arrays to reinitalize search
+      this.persons = [];
+      this.texts = [];
+      this.mss = [];
+      this.places = [];
+      this.msParts = [];
+      this.works = [];
+      this.pubs = [];
+      this.booksIRIs = [];
+      this.articlesIRIs = [];
+      this.bookSectionsIRIs = [];
+      this.roudPubs = [];
+
+      if (this.about != null) {
+        this.dataService.fullTextSearchPaged(this.about)
+        .pipe( finalize(() => {
+          this.pending=false;
+          this.finalizeWait();
+        }) )
+        .pipe(
+          map( (resources: Resource[]) => {
+            this.results = true;
+            this.pending = false;
+            // RESULTS: PERSONS
+            const personsIRIs = resources.filter(r => r.resourceClassLabel === "Person").map(r => r.id);
+            if (personsIRIs && personsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getPersons(personsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe(
+                (persons: Person[]) => this.persons.push(...persons),
+                // if parallel is too slow, put the following get here, once persons have finished 
+                error => console.error(error)
+              );
+            }
+            // RESULTS: PLACES
+            const placesIRIs = resources.filter(r => r.resourceClassLabel === "Place").map(r => r.id);
+            if (placesIRIs && placesIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getPlacesLight(placesIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe((places: PlaceLight[]) => this.places.push(...places));
+            }
+            // RESULTS: WORKS
+            const worksIRIs = resources.filter(r => r.resourceClassLabel === "Artwork" || r.resourceClassLabel === "Music work" || r.resourceClassLabel === "Work of literature").map(r => r.id);
+            if (worksIRIs && worksIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getWorksLight(worksIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe((works: WorkLight[]) => this.works.push(...works));
+            }
+            // RESULTS: TEXTS
+            const textsIRIs = resources.filter(r => r.resourceClassLabel === "Established text").map(r => r.id);
+            if (textsIRIs && textsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getTexts(textsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe(
+                (texts: Text[]) => {
+                  this.texts.push(...texts);
+                  let poeticTexts = this.texts.filter
+                        (text => text.editorialSet == 'Œuvre poétique');
+                  this.texts = [];
+                  this.texts.push(...poeticTexts);
+                });
+            }
+            // RESULTS: MSS AND MSS PARTS
+            const mssIRIs = resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);
+            if (mssIRIs && mssIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getMssLight(mssIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe((mss: MsLight[]) => this.mss.push(...mss));
+            }
+            const msPartsIRIs = resources.filter(r => r.resourceClassLabel === "Part of a manuscript (for diary only)").map(r => r.id);
+            if (msPartsIRIs && msPartsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getMsPartsLight(msPartsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe((msParts: MsPartLight[]) => {
+                  msParts.forEach( e => {
+                    this.msParts.push(e);
+  
+                    this.dataService
+                    .getMsOfMsPart(e.isPartOfMsValue)
+                    .subscribe(
+                      (msFromParts: MsLight) => {
+                        // TODO: Loic: to be checked, shouldn't it be concatenated into an array?
+                        this.msFromParts = msFromParts;
+                      });
+                  });
+                }
+              );
+            }
+            // RESULTS: PUBLICATIONS
+            const pubsIRIs = resources.filter
+              (r => r.resourceClassLabel === "Book" ||
+              r.resourceClassLabel === "Periodical article"  ||
+              r.resourceClassLabel === "Book section").map(r => r.id);
+            if (pubsIRIs && pubsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getPublicationsLight(pubsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe(
+                (pubs: PublicationLight[]) => {
+                  this.pubs.push(...pubs);
+  
+                  // filter only publications by Roud, before or in 1977
+                  let roudPubs = pubs.filter
+                    (pub => pub.editorialSet != 'About Roud' &&  pub.editorialSet != 'Photography'
+                    &&  pub.editorialSet != 'correspondance' &&  pub.editorialSet != 'Disc' 
+                        && pub.date.slice(10) <= '1977'
+                        );
+                  this.roudPubs.push(...roudPubs);
+                  // RESULTS: BOOKS          
+                  this.booksIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Book").map(r => r.id));
+                  // RESULTS: ARTICLES  
+                  this.articlesIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Periodical article").map(r => r.id));                  
+                  // RESULTS: BOOK SECTIONS  
+                  this.bookSectionsIRIs.push(...roudPubs.filter(r => r.resourceClassLabel === "Book section").map(r => r.id));
+                },
+                error => console.error(error)
+              );
+            }
+          }))
+          .subscribe()
+      }
+
+
+    }
+  );
+}
+
+  
 
   onSearch() {
     this.results = false;
@@ -130,12 +355,19 @@ export class FulltextSearchComponent implements OnInit {
 
           // RESULTS: TEXTS
           const textsIRIs = resources.filter(r => r.resourceClassLabel === "Established text").map(r => r.id);
-          if (textsIRIs && textsIRIs.length > 0) {
-            this.expectingResults++;
-            this.dataService.getTexts(textsIRIs)
-            .pipe(finalize(() => this.finalizeWait()))
-            .subscribe((texts: Text[]) => this.texts.push(...texts));
-          }
+            if (textsIRIs && textsIRIs.length > 0) {
+              this.expectingResults++;
+              this.dataService.getTexts(textsIRIs)
+              .pipe(finalize(() => this.finalizeWait()))
+              .subscribe(
+                (texts: Text[]) => {
+                  this.texts.push(...texts);
+                  let poeticTexts = this.texts.filter
+                        (text => text.editorialSet == 'Œuvre poétique');
+                  this.texts = [];
+                  this.texts.push(...poeticTexts);
+                });
+            }
 
           // RESULTS: MSS AND MSS PARTS
           const mssIRIs = resources.filter(r => r.resourceClassLabel === "Archival document").map(r => r.id);

@@ -2,10 +2,20 @@
 <!-- <kui-fulltext-search [route]="'/search'"></kui-fulltext-search>
 
 <router-outlet></router-outlet> -->
+<div class="container">
 
 <or-progress-indicator *ngIf="expectingResults > 0" ></or-progress-indicator>
 
-<div class="container">
+<!-- breadcrumbs -->
+<div class="breadcrumbNavbar my-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Recherche</li>
+    </ol>
+  </nav>
+</div>
+
 
     <!-- INPUT -->
     <div class="row">
@@ -31,23 +41,11 @@
 
       <!-- filter categories -->
       <div class="col-md-3 my-3">
-        <div *ngIf="results">
+        <div *ngIf="results || years || translatedAuthorIRI">
 
           
 
-          <!-- textes -->
-          <ul class="list-group mb-1">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Recueils</b>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
-                <label class="custom-control-label" for="textsCheckbox">Textes critiques</label>
-              </div>
-              <span class="badge badge-light badge-pill">{{texts.length}}</span>
-            </li>
-          </ul>
+          
           
 
           <!-- archives -->
@@ -67,7 +65,7 @@
                 
                 
               </div>
-              <span class="badge badge-light badge-pill">{{mss.length + msParts.length}}</span>
+              <span class="badge badge-light badge-pill">{{mss?.length + msParts?.length}}</span>
             </li>
             <!-- publications -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -79,10 +77,27 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M0 3.75A.75.75 0 01.75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.496 4.496 0 0115.75 3h7.5a.75.75 0 01.75.75v15.063a.75.75 0 01-.755.75l-7.682-.052a3 3 0 00-2.142.878l-.89.891a.75.75 0 01-1.061 0l-.902-.901a3 3 0 00-2.121-.879H.75a.75.75 0 01-.75-.75v-15zm11.247 3.747a3 3 0 00-3-2.997H1.5V18h6.947a4.5 4.5 0 012.803.98l-.003-11.483zm1.503 11.485V7.5a3 3 0 013-3h6.75v13.558l-6.927-.047a4.5 4.5 0 00-2.823.971z"></path></svg>
                   
               </div>
-              <span class="badge badge-light badge-pill">{{ (roudPubs !== undefined) ? (roudPubs.length) : "0" }}
+              <span class="badge badge-light badge-pill">{{ (roudPubs !== undefined) ? (roudPubs?.length) : "0" }}
                 <!-- the data arrives too late, which gives an error thinking value is undefined. Add this to handle it --></span>
             </li>
           </ul>
+
+
+          <!-- textes -->
+          <ul class="list-group mb-1">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Recueils</b>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="textsCheckbox" (click)="show('texts')">
+                <label class="custom-control-label" for="textsCheckbox">Textes critiques</label>
+              </div>
+              <span class="badge badge-light badge-pill">{{ (texts !== undefined) ? (texts?.length) : "0" }}</span>
+            </li>
+          </ul>
+
+          
 
           <ul class="list-group mb-1">
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -98,7 +113,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
                   
               </div>
-              <span class="badge badge-light badge-pill">{{persons.length}}</span>
+              <span class="badge badge-light badge-pill">{{ (persons !== undefined) ? (persons?.length) : "0" }}</span>
             </li>
             <!-- places -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -110,7 +125,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path fill-rule="evenodd" d="M19.071 3.429C15.166-.476 8.834-.476 4.93 3.429c-3.905 3.905-3.905 10.237 0 14.142l.028.028 5.375 5.375a2.359 2.359 0 003.336 0l5.403-5.403c3.905-3.905 3.905-10.237 0-14.142zM5.99 4.489A8.5 8.5 0 0118.01 16.51l-5.403 5.404a.859.859 0 01-1.214 0l-5.378-5.378-.002-.002-.023-.024a8.5 8.5 0 010-12.02z"></path></svg>
                   
               </div>
-              <span class="badge badge-light badge-pill">{{places.length}}</span>
+              <span class="badge badge-light badge-pill">{{ (places !== undefined) ? (places?.length) : "0" }}</span>
             </li>
             <!-- works -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -118,7 +133,7 @@
                 <input type="checkbox" class="custom-control-input" id="worksCheckbox" (click)="show('works')">
                 <label class="custom-control-label" for="worksCheckbox">Œuvres</label>
               </div>
-              <span class="badge badge-light badge-pill">{{works.length}}</span>
+              <span class="badge badge-light badge-pill">{{ (works !== undefined) ? (works?.length) : "0" }}</span>
             </li>
             
           </ul>
@@ -135,11 +150,7 @@
             <strong>Manuscrits</strong>
             <ul>
               <li *ngFor="let ms of mss | sortByMsTitle">
-                
-                « <span [innerHTML]="ms?.title | htmlSanitizer"></span> »
-                  (<a routerLink="/archive/ms/{{ ms?.id | encodeURIComponent }}">
-                    {{ ms?.archive }}<span *ngIf="ms.shelfmark != '/'"
-                    [innerHTML]="ms?.shelfmark | htmlSanitizer"></span></a>)
+                <or-manuscript [msIRI]="ms?.id"></or-manuscript>
               </li>
             </ul>
           </div>
@@ -178,6 +189,21 @@
           </div>
         </div>
 
+
+        <div id="textsResults" *ngIf="texts && texts.length > 0">
+          <div>
+            <strong>Recueils</strong>
+            <ul>
+              <li *ngFor="let text of texts | sortByTextDate">
+                <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
+                  [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></a
+                >, <span [innerHtml]="text?.date | removeTextAndPar | htmlSanitizer"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
         
         <div id="personsResults" *ngIf="persons && persons.length > 0">
           <div>
@@ -195,20 +221,6 @@
           </div>
         </div>
         
-
-        <div id="textsResults" *ngIf="texts && texts.length > 0">
-          <div>
-            <strong>Textes</strong>
-            <ul>
-              <li *ngFor="let text of texts">
-                <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
-                  [innerHTML]="text?.title | htmlSanitizer"></a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
         
 
         <div id="placesResults" *ngIf="places && places.length > 0">
