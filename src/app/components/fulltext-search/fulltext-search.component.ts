@@ -67,10 +67,6 @@ export class FulltextSearchComponent implements OnInit {
   about: string;
   
 
-
-  
-
-
   constructor(
     private dataService: DataService,
     private el: ElementRef,
@@ -79,11 +75,13 @@ export class FulltextSearchComponent implements OnInit {
 
     finalizeWait() {
       this.expectingResults--;
+      console.log("finalize: "+ this.expectingResults);
     }
 
   ngOnInit() {
-
+    
     this.route.queryParams
+    .pipe(finalize(() => this.finalizeWait()))
     .subscribe(params => { 
       this.translatedAuthorIRI = params.translatedAuthorIRI;
       this.years = params.years;
@@ -92,7 +90,6 @@ export class FulltextSearchComponent implements OnInit {
 
       // QUERY COMING FROM ARCHIVES: TRANSLATIONS
       if (this.translatedAuthorIRI != null) {
-        this.expectingResults++;
         this.dataService.getAuthorLight(this.translatedAuthorIRI)
         .pipe(finalize(() => this.finalizeWait()))
         .subscribe(
@@ -123,7 +120,6 @@ export class FulltextSearchComponent implements OnInit {
         this.mssDiaryYears = [];
 
         // TODO: Loic: add paging results
-        this.expectingResults++;
         this.dataService.getDiaryMssDate(this.years)
         .pipe(finalize(() => this.finalizeWait()))
         .subscribe(
@@ -135,8 +131,6 @@ export class FulltextSearchComponent implements OnInit {
           }
         );
         // TODO: Loic: add paging results
-        // check: http://localhost:4200/archive/results?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
-        // moved to http://localhost:4200/search?translatedAuthorIRI=http:%2F%2Frdfh.ch%2F0112%2FzQNIeqPdSWOi5pY91FK80Q
         this.expectingResults++;
         this.dataService.getDiaryMssEstablishedDate(this.years)
         .pipe(finalize(() => this.finalizeWait()))
