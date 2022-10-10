@@ -70,7 +70,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   @Input() compoundNavigation?: DspCompoundPosition;
   // @Input() currentTab: string;
   // @Input() parentResource: ReadResource;
-  @Input() selectedPageNumber?: Observable<number>; 
 
   @Output() goToPage = new EventEmitter<number>();
 
@@ -336,13 +335,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   }
 
  
-
-    ngOnInit(): void {
-        if(this.selectedPageNumber) {
-            this.selectedPageNumber.subscribe(this.openPage);
-        }
-    }
-
 
 
 }

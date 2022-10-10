@@ -2,15 +2,14 @@
 <div class="viewer">
 
     <or-still-image #stillImage class="dsp-representation stillimage"
-    [images]="images"
+    [images]="currentImage"
     [iiifUrl]="iiifURL" 
     [resourceIri]="pubIRI"
     [project]="project"
-    [selectedPageNumber]="selectedPageNumberForwarder"
     >
     </or-still-image>
 
-    <div *ngIf="images && images.length > 0; else noImage">
+    <div *ngIf="allPages && allPages.length > 0; else noImage">
 
         <div class="selects" *ngIf="allPages.length > 1">
             <select
@@ -19,13 +18,13 @@
             > <!-- ngModel binds the value of the select to an angular variable -->
 
                 <option [value]="page.seqnum" *ngFor="let page of allPages">
-                    {{ page.name }}</option
-                >
+                    {{ page.name }}
+                </option>
             </select>
 
             <select *ngIf="parts && parts.length > 0"
             id="selectorPart"
-            [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"
+            [ngModel]="selectedPageNum" (change)="selectOnChange(+$event.target.value)"
             >
                 <option [value]="part.startingPageSeqnum" *ngFor="let part of parts">
                     <span>{{ part.title }}</span>

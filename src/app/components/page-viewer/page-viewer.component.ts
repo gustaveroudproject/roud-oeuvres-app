@@ -6,6 +6,8 @@ import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } 
 import { BookPart, Page } from '../../models/page.model';
 import { FileRepresentation } from '../file-representation';
 import { DspResource } from '../dsp-resource';
+import { first, tap } from 'rxjs/operators';
+import { values } from 'lodash';
 
 
 @Component({
@@ -23,6 +25,7 @@ export class PageViewerComponent implements OnInit {
   // for viewer DataViz
   iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
   project:string = "http://rdfh.ch/projects/0112";
+  currentImage: FileRepresentation[] = [];
   images: FileRepresentation[] = [];
   
   // for the annotations e.g. regions in a still image representation
@@ -37,27 +40,40 @@ export class PageViewerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.pages.subscribe(
-      (pages: Page[]) => {
-        this.allPages.push(...pages);
-        pages.map( (page) => {
-          this.knoraApiConnection.v2.res
-          .getResource(page.id)
+    let us = this;
+    let first = true;
+    this.pages
+    .pipe(tap(
+      pages => { 
+        if (first) { 
+          first = false;
+          us.knoraApiConnection.v2.res
+          .getResource(pages[0].id)
           .subscribe(
             (response: ReadResource) => {
               const res = new DspResource(response);
-              this.images = this.collectRepresentationsAndAnnotations(res);
+              us.currentImage = us.collectRepresentationsAndAnnotations(res);
             });
-        })
-      });
+        }
+      })
+    )
+    .subscribe((pages: Page[]) => {
+      // keep a copy of the pages
+      this.allPages.push(...pages);
+    });
   }
 
-  selectOnChange(value) {
+  selectOnChange(value: number) {
     let us = this;
     if (us.selectedPageNum != value) {
       us.selectedPageNum = value;
-      // pass it on still image viewer
-      us.selectedPageNumberForwarder.next(value);
+      us.knoraApiConnection.v2.res
+      .getResource(us.allPages[value-1].id)
+      .subscribe(
+        (response: ReadResource) => {
+          const res = new DspResource(response);
+          us.currentImage = us.collectRepresentationsAndAnnotations(res);
+        });
     }
   }
 
