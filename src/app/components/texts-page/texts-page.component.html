@@ -23,32 +23,23 @@
   <div class="row">
 
     <div class="col-6">
-      <br/><br/>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2FwO6Mo2hfQn2TmIlIYHOrzg']"><em>Adieu</em></a>, <!--Le Verseau,-->1927</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2FbRjHlLp0QpGACDggMQiBuw']"><em>Feuillets</em></a>, 1929</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2FzyQP33W6QmKuBgXgQtqgpQ']"><em>Petit traité de la marche en plaine</em></a>, 1932</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2F-SKhSYWyTjSUoBl0VjxFzw']"><em>Essai pour un paradis</em></a>, 1933</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2F0q4rNxoVTqCek3FOwULnpg']"><em>Pour un moissonneur</em></a>, <!--Lausanne, Mermod,-->1941</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2FAYpx3fJdRPitC0qHzurzng']"><em>Air de la solitude</em></a>, 1945</p>
-      <p><a [routerLink]="['/texts/']"><em>Haut-Jorat</em></a>, 1949</p>
-      <p><a [routerLink]="['/texts/http%3A%2F%2Frdfh.ch%2F0112%2FvQTvxJv3SzWtf7jrqhD3hQ']"><em>Le Repos du cavalier</em></a>, 1958</p>
-      <p><a [routerLink]="['/texts/']"><em>Requiem</em></a>, 1967</p>
-      <p><a [routerLink]="['/texts/']"><em>Campagne perdue</em></a>, 1972</p>
-    </div>
-
-    <div class="col-6">
       <img src="https://iiif.ls-prod-server.dasch.swiss:443/0112/Af3QQvkv7BC-BKMtyOpy0pu.jp2/full/2532,2801/0/default.jpg"/>
     </div>
-  </div>
+  
 
+    <div class="col-5 offset-1">
+        <p *ngFor="let text of textsLight" class="text-item">
+          <a routerLink="/texts/{{ text.id | encodeURIComponent }}"><i [innerHtml]="text?.title | removeTextAndPar | htmlSanitizer"
+            ></i>
+          </a>, <span [innerHtml]="text?.date | removeTextAndPar | htmlSanitizer"></span>
+        </p>
+    </div>
+
+    </div>
+
+    
+  
     <!--
-    <ul>
-      <li *ngFor="let textLight of textLights" class="text-item">
-        <a routerLink="/texts/{{ textLight.id | encodeURIComponent }}" [innerHtml]="textLight.title | htmlSanitizer"
-          >
-        </a>
-      </li>
-    </ul>
     <button (click)="onLoadNextPage()" type="button" class="btn btn-light">
       Plus
     </button>-->

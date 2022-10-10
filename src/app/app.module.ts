@@ -88,6 +88,7 @@ import { booleanPipe } from './pipes/boolean.pipe';
 import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
 import { removeInternalParPipe } from './pipes/removeInternalPar.pipe';
 import { sortByMsTitlePipe } from './pipes/sort-by-ms-title.pipe';
+import { sortByTextDatePipe } from './pipes/sort-by-text-date.pipe';
 import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe'
 
 
@@ -116,6 +117,7 @@ export function initializeApp(appInitService: AppInitService) {
     sortBySurnamePipe,
     sortByShelfmarkPipe,
     sortByMsTitlePipe,
+    sortByTextDatePipe,
     booleanPipe,
     removeTextAndParPipe,
     removeInternalParPipe,
