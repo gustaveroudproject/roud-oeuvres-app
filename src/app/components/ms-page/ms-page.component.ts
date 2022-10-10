@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
 import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, PubPartLight } from 'src/app/models/publication.model';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { ReplaySubject } from 'rxjs';
+import { concat, ReplaySubject } from 'rxjs';
 
 
 
@@ -130,18 +130,17 @@ export class MsPageComponent implements OnInit, DoCheck {
                     this.pubsAvantTexte.push(...pubPartsAvantTexte);
                     console.log(this.pubsAvantTexte)
 
-                    for (var pubPart in pubPartsAvantTexte) {
-                      this.loadingResults++;
-                      this.dataService
-                      .getPubOfPubPart(pubPartsAvantTexte[pubPart].isPartOfPubValue)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe(
-                        (pubFromParts: PublicationLight) => {
-                          this.pubFromParts = pubFromParts;
-                        },
-                        error => console.log(error)
-                      );
-                    }
+                    this.loadingResults++;
+                    concat(...pubPartsAvantTexte.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                    .pipe(
+                      take(1),
+                      finalize(() => this.finalizeWait())
+                    )
+                    .subscribe((pubFromParts) => {
+                      // if we have a candidate, we keep it
+                      this.pubFromParts = pubFromParts;
+                    });
+
                   },
                   error => console.log(error));
 
