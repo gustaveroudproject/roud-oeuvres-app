@@ -29,25 +29,6 @@
         <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
-
-    <!-- MAP -->
-    <or-place-map *ngIf="place?.lat" [placeVar]="place"></or-place-map>  
-    <!-- without *ngIf, place is undefined in or-place-map  -->
-    
-
-
-    <!-- PICTURES -->
-    <div class="row caption m-5">
-        <div class="col-md-7 offset-md-2">
-            <img *ngIf="photo" width="100%"
-            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
-            />
-            <br/>
-            {{photo?.title}}
-        </div>
-    </div>
-
-
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
         <div>
@@ -67,6 +48,27 @@
     </div>
 
 
+
+    <!-- MAP -->
+    <or-place-map *ngIf="place?.lat" [placeVar]="place"></or-place-map>  
+    <!-- without *ngIf, place is undefined in or-place-map  -->
+    
+
+
+    <!-- PICTURES -->
+    <div class="row caption m-5">
+        <div class="col-md-7 offset-md-2">
+            <img *ngIf="photo" width="100%"
+            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
+            />
+            <br/>
+            {{photo?.title}}
+        </div>
+    </div>
+
+
+    
+    <br/><br/>
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">
         <p>
