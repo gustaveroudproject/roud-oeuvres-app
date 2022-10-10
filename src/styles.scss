@@ -33,6 +33,7 @@ $lightDarkGreen: #DFE7E1;
 $orange: #e06d06;
 $rose: #F4BAB8; //ed9390
 $yellow:#dcbf85;
+$brown: da;
 
 
 /*************************** GENERAL **************************/
@@ -121,3 +122,8 @@ code {
 .notice {
   font-size: larger;
 }
+
+
+
+/************************** VIEWER, from dsp-app *******************/
+$panel-height: 40px;

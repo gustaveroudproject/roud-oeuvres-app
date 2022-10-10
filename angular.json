@@ -34,7 +34,8 @@
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
-              "node_modules/leaflet/dist/leaflet.js"
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js"
             ],
             "es5BrowserSupport": true
           },
@@ -98,7 +99,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/leaflet/dist/leaflet.css"        ],
             "scripts": [
-              "node_modules/leaflet/dist/leaflet.js"
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js"
             ],
             "assets": [
               "src/favicon.ico",

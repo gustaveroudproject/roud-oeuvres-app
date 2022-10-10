@@ -17,6 +17,7 @@ import { Work, WorkLight } from '../models/work.model';
 import { Essay, EssayLight } from '../models/essay.model';
 import ListsFrench from '../../assets/cache/lists_fr.json';
 import { DataViz } from '../models/dataviz.model';
+import { DspResource } from '../components/dsp-resource';
 
 
 @Injectable({

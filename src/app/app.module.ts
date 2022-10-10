@@ -72,6 +72,8 @@ import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TechPageComponent } from './components/tech-page/tech-page.component';
 import { PageViewerComponent } from './components/page-viewer/page-viewer.component';
+import { StillImageComponent } from './components/still-image/still-image.component';
+
 
 
 
@@ -161,7 +163,8 @@ export function initializeApp(appInitService: AppInitService) {
     ProjectPageComponent,
     TechPageComponent,
     PageViewerComponent,
-    ImageResizePipe
+    ImageResizePipe,
+    StillImageComponent
   ],
   imports: [
     MatExpansionModule,
