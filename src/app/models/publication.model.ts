@@ -40,6 +40,7 @@ export interface PubPartLight extends Resource, BookPart {
   title: string;
   isPartOfPubValue: string;
   number: string;
+  pubFromPart: PublicationLight;
 }
 
 export interface PubPart extends PubPartLight {  

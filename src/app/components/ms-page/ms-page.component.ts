@@ -20,7 +20,7 @@ export class MsPageComponent implements OnInit, DoCheck {
 
 
   msLight: MsLight;
-  msParts: MsPartLightWithStartingPageSeqnum[];
+  msParts: MsPartLightWithStartingPageSeqnum[] = [];
   pages: Page[] = [];
   firstPageSwitch = true;
   firstPageUrl = new ReplaySubject<string>();
@@ -29,13 +29,12 @@ export class MsPageComponent implements OnInit, DoCheck {
   manuscripts: Manuscript[];
   pubFromParts: PublicationLight;
   pubsAvantTexte: any[] = []; // array with PublicationLight and PubPartLight together
-  pubFromParts2: PublicationLight;
   pubsDiary: any[]; // array with PublicationLight and PubPartLight together
 
   rewritingMs: any[] = [];
   msFromParts: MsLight;
 
-  rewrittenMs: any[];
+  rewrittenMs: any[] = [];
   msFromParts3: MsLight;
 
   panelPoeticPubDisableState: boolean = false;
@@ -172,8 +171,9 @@ export class MsPageComponent implements OnInit, DoCheck {
                       .getPubOfPubPart(pubPartsDiary[pubPart].isPartOfPubValue)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe(
-                        (pubFromParts2: PublicationLight) => {
-                          this.pubFromParts2 = pubFromParts2;
+                        (pubFromPart: PublicationLight) => {
+                          pubPartsDiary[pubPart].pubFromPart = pubFromPart;
+                          // this.pubFromParts2 = pubFromParts2;
                         },
                         error => console.log(error)
                       );
@@ -188,7 +188,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getMsPartsFromMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msParts: MsPartLightWithStartingPageSeqnum[]) => {
-                  this.msParts = msParts;
+                  this.msParts.push(...msParts);
                 },
                 error => console.log(error)
                 );
@@ -208,26 +208,28 @@ export class MsPageComponent implements OnInit, DoCheck {
                 this.loadingResults++;
                 this.dataService
                 .getMsPartsRewritingMs(msLight.id)
-                .pipe(finalize(() => this.finalizeWait()))
-                .subscribe((msPartsReWritingMs: MsPartLight[]) => {
-                  this.rewritingMs.push(...msPartsReWritingMs);
+                .pipe(finalize(() => {
+                  this.finalizeWait();
 
-                  for (var msPart in msPartsReWritingMs) {
-                    this.loadingResults++;
-                    this.dataService
-                    .getMsOfMsPart(msPartsReWritingMs[msPart].isPartOfMsValue)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe(
-                      (msFromParts: MsLight) => {
-                        this.msFromParts = msFromParts;
-                      },
-                      error => console.log(error));
-                    }
+                  // once we collected all of the rewritingMs
+                  this.loadingResults++;
+                  concat(...this.rewritingMs.map(part => this.dataService.getMsOfMsPart(part.isPartOfMsValue)))
+                  .pipe(
+                    take(1),
+                    finalize(() => this.finalizeWait())
+                  )
+                  .subscribe((msFromParts) => {
+                    // if we have a candidate, we keep it
+                    this.msFromParts = msFromParts;
+                  },
+                  error => console.log(error));
+
+                }))
+                .subscribe((msPartsReWritingMs: MsPartLight[]) => {
+                  this.rewritingMs.push(...msPartsReWritingMs);  
                 },
                 error => console.log(error));
 
-
-                this.rewrittenMs = [];
                 /// get ms from which this ms is rewritten
                 this.loadingResults++;
                 this.dataService
@@ -242,23 +244,25 @@ export class MsPageComponent implements OnInit, DoCheck {
                 this.loadingResults++;
                 this.dataService
                 .getMsPartsRewrittenMs(msLight.id)
-                .pipe(finalize(() => this.finalizeWait()))
+                .pipe(finalize(() => {
+                  this.finalizeWait();
+
+                  // once we collected all of the rewrittenMs
+                  this.loadingResults++;
+                  concat(...this.rewrittenMs.map(part => this.dataService.getMsOfMsPart(part.isPartOfMsValue)))
+                  .pipe(
+                    take(1),
+                    finalize(() => this.finalizeWait())
+                  )
+                  .subscribe((msFromParts) => {
+                    this.msFromParts3 = msFromParts;
+                  },
+                  error => console.log(error));
+
+                }))
                 .subscribe((msPartsReWrittenMs: MsPartLight[]) => {
                   this.rewrittenMs.push(...msPartsReWrittenMs);
                   console.log(this.rewrittenMs)
-
-                  for (var msPart in msPartsReWrittenMs) {
-                    this.loadingResults++;
-                    this.dataService
-                    .getMsOfMsPart(msPartsReWrittenMs[msPart].isPartOfMsValue)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe(
-                      (msFromParts3: MsLight) => {
-                        this.msFromParts3 = msFromParts3;
-                        console.log(this.msFromParts3)
-                      },
-                      error => console.log(error));
-                    }
                 },
                 error => console.log(error)
                 );

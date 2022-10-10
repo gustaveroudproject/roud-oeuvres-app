@@ -256,9 +256,9 @@
                                 </span>
                                 <span *ngIf="pubD?.resourceClassLabel == 'Part of a publication'">
                                     « {{ pubD?.title }} »
-                                    (partie de :<a routerLink="/archive/pub/{{ pubFromParts2?.id | encodeURIComponent }}">
-                                        <span [innerHTML]="pubFromParts2?.title | removeTextAndPar | htmlSanitizer"
-                                        ></span></a>, {{ pubFromParts2?.date | knoradatesFormatting }})
+                                    (partie de :<a routerLink="/archive/pub/{{ pubD.isPartOfPubValue | encodeURIComponent }}">
+                                        <span [innerHTML]="pubD.partFromPub?.title | removeTextAndPar | htmlSanitizer"
+                                        ></span></a>, {{ pubD.partFromPub?.date | knoradatesFormatting }})
                                 </span>
                             </li>
                         </ul>
