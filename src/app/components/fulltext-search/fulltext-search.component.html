@@ -28,6 +28,8 @@
       </div>
     </div>
 
+    
+
     <!-- if NO results -->
     <div class="row" *ngIf="!results && search && !pending">  <!--!mss && !msParts && !roudPubs && !persons && !places && !works-->
       <div class="col-md-6 offset-md-4 my-5">
@@ -279,7 +281,22 @@
 
       </div> <!-- end list of results -->
 
-    </div> <!-- end results -->      
+    </div> <!-- end results -->    
+    
+    <br/><br/><br/><br/><br/>
+    <!-- SEARCH BY IMAGE -->
+    
+    <div class="row" *ngIf="somePersons">
+      
+      <div class="col-12"><p style="text-align: center;font-size: x-large;"><strong>Recherche par image</strong><br/>Refraîchir la page pour voir des nouvelles photos.</p></div>
+      
+      <div class="col-3" *ngFor="let ent of somePersons">
+          <a routerLink="/persons/{{ ent.id | encodeURIComponent }}">
+            <img width="90%"
+            [src]="sanitizer.bypassSecurityTrustUrl(ent.photo)"
+            /></a>
+          </div>
+    </div>
 
 
 </div> <!-- end container -->

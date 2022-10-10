@@ -40,7 +40,7 @@ export class TextsPageComponent implements OnInit {
         .subscribe((textsLight: TextLight[]) => {
           this.textsLight = textsLight;
           
-          console.log(this.textsLight)
+          //console.log(this.textsLight)
 
       },
       error => console.error(error)
