@@ -118,9 +118,11 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               .subscribe((worksMentioned: Work[]) => {
                 this.worksMentioned = worksMentioned;
 
+                
                 /// get works of authors
                 this.workAuthors = [];
                 for (var work in worksMentioned) {
+                  if (worksMentioned[work].authorValue) {
                   this.dataService
                   .getAuthorLight(worksMentioned[work].authorValue)
                   .subscribe(
@@ -129,6 +131,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                       this.workAuthors.push(workAuthor);
                     });
                   }
+                  }
+                
 
               });
 
@@ -279,6 +283,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
         }*/
         this.toc.push(tocItem)
       }
+      console.log(this.toc)
+      console.log(this.toc.length)
     }, (10000)); 
 
     

@@ -1,13 +1,11 @@
 @import 'src/styles.scss';
 
-p {
+.text-item, p {
     font-size: x-large;
-    display: block;
-    width: 100%;
 }
 
 img {
     width:100%;
-    opacity: 60%;
+    border:3px solid #323232;
 }
 
