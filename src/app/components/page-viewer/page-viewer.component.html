@@ -1,25 +1,30 @@
 <!-- VIEWER -->
 <div class="viewer">
-    <div class="page" *ngIf="imageUrl |async as img">
-        <img class="page-img" [src]="img"/>
-    </div>
 
-    <div *ngIf="pages && pages.length > 0; else noImage">
+    <or-still-image #stillImage class="dsp-representation stillimage"
+    [images]="currentImage"
+    [iiifUrl]="iiifURL" 
+    [resourceIri]="pubIRI"
+    [project]="project"
+    >
+    </or-still-image>
 
-        <div class="selects">
+    <div *ngIf="allPages && allPages.length > 0; else noImage">
+
+        <div class="selects" *ngIf="allPages.length > 1">
             <select
             name="page-numbers"
             [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)" 
             > <!-- ngModel binds the value of the select to an angular variable -->
 
-                <option [value]="page.seqnum" *ngFor="let page of pages">
-                    {{ page.name }}</option
-                >
+                <option [value]="page.seqnum" *ngFor="let page of allPages">
+                    {{ page.name }}
+                </option>
             </select>
 
             <select *ngIf="parts && parts.length > 0"
             id="selectorPart"
-            [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"
+            [ngModel]="selectedPageNum" (change)="selectOnChange(+$event.target.value)"
             >
                 <option [value]="part.startingPageSeqnum" *ngFor="let part of parts">
                     <span>{{ part.title }}</span>
@@ -30,7 +35,8 @@
 
     <ng-template #noImage>
         <div class="py-4" *ngIf="pages && pages.length == 0">   
-            <p>La reproduction de l'original n'est pas disponible.</p>
+            La reproduction de l'original n'est pas disponible. 
+            Les portails <a href="https://scriptorium.bcu-lausanne.ch/page/home" target="_blank">Scriptorium</a> et <a href="https://letempsarchives.ch" target="_blank">Le Temps Archives</a> offrent l'accès à des collections numérisées.
         </div>
     </ng-template>
 

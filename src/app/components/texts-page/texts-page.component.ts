@@ -30,17 +30,21 @@ export class TextsPageComponent implements OnInit {
     //this.onLoadNextPage();
     //this.dataService.getTextLights(this.index).subscribe(
     
+
       this.loadingResults++;
+
     this.dataService.getTextLights()
     //.subscribe(
      // (texts: Text[]) => {
        // this.textLights.push(...texts);
         //this.index = this.index + 1;
+
         .pipe(finalize(() => this.finalizeWait()))
         .subscribe((textsLight: TextLight[]) => {
           this.textsLight = textsLight;
           
           //console.log(this.textsLight)
+
 
       },
       error => console.error(error)

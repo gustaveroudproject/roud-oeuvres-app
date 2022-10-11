@@ -49,6 +49,7 @@ import { DspCompoundPosition } from '../dsp-resource';
 //import { EmitEvent, Events, UpdatedFileEventValue, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { FileRepresentation } from '../file-representation';
 import { RepresentationService } from '../representation.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -188,14 +189,16 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
           withCredentials: true
       };
 
-      const index = this.images[0].fileValue.fileUrl.indexOf(this.images[0].fileValue.filename);
-      const pathToJson = this.images[0].fileValue.fileUrl.substring(0, index + this.images[0].fileValue.filename.length) + '/knora.json';
-
-      this._http.get(pathToJson, requestOptions).subscribe(
-          res => {
-              this.originalFilename = res['originalFilename'];
-          }
-      );
+      if (this.images && this.images.length>0) {
+        const index = this.images[0].fileValue.fileUrl.indexOf(this.images[0].fileValue.filename);
+        const pathToJson = this.images[0].fileValue.fileUrl.substring(0, index + this.images[0].fileValue.filename.length) + '/knora.json';
+  
+        this._http.get(pathToJson, requestOptions).subscribe(
+            res => {
+                this.originalFilename = res['originalFilename'];
+            }
+        );  
+      }
   }
 
   
@@ -332,8 +335,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   }
 
  
-
-
 
 
 }

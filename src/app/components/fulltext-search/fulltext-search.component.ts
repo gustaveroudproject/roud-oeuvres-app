@@ -68,6 +68,7 @@ export class FulltextSearchComponent implements OnInit {
 
   about: string;
 
+
   personsWithPhoto: string[];
   somePersonsIRIs: string[] = [];
   somePersons: Entity[] = [];
@@ -77,6 +78,7 @@ export class FulltextSearchComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private el: ElementRef,
+
     private route: ActivatedRoute,
     public sanitizer: DomSanitizer) {}
     
@@ -129,6 +131,7 @@ export class FulltextSearchComponent implements OnInit {
         )
       });
     } 
+
 
 
       // QUERY COMING FROM ARCHIVES: TRANSLATIONS
@@ -188,6 +191,7 @@ export class FulltextSearchComponent implements OnInit {
       }
 
 
+
       
       else if (this.about != null) {
         // QUERY COMING FROM ARCHIVES: ART AND LIT CRITICISM
@@ -208,6 +212,7 @@ export class FulltextSearchComponent implements OnInit {
         this.articlesIRIs = [];
         this.bookSectionsIRIs = [];
         this.roudPubs = [];
+
 
         this.dataService.fullTextSearchPaged(this.about)
         .pipe( finalize(() => {
@@ -323,9 +328,11 @@ export class FulltextSearchComponent implements OnInit {
           .subscribe()
       }
 
+
       else {
         this.expectingResults = 0;
       }
+
 
 
     }

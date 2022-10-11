@@ -113,13 +113,8 @@
         <div class="row row-intro">
 
             <div class="col-12">
-                <or-still-image #stillImage class="dsp-representation stillimage"
-                    [images]="images"
-                    [iiifUrl]="iiifURL" 
-                    [resourceIri]="dataVizIri_PourUnMoissonneur"
-                    [project]="projectIri"
-                    >
-                </or-still-image>
+                <or-page-viewer [pages]="imagesDataVizForwarder"></or-page-viewer>
+
                 <!--
                     [currentTab]="selectedTabLabel"
                     [compoundNavigation]="compoundPosition" 

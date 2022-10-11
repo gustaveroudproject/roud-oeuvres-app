@@ -28,7 +28,7 @@
     <div class="pt-4 notice row">
         <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
     </div>
-
+    
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
         <div>
