@@ -7,7 +7,6 @@ import { BookPart, Page } from '../../models/page.model';
 import { FileRepresentation } from '../file-representation';
 import { DspResource } from '../dsp-resource';
 import { first, tap } from 'rxjs/operators';
-import { values } from 'lodash';
 
 
 @Component({
