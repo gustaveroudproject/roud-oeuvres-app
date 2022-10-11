@@ -5,7 +5,7 @@
 .osd-container {
     // color: $bright;
     background-color: #292929; // $dark;
-    height: 60vh; // calc(100% - 64px);
+    height: 50vh; // calc(100% - 64px);
     border-radius: 8px 8px 0px 0px;
 
     &.fullscreen {
@@ -16,7 +16,7 @@
   .toolbar {
     // color: $primary_50
     background-color: #292929; // $dark;
-    height: 74px;
+    height: 64px;
     text-align: center;
     border-radius: 0px 0px 8px 8px;
 
@@ -89,7 +89,7 @@ button {
   fill:white;
   background-color: #292929;
   border: 0px;
-  padding-top:10px;
+  //padding-top:10px;
 }
 
 svg {

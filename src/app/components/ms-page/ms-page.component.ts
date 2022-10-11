@@ -76,7 +76,7 @@ export class MsPageComponent implements OnInit, DoCheck {
       params => {
         if (params.has('iri')) {
           this.loadingResults++;
-          console.log(this.loadingResults)
+          //console.log(this.loadingResults)
                   
           //// get basic properties (msLight) of the manuscript
           this.dataService
@@ -85,7 +85,7 @@ export class MsPageComponent implements OnInit, DoCheck {
             .subscribe(
               (msLight: MsLight) => {        
                 this.msLight = msLight;
-                console.log(this.msLight)
+                //console.log(this.msLight)
 
                 //// get facsimiles scans from publication IRI
                 this.loadingResults++;
@@ -109,7 +109,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .subscribe(
                   (manuscript: Manuscript) => {
                     this.manuscript = manuscript;
-                    console.log(this.manuscript)
+                    //console.log(this.manuscript)
                   },
                   error => console.log(error)
                 );
@@ -140,7 +140,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                     this.pubPartsAvantTexte = pubPartsAvantTexte;
 
                     this.pubsAvantTexte.push(...pubPartsAvantTexte);
-                    console.log(this.pubsAvantTexte)
+                    //console.log(this.pubsAvantTexte)
 
                     for (var pubPart in pubPartsAvantTexte) {
                       this.loadingResults++;
@@ -181,7 +181,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                     this.pubPartsDiary = pubPartsDiary;
 
                     this.pubsDiary.push(...pubPartsDiary);
-                    console.log(this.pubsDiary)
+                    //console.log(this.pubsDiary)
 
                     for (var pubPart in pubPartsDiary) {
                       this.loadingResults++;
@@ -271,7 +271,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                   this.msPartsReWrittenMs = msPartsReWrittenMs;
 
                   this.rewrittenMs.push(...msPartsReWrittenMs);
-                  console.log(this.rewrittenMs)
+                  //console.log(this.rewrittenMs)
 
                   for (var msPart in msPartsReWrittenMs) {
                     this.loadingResults++;
@@ -281,7 +281,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                     .subscribe(
                       (msFromParts3: MsLight) => {
                         this.msFromParts3 = msFromParts3;
-                        console.log(this.msFromParts3)
+                        //console.log(this.msFromParts3)
                       },
                       error => console.log(error));
                     }
