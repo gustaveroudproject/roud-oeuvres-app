@@ -52,6 +52,8 @@ export class MsPageComponent implements OnInit, DoCheck {
 
   loadingResults = 0;
 
+  imagesPubForwarder = new ReplaySubject<Page[]>();
+
 
   constructor(
     private dataService: DataService,
@@ -91,10 +93,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getAllPagesOfMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((pages: Page[]) => {
-                  if (this.firstPageSwitch) {
-                    this.firstPageSwitch = false;
-                    this.firstPageUrl.next(pages[0].imageURL);
-                  }
+                  this.imagesPubForwarder.next(pages);
                   this.pages.push(...pages);
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
