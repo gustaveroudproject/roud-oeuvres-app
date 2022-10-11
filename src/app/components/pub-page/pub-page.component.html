@@ -361,7 +361,9 @@
     </div> <!-- end row -->
 
 
-    <div class="row mb-5">
+
+    <div class="row mb-5 justify-content-center" *ngIf="dataViz">
+
 
         <div class="col-12">
 
@@ -379,8 +381,10 @@
         </div>
 
         <!-- caption -->
-        <div class="col-12 caption m-2">DensityDesign (Politecnico di Milano) + Unil, <em>Constellation génétique de</em>
-            {{ publicationLight?.title }}<em> de Gustave Roud</em>, 2022. CC-BY 4-0.<br/>Cette image est disponible dans <a target="_blank" href="{{dataViz?.ark}}">DSP</a>.</div>
+
+        <div class="col-8 caption m-2">DensityDesign (Politecnico di Milano) + Unil, <em>Constellation génétique de </em>
+            <span [innerHTML]="publicationLight?.title | removeTextAndPar | htmlSanitizer"></span> <em> de Gustave Roud</em>, 2022. CC-BY 4-0. Cette image est disponible dans <a target="_blank" href="{{dataViz.ark}}">DSP</a>.</div>
+
 
     </div>
     

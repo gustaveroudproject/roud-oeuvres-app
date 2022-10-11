@@ -531,6 +531,61 @@ getPicture(iri: string): Observable<Picture> {
 
 
 
+getPlacesWithPhoto(index: number = 0): Observable<PlaceLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?place knora-api:isMainResource true .
+} WHERE {
+    ?place a roud-oeuvres:Place .
+    ?place roud-oeuvres:placeHasPhoto ?name .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
+        return this.readRes2PlaceLight(r);
+      })
+    )
+  );
+}
+
+
+getPersonsWithPhoto(index: number = 0): Observable<PersonLight[]> {  
+  const gravsearchQuery = `
+
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+CONSTRUCT {
+    ?Person knora-api:isMainResource true .
+} WHERE {
+    ?Person a roud-oeuvres:Person .
+    ?Person roud-oeuvres:personHasPhoto ?photo .
+}
+OFFSET ${index}
+`
+;
+return this.knoraApiConnection.v2.search
+  .doExtendedSearch(gravsearchQuery)
+  .pipe(
+    map((
+      readResources: ReadResourceSequence 
+    ) => readResources.resources.map(r => {
+        return this.readRes2PersonLight(r);
+      })
+    )
+  );
+}
+
+
+
 
 
   getPersonsInText(textIRI: string, index: number = 0): Observable<PersonLight[]> {  

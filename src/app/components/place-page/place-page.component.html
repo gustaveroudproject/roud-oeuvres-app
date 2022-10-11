@@ -28,6 +28,25 @@
     <div class="pt-4 notice row">
         <p [innerHtml]="place?.notice | htmlSanitizer" orResourceLink></p>
     </div>
+    
+    <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
+    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+        <div>
+            <strong>Occurrences dans les recueils :</strong>
+        </div>
+        <br/>
+        <div class="col-12">
+            <ul class="mention-item">
+                <li *ngFor="let textLight of textsLight">
+                    - <em
+                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
+                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
+                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
+                </li>
+            </ul>
+        </div>
+    </div>
+
 
 
     <!-- MAP -->
@@ -48,25 +67,8 @@
     </div>
 
 
-    <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
-        <div>
-            <strong>Occurrences dans les recueils :</strong>
-        </div>
-        <br/>
-        <div class="col-12">
-            <ul class="mention-item">
-                <li *ngFor="let textLight of textsLight">
-                    - <em
-                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
-                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
-                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
-                </li>
-            </ul>
-        </div>
-    </div>
-
-
+    
+    <br/><br/>
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">
         <p>

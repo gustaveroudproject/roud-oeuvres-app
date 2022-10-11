@@ -1,6 +1,6 @@
 ACCOUNT=platec
 CONTAINER=roud
-VERSION=v0.2.2
+VERSION=v0.2.3
 
 .PHONY: build
 build: ## build the web-app container image
