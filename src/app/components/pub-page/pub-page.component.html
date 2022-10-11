@@ -114,15 +114,7 @@
 
 
         <!-- start COLUMNS RIGHT -->
-        <div class="col-6">
-
-            <!--
-            <div>
-                <img width="50%" *ngIf="dataViz"
-                    [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
-            </div>
-            -->
-            
+        <div class="col-6">            
 
             <!-- GENÈSE ET REPRISES -->
             <div *ngIf="publicationLight?.editorialSet == 'Poetic work' || publicationLight?.editorialSet == 'Diary'">
@@ -369,18 +361,9 @@
     </div> <!-- end row -->
 
 
-    <!-- *ngIf="dataVizs.length>0" -->
     <div class="row mb-5">
 
         <div class="col-12">
-
-            <!-- <or-still-image #stillImage class="dsp-representation stillimage"
-                [images]="images"
-                [iiifUrl]="iiifURL" 
-                [resourceIri]="dataViz.id"
-                [project]="project"
-                >
-            </or-still-image> -->
 
             <or-page-viewer [pages]="imagesDataVizForwarder"></or-page-viewer>
 
