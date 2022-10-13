@@ -6,32 +6,28 @@
     <!-- in case of an error -->
     <app-status [status]="404" [url]="iiifUrl" [representation]="'still-image'" *ngIf="failedToLoad"></app-status>
 
-    <!-- navigation in case of compound object: previous and next page 
-    <div class="navigation vertical previous" *ngIf="compoundNavigation">
-        <button mat-button class="full-size" [disabled]="compoundNavigation.page <= 1"
-            (click)="openPage(compoundNavigation.page - 1)">
+    <div class="navigation vertical previous" *ngIf="lastPage">
+        <button mat-button class="full-size" [disabled]="currentPage <= 1"
+            (click)="openPage(currentPage - 1)">
             <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
     </div>
-    <div class="navigation vertical next" *ngIf="compoundNavigation">
-        <button mat-button class="full-size" [disabled]="compoundNavigation.page >= compoundNavigation.totalPages"
-            (click)="openPage(compoundNavigation.page + 1)">
+    <div class="navigation vertical next" *ngIf="lastPage && (lastPage>1)">
+        <button mat-button class="full-size" [disabled]="currentPage >= lastPage"
+            (click)="openPage(currentPage + 1)">
             <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
     </div>
-    -->
 
 </div>
 
 <div class="toolbar bottom">
-    <!-- navigation 
-    <div class="navigation horizontal" *ngIf="compoundNavigation">
-        <mat-slider [color]="'primary'" [disabled]="compoundNavigation.totalPages < 2"
-            [max]="compoundNavigation.totalPages" [min]="1" [step]="1" [thumbLabel]="true" [tickInterval]="'auto'"
-            [(ngModel)]="compoundNavigation.page" (change)="openPage($event.value)">
+    <div class="navigation horizontal" *ngIf="lastPage && (lastPage>1)">
+        <mat-slider [color]="'primary'" [disabled]="lastPage < 2"
+            [max]="lastPage" [min]="1" [step]="1" [thumbLabel]="true" [tickInterval]="'auto'"
+            [(ngModel)]="currentPage" (change)="openPage($event.value)">
         </mat-slider>
-    </div> -->
-    <!-- toolbar -->
+    </div>
     <div class="action horizontal">
         <!-- vertical more button with menu to open and copy iiif url 
         <button mat-icon-button [matMenuTriggerFor]="more">
@@ -39,18 +35,17 @@
         </button>
         -->
         
-        <!-- navigation in case of compound object: first page and previous page 
-        <span class="compound-nav" *ngIf="compoundNavigation">
-            <button mat-icon-button [disabled]="compoundNavigation.page <= 1" matTooltip="First page"
+        <!-- navigation in case of compound object: first page and previous page -->
+        <span class="compound-nav" *ngIf="lastPage && (lastPage>1)">
+            <button mat-icon-button [disabled]="currentPage <= 1" matTooltip="First page"
                 (click)="openPage(1)">
                 <mat-icon>first_page</mat-icon>
             </button>
-            <button mat-icon-button [disabled]="compoundNavigation.page <= 1" matTooltip="Previous page"
-                (click)="openPage(compoundNavigation.page - 1)">
+            <button mat-icon-button [disabled]="currentPage <= 1" matTooltip="Previous page"
+                (click)="openPage(currentPage - 1)">
                 <mat-icon>navigate_before</mat-icon>
             </button>
         </span>
-        -->
 
         <!-- zoom buttons: zoom out, home/reset, zoom in -->
         <span>
@@ -69,18 +64,17 @@
             </button>
         </span>
 
-        <!-- navigation in case of compound object: next page and last page 
-        <span class="compound-nav" *ngIf="compoundNavigation">
-            <button [disabled]="compoundNavigation.page >= compoundNavigation.totalPages"
-                matTooltip="Next page" (click)="openPage(compoundNavigation.page + 1)">
+        <!-- navigation in case of compound object: next page and last page -->
+        <span class="compound-nav" *ngIf="lastPage && (lastPage>1)">
+            <button [disabled]="currentPage >= lastPage"
+                matTooltip="Next page" (click)="openPage(currentPage + 1)">
                 <mat-icon>navigate_next</mat-icon>
             </button>
-            <button [disabled]="compoundNavigation.page === compoundNavigation.totalPages"
-                matTooltip="Last page" (click)="openPage(compoundNavigation.totalPages)">
+            <button [disabled]="currentPage === lastPage"
+                matTooltip="Last page" (click)="openPage(lastPage)">
                 <mat-icon>last_page</mat-icon>
             </button>
         </span>
-        -->
 
         <!-- action buttons: create annotation/region, fullscreen -->
         <span>

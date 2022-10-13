@@ -40,16 +40,8 @@ import {
   WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import * as OpenSeadragon from 'openseadragon';
-import { mergeMap } from 'rxjs/operators';
-//import { DspApiConnectionToken } from 'src/app/main/declarations/dsp-api-tokens';
-//import { DialogComponent } from 'src/app/main/dialog/dialog.component';
-//import { ErrorHandlerService } from 'src/app/main/services/error-handler.service';
-//import { NotificationService } from 'src/app/main/services/notification.service';
-import { DspCompoundPosition } from '../dsp-resource';
-//import { EmitEvent, Events, UpdatedFileEventValue, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { FileRepresentation } from '../file-representation';
 import { RepresentationService } from '../representation.service';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -62,24 +54,14 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
   
 
   @Input() images: FileRepresentation[];
-  // @Input() imageCaption?: string;
   @Input() iiifUrl?: string;
   @Input() resourceIri: string;
   @Input() project: string;
-  // @Input() activateRegion?: string; // highlight a region
-  @Input() compoundNavigation?: DspCompoundPosition;
-  // @Input() currentTab: string;
-  // @Input() parentResource: ReadResource;
+  @Input() currentPage?: number;
+  @Input() lastPage?: number;
 
   @Output() goToPage = new EventEmitter<number>();
-
-  // @Output() regionClicked = new EventEmitter<string>();
-
-  // @Output() regionAdded = new EventEmitter<string>();
-
   @Output() loaded = new EventEmitter<boolean>();
-
-  
 
   loading = true;
   failedToLoad = false;
@@ -105,14 +87,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
       OpenSeadragon.setString('Tooltips.ZoomIn', '');
       OpenSeadragon.setString('Tooltips.ZoomOut', '');
       OpenSeadragon.setString('Tooltips.FullPage', '');
-
-      // own draw region icon; because it does not exist in the material icons
-      /*
-      this._matIconRegistry.addSvgIcon(
-          'draw_region_icon',
-          this._domSanitizer.bypassSecurityTrustResourceUrl('/assets/images/draw-region-icon.svg')
-      );
-      */
   }
   
 
@@ -179,7 +153,8 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
 
 
   openPage(p: number) {
-      // this.regionDrawMode = false;
+    console.log(`open page: wanted: ${p}, current: ${this.currentPage}, last: ${this.lastPage}`);
+    
       this.goToPage.emit(p);
   }
 

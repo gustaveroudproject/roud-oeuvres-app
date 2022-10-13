@@ -6,6 +6,9 @@
     [iiifUrl]="iiifURL" 
     [resourceIri]="pubIRI"
     [project]="project"
+    [currentPage]="selectedPageNum"
+    [lastPage]="lastPage"
+    (goToPage)="selectOnChange($event)"
     >
     </or-still-image>
 
