@@ -103,8 +103,4 @@ export class PageViewerComponent implements OnInit {
   
       return representations;
   }
-  
-  compoundNavigation(page: number) {
-    this.selectedPageNum = page; 
-  }
 }
