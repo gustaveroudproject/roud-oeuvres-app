@@ -5,7 +5,15 @@
 
 /* this is for Knora-ui */
 // but also for components using Material, for example the 'mat-expansion-panel' used in text-page
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+// @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~@angular/material/theming';
+@include mat-core();
+
+$or-primary: mat-palette($mat-green, 900);
+$or-accent: mat-palette($mat-pink, A200, A100, A400);
+$or-theme: mat-light-theme($or-primary, $or-accent);
+$mat-slider-off-color: white;
+@include angular-material-theme($or-theme);
 /* better what is above even if they are the same,
 because the following gives error when referencing
 this file with @import into another scss file,
