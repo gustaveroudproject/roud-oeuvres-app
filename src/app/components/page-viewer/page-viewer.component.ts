@@ -19,10 +19,7 @@ export class PageViewerComponent implements OnInit {
  
   allPages: Page[] = [];
   selectedPageNum = 1; // default value, so it visualizes the first scan when arriving on the page
- 
-  lastPage(): number {
-    return Math.max(1, this.allPages.length);
-  }
+  lastPage = 1
 
   // for viewer DataViz
   iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
@@ -62,6 +59,7 @@ export class PageViewerComponent implements OnInit {
     .subscribe((pages: Page[]) => {
       // keep a copy of the pages
       this.allPages.push(...pages);
+      this.lastPage = Math.max(1, this.allPages.length);
     });
   }
 
