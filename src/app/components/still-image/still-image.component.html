@@ -6,7 +6,7 @@
     <!-- in case of an error -->
     <app-status [status]="404" [url]="iiifUrl" [representation]="'still-image'" *ngIf="failedToLoad"></app-status>
 
-    <div class="navigation vertical previous" *ngIf="lastPage">
+    <div class="navigation vertical previous" *ngIf="lastPage && (lastPage>1)">
         <button mat-button class="full-size" [disabled]="currentPage <= 1"
             (click)="openPage(currentPage - 1)">
             <mat-icon>keyboard_arrow_left</mat-icon>
@@ -21,8 +21,8 @@
 
 </div>
 
-<div class="toolbar bottom">
-    <div class="navigation horizontal" *ngIf="lastPage && (lastPage>1)">
+<div class="toolbar">
+    <div class="horizontal" *ngIf="lastPage && (lastPage>1)">
         <mat-slider [color]="'primary'" [disabled]="lastPage < 2"
             [max]="lastPage" [min]="1" [step]="1" [thumbLabel]="true" [tickInterval]="'auto'"
             [(ngModel)]="currentPage" (change)="openPage($event.value)">
@@ -66,11 +66,11 @@
 
         <!-- navigation in case of compound object: next page and last page -->
         <span class="compound-nav" *ngIf="lastPage && (lastPage>1)">
-            <button [disabled]="currentPage >= lastPage"
+            <button mat-icon-button [disabled]="currentPage >= lastPage"
                 matTooltip="Next page" (click)="openPage(currentPage + 1)">
                 <mat-icon>navigate_next</mat-icon>
             </button>
-            <button [disabled]="currentPage === lastPage"
+            <button mat-icon-button [disabled]="currentPage === lastPage"
                 matTooltip="Last page" (click)="openPage(lastPage)">
                 <mat-icon>last_page</mat-icon>
             </button>
