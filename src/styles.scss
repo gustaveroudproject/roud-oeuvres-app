@@ -19,9 +19,9 @@ for example of a component */
     // font-family: "Helvetica Neue", Arial, sans-serif !important;
     font-family: 'EB Garamond', sans-serif !important; 
   }
-
-
-
+.material-icons {
+  font-family: 'Material Icons' !important;
+}
 
 /*************************** COLOR PALETTE **************************/
 
@@ -127,3 +127,6 @@ code {
 
 /************************** VIEWER, from dsp-app *******************/
 $panel-height: 40px;
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

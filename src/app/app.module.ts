@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatIconModule } from '@angular/material/icon';
 /* FONTAWESOME ICONS */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -171,6 +171,7 @@ export function initializeApp(appInitService: AppInitService) {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
