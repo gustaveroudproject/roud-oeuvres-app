@@ -47,8 +47,9 @@
                 </a>
             </div>
             -->
-
-            <or-page-viewer [pages]="imagesPubForwarder" [parts]="msParts"></or-page-viewer>
+            <span *ngIf="msParts?.length > 0">
+                <or-page-viewer [pages]="imagesPubForwarder" [parts]="msParts"></or-page-viewer>
+            </span>
 
             <!-- MANUSCRIPT DESCRIPTION -->
 
