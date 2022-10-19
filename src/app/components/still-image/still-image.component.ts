@@ -154,8 +154,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
 
 
   openPage(p: number) {
-    console.log(`open page: wanted: ${p}, current: ${this.currentPage}, last: ${this.lastPage}`);
-    
       this.goToPage.emit(p);
   }
 
@@ -208,7 +206,6 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
               clickToZoom: false // do not zoom in on click
           }
       };
-      console.log(osdOptions);
       
       this._viewer = new OpenSeadragon.Viewer(osdOptions);
 
