@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { MsPartLightWithStartingPageSeqnum } from 'src/app/models/manuscript.model';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
 import { BookPart, Page } from '../../models/page.model';
 import { FileRepresentation } from '../file-representation';
@@ -17,9 +16,11 @@ import { first, tap } from 'rxjs/operators';
 export class PageViewerComponent implements OnInit {
   @Input() pages: Observable<Page[]>;
   @Input() parts?: BookPart[] = [];
+  @Input() id?: string = "iiif-viewer";
  
   allPages: Page[] = [];
   selectedPageNum = 1; // default value, so it visualizes the first scan when arriving on the page
+  lastPage = 1
 
   // for viewer DataViz
   iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
@@ -31,7 +32,6 @@ export class PageViewerComponent implements OnInit {
   annotationResources: DspResource[];
   resource: DspResource;
   pubIRI: string;
-  
 
   constructor(
     public sanitizer: DomSanitizer,
@@ -42,7 +42,8 @@ export class PageViewerComponent implements OnInit {
     let us = this;
     let first = true;
     this.pages
-    .pipe(tap(
+    .pipe(
+      tap(
       pages => { 
         if (first) { 
           first = false;
@@ -54,11 +55,12 @@ export class PageViewerComponent implements OnInit {
               us.currentImage = us.collectRepresentationsAndAnnotations(res);
             });
         }
-      })
+      }),
     )
     .subscribe((pages: Page[]) => {
       // keep a copy of the pages
       this.allPages.push(...pages);
+      this.lastPage = Math.max(1, this.allPages.length);
     });
   }
 
@@ -94,31 +96,10 @@ export class PageViewerComponent implements OnInit {
           const fileValues: ReadStillImageFileValue[] = resource.res.properties[Constants.HasStillImageFileValue] as ReadStillImageFileValue[];
           for (const img of fileValues) {
   
-              //const regions: Region[] = [];
-              const regions: any[] = [] // we do not have type Region
-              const annotations: DspResource[] = [];
-              /*  // comment out all about regions
-              for (const incomingRegion of resource.incomingAnnotations) {
-                  const region = new Region(incomingRegion);
-                  regions.push(region);
-                  const annotation = new DspResource(incomingRegion);
-                  // gather region property information
-                  annotation.resProps = this.initProps(incomingRegion);
-                  // gather system property information
-                  annotation.systemProps = incomingRegion.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
-                  annotations.push(annotation);
-              }*/
               const stillImage = new FileRepresentation(img);
               representations.push(stillImage);
-              this.annotationResources = annotations; 
-              /* // comment out all about annotations and dsp-app interface
-              if (this.valueUuid === 'annotations' || this.selectedRegion === this.resourceIri) {
-                  this.selectedTab = (this.incomingResource ? 2 : 1);
-                  this.selectedTabLabel = 'annotations';
-              }*/
-          }
+            }
   
       return representations;
   }
-  
 }

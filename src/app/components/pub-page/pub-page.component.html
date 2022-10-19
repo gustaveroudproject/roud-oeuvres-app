@@ -51,7 +51,7 @@
         <div class="col-6">
                     
             <!-- VIEWER -->
-            <or-page-viewer [pages]="imagesPubForwarder"></or-page-viewer>
+            <or-page-viewer [pages]="imagesPubForwarder" [id]="'document'"></or-page-viewer>
             
             <!-- BIBLIOGRAPHICAL REFERENCE -->
             <div class="py-5 my-2 biblioRef">
@@ -367,7 +367,8 @@
 
         <div class="col-12">
 
-            <or-page-viewer [pages]="imagesDataVizForwarder"></or-page-viewer>
+            <!-- <or-page-viewer [pages]="imagesDataVizForwarder" [order]="pv_0" id="pv_0"></or-page-viewer> -->
+            <or-page-viewer [pages]="imagesDataVizForwarder" [id]="'dataviz'"></or-page-viewer>
 
             <!--
                 [currentTab]="selectedTabLabel"
