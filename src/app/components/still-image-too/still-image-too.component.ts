@@ -45,11 +45,11 @@ import { RepresentationService } from '../representation.service';
 
 
 @Component({
-  selector: 'or-still-image',
-  templateUrl: './still-image.component.html',
-  styleUrls: ['./still-image.component.scss']
+  selector: 'or-still-image-too',
+  templateUrl: './still-image-too.component.html',
+  styleUrls: ['./still-image-too.component.scss']
 })
-export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class StillImageTooComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   
 
@@ -183,19 +183,21 @@ export class StillImageComponent implements OnChanges, OnDestroy, AfterViewInit 
    * initializes the OpenSeadragon _viewer
    */
   private _setupViewer(): void {
+      //const viewerContainer = this._elementRef.nativeElement.getElementById(this.id);
+      //const viewerContainer = this._elementRef.nativeElement.getElementsByClassName('osd-container')[0];
       const viewerContainer = this._elementRef.nativeElement.getElementsByClassName('osd-container')[0];
       let osdOptions = {
           element: viewerContainer,
           id: this.id,
           sequenceMode: false,
           showReferenceStrip: true,
-          zoomInButton: 'DSP_OSD_ZOOM_IN_DOC',
-          zoomOutButton: 'DSP_OSD_ZOOM_OUT_DOC',
-          previousButton: 'DSP_OSD_PREV_PAGE_DOC',
-          nextButton: 'DSP_OSD_NEXT_PAGE_DOC',
-          homeButton: 'DSP_OSD_HOME_DOC',
+          zoomInButton: 'DSP_OSD_ZOOM_IN_TOO',
+          zoomOutButton: 'DSP_OSD_ZOOM_OUT_TOO',
+          previousButton: 'DSP_OSD_PREV_PAGE_TOO',
+          nextButton: 'DSP_OSD_NEXT_PAGE_TOO',
+          homeButton: 'DSP_OSD_HOME_TOO',
         //   fullPageButton: 'DSP_OSD_FULL_PAGE_'+this.id,
-          fullPageButton: 'DSP_OSD_FULL_PAGE_DOC',
+          fullPageButton: 'DSP_OSD_FULL_PAGE_TOO',
           // rotateLeftButton: 'DSP_OSD_ROTATE_LEFT',        // doesn't work yet
           // rotateRightButton: 'DSP_OSD_ROTATE_RIGHT',       // doesn't work yet
           showNavigator: true,

@@ -1,16 +1,34 @@
 <!-- VIEWER -->
 <div class="viewer">
 
-    <or-still-image #stillImage class="dsp-representation stillimage"
-    [images]="currentImage"
-    [iiifUrl]="iiifURL" 
-    [resourceIri]="pubIRI"
-    [project]="project"
-    [currentPage]="selectedPageNum"
-    [lastPage]="lastPage"
-    (goToPage)="selectOnChange($event)"
-    >
-    </or-still-image>
+    <span *ngIf="id && id == 'document'; else dataviz">
+        <or-still-image #stillImage class="dsp-representation stillimage"
+        [images]="currentImage"
+        [iiifUrl]="iiifURL" 
+        [resourceIri]="pubIRI"
+        [project]="project"
+        [currentPage]="selectedPageNum"
+        [lastPage]="lastPage"
+        (goToPage)="selectOnChange($event)"
+        [id]="id"
+        >
+        </or-still-image>
+    </span>
+
+    <ng-template #dataviz>
+        <or-still-image-too #stillImageToo class="dsp-representation stillimage"
+        [images]="currentImage"
+        [iiifUrl]="iiifURL" 
+        [resourceIri]="pubIRI"
+        [project]="project"
+        [currentPage]="selectedPageNum"
+        [lastPage]="lastPage"
+        (goToPage)="selectOnChange($event)"
+        [id]="id"
+        >
+        </or-still-image-too>
+    </ng-template>
+
 
     <div *ngIf="allPages && allPages.length > 0; else noImage">
 

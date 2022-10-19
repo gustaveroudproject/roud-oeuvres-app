@@ -16,6 +16,7 @@ import { first, tap } from 'rxjs/operators';
 export class PageViewerComponent implements OnInit {
   @Input() pages: Observable<Page[]>;
   @Input() parts?: BookPart[] = [];
+  @Input() id?: string = "iiif-viewer";
  
   allPages: Page[] = [];
   selectedPageNum = 1; // default value, so it visualizes the first scan when arriving on the page

@@ -99,6 +99,7 @@ import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
 import { RenderTeiDirective } from './directives/render-tei.directive';
 import { ImageResizePipe } from './pipes/image-resize.pipe';
+import { StillImageTooComponent } from './components/still-image-too/still-image-too.component';
 
 
 export function initializeApp(appInitService: AppInitService) {
@@ -165,7 +166,8 @@ export function initializeApp(appInitService: AppInitService) {
     TechPageComponent,
     PageViewerComponent,
     ImageResizePipe,
-    StillImageComponent
+    StillImageComponent,
+    StillImageTooComponent
   ],
   imports: [
     MatExpansionModule,
