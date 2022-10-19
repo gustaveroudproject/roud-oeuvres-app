@@ -42,7 +42,7 @@
     "jdnconvertiblecalendardateadapter": "0.0.13",
     "jquery": "^3.5.1",
     "json2typescript": "^1.4.1",
-    "jsonld": "^1.8.1",
+    "jsonld": "^8.1.0",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
@@ -56,7 +56,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.901.15",
+    "@angular-devkit/build-angular": "~14.2.6",
     "@angular/cli": "^9.1.15",
     "@angular/compiler-cli": "~9.1.13",
     "@angular/language-service": "~9.1.13",
