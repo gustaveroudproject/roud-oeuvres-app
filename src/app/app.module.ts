@@ -26,7 +26,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatSliderModule } from '@angular/material/slider';
+import { MatIconModule } from '@angular/material/icon';
 /* FONTAWESOME ICONS */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -72,6 +73,8 @@ import { BioPageComponent } from './components/bio-page/bio-page.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TechPageComponent } from './components/tech-page/tech-page.component';
 import { PageViewerComponent } from './components/page-viewer/page-viewer.component';
+import { StillImageComponent } from './components/still-image/still-image.component';
+
 
 
 
@@ -96,6 +99,7 @@ import { ResourceLinkDirective } from './directives/resource-link.directive';
 import { PageLinkDirective } from './directives/page-link.directive';
 import { RenderTeiDirective } from './directives/render-tei.directive';
 import { ImageResizePipe } from './pipes/image-resize.pipe';
+import { StillImageTooComponent } from './components/still-image-too/still-image-too.component';
 
 
 export function initializeApp(appInitService: AppInitService) {
@@ -161,13 +165,17 @@ export function initializeApp(appInitService: AppInitService) {
     ProjectPageComponent,
     TechPageComponent,
     PageViewerComponent,
-    ImageResizePipe
+    ImageResizePipe,
+    StillImageComponent,
+    StillImageTooComponent
   ],
   imports: [
     MatExpansionModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
+    MatSliderModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

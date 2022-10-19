@@ -10,8 +10,12 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
+import { FileRepresentation } from '../file-representation';
+import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
+import { DspResource } from '../dsp-resource';
 import { BehaviorSubject, ReplaySubject, concat } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
+
 
 
 
@@ -37,8 +41,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   bookSection: BookSection;
   publisherLight: PublisherLight;
   pages: Page[] = [];
-  firstPageSwitch = true;
-  firstPageUrl = new ReplaySubject<string>();
   pubPartsLight: PubPartLight[];
   startingPage: Page;
   msLight: MsLight;
@@ -54,8 +56,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   publicationsRepublished: PublicationLight[];
   establishedTexts: TextLight[];
   establishedText: TextLight;
-  dataViz: DataViz;
-
 
   panelReprisesDisableState: boolean = false;
   panelGenesisDisableState: boolean = false;
@@ -64,13 +64,19 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
   loadingResults = 0;
 
+  // for viewer Pub
+  imagesPubForwarder = new ReplaySubject<Page[]>();
+  imagesDataVizForwarder = new ReplaySubject<Page[]>();
+
+  dataViz: DataViz;
 
   constructor(
     
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     private el: ElementRef,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private knoraApiConnection: KnoraApiConnection,
   ) {}
 
   finalizeWait() {
@@ -106,21 +112,16 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                         (authorLight: AuthorLight) => {
                           this.authors.push(authorLight);
                         });
-                      }
-                      
+                    }
+                    
                     //// get facsimiles scans from publication IRI
                     this.loadingResults++;
                     this.dataService
                       .getAllPagesOfPub(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((pages: Page[]) => {
-                        if (this.firstPageSwitch) {
-                          this.firstPageSwitch = false;
-                          this.firstPageUrl.next(pages[0].imageURL);
-                        }
-                        this.pages.push(...pages);
-                        //console.log(pages.length);
-                        //console.log(this.selectedPageNum);
+                        this.imagesPubForwarder.next(pages);
+                        this.pages.push(...pages);              
                       });
 
                     //// get established text
@@ -134,14 +135,14 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       });
 
                     //// get data viz
-                    this.loadingResults++;
                     this.dataService
                       .getDataViz(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((dataVizs: DataViz[]) => {
-                        this.dataViz = dataVizs[0]; // there will be only one item anyway
-                      });
-
+                        // there will be only one item anyway
+                        this.imagesDataVizForwarder.next(dataVizs);
+                        // need one for the ark
+                        this.dataViz = dataVizs[0];
+                      });                                          
 
 
                     //// get publication parts light
@@ -471,7 +472,4 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     }); 
   }
 
-
-    
 }
-      

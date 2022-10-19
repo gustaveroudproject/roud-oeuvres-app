@@ -49,30 +49,12 @@
 
         <!-- start COLUMNS LEFT -->
         <div class="col-6">
-        
-            
+                    
             <!-- VIEWER -->
-            <or-page-viewer [pages]="pages" [firstPageUrl]="firstPageUrl"></or-page-viewer>
-
-
-            <!-- LIRE LE TEXTE -->
-            <!---->
-            <div class="readTheText" *ngIf="establishedText && establishedText.editorialSet == 'Œuvre poétique'">
-                <a routerLink="/texts/{{ establishedText?.id | encodeURIComponent }}">
-                    <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
-                </a>
-            </div>
-
-            <!--
-            <div>
-                <a href="">
-                    <img src="assets/img/readText.svg" width="37%"/>
-                </a>
-            </div>
--->
+            <or-page-viewer [pages]="imagesPubForwarder" [id]="'document'"></or-page-viewer>
             
             <!-- BIBLIOGRAPHICAL REFERENCE -->
-            <div class="py-4 biblioRef">
+            <div class="py-5 my-2 biblioRef">
 
                 <strong class="test">Référence bibliographique</strong>
 
@@ -132,12 +114,7 @@
 
 
         <!-- start COLUMNS RIGHT -->
-        <div class="col-6">
-
-            <div>
-                <img width="50%" *ngIf="dataViz"
-                    [src]="sanitizer.bypassSecurityTrustUrl(dataViz.imageURL)"/>
-            </div>
+        <div class="col-6">            
 
             <!-- GENÈSE ET REPRISES -->
             <div *ngIf="publicationLight?.editorialSet == 'Poetic work' || publicationLight?.editorialSet == 'Diary'">
@@ -339,11 +316,12 @@
                     <div id="panelInfoText">
                         <p>
                             <strong>… la section <i>Genèse</i></strong>. 
-                            Elle est organisée en trois catégories qui ensemble
-                            représentent la possible genèse d'un texte de Gustave Roud. Pour chaque catégorie,
-                            il y a la liste des documents ou publications qui concernent l'intégralité du texte,
-                            suivie par la liste des documents ou publications qui concernent chaque section,
-                            si le texte est divisé en sections. La couleur grise indique l'absence de 
+                            Elle est organisée en catégories qui ensemble
+                            représentent la possible genèse d'un texte de Gustave Roud :
+                            réutilisation des notes de journal, ébauches et autres avant-textes,
+                            réutilisation de textes déjà publiés, réédition. Pour chaque catégorie,
+                            les documents concernant l'ensemble du recueil sont suivis par ceux qui
+                            concernent une partie seulement. La couleur grise indique l'absence de 
                             matériaux.
                         </p>
                         <p>
@@ -355,9 +333,9 @@
                         </p>
                         <p>
                             <strong>… la visualisation du réseau génétique</strong>. 
-                            La genèse des dix publications principales (recueils et poèmes) est
-                            représentée dans une visualisation du réseau de publications et manuscrits.
-                            Les liens énumérés dans les sections <i>Genèse</i> et <i>Reprises</i> sont 
+                            La genèse des dix recueils poétiques est
+                            représentée dans une visualisation du réseau de publications et manuscrits : une constellation génétique.
+                            Les éléments listés dans les sections <i>Genèse</i> et <i>Reprises</i> sont 
                             présentés ici de manière graphique.
                         </p>
                     </div>
@@ -367,6 +345,13 @@
 
             </div>  <!-- end genèse et reprises-->
             
+            <!-- LIRE LE TEXTE -->
+            <!---->
+            <div class="readTheText" *ngIf="establishedText && establishedText.editorialSet == 'Œuvre poétique'">
+                <a routerLink="/texts/{{ establishedText?.id | encodeURIComponent }}">
+                    <button type="button" class="btn" btn-lg>Lire le texte</button>
+                </a>
+            </div>
             
             
 
@@ -374,6 +359,37 @@
 
     
     </div> <!-- end row -->
+
+
+
+    <div class="row mb-5 justify-content-center" *ngIf="dataViz">
+
+
+        <div class="col-12">
+
+            <!-- <or-page-viewer [pages]="imagesDataVizForwarder" [order]="pv_0" id="pv_0"></or-page-viewer> -->
+            <or-page-viewer [pages]="imagesDataVizForwarder" [id]="'dataviz'"></or-page-viewer>
+
+            <!--
+                [currentTab]="selectedTabLabel"
+                [compoundNavigation]="compoundPosition" 
+                [imageCaption]="(pub.label + ': ' + incomingResource.res.label : resource.res.label)"
+                [parentResource]="incomingResource ? incomingResource.res : resource.res"
+
+                (loaded)="representationLoaded($event)"
+                (goToPage)="compoundNavigation($event)"
+            -->
+        </div>
+
+        <!-- caption -->
+
+        <div class="col-8 caption m-2">DensityDesign (Politecnico di Milano) + Unil, <em>Constellation génétique de </em>
+            <span [innerHTML]="publicationLight?.title | removeTextAndPar | htmlSanitizer"></span> <em> de Gustave Roud</em>, 2022. CC-BY 4-0. Cette image est disponible dans <a target="_blank" href="{{dataViz.ark}}">DSP</a>.</div>
+
+
+    </div>
+    
+    <br/><br/>
 
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">

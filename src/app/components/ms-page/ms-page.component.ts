@@ -43,6 +43,8 @@ export class MsPageComponent implements OnInit, DoCheck {
 
   loadingResults = 0;
 
+  imagesPubForwarder = new ReplaySubject<Page[]>();
+
 
   constructor(
     private dataService: DataService,
@@ -65,7 +67,7 @@ export class MsPageComponent implements OnInit, DoCheck {
       params => {
         if (params.has('iri')) {
           this.loadingResults++;
-          console.log(this.loadingResults)
+          //console.log(this.loadingResults)
                   
           //// get basic properties (msLight) of the manuscript
           this.dataService
@@ -74,7 +76,7 @@ export class MsPageComponent implements OnInit, DoCheck {
             .subscribe(
               (msLight: MsLight) => {        
                 this.msLight = msLight;
-                console.log(this.msLight)
+                //console.log(this.msLight)
 
                 //// get facsimiles scans from publication IRI
                 this.loadingResults++;
@@ -82,10 +84,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .getAllPagesOfMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((pages: Page[]) => {
-                  if (this.firstPageSwitch) {
-                    this.firstPageSwitch = false;
-                    this.firstPageUrl.next(pages[0].imageURL);
-                  }
+                  this.imagesPubForwarder.next(pages);
                   this.pages.push(...pages);
                   //console.log(pages.length);
                   //console.log(this.selectedPageNum);
@@ -101,7 +100,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .subscribe(
                   (manuscript: Manuscript) => {
                     this.manuscript = manuscript;
-                    console.log(this.manuscript)
+                    //console.log(this.manuscript)
                   },
                   error => console.log(error)
                 );
@@ -127,7 +126,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .subscribe(
                   (pubPartsAvantTexte: PubPartLight[]) => {
                     this.pubsAvantTexte.push(...pubPartsAvantTexte);
-                    console.log(this.pubsAvantTexte)
+                    //console.log(this.pubsAvantTexte)
 
                     this.loadingResults++;
                     concat(...pubPartsAvantTexte.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
@@ -163,7 +162,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 .subscribe(
                   (pubPartsDiary: PubPartLight[]) => {
                     this.pubsDiary.push(...pubPartsDiary);
-                    console.log(this.pubsDiary)
+                    //console.log(this.pubsDiary)
 
                     for (var pubPart in pubPartsDiary) {
                       this.loadingResults++;
@@ -262,7 +261,20 @@ export class MsPageComponent implements OnInit, DoCheck {
                 }))
                 .subscribe((msPartsReWrittenMs: MsPartLight[]) => {
                   this.rewrittenMs.push(...msPartsReWrittenMs);
-                  console.log(this.rewrittenMs)
+                  //console.log(this.rewrittenMs)
+
+                  for (var msPart in msPartsReWrittenMs) {
+                    this.loadingResults++;
+                    this.dataService
+                    .getMsOfMsPart(msPartsReWrittenMs[msPart].isPartOfMsValue)
+                    .pipe(finalize(() => this.finalizeWait()))
+                    .subscribe(
+                      (msFromParts3: MsLight) => {
+                        this.msFromParts3 = msFromParts3;
+                        //console.log(this.msFromParts3)
+                      },
+                      error => console.log(error));
+                    }
                 },
                 error => console.log(error)
                 );

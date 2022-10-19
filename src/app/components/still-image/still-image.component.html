@@ -1,0 +1,90 @@
+<!-- this component from https://github.com/dasch-swiss/dsp-app/tree/main/src/app/workspace/resource/representation/still-image -->
+
+<!-- openseadragon (osd) viewer -->
+<div class="osd-container" id="{{id}}">
+
+    <!-- in case of an error -->
+    <app-status [status]="404" [url]="iiifUrl" [representation]="'still-image'" *ngIf="failedToLoad"></app-status>
+
+    <div class="navigation vertical previous" *ngIf="lastPage && (lastPage>1)">
+        <button mat-button class="full-size" [disabled]="currentPage <= 1"
+            (click)="openPage(currentPage - 1)">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+    </div>
+    <div class="navigation vertical next" *ngIf="lastPage && (lastPage>1)">
+        <button mat-button class="full-size" [disabled]="currentPage >= lastPage"
+            (click)="openPage(currentPage + 1)">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+
+</div>
+
+<div class="toolbar">
+    <div class="horizontal" *ngIf="lastPage && (lastPage>1)">
+        <mat-slider [color]="'primary'" [disabled]="lastPage < 2"
+            [max]="lastPage" [min]="1" [step]="1" [thumbLabel]="true" [tickInterval]="'auto'"
+            [(ngModel)]="currentPage" (change)="openPage($event.value)">
+        </mat-slider>
+    </div>
+    <div class="action horizontal">
+        <!-- vertical more button with menu to open and copy iiif url 
+        <button mat-icon-button [matMenuTriggerFor]="more">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        -->
+        
+        <!-- navigation in case of compound object: first page and previous page -->
+        <span class="compound-nav" *ngIf="lastPage && (lastPage>1)">
+            <button mat-icon-button [disabled]="currentPage <= 1" matTooltip="First page"
+                (click)="openPage(1)">
+                <mat-icon>first_page</mat-icon>
+            </button>
+            <button mat-icon-button [disabled]="currentPage <= 1" matTooltip="Previous page"
+                (click)="openPage(currentPage - 1)">
+                <mat-icon>navigate_before</mat-icon>
+            </button>
+        </span>
+
+        <!-- zoom buttons: zoom out, home/reset, zoom in -->
+        <span>
+            <!-- icons from https://primer.style/octicons -->
+            <button id="DSP_OSD_ZOOM_OUT_DOC" matTooltip="Zoom out" [disabled]="failedToLoad">
+                <!--<mat-icon>remove_circle_outline</mat-icon>-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M2.5 12a9.5 9.5 0 1119 0 9.5 9.5 0 01-19 0zM12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm6.25 11.75a.75.75 0 000-1.5H5.75a.75.75 0 000 1.5h12.5z"></path></svg>
+            </button>
+            <button id="DSP_OSD_HOME_DOC" matTooltip="Reset zoom" [disabled]="failedToLoad">
+                <!--<mat-icon>adjust</mat-icon>-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M2.5 12a9.5 9.5 0 1119 0 9.5 9.5 0 01-19 0zM12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm0 13a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+            </button>
+            <button id="DSP_OSD_ZOOM_IN_DOC" matTooltip="Zoom in" [disabled]="failedToLoad">
+                <!--<mat-icon>add_circle_outline</mat-icon>-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12.75 7.75a.75.75 0 00-1.5 0v3.5h-3.5a.75.75 0 000 1.5h3.5v3.5a.75.75 0 001.5 0v-3.5h3.5a.75.75 0 000-1.5h-3.5v-3.5z"></path><path fill-rule="evenodd" d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zM2.5 12a9.5 9.5 0 1119 0 9.5 9.5 0 01-19 0z"></path></svg>
+            </button>
+        </span>
+
+        <!-- navigation in case of compound object: next page and last page -->
+        <span class="compound-nav" *ngIf="lastPage && (lastPage>1)">
+            <button mat-icon-button [disabled]="currentPage >= lastPage"
+                matTooltip="Next page" (click)="openPage(currentPage + 1)">
+                <mat-icon>navigate_next</mat-icon>
+            </button>
+            <button mat-icon-button [disabled]="currentPage === lastPage"
+                matTooltip="Last page" (click)="openPage(lastPage)">
+                <mat-icon>last_page</mat-icon>
+            </button>
+        </span>
+
+        <!-- action buttons: create annotation/region, fullscreen -->
+        <span>
+            <button id="DSP_OSD_FULL_PAGE_DOC" matTooltip="Open in fullscreen" [disabled]="failedToLoad">
+            <!-- <button id="DSP_OSD_FULL_PAGES" matTooltip="Open in fullscreen" [disabled]="failedToLoad"> -->
+                <!--<mat-icon>fullscreen</mat-icon>-->
+
+                <!-- https://primer.style/octicons/screen-full-24 -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M4.75 4.5a.25.25 0 00-.25.25v3.5a.75.75 0 01-1.5 0v-3.5C3 3.784 3.784 3 4.75 3h3.5a.75.75 0 010 1.5h-3.5zM15 3.75a.75.75 0 01.75-.75h3.5c.966 0 1.75.784 1.75 1.75v3.5a.75.75 0 01-1.5 0v-3.5a.25.25 0 00-.25-.25h-3.5a.75.75 0 01-.75-.75zM3.75 15a.75.75 0 01.75.75v3.5c0 .138.112.25.25.25h3.5a.75.75 0 010 1.5h-3.5A1.75 1.75 0 013 19.25v-3.5a.75.75 0 01.75-.75zm16.5 0a.75.75 0 01.75.75v3.5A1.75 1.75 0 0119.25 21h-3.5a.75.75 0 010-1.5h3.5a.25.25 0 00.25-.25v-3.5a.75.75 0 01.75-.75z"></path></svg>
+            </button>
+        </span>
+    </div>
+</div>
