@@ -1373,40 +1373,42 @@ return this.knoraApiConnection.v2.search
 
 
 
-
+getPagesOfPubsReusingDiaryQuery(textIRI: string): string {
+  return `
+  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+  CONSTRUCT {
+    ?pub knora-api:isMainResource true .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+  } WHERE {
+    ?pub a roud-oeuvres:Publication .
+    <${textIRI}> roud-oeuvres:msIsReusedInDossier ?dossier .
+    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    ?pub roud-oeuvres:publicationHasTitle ?title .
+    ?pub roud-oeuvres:publicationHasDate ?date .
+  } 
+  `;
+}
 
 getPubsReusingDiary(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-  ?pub knora-api:isMainResource true .
-  ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-  ?pub roud-oeuvres:publicationHasTitle ?title .
-  ?pub roud-oeuvres:publicationHasDate ?date .
-} WHERE {
-  ?pub a roud-oeuvres:Publication .
-  <${textIRI}> roud-oeuvres:msIsReusedInDossier ?dossier .
-  ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-  ?pub roud-oeuvres:publicationHasTitle ?title .
-  ?pub roud-oeuvres:publicationHasDate ?date .
-} 
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
-    )
+  const gravsearchQuery = this.getPagesOfPubsReusingDiaryQuery(textIRI) +" OFFSET "+ index;
+  return this.knoraApiConnection.v2.search
+    .doExtendedSearch(gravsearchQuery)
+    .pipe(
+      map((
+        readResources: ReadResourceSequence 
+      ) => readResources.resources.map(r => {
+          return this.readRes2PublicationLight(r);
+        })
+      )
   );
 }
 
+getAllPubsReusingDiary(textIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetAll(textIRI, this.getPagesOfPubsReusingDiaryQuery, this.readRes2PublicationLight);
+}
 
 
 

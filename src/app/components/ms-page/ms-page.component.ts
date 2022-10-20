@@ -146,7 +146,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get publications reusing diary
                 this.loadingResults++;
                 this.dataService
-                .getPubsReusingDiary(msLight.id)
+                .getAllPubsReusingDiary(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (publicationsDiary: PublicationLight[]) => {
