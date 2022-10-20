@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { concat } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { PubPartLight, PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 
@@ -10,16 +12,13 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./msc-pubs-reusing-part.component.scss']
 })
 export class MscPubsReusingPartComponent implements OnInit {
-  
-  pubsReusingParts: any[];
-  publicationsReusingParts: PublicationLight[];
-  pubPartsReusingParts: PubPartLight[];
+
+  pubsReusingParts: (PublicationLight | PubPartLight)[];
   pubFromParts3: PublicationLight;
 
 
-
   @Input()
-  msPartId: string ;
+  msPartId: string;
 
   constructor(
     private dataService: DataService
@@ -29,33 +28,39 @@ export class MscPubsReusingPartComponent implements OnInit {
 
     this.pubsReusingParts = [];
 
-      //// get publications reusing this ms part
-      this.dataService
+    //// get publications reusing this ms part
+    this.dataService
       .getPublicationsReusingMsPart(this.msPartId)
       .subscribe((publicationsReusingParts: PublicationLight[]) => {
-          this.publicationsReusingParts = publicationsReusingParts;
+        this.pubsReusingParts.push(...publicationsReusingParts);
+      });
 
-          this.pubsReusingParts.push(...publicationsReusingParts);
-        });
-
-      //// get publication parts reusing this ms part
-      this.dataService
-    .getPublicationPartsReusingMsPart(this.msPartId)
-    .subscribe((pubPartsReusingParts: PubPartLight[]) => {
-        this.pubPartsReusingParts = pubPartsReusingParts;
-
-        this.pubsReusingParts.push(...pubPartsReusingParts);
-
-        // asynchrone
+    //// get publication parts reusing this ms part
+    let pubPartsReusingParts: PubPartLight[] = [];
+    this.dataService
+      .getPublicationPartsReusingMsPart(this.msPartId)
+      .subscribe(
+        // next:
+        (parts: PubPartLight[]) => {
+          pubPartsReusingParts.push(...parts);
+        },
+        // error:
+        e => console.log(e),
+        // complete:
+        () => {
+          this.pubsReusingParts.push(...pubPartsReusingParts);
           //// get publications from publications' IRIs
-          for (var pub in pubPartsReusingParts) {
-            this.dataService
-            .getPubOfPubPart(pubPartsReusingParts[pub].isPartOfPubValue)
-            .subscribe(
-              (pubFromParts3: PublicationLight) => {
-                this.pubFromParts3 = pubFromParts3;
-              });
-            }
+          concat(
+            ...(
+              pubPartsReusingParts
+                .map(part => part.isPartOfPubValue)
+                .map(pubValue => this.dataService.getPubOfPubPart(pubValue))
+            )
+          )
+          .pipe(take(1))
+          .subscribe(
+            (pub: PublicationLight) => { this.pubFromParts3 = pub; }
+          )
         });
   }
 
