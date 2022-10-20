@@ -1537,37 +1537,31 @@ return this.knoraApiConnection.v2.search
 
 
 
-getMssReusedInPublication(textIRI: string, index: number = 0): Observable<MsLight[]> {  
-  const gravsearchQuery = `
+getPageOfMssReusedInPublicationQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?msLight knora-api:isMainResource true .
+        ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+        ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+        ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+    } WHERE {
+        ?msLight a roud-oeuvres:Manuscript .
+        ?msLight roud-oeuvres:msIsReusedInDossier ?dossier .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+        ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+        ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+        ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+    }
+  `;
+}
 
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?msLight knora-api:isMainResource true .
-    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
-    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
-} WHERE {
-    ?msLight a roud-oeuvres:Manuscript .
-    ?msLight roud-oeuvres:msIsReusedInDossier ?dossier .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
-    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
-    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
-} 
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2MsLight(r);
-      })
-    )
-  );
+getMssReusedInPublication(textIRI: string, index: number = 0): Observable<MsLight[]> {  
+  return this.genericGetPage(textIRI, index, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsLight);
+}
+getAllMssReusedInPublication(textIRI: string): Observable<MsLight[]> {  
+  return this.genericGetAll(textIRI, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsLight);
 }
 
 getMsPartsReusedInPublication(textIRI: string, index: number = 0): Observable<MsPartLight[]> {  

@@ -179,7 +179,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     //// get diary notes (Manuscript) reused in this publication   
                     this.loadingResults++;                 
                     this.dataService
-                    .getMssReusedInPublication(publicationLight.id)
+                    .getAllMssReusedInPublication(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((diaryNotesMss: MsLight[]) => {
                       this.diaryNotes.push(...diaryNotesMss);
