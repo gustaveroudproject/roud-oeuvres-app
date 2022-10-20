@@ -944,38 +944,32 @@ getStartingPageOfPart(iri: string): Observable<PageLight> {
 
 
 
-getAvantTexts(textIRI: string, index: number = 0): Observable<MsLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?ms knora-api:isMainResource true .
-    ?ms roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
-    ?ms roud-oeuvres:manuscriptHasTitle ?title .
-    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
-} WHERE {
-    ?ms a roud-oeuvres:Manuscript .
-    ?ms roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
-    ?ms roud-oeuvres:manuscriptHasTitle ?title .
-    ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+getPageOfAvantTextsQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?ms knora-api:isMainResource true .
+        ?ms roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
+        ?ms roud-oeuvres:manuscriptHasTitle ?title .
+        ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+        ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    } WHERE {
+        ?ms a roud-oeuvres:Manuscript .
+        ?ms roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+        ?ms roud-oeuvres:manuscriptHasTitle ?title .
+        ?ms roud-oeuvres:manuscriptIsInArchive ?archive .
+        ?ms roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+    }
+    `;
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2MsLight(r);
-      })
-    )
-  );
+
+getAvantTexts(textIRI: string, index: number = 0): Observable<MsLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfAvantTextsQuery, this.readRes2MsLight);
+}
+getAllAvantTexts(textIRI: string): Observable<MsLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfAvantTextsQuery, this.readRes2MsLight);
 }
 
 

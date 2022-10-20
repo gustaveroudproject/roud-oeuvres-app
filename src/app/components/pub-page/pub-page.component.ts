@@ -198,7 +198,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     //// get avant-textes
                     this.loadingResults++;
                     this.dataService
-                    .getAvantTexts(publicationLight.id)
+                    .getAllAvantTexts(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((avantTexts: MsLight[]) => {
                       this.avantTexts = avantTexts;
