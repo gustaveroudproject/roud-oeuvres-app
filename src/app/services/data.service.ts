@@ -1692,42 +1692,28 @@ return this.knoraApiConnection.v2.search
   );
 }
 
-
-getMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLightWithStartingPageSeqnum[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?msPart knora-api:isMainResource true .
-    ?msPart roud-oeuvres:msPartHasTitle ?title .
-    ?msPart roud-oeuvres:msPartHasNumber ?number .
-    ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
-} WHERE {
-    ?msPart a roud-oeuvres:MsPart .
-    ?msPart roud-oeuvres:msPartIsPartOf <${msIRI}> .
-    ?msPart roud-oeuvres:msPartHasTitle ?title .
-    ?msPart roud-oeuvres:msPartHasNumber ?number .
-    ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
-} ORDER BY ASC(?number)
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2MsPartLightWithStartingPageSeqnum(r);
-      })
-    )
-  );
+getPageOfMsPartsFromMsQuery(msIRI: string) : string {
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?msPart knora-api:isMainResource true .
+        ?msPart roud-oeuvres:msPartHasTitle ?title .
+        ?msPart roud-oeuvres:msPartHasNumber ?number .
+        ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
+    } WHERE {
+        ?msPart a roud-oeuvres:MsPart .
+        ?msPart roud-oeuvres:msPartIsPartOf <${msIRI}> .
+        ?msPart roud-oeuvres:msPartHasTitle ?title .
+        ?msPart roud-oeuvres:msPartHasNumber ?number .
+        ?msPart roud-oeuvres:msPartHasStartingPage ?startingPageValue .
+    } ORDER BY ASC(?number)    
+  `;
 }
 
-
-
-
+getMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLightWithStartingPageSeqnum[]> {
+  return this.genericGetPage(msIRI, index, this.getPageOfMsPartsFromMsQuery, this.readRes2MsPartLightWithStartingPageSeqnum);
+}
 
 getMsOfMsPart(iri: string): Observable<MsLight> {
   return this.knoraApiConnection.v2.res
