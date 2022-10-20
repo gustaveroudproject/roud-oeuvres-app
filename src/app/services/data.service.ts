@@ -2049,45 +2049,43 @@ genericGetAll(
   )
 }
 
-
-getPublicationPartsWithThisAvantTexte(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-  ?pubPart knora-api:isMainResource true .
-  ?pubPart roud-oeuvres:pubPartHasTitle ?title .
-  ?pubPart roud-oeuvres:pubPartHasNumber ?number .
-  ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
-} WHERE {
-  ?pubPart a roud-oeuvres:PubPart .
-  ?pubPart roud-oeuvres:pubPartHasTitle ?title .
-  ?pubPart roud-oeuvres:pubPartHasNumber ?number .
-  <${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossierPart ?dossierPart .
-  ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
-  ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
-}
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PubPartLight(r);
-      })
-    )
-  );
+pagesOfPublicationPartsWithThisAvantTexteQuery(textIRI: string): string {
+  return `
+  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+  CONSTRUCT {
+    ?pubPart knora-api:isMainResource true .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+  } WHERE {
+    ?pubPart a roud-oeuvres:PubPart .
+    ?pubPart roud-oeuvres:pubPartHasTitle ?title .
+    ?pubPart roud-oeuvres:pubPartHasNumber ?number .
+    <${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossierPart ?dossierPart .
+    ?dossierPart roud-oeuvres:geneticDossierPartResultsInPubPart ?pubPart .
+    ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
+  }
+  `;
 }
 
+getPublicationPartsWithThisAvantTexte(textIRI: string, index: number = 0): Observable<PubPartLight[]> {
+  const gravsearchQuery = this.pagesOfPublicationPartsWithThisAvantTexteQuery(textIRI) + " OFFSET " + index;
+  return this.knoraApiConnection.v2.search
+    .doExtendedSearch(gravsearchQuery)
+    .pipe(
+      map((
+        readResources: ReadResourceSequence 
+      ) => readResources.resources.map(r => {
+          return this.readRes2PubPartLight(r);
+        })
+      )
+    );
+}
 
-
-
-
-
+getAllPublicationPartsWithThisAvantTexte(textIRI: string): Observable<PubPartLight[]> {
+  return this.genericGetAll(textIRI, this.pagesOfPublicationPartsWithThisAvantTexteQuery, this.readRes2PubPartLight);
+}
 
   getPersonLights(index: number = 0): Observable<PersonLight[]> {
     const gravsearchQuery = `
