@@ -1450,36 +1450,30 @@ getAllPubPartsReusingDiary(textIRI: string, index: number = 0): Observable<PubPa
   return this.genericGetAll(textIRI, this.getPageOfPubPartsReusingDiaryQuery, this.readRes2PubPartLight);
 }
 
-getPublicationsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
+getPageOfPublicationsReusingMsPartQuery(msPartIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+      CONSTRUCT {
+          ?pub knora-api:isMainResource true .
+          ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+          ?pub roud-oeuvres:publicationHasTitle ?title .
+          ?pub roud-oeuvres:publicationHasDate ?date .
+      } WHERE {
+          ?pub a roud-oeuvres:Publication .
+          <${msPartIRI}> roud-oeuvres:msPartIsReusedInDossier ?dossier .
+          ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+          ?pub roud-oeuvres:publicationHasTitle ?title .
+          ?pub roud-oeuvres:publicationHasDate ?date .
+      } ORDER BY ASC(?date)
+      `;
+}
 
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-  CONSTRUCT {
-      ?pub knora-api:isMainResource true .
-      ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-      ?pub roud-oeuvres:publicationHasTitle ?title .
-      ?pub roud-oeuvres:publicationHasDate ?date .
-  } WHERE {
-      ?pub a roud-oeuvres:Publication .
-      <${msPartIRI}> roud-oeuvres:msPartIsReusedInDossier ?dossier .
-      ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-      ?pub roud-oeuvres:publicationHasTitle ?title .
-      ?pub roud-oeuvres:publicationHasDate ?date .
-  } ORDER BY ASC(?date)
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
-    )
-  );
+getPublicationsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetPage(msPartIRI, index, this.getPageOfPublicationsReusingMsPartQuery, this.readRes2PublicationLight);
+}
+getAllPublicationsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetAll(msPartIRI, this.getPageOfPublicationsReusingMsPartQuery, this.readRes2PublicationLight);
 }
 
 

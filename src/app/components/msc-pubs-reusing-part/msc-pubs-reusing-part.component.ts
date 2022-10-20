@@ -30,7 +30,7 @@ export class MscPubsReusingPartComponent implements OnInit {
 
     //// get publications reusing this ms part
     this.dataService
-      .getPublicationsReusingMsPart(this.msPartId)
+      .getAllPublicationsReusingMsPart(this.msPartId)
       .subscribe((publicationsReusingParts: PublicationLight[]) => {
         this.pubsReusingParts.push(...publicationsReusingParts);
       });
