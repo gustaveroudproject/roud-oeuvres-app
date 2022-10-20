@@ -25,7 +25,7 @@ export class MscMssRewritingPartComponent implements OnInit {
 
       //// get manuscripts rewriting this ms part
       this.dataService
-      .getManuscriptsRewritingMsPart(this.msPartId)
+      .getAllManuscriptsRewritingMsPart(this.msPartId)
       .subscribe((manuscriptsRewritingParts: MsLight[]) => {
           this.mssRewritingParts.push(...manuscriptsRewritingParts);
         });

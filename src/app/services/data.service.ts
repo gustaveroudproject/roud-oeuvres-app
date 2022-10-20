@@ -1778,36 +1778,30 @@ getAllMsPartsRewritingMs(msIRI: string): Observable<MsPartLight[]> {
   return this.genericGetAll(msIRI, this.getPageOfMsPartsRewritingMsQuery, this.readRes2MsPartLight);
 }
 
-getManuscriptsRewritingMsPart(msPartIRI: string, index: number = 0): Observable<MsLight[]> {  
-  const gravsearchQuery = `
+getPageOfManuscriptsRewritingMsPartQuery(msPartIRI: string): string {
+  return `
+  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+  CONSTRUCT {
+      ?msLight knora-api:isMainResource true .
+      ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+      ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+      ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+  } WHERE {
+      ?msLight a roud-oeuvres:Manuscript .
+      <${msPartIRI}> roud-oeuvres:msPartIsRewrittenInMs ?msLight .
+      ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
+      ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
+      ?msLight roud-oeuvres:manuscriptHasTitle ?title .
+  } 
+  `; 
+}
 
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?msLight knora-api:isMainResource true .
-    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
-    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
-} WHERE {
-    ?msLight a roud-oeuvres:Manuscript .
-    <${msPartIRI}> roud-oeuvres:msPartIsRewrittenInMs ?msLight .
-    ?msLight roud-oeuvres:manuscriptIsInArchive ?archive .
-    ?msLight roud-oeuvres:manuscriptHasShelfmark ?shelfmark .
-    ?msLight roud-oeuvres:manuscriptHasTitle ?title .
-} 
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2MsLight(r);
-      })
-    )
-  );
+getManuscriptsRewritingMsPart(msPartIRI: string, index: number = 0): Observable<MsLight[]> {  
+  return this.genericGetPage(msPartIRI, index, this.getPageOfManuscriptsRewritingMsPartQuery, this.readRes2MsLight);
+}
+getAllManuscriptsRewritingMsPart(msPartIRI: string): Observable<MsLight[]> {  
+  return this.genericGetAll(msPartIRI, this.getPageOfManuscriptsRewritingMsPartQuery, this.readRes2MsLight);
 }
 
 
