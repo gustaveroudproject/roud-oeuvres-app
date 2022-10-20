@@ -1891,6 +1891,9 @@ getPageOfPartsRewrittenMsQuery(msIRI: string): string {
 getMsPartsRewrittenMs(msIRI: string, index: number = 0): Observable<MsPartLight[]> {
   return this.genericGetPage(msIRI, index, this.getPageOfPartsRewrittenMsQuery, this.readRes2MsPartLight);
 }
+getAllMsPartsRewrittenMs(msIRI: string): Observable<MsPartLight[]> {
+  return this.genericGetAll(msIRI, this.getPageOfPartsRewrittenMsQuery, this.readRes2MsPartLight);
+}
 
 
 getManuscriptsRewrittenMsPart(msPartIRI: string, index: number = 0): Observable<MsLight[]> {  
