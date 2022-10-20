@@ -1714,6 +1714,9 @@ getPageOfMsPartsFromMsQuery(msIRI: string) : string {
 getMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLightWithStartingPageSeqnum[]> {
   return this.genericGetPage(msIRI, index, this.getPageOfMsPartsFromMsQuery, this.readRes2MsPartLightWithStartingPageSeqnum);
 }
+getAllMsPartsFromMs(msIRI: string, index: number = 0): Observable<MsPartLightWithStartingPageSeqnum[]> {
+  return this.genericGetAll(msIRI, this.getPageOfMsPartsFromMsQuery, this.readRes2MsPartLightWithStartingPageSeqnum);
+}
 
 getMsOfMsPart(iri: string): Observable<MsLight> {
   return this.knoraApiConnection.v2.res
