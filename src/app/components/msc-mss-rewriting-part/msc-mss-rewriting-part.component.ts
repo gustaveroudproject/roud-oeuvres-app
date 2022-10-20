@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { concat } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DataService } from 'src/app/services/data.service';
 
@@ -9,7 +11,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class MscMssRewritingPartComponent implements OnInit {
 
-  mssRewritingParts: any[];
+  mssRewritingParts: (MsLight|MsPartLight)[];
   msFromParts2: MsLight;
 
   @Input()
@@ -23,30 +25,42 @@ export class MscMssRewritingPartComponent implements OnInit {
     
     this.mssRewritingParts = [];
 
-      //// get manuscripts rewriting this ms part
-      this.dataService
-      .getAllManuscriptsRewritingMsPart(this.msPartId)
-      .subscribe((manuscriptsRewritingParts: MsLight[]) => {
-          this.mssRewritingParts.push(...manuscriptsRewritingParts);
-        });
+    //// get manuscripts rewriting this ms part
+    this.dataService
+    .getAllManuscriptsRewritingMsPart(this.msPartId)
+    .subscribe(
+      (manuscriptsRewritingParts: MsLight[]) => {
+        this.mssRewritingParts.push(...manuscriptsRewritingParts);
+    });
 
-      //// get manuscript parts rewriting this ms part
-      this.dataService
+    //// get manuscript parts rewriting this ms part
+    let parts: MsPartLight[] = [];
+    this.dataService
     .getAllMsPartsRewritingMsPart(this.msPartId)
-    .subscribe((msPartsRewritingParts: MsPartLight[]) => {
-        this.mssRewritingParts.push(...msPartsRewritingParts);
-
-        // asynchrone
-          //// get publications from publications' IRIs
-          for (var msPart in msPartsRewritingParts) {
-            this.dataService
-            .getMsOfMsPart(msPartsRewritingParts[msPart].isPartOfMsValue)
-            .subscribe(
-              (msFromParts2: MsLight) => {
-                this.msFromParts2 = msFromParts2;
-              });
-            }
-        });
+    .subscribe(
+      /*next:*/
+      (msPartsRewritingParts: MsPartLight[]) => {
+        parts.push(...msPartsRewritingParts);
+      },
+      /* error: */
+      e => console.log(e),
+      /* complete: */
+      () => {
+        // once we have the whole MsPartLight values
+        // merge them with the MsLight
+        this.mssRewritingParts.push(...parts);
+        // get the first one having a MsLight from MsPartLight.getMsOfMsPart()
+        concat(
+          ...(
+            parts
+            .map(part => part.isPartOfMsValue)
+            .map(msValue => this.dataService.getMsOfMsPart(msValue))
+          )
+        )
+        .pipe(take(1))
+        .subscribe((part: MsLight) => { this.msFromParts2 = part; });
+      }
+    );
   }
 
 }
