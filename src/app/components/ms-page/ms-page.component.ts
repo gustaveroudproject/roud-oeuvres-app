@@ -232,7 +232,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get ms from which this ms is rewritten
                 this.loadingResults++;
                 this.dataService
-                .getMssRewrittenMs(msLight.id)
+                .getAllMssRewrittenMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msRewrittenMs: MsLight[]) => {
                   this.rewrittenMs.push(...msRewrittenMs);
