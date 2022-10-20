@@ -38,7 +38,7 @@ export class MscPubsReusingPartComponent implements OnInit {
     //// get publication parts reusing this ms part
     let pubPartsReusingParts: PubPartLight[] = [];
     this.dataService
-      .getPublicationPartsReusingMsPart(this.msPartId)
+      .getAllPublicationPartsReusingMsPart(this.msPartId)
       .subscribe(
         // next:
         (parts: PubPartLight[]) => {

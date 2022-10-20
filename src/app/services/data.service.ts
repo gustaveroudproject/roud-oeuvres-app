@@ -1478,9 +1478,8 @@ getAllPublicationsReusingMsPart(msPartIRI: string, index: number = 0): Observabl
 
 
 
-getPublicationPartsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PubPartLight[]> {  
-  const gravsearchQuery = `
-
+getPageOfPublicationPartsReusingMsPartQuery(msPartIRI: string): string {  
+  return `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
@@ -1497,22 +1496,15 @@ CONSTRUCT {
     ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
     ?pubPart roud-oeuvres:pubPartHasNumber ?number .
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PubPartLight(r);
-      })
-    )
-  );
+`;
 }
 
-
+getPublicationPartsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PubPartLight[]> {  
+  return this.genericGetPage(msPartIRI, index, this.getPageOfPublicationPartsReusingMsPartQuery, this.readRes2PubPartLight);
+}
+getAllPublicationPartsReusingMsPart(msPartIRI: string): Observable<PubPartLight[]> {  
+  return this.genericGetAll(msPartIRI, this.getPageOfPublicationPartsReusingMsPartQuery, this.readRes2PubPartLight);
+}
 
 
 
