@@ -206,7 +206,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get ms parts rewriting ms
                 this.loadingResults++;
                 this.dataService
-                .getMsPartsRewritingMs(msLight.id)
+                .getAllMsPartsRewritingMs(msLight.id)
                 .pipe(finalize(() => {
                   this.finalizeWait();
 
