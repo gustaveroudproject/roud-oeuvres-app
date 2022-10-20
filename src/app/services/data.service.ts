@@ -2000,40 +2000,54 @@ return this.knoraApiConnection.v2.search
 }
 
 
-
+pagesOfPublicationsWithThisAvantTexteQuery(textIRI: string): string {
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+      ?pub knora-api:isMainResource true .
+      ?pub roud-oeuvres:publicationHasTitle ?title .
+      ?pub roud-oeuvres:publicationHasDate ?date .
+    } WHERE {
+      ?pub a roud-oeuvres:Publication .
+      ?pub roud-oeuvres:publicationHasTitle ?title .
+      ?pub roud-oeuvres:publicationHasDate ?date .
+      <${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
+      ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+    }
+  `;
+}
 
 getPublicationsWithThisAvantTexte(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-  ?pub knora-api:isMainResource true .
-  ?pub roud-oeuvres:publicationHasTitle ?title .
-  ?pub roud-oeuvres:publicationHasDate ?date .
-} WHERE {
-  ?pub a roud-oeuvres:Publication .
-  ?pub roud-oeuvres:publicationHasTitle ?title .
-  ?pub roud-oeuvres:publicationHasDate ?date .
-  <${textIRI}> roud-oeuvres:msIsAvantTextInGeneticDossier ?dossier .
-  ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+  const gravsearchQuery = this.pagesOfPublicationsWithThisAvantTexteQuery(textIRI) +" OFFSET "+ index;
+  return this.knoraApiConnection.v2.search
+    .doExtendedSearch(gravsearchQuery)
+    .pipe(
+      map((
+        readResources: ReadResourceSequence 
+      ) => readResources.resources.map(r => {
+          return this.readRes2PublicationLight(r);
+        })
+      )
+    );
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
+
+getAllPublicationsWithThisAvantTexte(IRI: string): Observable<PublicationLight[]> {
+  return this.genericGetAll(IRI, this.pagesOfPublicationsWithThisAvantTexteQuery, this.readRes2PublicationLight);
+}
+
+genericGetAll(
+  IRI: string, 
+  makeQuery: Function,
+  convertT: Function) {
+  return this
+  .getPagesOfExtendedSearch(makeQuery(IRI)).pipe(
+    map(
+      (readResources: ReadResourceSequence) =>
+      readResources.resources.map( r => {return convertT(r)})
     )
-  );
+  )
 }
-
-
 
 
 getPublicationPartsWithThisAvantTexte(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  

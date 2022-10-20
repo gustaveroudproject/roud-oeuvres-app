@@ -109,7 +109,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get publications with this ms as avant-texte
                 this.loadingResults++;
                 this.dataService
-                .getPublicationsWithThisAvantTexte(msLight.id)
+                .getAllPublicationsWithThisAvantTexte(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
                   (publicationsAvantTexte: PublicationLight[]) => {
