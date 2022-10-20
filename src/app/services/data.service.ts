@@ -2041,10 +2041,10 @@ genericGetAll(
   makeQuery: Function,
   convertT: Function) {
   return this
-  .getPagesOfExtendedSearch(makeQuery(IRI)).pipe(
+  .getPagesOfExtendedSearch(makeQuery.call(this, IRI)).pipe(
     map(
       (readResources: ReadResourceSequence) =>
-      readResources.resources.map( r => {return convertT(r)})
+      readResources.resources.map( r => {return convertT.call(this, r)})
     )
   )
 }
