@@ -1748,40 +1748,32 @@ getPageOfMssRewritingMsQuery(msIRI: string): string {
 getMssRewritingMs(msIRI: string, index: number = 0): Observable<MsLight[]> {  
   return this.genericGetPage(msIRI, index, this.getPageOfMssRewritingMsQuery, this.readRes2MsLight);
 }
-
-
-getMsPartsRewritingMs(msIRI: string, index: number = 0): Observable<MsPartLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?msPart knora-api:isMainResource true .
-    ?msPart roud-oeuvres:msPartHasTitle ?title .
-    ?msPart roud-oeuvres:msPartHasNumber ?number .
-    ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
-} WHERE {
-    ?msPart a roud-oeuvres:MsPart .
-    <${msIRI}> roud-oeuvres:msIsRewrittenInMsPart ?msPart .
-    ?msPart roud-oeuvres:msPartHasTitle ?title .
-    ?msPart roud-oeuvres:msPartHasNumber ?number .
-    ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
-} ORDER BY ASC(?number)
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2MsPartLight(r);
-      })
-    )
-  );
+getAllMssRewritingMs(msIRI: string): Observable<MsLight[]> {  
+  return this.genericGetAll(msIRI, this.getPageOfMssRewritingMsQuery, this.readRes2MsLight);
 }
 
+getPageOfMsPartsRewritingMsQuery(msIRI: string) : string {
+  return `
+  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+  CONSTRUCT {
+      ?msPart knora-api:isMainResource true .
+      ?msPart roud-oeuvres:msPartHasTitle ?title .
+      ?msPart roud-oeuvres:msPartHasNumber ?number .
+      ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
+  } WHERE {
+      ?msPart a roud-oeuvres:MsPart .
+      <${msIRI}> roud-oeuvres:msIsRewrittenInMsPart ?msPart .
+      ?msPart roud-oeuvres:msPartHasTitle ?title .
+      ?msPart roud-oeuvres:msPartHasNumber ?number .
+      ?msPart roud-oeuvres:msPartIsPartOf ?isPartOfMsValue .
+  } ORDER BY ASC(?number)
+  `;
+}
+
+getMsPartsRewritingMs(msIRI: string, index: number = 0): Observable<MsPartLight[]> {
+  return this.genericGetPage(msIRI, index, this.getPageOfMsPartsRewritingMsQuery, this.readRes2MsPartLight);
+}
 
 getManuscriptsRewritingMsPart(msPartIRI: string, index: number = 0): Observable<MsLight[]> {  
   const gravsearchQuery = `
