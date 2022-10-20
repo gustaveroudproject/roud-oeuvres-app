@@ -10,8 +10,6 @@ import { DataService } from 'src/app/services/data.service';
 export class MscMssRewritingPartComponent implements OnInit {
 
   mssRewritingParts: any[];
-  manuscriptsRewritingParts: MsLight[];
-  msPartsRewritingParts: MsPartLight[];
   msFromParts2: MsLight;
 
   @Input()
@@ -29,8 +27,6 @@ export class MscMssRewritingPartComponent implements OnInit {
       this.dataService
       .getManuscriptsRewritingMsPart(this.msPartId)
       .subscribe((manuscriptsRewritingParts: MsLight[]) => {
-          this.manuscriptsRewritingParts = manuscriptsRewritingParts;
-
           this.mssRewritingParts.push(...manuscriptsRewritingParts);
         });
 
@@ -38,8 +34,6 @@ export class MscMssRewritingPartComponent implements OnInit {
       this.dataService
     .getMsPartsRewritingMsPart(this.msPartId)
     .subscribe((msPartsRewritingParts: MsPartLight[]) => {
-        this.msPartsRewritingParts = msPartsRewritingParts;
-
         this.mssRewritingParts.push(...msPartsRewritingParts);
 
         // asynchrone
