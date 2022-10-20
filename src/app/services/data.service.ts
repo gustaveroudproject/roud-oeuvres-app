@@ -2052,6 +2052,25 @@ genericGetAll(
   )
 }
 
+genericGetPage(
+  IRI: string, 
+  index: number,
+  makeQuery: Function,
+  convertT: Function) {
+
+    return this.knoraApiConnection.v2.search
+      .doExtendedSearch(makeQuery.call(this, IRI)+" OFFSET "+ index)
+      .pipe(
+        map((
+          readResources: ReadResourceSequence 
+        ) => readResources.resources.map(r => {
+            return convertT.call(this, r);
+          })
+        )
+      );
+  
+}
+
 pagesOfPublicationPartsWithThisAvantTexteQuery(textIRI: string): string {
   return `
   PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
