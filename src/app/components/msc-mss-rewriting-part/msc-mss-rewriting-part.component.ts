@@ -32,7 +32,7 @@ export class MscMssRewritingPartComponent implements OnInit {
 
       //// get manuscript parts rewriting this ms part
       this.dataService
-    .getMsPartsRewritingMsPart(this.msPartId)
+    .getAllMsPartsRewritingMsPart(this.msPartId)
     .subscribe((msPartsRewritingParts: MsPartLight[]) => {
         this.mssRewritingParts.push(...msPartsRewritingParts);
 
