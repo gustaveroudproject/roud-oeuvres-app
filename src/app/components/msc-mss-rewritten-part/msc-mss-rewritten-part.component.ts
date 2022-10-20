@@ -23,30 +23,30 @@ export class MscMssRewrittenPartComponent implements OnInit {
     
     this.mssRewrittenParts = [];
 
-      //// get manuscripts from which this ms part is rewritten
-      this.dataService
-      .getManuscriptsRewrittenMsPart(this.msPartId)
-      .subscribe((manuscriptsRewrittenParts: MsLight[]) => {
-          this.mssRewrittenParts.push(...manuscriptsRewrittenParts);
-        });
+    //// get manuscripts from which this ms part is rewritten
+    this.dataService
+    .getManuscriptsRewrittenMsPart(this.msPartId)
+    .subscribe((manuscriptsRewrittenParts: MsLight[]) => {
+        this.mssRewrittenParts.push(...manuscriptsRewrittenParts);
+      });
 
-      //// get manuscript parts from which this ms part is rewritten
-      this.dataService
+    //// get manuscript parts from which this ms part is rewritten
+    this.dataService
     .getMsPartsRewrittenMsPart(this.msPartId)
     .subscribe((msPartsRewrittenParts: MsPartLight[]) => {
-        this.mssRewrittenParts.push(...msPartsRewrittenParts);
+      this.mssRewrittenParts.push(...msPartsRewrittenParts);
 
-        // asynchrone
-          //// get publications from publications' IRIs
-          for (var msPart in msPartsRewrittenParts) {
-            this.dataService
-            .getMsOfMsPart(msPartsRewrittenParts[msPart].isPartOfMsValue)
-            .subscribe(
-              (msFromParts4: MsLight) => {
-                this.msFromParts4 = msFromParts4;
-              });
-            }
-        });
+      // asynchrone
+      //// get publications from publications' IRIs
+      for (var msPart in msPartsRewrittenParts) {
+        this.dataService
+        .getMsOfMsPart(msPartsRewrittenParts[msPart].isPartOfMsValue)
+        .subscribe(
+          (msFromParts4: MsLight) => {
+            this.msFromParts4 = msFromParts4;
+          });
+      }
+    });
   }
 
 }
