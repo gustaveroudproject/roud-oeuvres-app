@@ -184,7 +184,7 @@ export class MsPageComponent implements OnInit, DoCheck {
                 /// get ms parts (diary notes)
                 this.loadingResults++;
                 this.dataService
-                .getMsPartsFromMs(msLight.id)
+                .getAllMsPartsFromMs(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe((msParts: MsPartLightWithStartingPageSeqnum[]) => {
                   this.msParts.push(...msParts);
