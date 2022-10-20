@@ -35,7 +35,7 @@ export class MscMssRewrittenPartComponent implements OnInit {
     //// get manuscript parts from which this ms part is rewritten
     let msPartsRewrittenParts: MsPartLight[] = [];
     this.dataService
-    .getMsPartsRewrittenMsPart(this.msPartId)
+    .getAllMsPartsRewrittenMsPart(this.msPartId)
     .subscribe(
       // next: 
       (parts: MsPartLight[]) => msPartsRewrittenParts.push(...parts),
