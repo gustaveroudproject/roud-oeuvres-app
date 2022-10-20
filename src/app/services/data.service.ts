@@ -1429,8 +1429,6 @@ getPageOfPubPartsReusingDiaryQuery(textIRI: string) : string {
       ?pubPart roud-oeuvres:pubPartIsPartOf ?pubValue .
       ?pubPart roud-oeuvres:pubPartHasNumber ?number .
     }
-} 
-    }
   `
 }
 
@@ -1441,8 +1439,6 @@ getPubPartsReusingDiary(textIRI: string, index: number = 0): Observable<PubPartL
     .pipe(
       map((
         readResources: ReadResourceSequence 
-      readResources: ReadResourceSequence 
-        readResources: ReadResourceSequence 
       ) => readResources.resources.map(r => {
           return this.readRes2PubPartLight(r);
         })
@@ -1450,7 +1446,9 @@ getPubPartsReusingDiary(textIRI: string, index: number = 0): Observable<PubPartL
     );
 }
 
-
+getAllPubPartsReusingDiary(textIRI: string, index: number = 0): Observable<PubPartLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPubPartsReusingDiaryQuery, this.readRes2PubPartLight);
+}
 
 getPublicationsReusingMsPart(msPartIRI: string, index: number = 0): Observable<PublicationLight[]> {  
   const gravsearchQuery = `
