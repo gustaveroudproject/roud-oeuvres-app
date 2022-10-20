@@ -1008,38 +1008,31 @@ return this.knoraApiConnection.v2.search
 }
 
 
-getPublicationsReusedInPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?pub knora-api:isMainResource true .
-    ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
-} WHERE {
-    ?pub a roud-oeuvres:Publication .
-    ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
-}
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
-    )
-  );
+getPageOfPublicationsReusedInPublicationQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?pub knora-api:isMainResource true .
+        ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    } WHERE {
+        ?pub a roud-oeuvres:Publication .
+        ?pub roud-oeuvres:publicationIsReusedInDossier ?dossier .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    }
+  `;
 }
 
+getPublicationsReusedInPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPublicationsReusedInPublicationQuery, this.readRes2PublicationLight);
+}
+getAllPublicationsReusedInPublication(textIRI: string): Observable<PublicationLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPublicationsReusedInPublicationQuery, this.readRes2PublicationLight);
+}
 
 
 getPublicationPartsReusedInPublication(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  

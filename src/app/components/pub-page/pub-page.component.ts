@@ -208,7 +208,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     //// get publications reused in this publication
                     this.loadingResults++;
                     this.dataService
-                      .getPublicationsReusedInPublication(publicationLight.id)
+                      .getAllPublicationsReusedInPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsReused: PublicationLight[]) => {
                         this.pubsReused.push(...publicationsReused);
