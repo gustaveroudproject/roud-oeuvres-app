@@ -875,9 +875,8 @@ return this.knoraApiConnection.v2.search
 
 
 
-getPartsLightOfPub(textIRI: string, index: number = 0): Observable<PubPartLight[]> {  
-  const gravsearchQuery = `
-
+getPageOfPartsLightOfPubQuery(textIRI: string): string {  
+  return `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
 PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
@@ -890,20 +889,16 @@ CONSTRUCT {
     ?pubPart roud-oeuvres:pubPartHasTitle ?title .
     ?pubPart roud-oeuvres:pubPartHasNumber ?number .
 } ORDER BY ASC(?number)
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PubPartLight(r);
-      })
-    )
-  );
+`;
 }
+
+getPartsLightOfPub(textIRI: string, index: number = 0): Observable<PubPartLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPartsLightOfPubQuery, this.readRes2PubPartLight);
+}
+getAllPartsLightOfPub(textIRI: string): Observable<PubPartLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPartsLightOfPubQuery, this.readRes2PubPartLight);
+}
+
 
 
 getPartsOfPub(textIRI: string, index: number = 0): Observable<PubPart[]> {  
