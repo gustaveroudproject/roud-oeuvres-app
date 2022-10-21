@@ -1063,36 +1063,30 @@ getAllPublicationPartsReusedInPublication(textIRI: string): Observable<PubPartLi
   return this.genericGetAll(textIRI, this.getPageOfPublicationPartsReusedInPublicationQuery, this.readRes2PubPartLight);
 }
 
-getPublicationsRepublishedInPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?pub knora-api:isMainResource true .
-    ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
-} WHERE {
-    ?pub a roud-oeuvres:Publication .
-    ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
+getPageOfPublicationsRepublishedInPublicationQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?pub knora-api:isMainResource true .
+        ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    } WHERE {
+        ?pub a roud-oeuvres:Publication .
+        ?pub roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication <${textIRI}> .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    }
+  `;
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
-    )
-  );
+
+getPublicationsRepublishedInPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPublicationsRepublishedInPublicationQuery, this.readRes2PublicationLight);
+}
+getAllPublicationsRepublishedInPublication(textIRI: string): Observable<PublicationLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPublicationsRepublishedInPublicationQuery, this.readRes2PublicationLight);
 }
 
 

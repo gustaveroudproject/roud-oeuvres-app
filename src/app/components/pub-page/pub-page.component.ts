@@ -52,8 +52,8 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
   pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
-  publicationsRepublishingPub: PublicationLight[];
-  publicationsRepublished: PublicationLight[];
+  publicationsRepublishingPub: PublicationLight[] = [];
+  publicationsRepublished: PublicationLight[] = [];
   establishedTexts: TextLight[];
   establishedText: TextLight;
 
@@ -240,17 +240,16 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                       .getAllPublicationsRepublishingPublication(publicationLight.id)
                       .pipe(finalize(() => this.finalizeWait()))
                       .subscribe((publicationsRepublishingPub: PublicationLight[]) => {
-                        this.publicationsRepublishingPub = publicationsRepublishingPub;
+                        this.publicationsRepublishingPub.push(...publicationsRepublishingPub);
                       });
 
 
                     this.loadingResults++;
                     this.dataService
-                    .getPublicationsRepublishedInPublication(publicationLight.id)
+                    .getAllPublicationsRepublishedInPublication(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((publicationsRepublished: PublicationLight[]) => {
-                      this.publicationsRepublished = publicationsRepublished;
-
+                      this.publicationsRepublished.push(...publicationsRepublished);
                     });
 
 
