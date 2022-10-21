@@ -51,7 +51,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   pubsReused: any[]; // array with publicationsReused and pubPartsReused together
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
-  pubsReusing: any[]; // array with publicationsReusing and pubPartsReusingPub together
+  pubsReusing: (PublicationLight|PubPartLight)[]; // array with publicationsReusing and pubPartsReusingPub together
   publicationsRepublishingPub: PublicationLight[] = [];
   publicationsRepublished: PublicationLight[] = [];
   establishedTexts: TextLight[];
@@ -266,18 +266,23 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
 
                     //// get publication parts reusing this publication
                     this.loadingResults++;
+                    let parts: PubPartLight[] = [];
                     this.dataService
-                      .getPublicationPartsReusingPublication(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
+                      .getAllPublicationPartsReusingPublication(publicationLight.id)
+                      .pipe(
+                        finalize(() => {
+                          this.pubsReusing.push(...parts);
+                          this.finalizeWait();
+                          concat(...parts.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                          .pipe(take(1))
+                          .subscribe((pubOfParts) => {
+                            this.pubOfParts3 = pubOfParts;
+                          });
+  
+                        })
+                      )
                       .subscribe((pubPartsReusingPub: PubPartLight[]) => {
-                        this.pubsReusing.push(...pubPartsReusingPub);
-
-                        concat(...pubPartsReusingPub.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
-                        .pipe(take(1))
-                        .subscribe((pubOfParts) => {
-                          this.pubOfParts3 = pubOfParts;
-                        });
-
+                        parts.push(...pubPartsReusingPub);
                       });
 
 
