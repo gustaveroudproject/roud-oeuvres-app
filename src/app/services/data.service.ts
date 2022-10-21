@@ -1314,38 +1314,31 @@ return this.knoraApiConnection.v2.search
 
 
 
-getPublicationsRepublishingPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?pub knora-api:isMainResource true .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
-} WHERE {
-    ?pub a roud-oeuvres:Publication .
-    <${textIRI}> roud-oeuvres:publicationIsRepublishedDossier ?dossier .
-    ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
-    ?pub roud-oeuvres:publicationHasTitle ?title .
-    ?pub roud-oeuvres:publicationHasDate ?date .
-}
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PublicationLight(r);
-      })
-    )
-  );
+getPageOfPublicationsRepublishingPublicationQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?pub knora-api:isMainResource true .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    } WHERE {
+        ?pub a roud-oeuvres:Publication .
+        <${textIRI}> roud-oeuvres:publicationIsRepublishedDossier ?dossier .
+        ?dossier roud-oeuvres:geneticDossierResultsInPublication ?pub .
+        ?pub roud-oeuvres:publicationHasTitle ?title .
+        ?pub roud-oeuvres:publicationHasDate ?date .
+    }
+  `;
 }
 
+getPublicationsRepublishingPublication(textIRI: string, index: number = 0): Observable<PublicationLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPublicationsRepublishingPublicationQuery, this.readRes2PublicationLight);
+}
+getAllPublicationsRepublishingPublication(textIRI: string): Observable<PublicationLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPublicationsRepublishingPublicationQuery, this.readRes2PublicationLight);
+}
 
 
 getPagesOfPubsReusingDiaryQuery(textIRI: string): string {
