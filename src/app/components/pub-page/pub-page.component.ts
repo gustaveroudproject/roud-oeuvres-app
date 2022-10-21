@@ -46,9 +46,9 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   msLight: MsLight;
   avantTexts: MsLight[];
   avantTextsParts: MsLight[];
-  diaryNotes: any[]; // array with MsLight and MsPartLight together
+  diaryNotes: (MsLight|MsPartLight)[]; // array with MsLight and MsPartLight together
   pubOfParts: PublicationLight;
-  pubsReused: any[]; // array with publicationsReused and pubPartsReused together
+  pubsReused: (PublicationLight|PubPartLight)[]; // array with publicationsReused and pubPartsReused together
   pubPartsReusingPub: PubPartLight[];
   pubOfParts3: PublicationLight;
   pubsReusing: (PublicationLight|PubPartLight)[]; // array with publicationsReusing and pubPartsReusingPub together
