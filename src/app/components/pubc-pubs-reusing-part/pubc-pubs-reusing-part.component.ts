@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
+import { concat } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { PubPartLight, PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 
@@ -11,9 +13,8 @@ import { DataService } from 'src/app/services/data.service';
 export class PubcPubsReusingPartComponent implements OnInit {
 
   pubPartsLight: PubPartLight[];
-  publicationsReusingParts: PublicationLight[];
-  pubPartsReusingParts: PubPartLight[];
-  pubsReusingParts: any[]; // array with publicationsReusingParts and pubPartsReusingParts together
+  pubPartsReusingParts: PubPartLight[] = [];
+  pubsReusingParts: (PublicationLight|PubPartLight)[] = []; // array with publicationsReusingParts and pubPartsReusingParts together
   pubOfParts4: PublicationLight;
 
   @Input()
@@ -29,36 +30,36 @@ export class PubcPubsReusingPartComponent implements OnInit {
   
     ngOnInit() {
       
-      this.pubsReusingParts = [];
-
       //// get publications reusing this publication part
       this.dataService
       .getPublicationsReusingPubPart(this.pubPartId)
       .subscribe((publicationsReusingParts: PublicationLight[]) => {
-          this.publicationsReusingParts = publicationsReusingParts;
-
           this.pubsReusingParts.push(...publicationsReusingParts);
-        });
+      });
 
       //// get publication parts reusing this publication part
       this.dataService
       .getPublicationPartsReusingPubPart(this.pubPartId)
-      .subscribe((pubPartsReusingParts: PubPartLight[]) => {
-          this.pubPartsReusingParts = pubPartsReusingParts;
-
-          this.pubsReusingParts.push(...pubPartsReusingParts);
-
-          // asynchrone
-          //// get publications from publications' IRIs
-          for (var pub in pubPartsReusingParts) {
-            this.dataService
-            .getPubOfPubPart(pubPartsReusingParts[pub].isPartOfPubValue)
-            .subscribe(
-              (pubOfParts4: PublicationLight) => {
-                this.pubOfParts4 = pubOfParts4;
-              });
-            }
-        });
-
+      .subscribe(
+        // next:
+        (pubPartsReusingParts: PubPartLight[]) => {
+          this.pubPartsReusingParts.push(...pubPartsReusingParts);
+        },
+        // error:
+        e => console.log(e),
+        // complete:
+        () => {
+          this.pubsReusingParts.push(...this.pubPartsReusingParts);
+          concat(
+            ...(
+              this.pubPartsReusingParts
+              .map(part => part.isPartOfPubValue)
+              .map(pubValue => this.dataService.getPubOfPubPart(pubValue))
+            )
+          )
+          .pipe(take(1))
+          .subscribe((part: PublicationLight) => { this.pubOfParts4 = part; });
+        }
+      );
     }
   }
