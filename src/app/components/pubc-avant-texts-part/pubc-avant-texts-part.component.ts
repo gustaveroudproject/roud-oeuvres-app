@@ -11,8 +11,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class PubcAvantTextsPartComponent implements OnInit {
 
-  pubPartsLight: PubPartLight[];
-  avantTextsParts: MsLight[];
+  avantTextsParts: MsLight[] = [];
 
   @Input()
   pubPartId: string ;
@@ -28,9 +27,9 @@ export class PubcAvantTextsPartComponent implements OnInit {
 
     //// get avant-textes from pubPart IRI
     this.dataService
-    .getAvantTextsParts(this.pubPartId)
+    .getAllAvantTextsParts(this.pubPartId)
     .subscribe((avantTextsParts: MsLight[]) => {
-        this.avantTextsParts = avantTextsParts;
+        this.avantTextsParts.push(...avantTextsParts);
         });
   }
 }
