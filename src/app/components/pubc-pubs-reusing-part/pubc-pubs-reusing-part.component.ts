@@ -32,14 +32,14 @@ export class PubcPubsReusingPartComponent implements OnInit {
       
       //// get publications reusing this publication part
       this.dataService
-      .getPublicationsReusingPubPart(this.pubPartId)
+      .getAllPublicationsReusingPubPart(this.pubPartId)
       .subscribe((publicationsReusingParts: PublicationLight[]) => {
           this.pubsReusingParts.push(...publicationsReusingParts);
       });
 
       //// get publication parts reusing this publication part
       this.dataService
-      .getPublicationPartsReusingPubPart(this.pubPartId)
+      .getAllPublicationPartsReusingPubPart(this.pubPartId)
       .subscribe(
         // next:
         (pubPartsReusingParts: PubPartLight[]) => {
