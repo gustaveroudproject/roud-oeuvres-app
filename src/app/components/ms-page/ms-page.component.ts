@@ -120,16 +120,23 @@ export class MsPageComponent implements OnInit, DoCheck {
 
                 /// get parts of publications with this ms as avant-texte
                 this.loadingResults++;
+                let bufferPubPartsAvantTexte: PubPartLight[] = [];
                 this.dataService
                 .getAllPublicationPartsWithThisAvantTexte(msLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
                 .subscribe(
+                  // next:
                   (pubPartsAvantTexte: PubPartLight[]) => {
-                    this.pubsAvantTexte.push(...pubPartsAvantTexte);
+                    bufferPubPartsAvantTexte.push(...pubPartsAvantTexte);
                     //console.log(this.pubsAvantTexte)
-
+                  },
+                  // error:
+                  error => console.log(error),
+                  // complete:
+                  () => {
+                    this.pubsAvantTexte.push(...bufferPubPartsAvantTexte);
                     this.loadingResults++;
-                    concat(...pubPartsAvantTexte.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                    concat(...bufferPubPartsAvantTexte.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
                     .pipe(
                       take(1),
                       finalize(() => this.finalizeWait())
@@ -137,10 +144,9 @@ export class MsPageComponent implements OnInit, DoCheck {
                     .subscribe((pubFromParts) => {
                       // if we have a candidate, we keep it
                       this.pubFromParts = pubFromParts;
-                    });
-
-                  },
-                  error => console.log(error));
+                    })
+                  }
+                );
 
                 this.pubsDiary = [];
                 /// get publications reusing diary
