@@ -588,65 +588,51 @@ return this.knoraApiConnection.v2.search
 
 
 
-  getPersonsInText(textIRI: string, index: number = 0): Observable<PersonLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?Person knora-api:isMainResource true .
-    ?Person roud-oeuvres:personHasFamilyName ?surname .
-    ?Person roud-oeuvres:personHasGivenName ?name .
-    ?Person roud-oeuvres:personHasNotice ?notice .
-} WHERE {
-    ?Person a roud-oeuvres:Person .
-    optional {?Person roud-oeuvres:personHasFamilyName ?surname }.
-    optional {?Person roud-oeuvres:personHasGivenName ?name }.
-    optional {?Person roud-oeuvres:personHasNotice ?notice }.
-    <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
+getPageOfPersonsInTextQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?Person knora-api:isMainResource true .
+        ?Person roud-oeuvres:personHasFamilyName ?surname .
+        ?Person roud-oeuvres:personHasGivenName ?name .
+        ?Person roud-oeuvres:personHasNotice ?notice .
+    } WHERE {
+        ?Person a roud-oeuvres:Person .
+        optional {?Person roud-oeuvres:personHasFamilyName ?surname }.
+        optional {?Person roud-oeuvres:personHasGivenName ?name }.
+        optional {?Person roud-oeuvres:personHasNotice ?notice }.
+        <${textIRI}> knora-api:hasStandoffLinkTo ?Person .
+    }
+  `;
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PersonLight(r);
-      })
-    )
-  );
+getPersonsInText(textIRI: string, index: number = 0): Observable<PersonLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPersonsInTextQuery, this.readRes2PersonLight);
+}
+getAllPersonsInText(textIRI: string): Observable<PersonLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPersonsInTextQuery, this.readRes2PersonLight);
 }
 
 
-getPlacesInText(textIRI: string, index: number = 0): Observable<PlaceLight[]> {  
-  const gravsearchQuery = `
-
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-CONSTRUCT {
-    ?place knora-api:isMainResource true .
-    ?place roud-oeuvres:placeHasName ?name .
-} WHERE {
-    ?place a roud-oeuvres:Place .
-    ?place roud-oeuvres:placeHasName ?name .
-    <${textIRI}> knora-api:hasStandoffLinkTo ?place .
+getPageOfPlacesInTextQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?place knora-api:isMainResource true .
+        ?place roud-oeuvres:placeHasName ?name .
+    } WHERE {
+        ?place a roud-oeuvres:Place .
+        ?place roud-oeuvres:placeHasName ?name .
+        <${textIRI}> knora-api:hasStandoffLinkTo ?place .
+    }
+`;
 }
-OFFSET ${index}
-`
-;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2PlaceLight(r);
-      })
-    )
-  );
+getPlacesInText(textIRI: string, index: number = 0): Observable<PlaceLight[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfPlacesInTextQuery, this.readRes2PlaceLight);
+}
+getAllPlacesInText(textIRI: string): Observable<PlaceLight[]> {
+  return this.genericGetAll(textIRI, this.getPageOfPlacesInTextQuery, this.readRes2PlaceLight);
 }
 
 
@@ -747,39 +733,33 @@ return this.knoraApiConnection.v2.search
 
 
 
-getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {  
-  const gravsearchQuery = `
-
-  PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-  PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
-  CONSTRUCT {
-      ?work knora-api:isMainResource true .
-      ?work roud-oeuvres:workHasTitle ?title .
-      ?work roud-oeuvres:workHasAuthor ?authorValue .
-      ?work roud-oeuvres:workHasDate ?date .
-      ?work roud-oeuvres:workHasNotice ?notice .
-  } WHERE {
-      ?work a roud-oeuvres:Work .
-      <${textIRI}> knora-api:hasStandoffLinkTo ?work .
-      ?work roud-oeuvres:workHasTitle ?title .
-      optional {?work roud-oeuvres:workHasAuthor ?authorValue .}
-      optional {?work roud-oeuvres:workHasDate ?date .}
-      optional {?work roud-oeuvres:workHasNotice ?notice .}
-  }
-  OFFSET ${index}
+getPageOfWorksInTextQuery(textIRI: string): string {  
+  return `
+    PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+    PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
+    CONSTRUCT {
+        ?work knora-api:isMainResource true .
+        ?work roud-oeuvres:workHasTitle ?title .
+        ?work roud-oeuvres:workHasAuthor ?authorValue .
+        ?work roud-oeuvres:workHasDate ?date .
+        ?work roud-oeuvres:workHasNotice ?notice .
+    } WHERE {
+        ?work a roud-oeuvres:Work .
+        <${textIRI}> knora-api:hasStandoffLinkTo ?work .
+        ?work roud-oeuvres:workHasTitle ?title .
+        optional {?work roud-oeuvres:workHasAuthor ?authorValue .}
+        optional {?work roud-oeuvres:workHasDate ?date .}
+        optional {?work roud-oeuvres:workHasNotice ?notice .}
+    }
 `
 // don't understand why order by multiplies results?!
 ;
-return this.knoraApiConnection.v2.search
-  .doExtendedSearch(gravsearchQuery)
-  .pipe(
-    map((
-      readResources: ReadResourceSequence 
-    ) => readResources.resources.map(r => {
-        return this.readRes2Work(r);
-      })
-    )
-  );
+}
+getWorksInText(textIRI: string, index: number = 0): Observable<Work[]> {
+  return this.genericGetPage(textIRI, index, this.getPageOfWorksInTextQuery, this.readRes2Work);
+}
+getAllWorksInText(textIRI: string): Observable<Work[]> {
+  return this.genericGetAll(textIRI, this.getPageOfWorksInTextQuery, this.readRes2Work);
 }
 
 

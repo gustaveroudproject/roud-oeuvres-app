@@ -94,7 +94,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               //// get persons mentioned in the text
               this.loadingResults++;
               this.dataService
-              .getPersonsInText(text.id)
+              .getAllPersonsInText(text.id)
               .pipe(finalize(() => this.finalizeWait()))
               .subscribe((personsMentioned: PersonLight[]) => {
                 this.personsMentioned = personsMentioned;
@@ -103,7 +103,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               //// get places mentioned in the text
               this.loadingResults++;
               this.dataService
-              .getPlacesInText(text.id)
+              .getAllPlacesInText(text.id)
               .pipe(finalize(() => this.finalizeWait()))
               .subscribe((placesMentioned: PlaceLight[]) => {
                 this.placesMentioned = placesMentioned;
@@ -113,7 +113,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               //// get works mentioned in the text
               this.loadingResults++;
               this.dataService
-              .getWorksInText(text.id)
+              .getAllWorksInText(text.id)
               .pipe(finalize(() => this.finalizeWait()))
               .subscribe((worksMentioned: Work[]) => {
                 this.worksMentioned = worksMentioned;
