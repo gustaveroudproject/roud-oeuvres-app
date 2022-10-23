@@ -10,11 +10,6 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class PubcDiaryReusedPartComponent implements OnInit {
 
-  msPartsLight: MsPartLight[];
-  mssReusedInParts: MsLight[];
-  msPartsReusedInParts: MsPartLight[];
-  msLight2: MsLight;
-
   reusedInParts: any[]; // array with MsLight and MsPartLight together
 
 
@@ -33,20 +28,16 @@ export class PubcDiaryReusedPartComponent implements OnInit {
 
       //// get mss (journal notes) reused in pubPart IRI
       this.dataService
-      .getMssReusedInPubParts(this.pubPartId)
+      .getAllMssReusedInPubParts(this.pubPartId)
       .subscribe((mssReusedInParts: MsLight[]) => {
-          this.mssReusedInParts = mssReusedInParts;
-
           this.reusedInParts.push(...mssReusedInParts);
 
       });
 
       //// get ms parts (journal notes) reused in pubPart IRI
       this.dataService
-      .getMsPartsReusedInPubParts(this.pubPartId)
+      .getAllMsPartsReusedInPubParts(this.pubPartId)
       .subscribe((msPartsReusedInParts: MsPartLight[]) => {
-          this.msPartsReusedInParts = msPartsReusedInParts;
-
           this.reusedInParts.push(...msPartsReusedInParts);  
       });
 
