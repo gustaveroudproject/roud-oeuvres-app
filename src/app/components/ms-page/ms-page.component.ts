@@ -34,7 +34,7 @@ export class MsPageComponent implements OnInit, DoCheck {
   rewritingMs: any[] = [];
   msFromParts: MsLight;
 
-  rewrittenMs: (MsLight|bufferMsPartsReWrittenMs)[] = [];
+  rewrittenMs: (MsLight|MsPartLight)[] = [];
   msFromParts3: MsLight;
 
   panelPoeticPubDisableState: boolean = false;
