@@ -154,7 +154,6 @@
                         <ul *ngIf="pubPartsLight && pubPartsLight.length > 0">
                             <li *ngFor="let pubPartLight of pubPartsLight">
                                 <span class="liPart"> 
-                                    <span></span>
                                     Pour la partie : 
                                     <span>« {{ pubPartLight?.title }} »</span>
                                     <or-pubc-diary-reused-part *ngIf="pubPartLight" [pubPartId]="pubPartLight.id"></or-pubc-diary-reused-part>
