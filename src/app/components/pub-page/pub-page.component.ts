@@ -41,7 +41,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   bookSection: BookSection;
   publisherLight: PublisherLight;
   pages: Page[] = [];
-  pubPartsLight: PubPartLight[];
+  pubPartsLight: PubPartLight[] = [];
   startingPage: Page;
   msLight: MsLight;
   avantTexts: MsLight[];
@@ -151,7 +151,7 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
                     .getAllPartsLightOfPub(publicationLight.id)
                     .pipe(finalize(() => this.finalizeWait()))
                     .subscribe((pubPartsLight: PubPartLight[]) => {
-                      this.pubPartsLight = pubPartsLight;
+                      this.pubPartsLight.push(...pubPartsLight);
                       });
                       /*
                     //// get publication parts
