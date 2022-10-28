@@ -30,14 +30,15 @@ export class BookSectionComponent implements OnInit {
         (bookSection: BookSection) => {
           this.bookSection = bookSection;
 
-          // asynchrone
-          this.dataService
-          .getPublisherLight(bookSection.publisherValue)
-          .subscribe(
-            (publisherLight: PublisherLight) => {
-            this.publisherLight = publisherLight;
-            });
-
+          if (bookSection.publisherValue != null) {
+            // asynchrone
+            this.dataService
+            .getPublisherLight(bookSection.publisherValue)
+            .subscribe(
+              (publisherLight: PublisherLight) => {
+              this.publisherLight = publisherLight;
+              });
+          }
         },
         error => console.error(error)
       );
