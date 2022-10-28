@@ -11,7 +11,8 @@ import { DataService } from 'src/app/services/data.service';
 export class BookSectionComponent implements OnInit {
   
   bookSection: BookSection;
-  publisherLight: PublisherLight;
+  // not used
+  // publisherLight: PublisherLight;
 
   @Input()
   bookSectionIRI: string ;
@@ -30,15 +31,16 @@ export class BookSectionComponent implements OnInit {
         (bookSection: BookSection) => {
           this.bookSection = bookSection;
 
-          if (bookSection.publisherValue != null) {
-            // asynchrone
-            this.dataService
-            .getPublisherLight(bookSection.publisherValue)
-            .subscribe(
-              (publisherLight: PublisherLight) => {
-              this.publisherLight = publisherLight;
-              });
-          }
+          // not used
+          // if (bookSection.publisherValue != null) {
+          //   // asynchrone
+          //   this.dataService
+          //   .getPublisherLight(bookSection.publisherValue)
+          //   .subscribe(
+          //     (publisherLight: PublisherLight) => {
+          //     this.publisherLight = publisherLight;
+          //     });
+          // }
         },
         error => console.error(error)
       );
