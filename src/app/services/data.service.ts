@@ -1436,7 +1436,7 @@ return this.knoraApiConnection.v2.search
 
 
 
-getPageOfMssReusedInPublicationQuery(textIRI: string): string {  
+getMssReusedInPublicationQuery(textIRI: string): string {  
   return `
     PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
     PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -1457,13 +1457,13 @@ getPageOfMssReusedInPublicationQuery(textIRI: string): string {
 }
 
 getMssReusedInPublication(textIRI: string, index: number = 0): Observable<MsLight[]> {  
-  return this.genericGetPage(textIRI, index, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsLight);
+  return this.genericGetPage(textIRI, index, this.getMssReusedInPublicationQuery, this.readRes2MsLight);
 }
 getAllMssReusedInPublication(textIRI: string): Observable<MsLight[]> {  
-  return this.genericGetAll(textIRI, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsLight);
+  return this.genericGetAll(textIRI, this.getMssReusedInPublicationQuery, this.readRes2MsLight);
 }
 
-getPageOfMsPartsReusedInPublicationQuery(textIRI: string): string {  
+getMsPartsReusedInPublicationQuery(textIRI: string): string {  
   return `
     PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
     PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
@@ -1485,10 +1485,10 @@ getPageOfMsPartsReusedInPublicationQuery(textIRI: string): string {
 }
 
 getMsPartsReusedInPublication(textIRI: string, index: number = 0): Observable<MsPartLight[]> {
-  return this.genericGetPage(textIRI, index, this.getPageOfMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
+  return this.genericGetPage(textIRI, index, this.getMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
 }
 getAllMsPartsReusedInPublication(textIRI: string): Observable<MsPartLight[]> {  
-  return this.genericGetAll(textIRI, this.getPageOfMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
+  return this.genericGetAll(textIRI, this.getMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
 }
 
 
