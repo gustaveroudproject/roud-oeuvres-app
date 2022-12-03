@@ -1485,10 +1485,10 @@ getPageOfMsPartsReusedInPublicationQuery(textIRI: string): string {
 }
 
 getMsPartsReusedInPublication(textIRI: string, index: number = 0): Observable<MsPartLight[]> {
-  return this.genericGetPage(textIRI, index, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsPartLight);
+  return this.genericGetPage(textIRI, index, this.getPageOfMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
 }
 getAllMsPartsReusedInPublication(textIRI: string): Observable<MsPartLight[]> {  
-  return this.genericGetAll(textIRI, this.getPageOfMssReusedInPublicationQuery, this.readRes2MsPartLight);
+  return this.genericGetAll(textIRI, this.getPageOfMsPartsReusedInPublicationQuery, this.readRes2MsPartLight);
 }
 
 
