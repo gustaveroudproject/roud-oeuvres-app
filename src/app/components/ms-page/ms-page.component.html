@@ -47,8 +47,12 @@
                 </a>
             </div>
             -->
-            <span *ngIf="pages?.length > 0">
+            <span *ngIf="pages && pages.length > 0">
                 <or-page-viewer [pages]="imagesPubForwarder" [parts]="msParts"></or-page-viewer>
+            </span>
+
+            <span *ngIf="pages && pages.length == 0">
+                La reproduction de l'original n'est pas disponible.<br/>Consulter l'institution de conservation.
             </span>
 
             <!-- MANUSCRIPT DESCRIPTION -->
