@@ -1,5 +1,5 @@
 <!-- VIEWER -->
-<div class="viewer">
+<div class="viewer" *ngIf="allPages && allPages.length > 0">
 
     <span *ngIf="id && id == 'document'; else dataviz">
         <or-still-image #stillImage class="dsp-representation stillimage"
@@ -30,7 +30,7 @@
     </ng-template>
 
 
-    <div *ngIf="allPages && allPages.length > 0; else noImage">
+    <div>
 
         <div class="selects" *ngIf="allPages.length > 1">
             <select
@@ -43,7 +43,7 @@
                 </option>
             </select>
 
-            <select *ngIf="parts && parts.length > 0"
+            <select *ngIf="parts && parts.length > 0"    
             id="selectorPart"
             [ngModel]="selectedPageNum" (change)="selectOnChange(+$event.target.value)"
             >
@@ -53,12 +53,13 @@
             </select>
         </div>
     </div>
-
-    <ng-template #noImage>
-        <div class="py-4" *ngIf="pages && pages.length == 0">   
-            La reproduction de l'original n'est pas disponible. 
-            Les portails <a href="https://scriptorium.bcu-lausanne.ch/page/home" target="_blank">Scriptorium</a> et <a href="https://letempsarchives.ch" target="_blank">Le Temps Archives</a> offrent l'accès à des collections numérisées.
-        </div>
-    </ng-template>
-
 </div> <!-- end Viewer -->
+
+
+
+<!-- NO VIEWER -->
+<div class="py-4" *ngIf="allPages && allPages.length == 0">   
+        La reproduction de l'original n'est pas disponible.
+        <br/>Les portails <a href="https://scriptorium.bcu-lausanne.ch/page/home" target="_blank">Scriptorium</a> et
+        <a href="https://letempsarchives.ch" target="_blank">Le Temps Archives</a> donnent accès à certaines collections numérisées.
+</div>
