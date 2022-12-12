@@ -19,7 +19,18 @@
       "es2018",
       "dom"
     ],
+
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+  },
+  // "angularCompilerOptions": {
+  //   "strictTemplates": true,
+  //   "strictInjectionParameters": true
+  // },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/samples": true
   }
 }
