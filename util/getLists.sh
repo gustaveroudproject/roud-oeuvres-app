@@ -25,7 +25,7 @@ set -o xtrace
 
 ###############################################################################
 
-project_iri="http://rdfh.ch/projects/0112"
+project_iri="http://rdfh.ch/projects/QNSP2JJRTEyh6A0ZtpRdPQ"
 lists_endpoint="https://knora.unil.ch/admin/lists"
 
 # request the list of lists

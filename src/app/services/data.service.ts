@@ -36,7 +36,7 @@ export class DataService {
   ) {}
 
   getProjectIRI() {
-    return 'http://rdfh.ch/projects/0112';
+    return 'http://rdfh.ch/projects/QNSP2JJRTEyh6A0ZtpRdPQ';
   }
 
   getOntoPrefixPath() {

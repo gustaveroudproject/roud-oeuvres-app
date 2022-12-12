@@ -24,7 +24,7 @@ export class PageViewerComponent implements OnInit {
 
   // for viewer DataViz
   iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
-  project:string = "http://rdfh.ch/projects/0112";
+  project:string = "http://rdfh.ch/projects/QNSP2JJRTEyh6A0ZtpRdPQ";
   currentImage: FileRepresentation[] = [];
   images: FileRepresentation[] = [];
   
