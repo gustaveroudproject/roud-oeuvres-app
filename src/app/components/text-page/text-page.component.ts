@@ -60,7 +60,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
   finalizeWait() {
     this.loadingResults--;
-    console.log("finalize: "+ this.loadingResults);
+    // console.log("finalize: "+ this.loadingResults);
   }
 
   
@@ -283,8 +283,8 @@ export class TextPageComponent implements OnInit, AfterViewInit {
         }*/
         this.toc.push(tocItem)
       }
-      console.log(this.toc)
-      console.log(this.toc.length)
+      //console.log(this.toc)
+      //console.log(this.toc.length)
     }, (10000)); 
 
     
