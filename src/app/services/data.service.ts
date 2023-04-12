@@ -795,7 +795,7 @@ return this.knoraApiConnection.v2.search
 
 
 
-getTextsMentioningPlaces(textIRI: string, index: number = 0): Observable<TextLight[]> {  
+getTextsMentioningPlaces(textIRI: string, index: number = 0): Observable<Text[]> {  
   const gravsearchQuery = `
 
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -803,9 +803,11 @@ PREFIX roud-oeuvres: <${this.getOntoPrefixPath()}>
 CONSTRUCT {
     ?Text knora-api:isMainResource true .
     ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text roud-oeuvres:hasDirectSourcePublication ?baseWitPub .
 } WHERE {
     ?Text a roud-oeuvres:EstablishedText .
     ?Text roud-oeuvres:establishedTextHasTitle ?title .
+    ?Text roud-oeuvres:hasDirectSourcePublication ?baseWitPub .
     ?Text knora-api:hasStandoffLinkTo <${textIRI}> .
 }
 OFFSET ${index}
@@ -817,7 +819,7 @@ return this.knoraApiConnection.v2.search
     map((
       readResources: ReadResourceSequence 
     ) => readResources.resources.map(r => {
-        return this.readRes2TextLight(r);
+        return this.readRes2Text(r);
       })
     )
   );
