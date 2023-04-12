@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Person } from 'src/app/models/person.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { TextLight } from 'src/app/models/text.model';
+import { Text } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { finalize } from 'rxjs/operators';
 export class PersonPageComponent implements OnInit {
   
   person: Person;
-  textsLight : TextLight[];
+  mentioningTexts : Text[];
   pictures : Picture[];
 
   loadingResults = 0;
@@ -59,9 +59,9 @@ export class PersonPageComponent implements OnInit {
                 this.dataService
                 .getTextsMentioningPersons(person.id)
                 .pipe(finalize(() => this.finalizeWait()))
-                .subscribe((textsLight: TextLight[]) => {
-                  this.textsLight = textsLight;
-                  // console.log(textsLight);
+                .subscribe((mentioningTexts: Text[]) => {
+                  this.mentioningTexts = mentioningTexts;
+                  // console.log(mentioningTexts);
                   });
                 
                 this.loadingResults++;

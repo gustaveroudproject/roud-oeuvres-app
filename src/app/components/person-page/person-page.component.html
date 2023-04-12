@@ -50,18 +50,18 @@
     
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
-    <div class="py-4 row mention" *ngIf="textsLight && textsLight.length > 0"> <!-- only show if there are texts -->
+    <div class="py-4 row mention" *ngIf="mentioningTexts && mentioningTexts.length > 0"> <!-- only show if there are texts -->
         <div>
             <strong>Occurrences dans les recueils :</strong>
         </div>
         <br/>
         <div class="col-12">
             <ul class="mention-item">
-                <li *ngFor="let textLight of textsLight">
+                <li *ngFor="let mentioningText of mentioningTexts">
                     - <em
-                    [innerHTML]="textLight.title | removeTextAndPar | htmlSanitizer"></em>
-                    &nbsp;(<a routerLink="/texts/{{ textLight.id | encodeURIComponent }}">texte</a>
-                    | <a routerLink="/archive/pub/{{ textLight.id | encodeURIComponent }}">archives</a>)
+                    [innerHTML]="mentioningText.title | removeTextAndPar | htmlSanitizer"></em>
+                    &nbsp;(<a routerLink="/texts/{{ mentioningText.id | encodeURIComponent }}">texte</a>
+                    | <a routerLink="/archive/pub/{{ mentioningText.baseWitPub | encodeURIComponent }}">archives</a>)
                 </li>
             </ul>
         </div>

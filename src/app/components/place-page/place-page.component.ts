@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Place } from 'src/app/models/place.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { TextLight } from 'src/app/models/text.model';
+import { Text } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
-import { EssayPhotoComponent } from '../essay-photo/essay-photo.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
 
@@ -16,7 +15,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class PlacePageComponent implements OnInit {
   place: Place;
-  textsLight : TextLight[];
+  mentioningTexts : Text[];
   photo: Picture;
 
   loadingResults = 0;
@@ -67,8 +66,8 @@ export class PlacePageComponent implements OnInit {
               this.dataService
               .getTextsMentioningPlaces(place.id)
               .pipe(finalize(() => this.finalizeWait()))
-              .subscribe((textsLight: TextLight[]) => {
-                this.textsLight = textsLight;
+              .subscribe((mentioningTexts: Text[]) => {
+                this.mentioningTexts = mentioningTexts;
                 // console.log(textsLight);
                 });
                     

@@ -32,19 +32,19 @@ export class TextPageComponent implements OnInit, AfterViewInit {
   
   text: Text;
   personsMentioned : PersonLight[];
-  baseWitPubLight: PublicationLight;
-  periodicalArticle: PeriodicalArticle;
-  periodicalLight: PeriodicalLight;
-  book: Book;
-  bookSection: BookSection;
-  publisherLight: PublisherLight;
+  // baseWitPubLight: PublicationLight;
+  // periodicalArticle: PeriodicalArticle;
+  // periodicalLight: PeriodicalLight;
+  // book: Book;
+  // bookSection: BookSection;
+  // publisherLight: PublisherLight;
   placesMentioned: PlaceLight[];
   worksMentioned: Work[];
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
-  textsMentioned: TextLight[];
-  pubsMentioned: PublicationLight[];
-  mssMentioned: MsLight[];
+  // textsMentioned: TextLight[];
+  // pubsMentioned: PublicationLight[];
+  // mssMentioned: MsLight[];
 
   id_fragment: string;
   toc: string[];
@@ -162,7 +162,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               });
               */
 
-
+              /*
               //// get base witness publication
               this.loadingResults++;
               this.dataService
@@ -228,7 +228,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                           error => console.error(error)
                         );
                       } 
-              });
+              });*/
 
 
             },
