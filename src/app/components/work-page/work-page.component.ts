@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Work } from 'src/app/models/work.model';
 import { DataService } from 'src/app/services/data.service';
-import { TextLight } from 'src/app/models/text.model';
+import { Text } from 'src/app/models/text.model';
 import { AuthorLight } from 'src/app/models/author.model';
 import { finalize } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { finalize } from 'rxjs/operators';
 export class WorkPageComponent implements OnInit {
 
   work: Work;
-  textsLight : TextLight[];
+  mentioningTexts : Text[];
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
 
@@ -74,9 +74,9 @@ export class WorkPageComponent implements OnInit {
               this.dataService
               .getTextsMentioningWorks(work.id)
               .pipe(finalize(() => this.finalizeWait()))
-              .subscribe((textsLight: TextLight[]) => {
-                this.textsLight = textsLight;
-                // console.log(textsLight);
+              .subscribe((mentioningTexts: Text[]) => {
+                this.mentioningTexts = mentioningTexts;
+                // console.log(mentioningTexts);
                 });
 
               
