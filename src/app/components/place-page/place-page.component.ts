@@ -4,7 +4,6 @@ import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Text } from 'src/app/models/text.model';
 import { Picture } from 'src/app/models/picture.model';
-import { EssayPhotoComponent } from '../essay-photo/essay-photo.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
 
