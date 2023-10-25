@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FulltextSearchComponent } from './fulltext-search.component';
 
@@ -6,7 +6,7 @@ describe('FulltextSearchComponent', () => {
   let component: FulltextSearchComponent;
   let fixture: ComponentFixture<FulltextSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FulltextSearchComponent ]
     })

@@ -19,9 +19,8 @@ export class HomePageComponent implements OnInit {
 
 
   constructor(
-
     private dataService: DataService,
-    private knoraApiConnection: KnoraApiConnection,
+    private knoraApiConnection: KnoraApiConnection
   ) {}
 
   ngOnInit() {

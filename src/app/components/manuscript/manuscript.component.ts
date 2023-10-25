@@ -16,9 +16,7 @@ export class ManuscriptComponent implements OnInit {
   msIRI: string ;
 
   
-  constructor(
-    private dataService: DataService,
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
     

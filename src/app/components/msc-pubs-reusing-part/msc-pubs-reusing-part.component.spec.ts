@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MscPubsReusingPartComponent } from './msc-pubs-reusing-part.component';
 
@@ -6,7 +6,7 @@ describe('MscPubsReusingPartComponent', () => {
   let component: MscPubsReusingPartComponent;
   let fixture: ComponentFixture<MscPubsReusingPartComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MscPubsReusingPartComponent ]
     })

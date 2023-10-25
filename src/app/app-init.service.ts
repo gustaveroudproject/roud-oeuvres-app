@@ -1,5 +1,7 @@
+import { Injectable } from '@angular/core';
 import { KnoraApiConnection, KnoraApiConfig } from '@dasch-swiss/dsp-js';
 
+@Injectable()
 export class AppInitService {
 
     static knoraApiConnection: KnoraApiConnection;

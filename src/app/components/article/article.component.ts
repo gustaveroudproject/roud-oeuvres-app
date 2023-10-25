@@ -19,7 +19,7 @@ export class ArticleComponent implements OnInit {
   withAuthor: string;
 
   constructor(
-    private dataService: DataService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {

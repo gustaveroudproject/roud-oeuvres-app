@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { StillImageTooComponent } from './still-image-too.component';
 
@@ -6,7 +6,7 @@ describe('StillImageTooComponent', () => {
   let component: StillImageTooComponent;
   let fixture: ComponentFixture<StillImageTooComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StillImageTooComponent ]
     })

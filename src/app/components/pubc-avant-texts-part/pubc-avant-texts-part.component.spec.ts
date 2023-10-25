@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PubcAvantTextsPartComponent } from './pubc-avant-texts-part.component';
 
@@ -6,7 +6,7 @@ describe('OrAvantTextsPartComponent', () => {
   let component: PubcAvantTextsPartComponent;
   let fixture: ComponentFixture<PubcAvantTextsPartComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PubcAvantTextsPartComponent ]
     })
