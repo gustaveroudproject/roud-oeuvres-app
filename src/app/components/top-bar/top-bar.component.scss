@@ -2,9 +2,26 @@
 
 .navbar {
   background-color: $darkGreen;
-  
 }
 
 .nav-item {
   font-size: x-large;
+}
+
+.navbar-collapse {
+  justify-content: flex-end;
+}
+
+a {
+  text-decoration: none !important;
+  color: hsla(0,0%,100%,.5);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.roud {
+  color: white !important;
+  font-size: xx-large;
 }

@@ -83,9 +83,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
+  imports: [ RouterModule.forRoot(routes, {
     // anchorScrolling: 'enabled'  // it should not affect the ability to go to fragment, but left here just in case for reference
-  })],
-  exports: [RouterModule]
+  }) ],
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule {}

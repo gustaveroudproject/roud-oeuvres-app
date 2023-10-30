@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MscMssRewritingPartComponent } from './msc-mss-rewriting-part.component';
 
@@ -6,7 +6,7 @@ describe('MscMssRewritingPartComponent', () => {
   let component: MscMssRewritingPartComponent;
   let fixture: ComponentFixture<MscMssRewritingPartComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MscMssRewritingPartComponent ]
     })

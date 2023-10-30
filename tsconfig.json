@@ -2,24 +2,41 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
     "outDir": "./dist/out-tsc",
+    //"forceConsistentCasingInFileNames": true,
+    "strict": false, //true,
+    "noImplicitOverride": true, //true,
+    //"noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": false, //true,
+    //"noFallthroughCasesInSwitch": true,
+    // "suppressImplicitAnyIndexErrors": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "sourceMap": true,
     "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
     ],
+    "module": "esnext",
+    "useDefineForClassFields": false,
     "lib": [
       "es2018",
       "dom"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true
-  }
+  },
+   //"angularCompilerOptions": {
+  //   "enableI18nLegacyMessageIdFormat": false,
+  //   "strictInjectionParameters": true,
+    // "strictInputAccessModifiers": true,
+     //"strictTemplates": true
+  //}
 }

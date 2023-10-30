@@ -19,9 +19,7 @@ export class ManuscriptpartComponent implements OnInit {
   msLightShelfmark: string ;
 
   
-  constructor(
-    private dataService: DataService,
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
     

@@ -30,6 +30,7 @@
 
 ul {
   list-style: disc;
+  padding-left: 2.3em;
 }
 
 
@@ -43,11 +44,11 @@ ul {
 }
 
 :host ::ng-deep .tei-p {
-  text-indent:2em;
+  text-indent: 2em;
 }
 
 :host ::ng-deep .tei-lg {
-  margin:1em 0 1em 0;
+  margin: 1em 0 1em 0;
 }
 
 

@@ -14,14 +14,10 @@ export class BookComponent implements OnInit {
   book: Book;
   publisherLight: PublisherLight;
 
-  @Input()
-  bookIRI: string ;
-  @Input()
-  withAuthor: string;
+  @Input() bookIRI: string;
+  @Input() withAuthor: string;
 
-  constructor(
-    private dataService: DataService,
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
 

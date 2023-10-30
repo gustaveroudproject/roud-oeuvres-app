@@ -6,46 +6,83 @@
 /* this is for Knora-ui */
 // but also for components using Material, for example the 'mat-expansion-panel' used in text-page
 // @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-@import '~@angular/material/theming';
-@include mat-core();
+//@import '~@angular/material/theming';
+//@import '@angular/material/theming';
+//@include mat-core();
 
-$or-primary: mat-palette($mat-green, 900);
-$or-accent: mat-palette($mat-pink, A200, A100, A400);
-$or-theme: mat-light-theme($or-primary, $or-accent);
-$mat-slider-off-color: white;
-@include angular-material-theme($or-theme);
+//$or-primary: mat-palette($mat-green, 900);
+//$or-accent: mat-palette($mat-pink, A200, A100, A400);
+//$or-theme: mat-light-theme($or-primary, $or-accent);
+//$mat-slider-off-color: white;
+//@include angular-material-theme($or-theme);
 /* better what is above even if they are the same,
 because the following gives error when referencing
 this file with @import into another scss file,
 for example of a component */
 // @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
+// Material version 14 configurations
+@use '@angular/material' as mat;
 
+@include mat.core();
+
+$or-primary: mat.define-palette(mat.$green-palette, 900);
+$or-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// Define a light theme
+$or-theme: mat.define-light-theme((
+   color: (
+      primary: $or-primary,
+      accent: $or-accent,
+    ),
+));
+
+$mat-slider-off-color: white;
+
+// Emit theme-dependent styles for common features used across multiple components.
+// Apply the light theme by default
+@include mat.core-theme($or-theme);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($or-theme);
 
 @import url('https://fonts.googleapis.com/css?family=EB+Garamond'); // Gelasio, alternative  EB+Garamond
+//@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 * {
-    // font-family: "Helvetica Neue", Arial, sans-serif !important;
-    font-family: 'EB Garamond', sans-serif !important; 
-  }
+  // font-family: "Helvetica Neue", Arial, sans-serif !important;
+  font-family: 'EB Garamond', sans-serif !important; 
+}
+
 .material-icons {
   font-family: 'Material Icons' !important;
 }
 
 /*************************** COLOR PALETTE **************************/
 
-$primary:#bbe6e4;
-$blue:#133c55;  // primary
-$green:#84894a;
-$darkGreen:#3f6c51; // primary
+$primary: #bbe6e4;
+$blue: #133c55;  // primary
+$green: #84894a;
+$darkGreen: #3f6c51; // primary
 $lightDarkGreen: #DFE7E1;
 $orange: #e06d06;
 $rose: #F4BAB8; //ed9390
-$yellow:#dcbf85;
-$brown: da;
+$yellow: #dcbf85;
+$brown: #6D4C41;
 
 
 /*************************** GENERAL **************************/
-
+/*
+ *  Since Bootstrap 5 added a new XXL breakpoint at 1400px, the widest container breakpoint increased from 1140px (Bootstrap 4) to 1320px (Bootstrap 5).
+ *  Therefore, if you want the same container width behavior as Bootstrap 4, override the .container max-width CSS for the XXL breakpoint
+*/
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1140px;
+  }
+}
 
 ul {
   list-style: none;
@@ -53,13 +90,12 @@ ul {
 }
 
 .ulPourLaPartie {
-list-style: circle;
+  list-style: circle;
 }
 
 .withListStyle {
-list-style: circle;
+  list-style: circle;
 }
-
 
 .permanentId {
   padding: 20px;
@@ -72,11 +108,11 @@ list-style: circle;
 }
 
 .topBar-activeLink {
-  color:white !important;
+  color: white !important;
 }
 
 .footer-activeLink {
-  color:#2d2d2d !important;
+  color: #2d2d2d !important;
 }
 
 code {
@@ -87,23 +123,32 @@ code {
   font-size: large;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 /*************************** BREADCRUMBS **************************/
 
 .breadcrumb-item + .breadcrumb-item::before {
-    content: ">";
-  }
-  .breadcrumb {
-    font-size: large;
-    background-color: transparent// $lightDarkGreen;
-  }
-  
-  .breadcrumb-item a {
-    color: inherit;
-  }
+  content: ">";
+}
 
-  a {
-    color:#538d6a;
-  }
+.breadcrumb {
+  font-size: large;
+  background-color: transparent; // $lightDarkGreen;
+}
+
+.breadcrumb-item a {
+  color: inherit;
+}
+
+a {
+  color: #538d6a;
+}
 
 
 /************************ ARCHIVES PAGES **************************/
@@ -117,7 +162,7 @@ code {
 }
 
 .largerPage {
-  padding:0
+  padding: 0;
 }
 
 .mat-expansion-panel-content, .mat-expansion-panel-header {
@@ -137,4 +182,4 @@ code {
 $panel-height: 40px;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: "Roboto", "Helvetica Neue", sans-serif; }
