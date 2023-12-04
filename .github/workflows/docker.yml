@@ -38,7 +38,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ env.DOCKERHUB_REPOSITORY }}:latest
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:latest
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:2.0.1
           cache-to: type=inline
 
       - name: Update description
@@ -47,7 +47,3 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.DOCKERHUB_REPOSITORY }}
-          
-          
-      #- name: Build the Docker imageG
-        #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
