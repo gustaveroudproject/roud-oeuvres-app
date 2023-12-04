@@ -8,7 +8,7 @@ on:
 
 env:
   DOCKERHUB_REPOSITORY: platec/roud
-  VERSION: 2.0.1
+  VERSION: echo $VERSION_TAG
   
 jobs:
 
