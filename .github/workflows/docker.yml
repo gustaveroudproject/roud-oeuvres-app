@@ -8,6 +8,7 @@ on:
 
 env:
   DOCKERHUB_REPOSITORY: platec/roud
+  VERSION: ${VERSION_TAG}
   
 jobs:
 
@@ -37,8 +38,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:latest
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:2.0.1
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION }}
           cache-to: type=inline
 
       - name: Update description

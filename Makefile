@@ -1,6 +1,7 @@
+include .env
 ACCOUNT=platec
 CONTAINER=roud
-VERSION=v2.0.1
+VERSION=${VERSION_TAG}
 
 .PHONY: build
 build: ## build the web-app container image
