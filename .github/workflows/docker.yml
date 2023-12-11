@@ -33,8 +33,7 @@ jobs:
 
       - name: Import environment variables from version.env file
         id: import-env
-        shell: bash
-        run: cat version.env >> $GITHUB_ENV
+        run: cat version.env >> "$GITHUB_ENV"
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -42,7 +41,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }},${{ env.DOCKERHUB_REPOSITORY }}:latest
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}, ${{ env.DOCKERHUB_REPOSITORY }}:latest
           #cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}
           #cache-to: type=inline
 
