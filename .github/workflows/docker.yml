@@ -33,7 +33,7 @@ jobs:
 
       - name: Import environment variables from version.env file
         id: import-env
-        run: cat version.env >> "$GITHUB_ENV"
+        run: cat ../version.env >> "$GITHUB_ENV"
 
       - name: Build and push
         uses: docker/build-push-action@v5
