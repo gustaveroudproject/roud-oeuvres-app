@@ -8,7 +8,6 @@ on:
 
 env:
   DOCKERHUB_REPOSITORY: platec/roud
-  VERSION: 2.0.1
 
 jobs:
 
@@ -32,14 +31,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Import environment variables from version.env file
+        id: import-env
+        shell: bash
+        run: cat version.env >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION }}
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION }}
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}, ${{ env.DOCKERHUB_REPOSITORY }}:latest
           cache-to: type=inline
 
       - name: Update description

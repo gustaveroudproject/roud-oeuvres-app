@@ -1,4 +1,4 @@
-include .env
+include version.env
 ACCOUNT=platec
 CONTAINER=roud
 VERSION=${VERSION_TAG}
