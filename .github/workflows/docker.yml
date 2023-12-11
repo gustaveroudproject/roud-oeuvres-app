@@ -37,12 +37,14 @@ jobs:
         run: echo "VERSION_TAG=2.0.2" >> "$GITHUB_ENV"
 
       - name: Build and push
+        env: 
+          VERSION_TAG_NAME: ${{ steps.import-env.outputs.VERSION_TAG }}
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}, ${{ env.DOCKERHUB_REPOSITORY }}:latest
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:$VERSION_TAG_NAME, ${{ env.DOCKERHUB_REPOSITORY }}:latest
           #cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}
           #cache-to: type=inline
 
