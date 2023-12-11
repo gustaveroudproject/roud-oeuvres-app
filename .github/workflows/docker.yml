@@ -44,7 +44,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:"$VERSION_TAG_NAME", ${{ env.DOCKERHUB_REPOSITORY }}:latest
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ env.VERSION_TAG_NAME }}, ${{ env.DOCKERHUB_REPOSITORY }}:latest
           #cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.import-env.outputs.VERSION_TAG }}
           #cache-to: type=inline
 
