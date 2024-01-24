@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'or-footer',
@@ -12,8 +11,6 @@ export class FooterComponent implements OnInit {
   public isMenuCollapsed = true;
   constructor() { }
 
-  ngOnInit() {
-  
-  }
+  ngOnInit() { }
 
 }

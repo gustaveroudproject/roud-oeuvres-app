@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, AfterViewChecked, DoCheck } from '@angular/core';
-import { PublicationLight, PeriodicalArticle, Book, BookSection, PubPart, PubPartLight } from 'src/app/models/publication.model';
+import { PublicationLight, PeriodicalArticle, Book, BookSection, PubPartLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorLight } from 'src/app/models/author.model';
@@ -10,14 +10,9 @@ import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextLight } from 'src/app/models/text.model';
 import { DataViz } from 'src/app/models/dataviz.model';
-import { FileRepresentation } from '../file-representation';
-import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } from '@dasch-swiss/dsp-js';
-import { DspResource } from '../dsp-resource';
-import { BehaviorSubject, ReplaySubject, concat } from 'rxjs';
+import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
+import { ReplaySubject, concat } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
-
-
-
 
 @Component({
   selector: 'or-pub-page',
@@ -71,7 +66,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   dataViz: DataViz;
 
   constructor(
-    
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     private el: ElementRef,
@@ -84,301 +78,285 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     console.log("finalize: "+ this.loadingResults);
   }
 
-
-  
   ngOnInit() {
-
     this.route.paramMap
     .pipe(finalize(() => this.finalizeWait())).
     subscribe(
-      
-          params => {
-            if (params.has('iri')) {
-              this.loadingResults++;
-              //// get basic properties (publicationLight) of the publication
-              this.dataService
-                .getPublicationLight(decodeURIComponent(params.get('iri')))
+      params => {
+        if (params.has('iri')) {
+          this.loadingResults++;
+          //// get basic properties (publicationLight) of the publication
+          this.dataService
+            .getPublicationLight(decodeURIComponent(params.get('iri')))
+            .pipe(finalize(() => this.finalizeWait()))
+            .subscribe(
+              (publicationLight: PublicationLight) => {
+                this.publicationLight = publicationLight;
+
+                //// get authors from authors' IRIs
+                this.authors = [];
+                for (var autVal in publicationLight.authorsValues) {
+                  this.dataService
+                  .getAuthorLight(publicationLight.authorsValues[autVal])
+                  .subscribe(
+                    (authorLight: AuthorLight) => {
+                      this.authors.push(authorLight);
+                    });
+                }
+                
+                //// get facsimiles scans from publication IRI
+                this.loadingResults++;
+                this.dataService
+                  .getAllPagesOfPub(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((pages: Page[]) => {
+                    this.imagesPubForwarder.next(pages);
+                    this.pages.push(...pages);              
+                  });
+
+                //// get established text
+                this.loadingResults++;
+                this.dataService
+                  .getEstablishedTextFromBasePub(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((establishedTexts: TextLight[]) => {
+                    this.establishedTexts = establishedTexts;
+                    this.establishedText = this.establishedTexts[0] // there will be only one item anyway
+                  });
+
+                //// get data viz
+                this.dataService
+                  .getDataViz(publicationLight.id)
+                  .subscribe((dataVizs: DataViz[]) => {
+                    // there will be only one item anyway
+                    this.imagesDataVizForwarder.next(dataVizs);
+                    // need one for the ark
+                    this.dataViz = dataVizs[0];
+                  });                                          
+
+
+                //// get publication parts light
+                this.loadingResults++;
+                this.dataService
+                .getAllPartsLightOfPub(publicationLight.id)
                 .pipe(finalize(() => this.finalizeWait()))
-                .subscribe(
-                  (publicationLight: PublicationLight) => {
-                    this.publicationLight = publicationLight;
+                .subscribe((pubPartsLight: PubPartLight[]) => {
+                  this.pubPartsLight.push(...pubPartsLight);
+                  });
+                  /*
+                //// get publication parts
+                this.dataService
+                .getPartsOfPub(publicationLight.id)
+                .subscribe((pubParts: PubPart[]) => {
+                  this.pubParts = pubParts;
 
-                    //// get authors from authors' IRIs
-                    this.authors = [];
-                    for (var autVal in publicationLight.authorsValues) {
-                      this.dataService
-                      .getAuthorLight(publicationLight.authorsValues[autVal])
-                      .subscribe(
-                        (authorLight: AuthorLight) => {
-                          this.authors.push(authorLight);
-                        });
-                    }
-                    
-                    //// get facsimiles scans from publication IRI
-                    this.loadingResults++;
-                    this.dataService
-                      .getAllPagesOfPub(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((pages: Page[]) => {
-                        this.imagesPubForwarder.next(pages);
-                        this.pages.push(...pages);              
-                      });
-
-                    //// get established text
-                    this.loadingResults++;
-                    this.dataService
-                      .getEstablishedTextFromBasePub(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((establishedTexts: TextLight[]) => {
-                        this.establishedTexts = establishedTexts;
-                        this.establishedText = this.establishedTexts[0] // there will be only one item anyway
-                      });
-
-                    //// get data viz
-                    this.dataService
-                      .getDataViz(publicationLight.id)
-                      .subscribe((dataVizs: DataViz[]) => {
-                        // there will be only one item anyway
-                        this.imagesDataVizForwarder.next(dataVizs);
-                        // need one for the ark
-                        this.dataViz = dataVizs[0];
-                      });                                          
-
-
-                    //// get publication parts light
-                    this.loadingResults++;
-                    this.dataService
-                    .getAllPartsLightOfPub(publicationLight.id)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe((pubPartsLight: PubPartLight[]) => {
-                      this.pubPartsLight.push(...pubPartsLight);
-                      });
-                      /*
-                    //// get publication parts
-                    this.dataService
-                    .getPartsOfPub(publicationLight.id)
-                    .subscribe((pubParts: PubPart[]) => {
-                      this.pubParts = pubParts;
-
-                      for (var part in pubParts) {
-                      this.dataService
-                      .getStartingPageOfPart(pubParts[part].startingPageValue)
-                      .subscribe(
-                        (startingPage: Page) => {
-                          this.startingPage = startingPage;
-                        });
-                      }
-                      });
-                      */
-
-                    
-
-                    // GENESIS STARTS
-                    
-                    this.diaryNotes = [];
-                    //// get diary notes (Manuscript) reused in this publication   
-                    this.loadingResults++;                 
-                    this.dataService
-                    .getAllMssReusedInPublication(publicationLight.id)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe((diaryNotesMss: MsLight[]) => {
-                      this.diaryNotes.push(...diaryNotesMss);
-                    });   
-
-                    //// get diary notes (MsPart) reused in this publication
-                    this.loadingResults++;
-                    this.dataService
-                    .getAllMsPartsReusedInPublication(publicationLight.id)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe((diaryNotesMsParts: MsPartLight[]) => {
-                      this.diaryNotes.push(...diaryNotesMsParts);
+                  for (var part in pubParts) {
+                  this.dataService
+                  .getStartingPageOfPart(pubParts[part].startingPageValue)
+                  .subscribe(
+                    (startingPage: Page) => {
+                      this.startingPage = startingPage;
                     });
-                    
-                    
-                    //// get avant-textes
-                    this.loadingResults++;
-                    this.dataService
-                    .getAllAvantTexts(publicationLight.id)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe((avantTexts: MsLight[]) => {
-                      this.avantTexts = avantTexts;
+                  }
+                  });
+                  */
+
+                
+
+                // GENESIS STARTS
+                
+                this.diaryNotes = [];
+                //// get diary notes (Manuscript) reused in this publication   
+                this.loadingResults++;                 
+                this.dataService
+                .getAllMssReusedInPublication(publicationLight.id)
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe((diaryNotesMss: MsLight[]) => {
+                  this.diaryNotes.push(...diaryNotesMss);
+                });   
+
+                //// get diary notes (MsPart) reused in this publication
+                this.loadingResults++;
+                this.dataService
+                .getAllMsPartsReusedInPublication(publicationLight.id)
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe((diaryNotesMsParts: MsPartLight[]) => {
+                  this.diaryNotes.push(...diaryNotesMsParts);
+                });
+                
+                
+                //// get avant-textes
+                this.loadingResults++;
+                this.dataService
+                .getAllAvantTexts(publicationLight.id)
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe((avantTexts: MsLight[]) => {
+                  this.avantTexts = avantTexts;
+                });
+
+                this.pubsReused = [];
+                //// get publications reused in this publication
+                this.loadingResults++;
+                this.dataService
+                  .getAllPublicationsReusedInPublication(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((publicationsReused: PublicationLight[]) => {
+                    this.pubsReused.push(...publicationsReused);
+                  });
+
+                //// get publication parts reused in this publication
+                this.loadingResults++;
+                this.dataService
+                  .getAllPublicationPartsReusedInPublication(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((pubPartsReused: PubPartLight[]) => {
+                    this.pubsReused.push(...pubPartsReused);                        
+
+                    // map => turn the array of PubPartLight into and array of observables ready to run the query to get parts
+                    // ... => turns array of observables into a list of them
+                    // concat => RxJs chains the observables and unify their result as if they came from one
+                    // take(1) => stops at the first result
+                    concat(...pubPartsReused.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                    .pipe(take(1))
+                    .subscribe((pubOfParts) => {
+                      // if we have a candidate, we keep it
+                      this.pubOfParts = pubOfParts;
                     });
 
-                    this.pubsReused = [];
-                    //// get publications reused in this publication
-                    this.loadingResults++;
-                    this.dataService
-                      .getAllPublicationsReusedInPublication(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((publicationsReused: PublicationLight[]) => {
-                        this.pubsReused.push(...publicationsReused);
+                  });
+                  
+                  this.loadingResults++;
+                  this.dataService
+                  .getAllPublicationsRepublishingPublication(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((publicationsRepublishingPub: PublicationLight[]) => {
+                    this.publicationsRepublishingPub.push(...publicationsRepublishingPub);
+                  });
+
+
+                this.loadingResults++;
+                this.dataService
+                .getAllPublicationsRepublishedInPublication(publicationLight.id)
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe((publicationsRepublished: PublicationLight[]) => {
+                  this.publicationsRepublished.push(...publicationsRepublished);
+                });
+
+
+                this.pubsReusing = [];
+                //// get publications reusing this publication
+                this.loadingResults++;
+                this.dataService
+                  .getAllPublicationsReusingPublication(publicationLight.id)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe((publicationsReusingPub: PublicationLight[]) => {
+                    this.pubsReusing.push(...publicationsReusingPub);
+                  });
+
+
+                //// get publication parts reusing this publication
+                this.loadingResults++;
+                let parts: PubPartLight[] = [];
+                this.dataService
+                  .getAllPublicationPartsReusingPublication(publicationLight.id)
+                  .pipe(
+                    finalize(() => {
+                      this.pubsReusing.push(...parts);
+                      this.finalizeWait();
+                      concat(...parts.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+                      .pipe(take(1))
+                      .subscribe((pubOfParts) => {
+                        this.pubOfParts3 = pubOfParts;
                       });
 
-                    //// get publication parts reused in this publication
-                    this.loadingResults++;
-                    this.dataService
-                      .getAllPublicationPartsReusedInPublication(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((pubPartsReused: PubPartLight[]) => {
-                        this.pubsReused.push(...pubPartsReused);                        
+                    })
+                  )
+                  .subscribe((pubPartsReusingPub: PubPartLight[]) => {
+                    parts.push(...pubPartsReusingPub);
+                  });
 
-                        // map => turn the array of PubPartLight into and array of observables ready to run the query to get parts
-                        // ... => turns array of observables into a list of them
-                        // concat => RxJs chains the observables and unify their result as if they came from one
-                        // take(1) => stops at the first result
-                        concat(...pubPartsReused.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
+
+                //// if it is a PERIODICAL ARTICLE, retrieve its properties
+                if (publicationLight.resourceClassLabel == 'Periodical article') {
+                  this.loadingResults++;
+                  this.dataService
+                    .getPeriodicalArticle(publicationLight.id)  // = iri
+                    .pipe(finalize(() => this.finalizeWait()))
+                    .subscribe(
+                      (periodicalArticle: PeriodicalArticle) => {
+                        this.periodicalArticle = periodicalArticle;
+                        
+                        // asynchrone
+                        this.dataService
+                        .getPeriodicalLight(periodicalArticle.periodicalValue)
                         .pipe(take(1))
-                        .subscribe((pubOfParts) => {
-                          // if we have a candidate, we keep it
-                          this.pubOfParts = pubOfParts;
-                        });
-
-                      });
-                      
-                      this.loadingResults++;
-                      this.dataService
-                      .getAllPublicationsRepublishingPublication(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((publicationsRepublishingPub: PublicationLight[]) => {
-                        this.publicationsRepublishingPub.push(...publicationsRepublishingPub);
-                      });
-
-
-                    this.loadingResults++;
-                    this.dataService
-                    .getAllPublicationsRepublishedInPublication(publicationLight.id)
-                    .pipe(finalize(() => this.finalizeWait()))
-                    .subscribe((publicationsRepublished: PublicationLight[]) => {
-                      this.publicationsRepublished.push(...publicationsRepublished);
-                    });
-
-
-                    this.pubsReusing = [];
-                    //// get publications reusing this publication
-                    this.loadingResults++;
-                    this.dataService
-                      .getAllPublicationsReusingPublication(publicationLight.id)
-                      .pipe(finalize(() => this.finalizeWait()))
-                      .subscribe((publicationsReusingPub: PublicationLight[]) => {
-                        this.pubsReusing.push(...publicationsReusingPub);
-                      });
-
-
-                    //// get publication parts reusing this publication
-                    this.loadingResults++;
-                    let parts: PubPartLight[] = [];
-                    this.dataService
-                      .getAllPublicationPartsReusingPublication(publicationLight.id)
-                      .pipe(
-                        finalize(() => {
-                          this.pubsReusing.push(...parts);
-                          this.finalizeWait();
-                          concat(...parts.map(part => this.dataService.getPubOfPubPart(part.isPartOfPubValue)))
-                          .pipe(take(1))
-                          .subscribe((pubOfParts) => {
-                            this.pubOfParts3 = pubOfParts;
+                        .subscribe(
+                          (periodicalLight: PeriodicalLight) => {
+                          this.periodicalLight = periodicalLight;
+                          // console.log(periodicalLight);
                           });
-  
-                        })
-                      )
-                      .subscribe((pubPartsReusingPub: PubPartLight[]) => {
-                        parts.push(...pubPartsReusingPub);
-                      });
+                      },
+                      error => console.error(error)
+                    );
+                  }  
 
+                  //// if it is a BOOK, retrieve its properties
+                  if (publicationLight.resourceClassLabel == 'Book') {
+                    this.loadingResults++;
+                    this.dataService
+                      .getBook(publicationLight.id)  // = iri
+                      .pipe(finalize(() => this.finalizeWait()))
+                      .subscribe(
+                        (book: Book) => {
+                          this.book = book;
 
-                    
+                          // asynchrone
+                          this.dataService
+                          .getPublisherLight(book.publisherValue)
+                          .pipe(take(1))
+                          .subscribe(
+                            (publisherLight: PublisherLight) => {
+                            this.publisherLight = publisherLight;
+                            });
 
-                    //// if it is a PERIODICAL ARTICLE, retrieve its properties
-                    if (publicationLight.resourceClassLabel == 'Periodical article') {
+                        },
+                        error => console.error(error)
+                      );
+                    }  
+
+                    //// if it is a BOOK SECTION, retrieve its properties
+                    if (publicationLight.resourceClassLabel == 'Book section') {
                       this.loadingResults++;
                       this.dataService
-                        .getPeriodicalArticle(publicationLight.id)  // = iri
+                        .getBookSection(publicationLight.id)  // = iri
                         .pipe(finalize(() => this.finalizeWait()))
                         .subscribe(
-                          (periodicalArticle: PeriodicalArticle) => {
-                            this.periodicalArticle = periodicalArticle;
+                          (bookSection: BookSection) => {
+                            this.bookSection = bookSection;
                             
                             // asynchrone
                             this.dataService
-                            .getPeriodicalLight(periodicalArticle.periodicalValue)
+                            .getPublisherLight(bookSection.publisherValue)
                             .pipe(take(1))
                             .subscribe(
-                              (periodicalLight: PeriodicalLight) => {
-                              this.periodicalLight = periodicalLight;
-                              // console.log(periodicalLight);
-                              });
-
+                              (publisherLight: PublisherLight) => {
+                              this.publisherLight = publisherLight;
+                              });  
                           },
                           error => console.error(error)
                         );
-                      }  
-
-                      //// if it is a BOOK, retrieve its properties
-                      if (publicationLight.resourceClassLabel == 'Book') {
-                        this.loadingResults++;
-                        this.dataService
-                          .getBook(publicationLight.id)  // = iri
-                          .pipe(finalize(() => this.finalizeWait()))
-                          .subscribe(
-                            (book: Book) => {
-                              this.book = book;
-
-                              // asynchrone
-                              this.dataService
-                              .getPublisherLight(book.publisherValue)
-                              .pipe(take(1))
-                              .subscribe(
-                                (publisherLight: PublisherLight) => {
-                                this.publisherLight = publisherLight;
-                                });
-  
-                            },
-                            error => console.error(error)
-                          );
-                        }  
-
-                        //// if it is a BOOK SECTION, retrieve its properties
-                        if (publicationLight.resourceClassLabel == 'Book section') {
-                          this.loadingResults++;
-                          this.dataService
-                            .getBookSection(publicationLight.id)  // = iri
-                            .pipe(finalize(() => this.finalizeWait()))
-                            .subscribe(
-                              (bookSection: BookSection) => {
-                                this.bookSection = bookSection;
-                                
-                                // asynchrone
-                                this.dataService
-                                .getPublisherLight(bookSection.publisherValue)
-                                .pipe(take(1))
-                                .subscribe(
-                                  (publisherLight: PublisherLight) => {
-                                  this.publisherLight = publisherLight;
-                                  });
-                                
-    
-                              },
-                              error => console.error(error)
-                            );
-                          } 
-                          
-
-                  },
-                  error => console.error(error)
-                  
-                );
-              }
-          },
-          error => console.error(error)
-        );
-
-        
-        
+                      } 
+              },
+              error => console.error(error)
+              
+            );
+          }
+      },
+      error => console.error(error)
+    );
 
   }
 
-        
-  
   ngAfterViewChecked() {
     // this might be transformed into directives
     this.makeLiPartAppearIfNotEmpty(this.el);
@@ -386,15 +364,10 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
   }
 
   ngDoCheck() {
-
     // MOVE INTO DIRECTIVES ? NO, because it is more complicated to act on the disable attribute of the panel, which is here
     this.disableExpansionPanelReprisesIfEmtpy(this.el);
     this.disableExpansionPanelGenesisIfEmtpy(this.el);
   }
-
-
-
-   
   
   /*###########    
   DISPLAY PUBPARTS IN EACH GENETIC CATEGORY ONLY IF THEY HAVE CHILDREN
@@ -411,8 +384,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
       }
     });
   }
-
-  
 
   /*###########
   MAKE GENETIC CATEGORY GREY IF EMPTY
@@ -433,11 +404,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
     });
   }
 
-
-  
-
-
-
   /*###########
   DISABLE THE PANEL GENESIS IF IT DOES NOT CONTAIN INFO
   ###########*/
@@ -455,8 +421,6 @@ export class PubPageComponent implements OnInit, AfterViewChecked, DoCheck {
       };
     }); 
   }
-
-
 
   /*###########
   DISABLE THE PANEL REPRISES IF IT DOES NOT CONTAIN INFO

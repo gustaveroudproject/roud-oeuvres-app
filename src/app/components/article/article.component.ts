@@ -13,14 +13,10 @@ export class ArticleComponent implements OnInit {
   article: PeriodicalArticle;
   periodical: PeriodicalLight;
 
-  @Input()
-  articleIRI: string ;
-  @Input()
-  withAuthor: string;
+  @Input() articleIRI: string;
+  @Input() withAuthor: string;
 
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
 
@@ -36,13 +32,10 @@ export class ArticleComponent implements OnInit {
           .subscribe(
             (periodical: PeriodicalLight) => {
             this.periodical = periodical;
-            });
-
+            }
+          );
         },
         error => console.error(error)
       );
   }  
 }
-
-
-

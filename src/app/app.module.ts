@@ -1,14 +1,13 @@
 
 /* ANGULAR */
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* KNORA */
 import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
-
 
 /* TRANSLATION */
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -28,9 +27,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
+
 /* FONTAWESOME ICONS */
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 
 /* COMPONENTS */
 import { AppComponent } from './app.component';
@@ -75,9 +74,6 @@ import { TechPageComponent } from './components/tech-page/tech-page.component';
 import { PageViewerComponent } from './components/page-viewer/page-viewer.component';
 import { StillImageComponent } from './components/still-image/still-image.component';
 
-
-
-
 /* PIPES */
 import { EncodeURIComponentPipe } from './pipes/encode-uri-component.pipe';
 import { knoradatesFormattingPipe } from './pipes/knoradates-formatting.pipe';
@@ -90,9 +86,7 @@ import { removeTextAndParPipe } from './pipes/removeTextAndP.pipe';
 import { removeInternalParPipe } from './pipes/removeInternalPar.pipe';
 import { sortByMsTitlePipe } from './pipes/sort-by-ms-title.pipe';
 import { sortByTextDatePipe } from './pipes/sort-by-text-date.pipe';
-import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe'
-
-
+import { replaceParWithBrPipe } from './pipes/replaceParWithBr.pipe';
 
 /* DIRECTIVES */
 import { ResourceLinkDirective } from './directives/resource-link.directive';
@@ -100,7 +94,6 @@ import { PageLinkDirective } from './directives/page-link.directive';
 import { RenderTeiDirective } from './directives/render-tei.directive';
 import { ImageResizePipe } from './pipes/image-resize.pipe';
 import { StillImageTooComponent } from './components/still-image-too/still-image-too.component';
-
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -192,6 +185,7 @@ export function initializeApp(appInitService: AppInitService) {
     FontAwesomeModule
   ],
   providers: [
+    provideClientHydration(),
     AppInitService,
     {
       provide: APP_INITIALIZER,

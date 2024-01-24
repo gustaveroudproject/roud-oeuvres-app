@@ -22,9 +22,7 @@
     <!-- SCANS -->
     <div class="row pb-4" *ngIf="pages && pages.length > 0"> <!-- only show if there are scans -->
         <div class="col-md-7 offset-md-2" *ngFor="let page of pages">
-            <img width="100%"
-            src="{{ page.imageURL }}"
-            />
+            <img width="100%" src="{{ page.imageURL }}" />
             <br/>
             <!-- scan legend, if ms or if pub -->
             <span *ngIf="page?.pageMs != null">
@@ -49,14 +47,11 @@
     <!-- PICTURES -->
     <div class="row">
         <div class="col-md-7 offset-md-2">
-            <img *ngIf="photo" width="100%"
-            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
-            />
+            <img *ngIf="photo" width="100%" [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)" />
             <br/>
             {{photo?.title}}
         </div>
     </div>
-
 
     <!-- BIBLIO 
     <div class="row py-2">
@@ -78,5 +73,4 @@
         </p>
     </div>
     
-
 </div>

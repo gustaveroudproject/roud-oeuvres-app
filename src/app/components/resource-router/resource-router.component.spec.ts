@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceRouterComponent } from './resource-router.component';
 
 describe('ResourceRouterComponent', () => {

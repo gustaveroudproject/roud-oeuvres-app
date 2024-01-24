@@ -9,7 +9,7 @@
     //"noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": false, //true,
     //"noFallthroughCasesInSwitch": true,
-    // "suppressImplicitAnyIndexErrors": true,
+    //"suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
@@ -20,23 +20,23 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2020",
     "typeRoots": [
       "node_modules/@types"
     ],
     "module": "esnext",
     "useDefineForClassFields": false,
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-   //"angularCompilerOptions": {
-  //   "enableI18nLegacyMessageIdFormat": false,
-  //   "strictInjectionParameters": true,
-    // "strictInputAccessModifiers": true,
-     //"strictTemplates": true
-  //}
+   "angularCompilerOptions": {
+    //"enableI18nLegacyMessageIdFormat": false,
+    //"strictInjectionParameters": true,
+    //"strictInputAccessModifiers": true,
+    //"strictTemplates": true
+  }
 }

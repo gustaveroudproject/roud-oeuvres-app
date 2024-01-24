@@ -6,7 +6,6 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="/archive">Archives</a></li>
-            
           </ol>
         </nav>
     </div>
@@ -16,9 +15,9 @@
     <div class="row mb-5">
         <p>Une sélection de documents d'archives, manuscrits et publications,
             qui témoignent de la production littéraire de Gustave Roud.
-            La <a class="keep" href="/search">recherche</a> donne accès à l'intégralité des archives.</p>
+            La <a class="keep" href="/search">recherche</a> donne accès à l'intégralité des archives.
+        </p>
     </div>
-
 
     <!-- RECUEILS -->
     <div class="mb-5">
@@ -155,9 +154,8 @@
             <!-- Novalis -->
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/zQNIeqPdSWOi5pY91FK80Q'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/zQNIeqPdSWOi5pY91FK80Q'}">
                         <img class="card-img-top" src="assets/img/trad/novalis.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Novalis</h5>
@@ -169,9 +167,8 @@
             <!-- Hölderlin -->
            <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/6omSE-qVRTmIe0LlYxdsNA'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/6omSE-qVRTmIe0LlYxdsNA'}">
                         <img class="card-img-top" src="assets/img/trad/holderlin.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Friedrich Hölderlin</h5>
@@ -183,9 +180,8 @@
             <!-- Rilke -->
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/4BcTTNFYRLmtGyuv4Rgs0A'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/4BcTTNFYRLmtGyuv4Rgs0A'}">
                         <img class="card-img-top" src="assets/img/trad/rilke.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Rainer Maria Rilke</h5>
@@ -197,9 +193,8 @@
             <!-- Trakl -->
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/yb8lDPz8Rsy0p_kprN9G4g'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ translatedAuthorIRI: 'http://rdfh.ch/0112/yb8lDPz8Rsy0p_kprN9G4g'}">
                         <img class="card-img-top" src="assets/img/trad/trakl.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Georg Trakl</h5>
@@ -224,44 +219,37 @@
         
         <div class="row my-5 pb-5">            
             <div class="col-md-2 years offset-md-1">
-                <a
-                    [routerLink]="['/search']"
+                <a [routerLink]="['/search']"
                     [queryParams]="{ years: 'GREGORIAN:1916:1927'}">
                     <button type="button" class="btn btn-secondary btn-lg">1916-1927</button>
                 </a>
             </div>
             <div class="col-md-2 years">
-                <a
-                    [routerLink]="['/search']"
+                <a [routerLink]="['/search']"
                     [queryParams]="{ years: 'GREGORIAN:1928:1932'}">
                     <button type="button" class="btn btn-secondary btn-lg">1928-1932</button>
                 </a>
             </div>
             <div class="col-md-2 years">
-                <a
-                    [routerLink]="['/search']"
+                <a [routerLink]="['/search']"
                     [queryParams]="{ years: 'GREGORIAN:1933:1940'}">
                     <button type="button" class="btn btn-secondary btn-lg">1933-1940</button>
                 </a>
             </div>
             <div class="col-md-2 years">
-                <a
-                    [routerLink]="['/search']"
+                <a [routerLink]="['/search']"
                     [queryParams]="{ years: 'GREGORIAN:1941:1958'}">
                     <button type="button" class="btn btn-secondary btn-lg">1941-1958</button>
                 </a>
             </div>
             <div class="col-md-2 years">
-                <a
-                    [routerLink]="['/search']"
+                <a [routerLink]="['/search']"
                     [queryParams]="{ years: 'GREGORIAN:1959:1976'}">
                     <button type="button" class="btn btn-secondary btn-lg">1959-1976</button>
                 </a>
             </div>
         </div> <!-- end row -->   
     </div> <!-- end diary -->
-
-
 
     <!-- CRITIQUE -->
     <div class="my-5">
@@ -277,9 +265,8 @@
         <div class="row my-2">
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ about: 'Catherine Colomb'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ about: 'Catherine Colomb'}">
                         <img class="card-img-top" src="assets/img/propos/Colomb.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Catherine Colomb</h5>
@@ -289,9 +276,8 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ about: 'Rimbaud'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ about: 'Rimbaud'}">
                         <img class="card-img-top" src="assets/img/propos/Rimbaud.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">Arthur Rimbaud</h5>
@@ -301,9 +287,8 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ about: 'Auberjonois'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ about: 'Auberjonois'}">
                         <img class="card-img-top" src="assets/img/propos/Auberjonois.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">René Auberjonois</h5>
@@ -313,9 +298,8 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <a
-                    [routerLink]="['/search']"
-                    [queryParams]="{ about: 'Ramuz'}">
+                    <a [routerLink]="['/search']"
+                        [queryParams]="{ about: 'Ramuz'}">
                         <img class="card-img-top" src="assets/img/propos/Ramuz.png" width="100%">
                         <div class="card-body">
                             <h5 class="card-title">C. F. Ramuz</h5>
@@ -326,6 +310,5 @@
             
         </div>
     </div> <!-- end critique -->
-
 
 </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'or-archives-page',
   templateUrl: './archives-page.component.html',
@@ -8,14 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArchivesPageComponent implements OnInit {
 
-  
-  constructor(
-  ) { }
+  constructor( ) { }
 
-  ngOnInit() {
-  }
-
- 
-
+  ngOnInit() { }
 
 }

@@ -5,8 +5,7 @@ import { Constants, ReadStillImageFileValue, KnoraApiConnection, ReadResource } 
 import { BookPart, Page } from '../../models/page.model';
 import { FileRepresentation } from '../file-representation';
 import { DspResource } from '../dsp-resource';
-import { first, tap } from 'rxjs/operators';
-
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'or-page-viewer',
@@ -33,10 +32,7 @@ export class PageViewerComponent implements OnInit {
   resource: DspResource;
   pubIRI: string;
 
-  constructor(
-    public sanitizer: DomSanitizer,
-    private knoraApiConnection: KnoraApiConnection
-  ) { }
+  constructor(public sanitizer: DomSanitizer, private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit(): void {
     let us = this;
@@ -79,27 +75,26 @@ export class PageViewerComponent implements OnInit {
   }
 
 
-// FROM https://github.com/dasch-swiss/dsp-app/blob/9bb63d71234fc49f2afcb959603b8bcd4deb4429/src/app/workspace/resource/resource.component.ts#L355
-// only taken a part of it relevant for still images
+  // FROM https://github.com/dasch-swiss/dsp-app/blob/9bb63d71234fc49f2afcb959603b8bcd4deb4429/src/app/workspace/resource/resource.component.ts#L355
+  // only taken a part of it relevant for still images
 
-    /**
-     * creates a collection of [[StillImageRepresentation]] belonging to the given resource and assigns it to it.
-     * each [[StillImageRepresentation]] represents an image including regions.     *
-     * @param resource The resource to get the images for.
-     * @returns A collection of images for the given resource.
-     */
-     protected collectRepresentationsAndAnnotations(resource: DspResource): FileRepresentation[] {
-      if (!resource) {
-          return;
-      }
-      const representations: FileRepresentation[] = [];
-          const fileValues: ReadStillImageFileValue[] = resource.res.properties[Constants.HasStillImageFileValue] as ReadStillImageFileValue[];
-          for (const img of fileValues) {
-  
-              const stillImage = new FileRepresentation(img);
-              representations.push(stillImage);
-            }
-  
-      return representations;
+  /**
+   * creates a collection of [[StillImageRepresentation]] belonging to the given resource and assigns it to it.
+   * each [[StillImageRepresentation]] represents an image including regions.     *
+   * @param resource The resource to get the images for.
+   * @returns A collection of images for the given resource.
+   */
+  protected collectRepresentationsAndAnnotations(resource: DspResource): FileRepresentation[] {
+    if (!resource) {
+      return;
+    }
+    const representations: FileRepresentation[] = [];
+    const fileValues: ReadStillImageFileValue[] = resource.res.properties[Constants.HasStillImageFileValue] as ReadStillImageFileValue[];
+    for (const img of fileValues) {
+      const stillImage = new FileRepresentation(img);
+      representations.push(stillImage);
+    }
+
+    return representations;
   }
 }

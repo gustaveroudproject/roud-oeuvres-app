@@ -1,4 +1,3 @@
-
 export interface Resource {
   id: string;
   ark: string;

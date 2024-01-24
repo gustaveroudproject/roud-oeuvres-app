@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BookSection } from 'src/app/models/publication.model';
-import { PublisherLight } from 'src/app/models/publisher.model'
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -14,23 +13,17 @@ export class BookSectionComponent implements OnInit {
   // not used
   // publisherLight: PublisherLight;
 
-  @Input()
-  bookSectionIRI: string ;
-  @Input()
-  withAuthor: string;
+  @Input() bookSectionIRI: string;
+  @Input() withAuthor: string;
 
-  constructor(
-    private dataService: DataService,
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    
     this.dataService
       .getBookSection(this.bookSectionIRI)
       .subscribe(
         (bookSection: BookSection) => {
           this.bookSection = bookSection;
-
           // not used
           // if (bookSection.publisherValue != null) {
           //   // asynchrone
@@ -46,5 +39,3 @@ export class BookSectionComponent implements OnInit {
       );
   }  
 }
-
-

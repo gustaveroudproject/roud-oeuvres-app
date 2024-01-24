@@ -3,7 +3,6 @@ import { Book } from 'src/app/models/publication.model';
 import { PublisherLight } from 'src/app/models/publisher.model'
 import { DataService } from 'src/app/services/data.service';
 
-
 @Component({
   selector: 'or-book',
   templateUrl: './book.component.html',
@@ -20,7 +19,6 @@ export class BookComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-
     this.dataService
       .getBook(this.bookIRI)
       .subscribe(
@@ -30,16 +28,11 @@ export class BookComponent implements OnInit {
           // asynchrone
           this.dataService
           .getPublisherLight(book.publisherValue)
-          .subscribe(
-            (publisherLight: PublisherLight) => {
+          .subscribe((publisherLight: PublisherLight) => {
             this.publisherLight = publisherLight;
-            });
-
+          });
         },
         error => console.error(error)
       );
   }  
 }
-
-
-

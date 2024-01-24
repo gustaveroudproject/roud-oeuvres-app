@@ -30,14 +30,13 @@ export class EssayPageComponent implements OnInit {
     private route: ActivatedRoute, // it gives me the current route (URL)
     private dataService: DataService,
     public sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
 
   finalizeWait() {
     this.loadingResults--;
     console.log("finalize: "+ this.loadingResults);
   }
-
 
   ngOnInit() {
     //1. recuperer IRI du URL courent (ActivatedRoute)
@@ -98,8 +97,6 @@ export class EssayPageComponent implements OnInit {
                 }
 
                 */
-
-
             },
             error => console.error(error)
           );

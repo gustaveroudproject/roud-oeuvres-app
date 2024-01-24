@@ -28,7 +28,6 @@
       <img src="https://iiif.ls-prod-server.dasch.swiss:443/0112/Af3QQvkv7BC-BKMtyOpy0pu.jp2/full/2532,2801/0/default.jpg"/>
     </div>
   
-
     <div class="col-5 offset-1">
         <p *ngFor="let text of textsLight" class="text-item">
           <a routerLink="/texts/{{ text.id | encodeURIComponent }}"><i [innerHtml]="text?.title | removeTextAndPar | htmlSanitizer"
@@ -37,13 +36,11 @@
         </p>
     </div>
 
-    </div>
+  </div>
 
-    
-  
-    <!--
-    <button (click)="onLoadNextPage()" type="button" class="btn btn-light">
-      Plus
-    </button>-->
-
+  <!--
+  <button (click)="onLoadNextPage()" type="button" class="btn btn-light">
+    Plus
+  </button>
+  -->
 </div>

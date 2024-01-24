@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { concat } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { PubPartLight, PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
-
 
 @Component({
   selector: 'or-pubc-pubs-reusing-part',
@@ -17,24 +16,16 @@ export class PubcPubsReusingPartComponent implements OnInit {
   pubsReusingParts: (PublicationLight|PubPartLight)[] = []; // array with publicationsReusingParts and pubPartsReusingParts together
   pubOfParts4: PublicationLight;
 
-  @Input()
-  pubPartId: string ;
+  @Input() pubPartId: string;
 
-
-
-
-  constructor(
-    
-    private dataService: DataService
-    ) {}
+  constructor(private dataService: DataService) { }
   
     ngOnInit() {
-      
       //// get publications reusing this publication part
       this.dataService
       .getAllPublicationsReusingPubPart(this.pubPartId)
       .subscribe((publicationsReusingParts: PublicationLight[]) => {
-          this.pubsReusingParts.push(...publicationsReusingParts);
+        this.pubsReusingParts.push(...publicationsReusingParts);
       });
 
       //// get publication parts reusing this publication part
@@ -62,4 +53,4 @@ export class PubcPubsReusingPartComponent implements OnInit {
         }
       );
     }
-  }
+}

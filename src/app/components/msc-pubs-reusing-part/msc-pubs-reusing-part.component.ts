@@ -4,8 +4,6 @@ import { take } from 'rxjs/operators';
 import { PubPartLight, PublicationLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
 
-
-
 @Component({
   selector: 'or-msc-pubs-reusing-part',
   templateUrl: './msc-pubs-reusing-part.component.html',
@@ -16,16 +14,11 @@ export class MscPubsReusingPartComponent implements OnInit {
   pubsReusingParts: (PublicationLight | PubPartLight)[];
   pubFromParts3: PublicationLight;
 
+  @Input() msPartId: string;
 
-  @Input()
-  msPartId: string;
-
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-
     this.pubsReusingParts = [];
 
     //// get publications reusing this ms part
@@ -63,5 +56,4 @@ export class MscPubsReusingPartComponent implements OnInit {
           )
         });
   }
-
 }

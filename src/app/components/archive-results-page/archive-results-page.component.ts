@@ -1,12 +1,9 @@
 /// OBSOLETE COMPONENT
-
-
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { AuthorLight } from 'src/app/models/author.model';
 import { MsLight } from 'src/app/models/manuscript.model';
-
 
 
 @Component({
@@ -27,11 +24,7 @@ export class ArchiveResultsPageComponent implements OnInit {
   years: string;
   titleYears: string;
 
-
-  constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute
-  ) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -39,7 +32,6 @@ export class ArchiveResultsPageComponent implements OnInit {
     .subscribe(params => { 
       this.translatedAuthorIRI = params.translatedAuthorIRI;
       this.years = params.years;
-
 
       if (this.translatedAuthorIRI != null) {
         this.dataService.getAuthorLight(this.translatedAuthorIRI).subscribe(
@@ -66,15 +58,15 @@ export class ArchiveResultsPageComponent implements OnInit {
             this.mssDiaryYears = [ ...this.mssDiaryYears, ...mssDiaryDate];
           }
         );
+
         this.dataService.getDiaryMssEstablishedDate(this.years).subscribe(
           (mssDiaryEstablishedDate: MsLight[]) => {
             this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
             this.mssDiaryYears = [ ...this.mssDiaryYears, ...mssDiaryEstablishedDate];
-            
           }
         );
       }
     }
   );
-}
+  }
 }

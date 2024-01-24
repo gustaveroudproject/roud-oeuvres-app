@@ -10,23 +10,13 @@ export class RenderTeiDirective implements AfterContentChecked {
 
   sourceLight: PublicationLight;
 
-  constructor(
-    private el: ElementRef,
-    private dataService: DataService
-  ) { }
+  constructor(private el: ElementRef, private dataService: DataService) { }
          
-  
-
   ngAfterContentChecked():void {
     this.quotePopup(this.el);
     this.linkInheritColor(this.el);
     this.noDisplayEditorialHead(this.el);
   }
-
-  
-
-
- 
 
   /* ------------------------------------------------------------------------------------*/
   linkInheritColor(el: ElementRef){
@@ -37,8 +27,6 @@ export class RenderTeiDirective implements AfterContentChecked {
     }
   }
 
-
-
   /* ------------------------------------------------------------------------------------*/
   noDisplayEditorialHead(el: ElementRef){
     var editorialHeads = Array.from(el.nativeElement.getElementsByClassName('tei-head-rendH1') as HTMLCollectionOf<HTMLLinkElement>);
@@ -48,11 +36,8 @@ export class RenderTeiDirective implements AfterContentChecked {
       if (editorialHead.innerText.charAt(0) == "[") {
         editorialHead.style.display = "none";
       }
-      
     }
   }
-
-  
 
   /* ------------------------------------------------------------------------------------
   quotePopup(el:ElementRef) {
@@ -80,46 +65,38 @@ export class RenderTeiDirective implements AfterContentChecked {
     }
   }
   */
-
   
- /* ------------------------------------------------------------------------------------*/
- quotePopup(el:ElementRef) {
-  var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLElement>);
-  for (let index = 0; index < quotes.length; index++) {
-    // for each quote, declare a variable quote and a variable quoteNote (the note contains the source of the quote)
-    const quote: HTMLElement = quotes[index];
-    // to find the quote note, iterate over the children of quote and take the one with class = "tei-quote-note"
-    const quoteNotes:any = quote.children      
-    for (let index = 0; index < quoteNotes.length; index++) {
-      if (quoteNotes[index].className == 'tei-quote-note') {
-        const quoteNote = quoteNotes[index];
-        // remove <br> before note, so the icon appears on the same line
-        if (quoteNote.previousElementSibling) {
-          if (quoteNote.previousElementSibling.nodeName == 'BR') {
-            quoteNote.previousElementSibling.remove()
+  /* ------------------------------------------------------------------------------------*/
+  quotePopup(el:ElementRef) {
+    var quotes = Array.from(el.nativeElement.getElementsByClassName('tei-quote') as HTMLCollectionOf<HTMLElement>);
+    for (let index = 0; index < quotes.length; index++) {
+      // for each quote, declare a variable quote and a variable quoteNote (the note contains the source of the quote)
+      const quote: HTMLElement = quotes[index];
+      // to find the quote note, iterate over the children of quote and take the one with class = "tei-quote-note"
+      const quoteNotes:any = quote.children;   
+      for (let index = 0; index < quoteNotes.length; index++) {
+        if (quoteNotes[index].className == 'tei-quote-note') {
+          const quoteNote = quoteNotes[index];
+          // remove <br> before note, so the icon appears on the same line
+          if (quoteNote.previousElementSibling) {
+            if (quoteNote.previousElementSibling.nodeName == 'BR') {
+              quoteNote.previousElementSibling.remove();
+            }
           }
-        }
-        // create icon node and add it at the end of quote
-        if (!quote.textContent.includes("◂")) {
-          const sourceSpan = document.createElement("span");
-          sourceSpan.textContent += " ◂";
-          quote.appendChild(sourceSpan);    
-          // toggle on click (add or remove class "block" on click)
-          sourceSpan.addEventListener('click', function show() {
-            quoteNote.classList.toggle("block");          
-          });
+          // create icon node and add it at the end of quote
+          if (!quote.textContent.includes("◂")) {
+            const sourceSpan = document.createElement("span");
+            sourceSpan.textContent += " ◂";
+            quote.appendChild(sourceSpan);    
+            // toggle on click (add or remove class "block" on click)
+            sourceSpan.addEventListener('click', function show() {
+              quoteNote.classList.toggle("block");          
+            });
+          }
         }
       }
     }
   }
-}
-
-
-
-
-
-
-
 
   /* ------------------------------------------------------------------------------------*/
   /*
@@ -165,9 +142,4 @@ export class RenderTeiDirective implements AfterContentChecked {
     
   };
   */
-  
-
 }
-
-
-

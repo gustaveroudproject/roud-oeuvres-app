@@ -1,9 +1,4 @@
-import {
-    ReadResource,
-    ReadValue,
-    SystemPropertyDefinition
-} from '@dasch-swiss/dsp-js';
-//import { PropertyInfoValues } from './properties/properties.component';
+import { ReadResource, ReadValue, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 
 export class DspResource {
 
@@ -20,7 +15,6 @@ export class DspResource {
     incomingRepresentations: ReadResource[] = [];
 
     constructor(resource: ReadResource) {
-
         this.res = resource;
     }
 }
@@ -46,4 +40,3 @@ export interface PropIriToNameMapping {
 export interface PropertyValues {
     [index: string]: ReadValue[];
 }
-

@@ -25,30 +25,21 @@
         </h3>
     </div>
 
-
     <!-- NOTICE -->
     <div class="py-4 notice row">
         <p [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
-
     <!-- LINKS TO AUTHORTIY FILES, only show logos if not null -->
     <div class="py-4 row" *ngIf="person?.DhsID != null || person?.Viaf != null">
-        <a 
-            *ngIf="person?.DhsID != null" 
-            href="{{ person?.DhsID }}"
-            target="_blank">
-                <img src="assets/img/dhs.png" width="40px">
+        <a *ngIf="person?.DhsID != null" href="{{ person?.DhsID }}" target="_blank">
+            <img src="assets/img/dhs.png" width="40px">
         </a>
-        <a  
-            *ngIf="person?.Viaf != null"
-            href="{{ person?.Viaf }}"
-            target="_blank">
-                <img src="assets/img/viaf.png" width="40px">
+        <a *ngIf="person?.Viaf != null" href="{{ person?.Viaf }}" target="_blank">
+            <img src="assets/img/viaf.png" width="40px">
         </a>
     </div>
     
-
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4 row mention" *ngIf="mentioningTexts && mentioningTexts.length > 0"> <!-- only show if there are texts -->
         <div>
@@ -70,16 +61,11 @@
     <!-- PICTURES -->
     <div class="row caption mt-5" *ngIf="pictures && pictures.length > 0"> <!-- only show if there are pictures -->
         <div class="col-md-7 offset-md-2" *ngFor="let picture of pictures">
-            <img *ngIf="picture" width="100%"
-            [src]="sanitizer.bypassSecurityTrustUrl(picture.imageURL)"
-            />
+            <img *ngIf="picture" width="100%" [src]="sanitizer.bypassSecurityTrustUrl(picture.imageURL)" />
             <br/>
             {{picture?.title}}
         </div>
     </div>
-
-
-
 
     <br/><br/><br/><br/>
     <!-- PERMANENT IDENTIFIERS -->

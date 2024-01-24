@@ -51,13 +51,13 @@ import '@angular/localize/init';
  * Zone JS is required by default for Angular itself.
  */
 //import 'zone.js';  // Included with Angular CLI.
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
+//import 'zone.js/dist/zone';  // Included with Angular CLI.
+import 'zone.js';
+import 'zone.js/testing';
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-
 
  // As per Knora-ui core module setting:
  // Add global to window, assigning the value of window itself.

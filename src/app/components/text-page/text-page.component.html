@@ -14,14 +14,11 @@
         </ol>
       </nav>
     </div>
-    
   
     <!-- TITLE -->
     <div class="py-4 page-title">
       <h2 [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></h2>
     </div> <!-- end title -->
-
-
 
     <div class="row my-4">    
       
@@ -33,34 +30,24 @@
           </mat-expansion-panel-header>
           <div>
             <div class="mb-5 d-grid gap-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeFontSize('readingText', 1)">+</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary"
-                      (click)="changeFontSize('readingText', -1)">-</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeFontSize('readingText', 1)">+</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeFontSize('readingText', -1)">-</button>
             </div>
             <div class="mb-5 d-grid gap-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeHorizontalPadding('readingText', 20)">→←</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeHorizontalPadding('readingText', -20)">←→</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeHorizontalPadding('readingText', 20)">→←</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeHorizontalPadding('readingText', -20)">←→</button>
             </div>
             <div class="mb-5 d-grid gap-2">
-              <button type="button" class="btn btn-sm btn-dark" 
-                      (click)="changeBackgroundColor('readingText', '#333333', '#ffffff')">sombre</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeBackgroundColor('readingText', '#f8f8f8', '#212529')">clair</button>
+              <button type="button" class="btn btn-sm btn-dark" (click)="changeBackgroundColor('readingText', '#333333', '#ffffff')">sombre</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeBackgroundColor('readingText', '#f8f8f8', '#212529')">clair</button>
             </div>
             <div class="mb-5 d-grid gap-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeLineHeight('readingText', 1)">↑<br/>↓</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" 
-                      (click)="changeLineHeight('readingText', -1)">↓<br/>↑</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeLineHeight('readingText', 1)">↑<br/>↓</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeLineHeight('readingText', -1)">↓<br/>↑</button>
             </div>
           </div>
         </mat-expansion-panel>
       </div> <!-- end reader controlS -->
-
-      
       
       <!-- TEXT CONTENT - MAIN -->
       <div class="col-md-7 container-scrollable" id="readingText"> <!-- order-sm-last-->
@@ -69,8 +56,6 @@
           <!-- <or-text-view [text]="text"></or-text-view>--> 
         </main>
       </div> <!-- end text content -->
-      
-
       
       <!-- ENTITIES and TEXTE REUSE -->
       <div class="col-md-3">
@@ -90,77 +75,74 @@
                 </div>
               </div>
               <div>
-                  <!--<fa-icon [icon]="faUser"></fa-icon>-->
-                  <!-- SVG from https://primer.style/octicons/person-24-->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
-                  &nbsp;
-                  <strong class="tei-persName">Personnes</strong>
-                  <ul>
-                    <li *ngFor="let personLight of personsMentioned">
-                      {{ personLight.name }} {{ personLight.surname }}
-                      <a  *ngIf="personLight?.notice != null" routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
-                        >&nbsp;🔗</a
-                      >
-                    </li>
-                  </ul>
+                <!--<fa-icon [icon]="faUser"></fa-icon>-->
+                <!-- SVG from https://primer.style/octicons/person-24-->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
+                &nbsp;
+                <strong class="tei-persName">Personnes</strong>
+                <ul>
+                  <li *ngFor="let personLight of personsMentioned">
+                    {{ personLight.name }} {{ personLight.surname }}
+                    <a  *ngIf="personLight?.notice != null" routerLink="/persons/{{ personLight.id | encodeURIComponent }}"
+                      >&nbsp;🔗</a
+                    >
+                  </li>
+                </ul>
               </div>
               <div>
-                  <!--<fa-icon [icon]="faMapMarkerAlt"></fa-icon>-->
-                  <!-- SVG from https://primer.style/octicons/location-24 -->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path fill-rule="evenodd" d="M19.071 3.429C15.166-.476 8.834-.476 4.93 3.429c-3.905 3.905-3.905 10.237 0 14.142l.028.028 5.375 5.375a2.359 2.359 0 003.336 0l5.403-5.403c3.905-3.905 3.905-10.237 0-14.142zM5.99 4.489A8.5 8.5 0 0118.01 16.51l-5.403 5.404a.859.859 0 01-1.214 0l-5.378-5.378-.002-.002-.023-.024a8.5 8.5 0 010-12.02z"></path></svg>
-                  &nbsp;
-                  <strong class="tei-placeName">Lieux</strong>
-                  <ul>
-                    <li *ngFor="let placeLight of placesMentioned">
-                      {{ placeLight.name }}
-                      <a routerLink="/places/{{ placeLight.id | encodeURIComponent }}"
-                        >&nbsp;🔗</a
-                      >
-                    </li>
-                  </ul>
+                <!--<fa-icon [icon]="faMapMarkerAlt"></fa-icon>-->
+                <!-- SVG from https://primer.style/octicons/location-24 -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path fill-rule="evenodd" d="M19.071 3.429C15.166-.476 8.834-.476 4.93 3.429c-3.905 3.905-3.905 10.237 0 14.142l.028.028 5.375 5.375a2.359 2.359 0 003.336 0l5.403-5.403c3.905-3.905 3.905-10.237 0-14.142zM5.99 4.489A8.5 8.5 0 0118.01 16.51l-5.403 5.404a.859.859 0 01-1.214 0l-5.378-5.378-.002-.002-.023-.024a8.5 8.5 0 010-12.02z"></path></svg>
+                &nbsp;
+                <strong class="tei-placeName">Lieux</strong>
+                <ul>
+                  <li *ngFor="let placeLight of placesMentioned">
+                    {{ placeLight.name }}
+                    <a routerLink="/places/{{ placeLight.id | encodeURIComponent }}"
+                      >&nbsp;🔗</a
+                    >
+                  </li>
+                </ul>
               </div>
               <div>
-                  <!-- <fa-icon [icon]="faPencilAlt"></fa-icon>-->
-                  <!-- SVG from https://primer.style/octicons/star-24 -->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 .25a.75.75 0 01.673.418l3.058 6.197 6.839.994a.75.75 0 01.415 1.279l-4.948 4.823 1.168 6.811a.75.75 0 01-1.088.791L12 18.347l-6.117 3.216a.75.75 0 01-1.088-.79l1.168-6.812-4.948-4.823a.75.75 0 01.416-1.28l6.838-.993L11.328.668A.75.75 0 0112 .25zm0 2.445L9.44 7.882a.75.75 0 01-.565.41l-5.725.832 4.143 4.038a.75.75 0 01.215.664l-.978 5.702 5.121-2.692a.75.75 0 01.698 0l5.12 2.692-.977-5.702a.75.75 0 01.215-.664l4.143-4.038-5.725-.831a.75.75 0 01-.565-.41L12 2.694z"></path></svg>
-                  &nbsp;
-                  <strong class="tei-ref">Œuvres</strong>
-                  <ul>
-                    <li *ngFor="let work of worksMentioned">
-                      <span *ngFor="let workAuthor of workAuthors">
-                        <span *ngIf="workAuthor?.id == work?.authorValue">{{ workAuthor?.name}} {{ workAuthor?.surname }}, </span>
-                      </span>
-                      <em><span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span></em>
-                      <span *ngIf="work?.date">, {{ work?.date | knoradatesFormatting }}</span>
-                      
-                      <span *ngIf="work?.notice != null">
-                        <a routerLink="/works/{{ work?.id | encodeURIComponent }}">&nbsp;🔗</a>
-                      </span>
-                    </li>
-                  </ul>
+                <!-- <fa-icon [icon]="faPencilAlt"></fa-icon>-->
+                <!-- SVG from https://primer.style/octicons/star-24 -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 .25a.75.75 0 01.673.418l3.058 6.197 6.839.994a.75.75 0 01.415 1.279l-4.948 4.823 1.168 6.811a.75.75 0 01-1.088.791L12 18.347l-6.117 3.216a.75.75 0 01-1.088-.79l1.168-6.812-4.948-4.823a.75.75 0 01.416-1.28l6.838-.993L11.328.668A.75.75 0 0112 .25zm0 2.445L9.44 7.882a.75.75 0 01-.565.41l-5.725.832 4.143 4.038a.75.75 0 01.215.664l-.978 5.702 5.121-2.692a.75.75 0 01.698 0l5.12 2.692-.977-5.702a.75.75 0 01.215-.664l4.143-4.038-5.725-.831a.75.75 0 01-.565-.41L12 2.694z"></path></svg>
+                &nbsp;
+                <strong class="tei-ref">Œuvres</strong>
+                <ul>
+                  <li *ngFor="let work of worksMentioned">
+                    <span *ngFor="let workAuthor of workAuthors">
+                      <span *ngIf="workAuthor?.id == work?.authorValue">{{ workAuthor?.name}} {{ workAuthor?.surname }}, </span>
+                    </span>
+                    <em><span [innerHTML]="work?.title | removeTextAndPar | htmlSanitizer"></span></em>
+                    <span *ngIf="work?.date">, {{ work?.date | knoradatesFormatting }}</span>
+                    
+                    <span *ngIf="work?.notice != null">
+                      <a routerLink="/works/{{ work?.id | encodeURIComponent }}">&nbsp;🔗</a>
+                    </span>
+                  </li>
+                </ul>
               </div>
           </div>
         </mat-expansion-panel> <!-- end entities -->
 
         <!-- TOC -->
         <div *ngIf="toc">
-        <mat-expansion-panel *ngIf="toc.length > 0 && toc[0] != undefined" class="mt-5" expanded="false">
-          <mat-expansion-panel-header>
-              <mat-panel-title>Table des matières</mat-panel-title>
-          </mat-expansion-panel-header>
-          <div>
-            <ul *ngIf="toc != null" style="padding-left: 0px;">
-              <li style="list-style: none;" *ngFor="let tocitem of toc">
-                <span *ngIf="tocitem != null">{{ tocitem }}</span>
-              </li>
-            </ul>
-            
-          </div>
-        </mat-expansion-panel>
-      </div> <!-- end toc -->
+          <mat-expansion-panel *ngIf="toc.length > 0 && toc[0] != undefined" class="mt-5" expanded="false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Table des matières</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <ul *ngIf="toc != null" style="padding-left: 0px;">
+                <li style="list-style: none;" *ngFor="let tocitem of toc">
+                  <span *ngIf="tocitem != null">{{ tocitem }}</span>
+                </li>
+              </ul>       
+            </div>
+          </mat-expansion-panel>
+        </div> <!-- end toc -->
         
-
-
         <!-- SVG from https://primer.style/octicons/pencil-24 -->
         <!-- SVG from https://primer.style/octicons/book-24-->          
         <!-- MENTIONS OF HIS OWN WORKS 
@@ -240,7 +222,6 @@
           </div>
         </mat-expansion-panel> --><!-- end reuse -->
 
-
         <!-- ARCHIVE ET GENÈSE-->
         <div class="my-5">
           <a class="btn btn-outline-secondary"
@@ -248,14 +229,10 @@
             role="button">Archives et genèse</a>
         </div>
 
-
       </div>  <!-- end column -->
       
-
     </div> <!-- end row -->
-
-
-
+       
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">
       <p> 
@@ -269,6 +246,6 @@
           <br/>
           <strong>IRI interne</strong> : {{ text?.id }}
       </p>
-  </div>
+    </div>
 
 </div>

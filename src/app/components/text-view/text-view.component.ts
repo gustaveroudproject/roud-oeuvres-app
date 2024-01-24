@@ -7,10 +7,9 @@ import { Text } from 'src/app/models/text.model';
   styleUrls: ['./text-view.component.scss']
 })
 export class TextViewComponent implements OnInit {
-  @Input()
-  text: Text;
+  @Input() text: Text;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

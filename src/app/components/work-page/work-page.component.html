@@ -4,18 +4,16 @@
 
    <!-- breadcrumbs -->
    <div class="breadcrumbNavbar my-4">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
-        <li class="breadcrumb-item">Œuvres citées (pas de Gustave Roud)</li>
-        <li class="breadcrumb-item active" aria-current="page">
-            <span [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></span>
-        </li>
-      </ol>
-    </nav>
-</div>
-
-
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                <li class="breadcrumb-item">Œuvres citées (pas de Gustave Roud)</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></span>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
     <!-- NAME AND DATES -->
     <div class="py-4 row"> <!-- bootstrap class: vertical padding 3 -->
@@ -28,14 +26,10 @@
         </h3>
     </div>
 
-
     <!-- NOTICE -->
     <div class="py-4 notice row" *ngIf=work?.notice>
         <p [innerHtml]="work?.notice | htmlSanitizer" orResourceLink></p>
     </div>
-
-
-    
 
     <!-- LIST OF TEXTS IN WHICH IS MENTIONED -->
     <div class="py-4 row mention" *ngIf="mentioningTexts && mentioningTexts.length > 0"> <!-- only show if there are texts -->

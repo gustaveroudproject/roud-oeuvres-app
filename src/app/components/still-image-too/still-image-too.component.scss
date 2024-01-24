@@ -20,7 +20,7 @@
   }
 
   .navigation {
-    color:white;
+    color: white;
     position: absolute;
     z-index: 1;
   
@@ -36,7 +36,7 @@
       &.next {
         right: 0;
       }
-      .mat-button.full-size {
+      .mat-mdc-button.full-size {
         height: 100% !important;
         width: $panel-height !important;
   
@@ -50,7 +50,6 @@
 .toolbar {
   display: flex;
   flex-direction: column;
-
   color: aliceblue;
   background-color: #292929; // $dark;
   text-align: center;
@@ -64,11 +63,11 @@
     }
   }
 
+  /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version.*/
   .mat-slider-horizontal {
     width: 80%;
   }
 }
-
 
 // added 
 button {

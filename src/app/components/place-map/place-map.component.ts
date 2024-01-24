@@ -10,10 +10,8 @@ import { Icon, icon } from 'leaflet';
 })
 export class PlaceMapComponent implements OnInit {
 
-  @Input()
-  placeVar: Place ;
+  @Input() placeVar: Place;
 
-  
   private defaultIcon: Icon = icon({
     iconUrl: 'assets/leaflet_img/leaf-red.png', // marker-icon.png
     shadowUrl: 'assets/leaflet_img/leaf-shadow.png',  //marker-shadow.png
@@ -25,11 +23,9 @@ export class PlaceMapComponent implements OnInit {
   });
 
   
-
   constructor() { }
 
   ngOnInit() {
-
     /*
     can use placeVar here only because in the parent component (place-page)
     there is the *ngIf that checks that the variable is already full

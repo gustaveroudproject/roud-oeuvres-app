@@ -1,17 +1,9 @@
-import {
-    Constants,
-    ReadArchiveFileValue,
-    ReadAudioFileValue,
-    ReadDocumentFileValue,
-    ReadMovingImageFileValue,
-    ReadStillImageFileValue
-} from '@dasch-swiss/dsp-js';
+import { Constants, ReadArchiveFileValue, ReadAudioFileValue, ReadDocumentFileValue, ReadMovingImageFileValue, ReadStillImageFileValue } from '@dasch-swiss/dsp-js';
 
 /**
  * represents a file value including its annotations.
  */
 export class FileRepresentation {
-
     /**
      *
      * @param fileValue a [[ReadAudioFileValue | ReadDocumentFileValue | ReadMovingImageFileValue | ReadStillImageFileValue | ReadArchiveFileValue]] representing a file value
@@ -19,11 +11,7 @@ export class FileRepresentation {
      */
     constructor(
         readonly fileValue: ReadAudioFileValue | ReadDocumentFileValue | ReadMovingImageFileValue | ReadStillImageFileValue | ReadArchiveFileValue,
-        
-    ) {
-
-    }
-
+    ) { }
 }
 
 export class RepresentationConstants {
@@ -35,4 +23,4 @@ export class RepresentationConstants {
     static text = Constants.TextFileValue;
     static region = Constants.Region;
     static color = Constants.ColorValue;
-};
+}
