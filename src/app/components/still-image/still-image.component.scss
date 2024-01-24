@@ -15,12 +15,21 @@
   height: 50vh; // calc(100% - 64px);
   border-radius: 8px 8px 0px 0px;
 
+  .mat-mdc-button {
+    min-height: 103%;
+    margin: -15px 0;
+
+    &:not([disabled]) {
+      color: white;
+    }
+  }
+
   &.fullscreen {
     max-width: 100vw;
   }
 
   .navigation {
-    color:white;
+    color: white;
     position: absolute;
     z-index: 1;
   
@@ -36,10 +45,9 @@
       &.next {
         right: 0;
       }
-      .mat-button.full-size {
+      .mat-mdc-button.full-size {
         height: 100% !important;
         width: $panel-height !important;
-  
         padding: 0 !important;
         min-width: $panel-height !important;
       }
@@ -50,17 +58,34 @@
 .toolbar {
   display: flex;
   flex-direction: column;
-
-  color:aliceblue;
-  background-color:#292929; // $dark;
+  color: aliceblue;
+  background-color: #292929; // $dark;
   text-align: center;
   border-radius: 0px 0px 8px 8px;
 
+  .horizontal {
+    mat-slider {
+      width: calc(100% - 100px);
+      margin: 0 42px;
+    }
+  }
+
   .action {
+    /* Style commands buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 
     .active {
       background: rgba(128,128,128,.39);
       font-weight: bolder;
+    }
+
+    button {
+      //fill:white;
+      background-color: #292929;
+      //border: 0px;
     }
   }
 
@@ -69,10 +94,9 @@
   }
 }
 
-
 // added 
 button {
-  fill:white;
-  background-color: #292929;
+  fill: white;
+  //background-color: #292929;
   border: 0px;
 }

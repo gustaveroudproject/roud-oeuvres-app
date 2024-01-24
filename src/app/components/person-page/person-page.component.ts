@@ -20,12 +20,11 @@ export class PersonPageComponent implements OnInit {
 
   loadingResults = 0;
 
-
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     public sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   finalizeWait() {
     this.loadingResults--;
@@ -51,7 +50,6 @@ export class PersonPageComponent implements OnInit {
             (person: Person) => {
               this.person = person; // step 4    I give to the attribute person the value of person
 
-
                 // console.log(person.Viaf != null)
 
                 // asynchrone, we need text to ask texts mentioning persons
@@ -62,7 +60,7 @@ export class PersonPageComponent implements OnInit {
                 .subscribe((mentioningTexts: Text[]) => {
                   this.mentioningTexts = mentioningTexts;
                   // console.log(mentioningTexts);
-                  });
+                });
                 
                 this.loadingResults++;
                 this.dataService
@@ -71,11 +69,8 @@ export class PersonPageComponent implements OnInit {
                 .subscribe((pictures: Picture[]) => {
                   this.pictures = pictures;
                   // console.log(pictures);
-                    });
-
-                
+                });
               },
-              
               error => console.error(error)
             );
       },

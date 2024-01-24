@@ -1,47 +1,42 @@
 <div class="container">
 
-    <!-- breadcrumbs -->
-    <div class="breadcrumbNavbar my-4">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="/archive">Archives</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Listes</li>
-            
-          </ol>
-        </nav>
-    </div>
+  <!-- breadcrumbs -->
+  <div class="breadcrumbNavbar my-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="/archive">Archives</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Listes</li>
+      </ol>
+    </nav>
+  </div>
 
-
-    <h2 class="mb-5 text-center"><b>Archives</b></h2>
-
+  <h2 class="mb-5 text-center"><b>Archives</b></h2>
 
   <div *ngIf="translatedAuthor">
-      <p class="sectionTitle">Manuscrits de traduction de {{ translatedAuthor?.name }} {{ translatedAuthor?.surname }}</p>
-      <ul>
-          <li *ngFor="let msTranslatedAuthor of mssTranslatedAuthor | sortByMsTitle">
-            <a routerLink="/archive/ms/{{ msTranslatedAuthor?.id | encodeURIComponent }}">
+    <p class="sectionTitle">Manuscrits de traduction de {{ translatedAuthor?.name }} {{ translatedAuthor?.surname }}</p>
+    <ul>
+      <li *ngFor="let msTranslatedAuthor of mssTranslatedAuthor | sortByMsTitle">
+          <a routerLink="/archive/ms/{{ msTranslatedAuthor?.id | encodeURIComponent }}">
             « <span [innerHTML]="msTranslatedAuthor?.title | htmlSanitizer"></span> »
               ({{ ms?.archive }}<span *ngIf="msTranslatedAuthor.shelfmark != '/'" [innerHTML]="msTranslatedAuthor?.shelfmark | htmlSanitizer"></span>)
-              </a
-            >
+          </a>
       </li>
-      </ul>
-      <hr class="m-5"/>
+    </ul>
+    <hr class="m-5"/>
   </div>
 
   <div *ngIf="years">
     <p class="sectionTitle">Manuscrits du journal intime, {{ titleYears }}</p>
     <ul>
-        <li *ngFor="let msDiaryYears of mssDiaryYears | sortByMsTitle">
-          <a routerLink="/archive/ms/{{ msDiaryYears?.id | encodeURIComponent }}">
+      <li *ngFor="let msDiaryYears of mssDiaryYears | sortByMsTitle">
+        <a routerLink="/archive/ms/{{ msDiaryYears?.id | encodeURIComponent }}">
           « <span [innerHTML]="msDiaryYears?.title | htmlSanitizer"></span> »
             ({{ ms?.archive }}<span *ngIf="msDiaryYears.shelfmark != '/'" [innerHTML]="msDiaryYears?.shelfmark | htmlSanitizer"></span>)
-            </a
-          >
+        </a>
     </li>
     </ul>
     <hr class="m-5"/>
-</div>
+  </div>
 
 </div>

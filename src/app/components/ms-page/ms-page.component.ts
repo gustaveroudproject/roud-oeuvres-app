@@ -5,11 +5,7 @@ import { MsLight, MsPartLight, Manuscript, MsPartLightWithStartingPageSeqnum } f
 import { Page, PageLight } from 'src/app/models/page.model';
 import { PublicationLight, PubPartLight } from 'src/app/models/publication.model';
 import { finalize, take } from 'rxjs/operators';
-import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { concat, ReplaySubject } from 'rxjs';
-
-
-
 
 @Component({
   selector: 'or-ms-page',
@@ -17,7 +13,6 @@ import { concat, ReplaySubject } from 'rxjs';
   styleUrls: ['./ms-page.component.scss']
 })
 export class MsPageComponent implements OnInit, DoCheck {
-
 
   msLight: MsLight;
   msParts: MsPartLightWithStartingPageSeqnum[] = [];
@@ -45,7 +40,6 @@ export class MsPageComponent implements OnInit, DoCheck {
 
   imagesPubForwarder = new ReplaySubject<Page[]>();
 
-
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute ,// it gives me the current route (URL)
@@ -58,9 +52,7 @@ export class MsPageComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-
     // this.loadingResults++;
-
     this.route.paramMap
     .pipe(finalize(() => this.finalizeWait()))
     .subscribe(
@@ -285,8 +277,6 @@ export class MsPageComponent implements OnInit, DoCheck {
     );
   }
 
-
-
   ngDoCheck() {
     // MOVE INTO DIRECTIVES ? NO, because it is more complicated to act on the disable attribute of the panel, which is here
     this.disableExpansionPanelPoeticPubIfEmtpy(this.el);
@@ -295,10 +285,6 @@ export class MsPageComponent implements OnInit, DoCheck {
     this.greyCategoryIfEmpty(this.el);
     this.makeLiPartAppearIfNotEmpty(this.el);
   }
-
-
-
-  
 
   // FRAGILE, maybe replace with contains
   makeLiPartAppearIfNotEmpty(el: ElementRef) {
@@ -312,7 +298,6 @@ export class MsPageComponent implements OnInit, DoCheck {
     });
   }
 
-
   greyCategoryIfEmpty(el:ElementRef) {
     el.nativeElement.querySelectorAll('div[class="mainCategory"]').forEach((mainCatEl: HTMLElement) => {
       var liDiaryPubLength = mainCatEl.getElementsByClassName("liDiaryLevel").length;
@@ -324,7 +309,6 @@ export class MsPageComponent implements OnInit, DoCheck {
       };
     });
   }
-
 
   // CAN BE PUT ALL TOGETHER IN ONE FUNCTION ADDING A CLASS INSTEAD OF AN ID ON THE PANELS ??
 
@@ -342,7 +326,6 @@ export class MsPageComponent implements OnInit, DoCheck {
       };
     }); 
   }
-
 
   disableExpansionPanelDiaryPubIfEmtpy(el: ElementRef) {
     // this shold be replaced with querySelector, because it is only one
@@ -372,7 +355,6 @@ export class MsPageComponent implements OnInit, DoCheck {
         //this is important, otherwise it gets stucked in "true" when view is checked (tried with all hook methods)
       };
     }); 
-    
   }
 
 }

@@ -19,10 +19,8 @@
     <div class="row py-4"> <!-- bootstrap class: vertical padding 4 -->
         <h3>
             {{ place?.name }}
-            
         </h3>
     </div>
-
 
     <!-- NOTICE -->
     <div class="pt-4 notice row">
@@ -47,27 +45,19 @@
         </div>
     </div>
 
-
-
     <!-- MAP -->
     <or-place-map *ngIf="place?.lat" [placeVar]="place"></or-place-map>  
     <!-- without *ngIf, place is undefined in or-place-map  -->
     
-
-
     <!-- PICTURES -->
     <div class="row caption m-5">
         <div class="col-md-7 offset-md-2">
-            <img *ngIf="photo" width="100%"
-            [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)"
-            />
+            <img *ngIf="photo" width="100%" [src]="sanitizer.bypassSecurityTrustUrl(photo.imageURL)" />
             <br/>
             {{photo?.title}}
         </div>
     </div>
 
-
-    
     <br/><br/>
     <!-- PERMANENT IDENTIFIERS -->
     <div class="my-5 permanentId row">
@@ -84,5 +74,4 @@
         </p>
     </div>
     
-
 </div>

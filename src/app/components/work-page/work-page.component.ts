@@ -6,8 +6,6 @@ import { Text } from 'src/app/models/text.model';
 import { AuthorLight } from 'src/app/models/author.model';
 import { finalize } from 'rxjs/operators';
 
-
-
 @Component({
   selector: 'or-work-page',
   templateUrl: './work-page.component.html',
@@ -16,7 +14,7 @@ import { finalize } from 'rxjs/operators';
 export class WorkPageComponent implements OnInit {
 
   work: Work;
-  mentioningTexts : Text[];
+  mentioningTexts: Text[];
   workAuthor: AuthorLight;
   workAuthors: AuthorLight[];
 
@@ -33,7 +31,6 @@ export class WorkPageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     //1. recuperer IRI du URL courent (ActivatedRoute)
     //2. recuperer la ressource de Knora
     //3. construire un objet de la classe work
@@ -51,44 +48,35 @@ export class WorkPageComponent implements OnInit {
             (work: Work) => {
               this.work = work; // step 4    
 
-              
-                //// get authors from authors' IRIs
-                this.workAuthors = [];
-                for (var autVal in work.authorsValues) {
-                  this.loadingResults++;
-                  this.dataService
-                  .getAuthorLight(work.authorsValues[autVal])
-                  .pipe(finalize(() => this.finalizeWait()))
-                  .subscribe(
-                    (workAuthor: AuthorLight) => {
-                      this.workAuthor = workAuthor;
-                      this.workAuthors.push(workAuthor);
-                    });
+              //// get authors from authors' IRIs
+              this.workAuthors = [];
+              for (var autVal in work.authorsValues) {
+                this.loadingResults++;
+                this.dataService
+                .getAuthorLight(work.authorsValues[autVal])
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe(
+                  (workAuthor: AuthorLight) => {
+                    this.workAuthor = workAuthor;
+                    this.workAuthors.push(workAuthor);
                   }
-
-              
-                
+                );
+              }
 
               // asynchrone, we need text to ask texts mentioning the work
               this.loadingResults++;
               this.dataService
-              .getTextsMentioningWorks(work.id)
-              .pipe(finalize(() => this.finalizeWait()))
-              .subscribe((mentioningTexts: Text[]) => {
-                this.mentioningTexts = mentioningTexts;
-                // console.log(mentioningTexts);
+                .getTextsMentioningWorks(work.id)
+                .pipe(finalize(() => this.finalizeWait()))
+                .subscribe((mentioningTexts: Text[]) => {
+                  this.mentioningTexts = mentioningTexts;
+                  // console.log(mentioningTexts);
                 });
-
-              
-
-
-
             },
-              
             error => console.error(error)
           );
-    },
-    error => console.error(error)
-  );
-}
+      },
+      error => console.error(error)
+    );
+  }
 }

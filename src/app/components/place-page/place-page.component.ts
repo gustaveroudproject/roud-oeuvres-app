@@ -7,7 +7,6 @@ import { Picture } from 'src/app/models/picture.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { finalize } from 'rxjs/operators';
 
-
 @Component({
   selector: 'or-place-page',
   templateUrl: './place-page.component.html',
@@ -24,7 +23,7 @@ export class PlacePageComponent implements OnInit {
     private dataService: DataService,
     private route: ActivatedRoute, // it gives me the current route (URL)
     public sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   finalizeWait() {
     this.loadingResults--;
@@ -32,7 +31,6 @@ export class PlacePageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     //1. recuperer IRI du URL courent (ActivatedRoute)
     //2. recuperer la ressource de Knora
     //3. construire un objet de la classe place
@@ -52,13 +50,13 @@ export class PlacePageComponent implements OnInit {
 
               if (this.place.photo != null) {
                 this.loadingResults++;
-              this.dataService
-              .getPicture(place.photo)
-              .pipe(finalize(() => this.finalizeWait()))
-              .subscribe(
-                (photo: Picture) => {
-                  this.photo = photo;
-                });
+                this.dataService
+                  .getPicture(place.photo)
+                  .pipe(finalize(() => this.finalizeWait()))
+                  .subscribe(
+                    (photo: Picture) => {
+                      this.photo = photo;
+                  });
               };
 
               // asynchrone, we need text to ask texts mentioning places
@@ -69,19 +67,14 @@ export class PlacePageComponent implements OnInit {
               .subscribe((mentioningTexts: Text[]) => {
                 this.mentioningTexts = mentioningTexts;
                 // console.log(textsLight);
-                });
-                    
-                    
-              },
-              
-              error => console.error(error)
-            );
+              });
+            },  
+            error => console.error(error)
+          );
       },
       error => console.error(error)
     );
 
-
-    
   }
 
 }

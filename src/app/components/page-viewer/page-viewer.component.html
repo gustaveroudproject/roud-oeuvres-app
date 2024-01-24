@@ -3,50 +3,41 @@
 
     <span *ngIf="id && id == 'document'; else dataviz">
         <or-still-image #stillImage class="dsp-representation stillimage"
-        [images]="currentImage"
-        [iiifUrl]="iiifURL" 
-        [resourceIri]="pubIRI"
-        [project]="project"
-        [currentPage]="selectedPageNum"
-        [lastPage]="lastPage"
-        (goToPage)="selectOnChange($event)"
-        [id]="id"
-        >
+            [images]="currentImage"
+            [iiifUrl]="iiifURL" 
+            [resourceIri]="pubIRI"
+            [project]="project"
+            [currentPage]="selectedPageNum"
+            [lastPage]="lastPage"
+            (goToPage)="selectOnChange($event)"
+            [id]="id">
         </or-still-image>
     </span>
 
     <ng-template #dataviz>
         <or-still-image-too #stillImageToo class="dsp-representation stillimage"
-        [images]="currentImage"
-        [iiifUrl]="iiifURL" 
-        [resourceIri]="pubIRI"
-        [project]="project"
-        [currentPage]="selectedPageNum"
-        [lastPage]="lastPage"
-        (goToPage)="selectOnChange($event)"
-        [id]="id"
-        >
+            [images]="currentImage"
+            [iiifUrl]="iiifURL" 
+            [resourceIri]="pubIRI"
+            [project]="project"
+            [currentPage]="selectedPageNum"
+            [lastPage]="lastPage"
+            (goToPage)="selectOnChange($event)"
+            [id]="id">
         </or-still-image-too>
     </ng-template>
 
-
     <div>
-
         <div class="selects" *ngIf="allPages.length > 1">
-            <select
-            name="page-numbers"
-            [ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)" 
-            > <!-- ngModel binds the value of the select to an angular variable -->
-
+            <select name="page-numbers"[ngModel]="selectedPageNum" (change)="selectOnChange($event.target.value)"> 
+            <!-- ngModel binds the value of the select to an angular variable -->
                 <option [value]="page.seqnum" *ngFor="let page of allPages">
                     {{ page.name }}
                 </option>
             </select>
 
-            <select *ngIf="parts && parts.length > 0"    
-            id="selectorPart"
-            [ngModel]="selectedPageNum" (change)="selectOnChange(+$event.target.value)"
-            >
+            <select *ngIf="parts && parts.length > 0" id="selectorPart"
+                [ngModel]="selectedPageNum" (change)="selectOnChange(+$event.target.value)">
                 <option [value]="part.startingPageSeqnum" *ngFor="let part of parts">
                     <span>{{ part.title }}</span>
                 </option>
@@ -56,10 +47,9 @@
 </div> <!-- end Viewer -->
 
 
-
 <!-- NO VIEWER -->
 <div class="py-4" *ngIf="allPages && allPages.length == 0">   
-        La reproduction de l'original n'est pas disponible.
-        <br/>Les portails <a href="https://scriptorium.bcu-lausanne.ch/page/home" target="_blank">Scriptorium</a> et
-        <a href="https://letempsarchives.ch" target="_blank">Le Temps Archives</a> donnent accès à certaines collections numérisées.
+     La reproduction de l'original n'est pas disponible.
+    <br/>Les portails <a href="https://scriptorium.bcu-lausanne.ch/page/home" target="_blank">Scriptorium</a> et
+    <a href="https://letempsarchives.ch" target="_blank">Le Temps Archives</a> donnent accès à certaines collections numérisées.
 </div>

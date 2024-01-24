@@ -1,4 +1,3 @@
-
 /*
 
 MAYBE DELETE THIS!! IT IS NO LONGER USED.
@@ -11,19 +10,14 @@ which are the result of the xsl transformation of <tei:pb>
 
 */
 
-
 import {
   Directive,
   ElementRef,
-  Renderer2,
-  AfterViewInit,
   DoCheck,
-  OnInit,
   Input,
   EventEmitter,
   Output
 } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Directive({
   selector: '[orPageLink]'
@@ -47,7 +41,7 @@ export class PageLinkDirective implements DoCheck {
     }
   }
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   onClick(event) {
     const page = event.target.attributes['href'].value;
@@ -55,8 +49,6 @@ export class PageLinkDirective implements DoCheck {
     this.pageNumChange.next(page);
     event.preventDefault();
   }
-
-
 
   ngDoCheck(): void {
     this.el.nativeElement.querySelectorAll('a[class="pageLink"]').forEach((aElt: HTMLElement) => {

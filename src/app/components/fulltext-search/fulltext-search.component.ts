@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Resource } from 'src/app/models/resource.model';
 import { DataService } from 'src/app/services/data.service';
-import { Entity, Person, PersonLight } from 'src/app/models/person.model';
+import { Entity, Person } from 'src/app/models/person.model';
 import { Text } from 'src/app/models/text.model';
 import { MsLight, MsPartLight } from 'src/app/models/manuscript.model';
 import { faSearch} from '@fortawesome/free-solid-svg-icons';
@@ -13,8 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthorLight } from 'src/app/models/author.model';
 import { Picture } from 'src/app/models/picture.model';
 import { DomSanitizer } from '@angular/platform-browser';
-// import * as octicons from '@primer/octicons';
-
 
 @Component({
   selector: 'or-fulltext-search',
@@ -68,25 +66,20 @@ export class FulltextSearchComponent implements OnInit {
 
   about: string;
 
-
   personsWithPhoto: string[];
   somePersonsIRIs: string[] = [];
   somePersons: Entity[] = [];
   
-  
-
   constructor(
     private dataService: DataService,
     private el: ElementRef,
-
     private route: ActivatedRoute,
-    public sanitizer: DomSanitizer) {}
+    public sanitizer: DomSanitizer) { }
     
-
-    finalizeWait() {
-      this.expectingResults--;
-      console.log("finalize: "+ this.expectingResults);
-    }
+  finalizeWait() {
+    this.expectingResults--;
+    console.log("finalize: "+ this.expectingResults);
+  }
 
   ngOnInit() {
     
@@ -115,24 +108,22 @@ export class FulltextSearchComponent implements OnInit {
       );
       */
 
-    this.personsWithPhoto = ["http://rdfh.ch/0112/2GP95rlkQxqHjfvuv1zAEQ", "http://rdfh.ch/0112/0EJg8HlmQ22ZxNtSYj6L5g", "http://rdfh.ch/0112/3DeFLKhnQ765ajN8eAZTtQ", "http://rdfh.ch/0112/3FyniJqgSSiXk0E2ZjYguA", "http://rdfh.ch/0112/5cJu41PCQxaOnhXH11zO9Q", "http://rdfh.ch/0112/5iQLSLEESBitc0dkyYrybA", "http://rdfh.ch/0112/6YO6qfkTS6GkM8--W0KPkg", "http://rdfh.ch/0112/9Xh_eg3XQ0G8OSLnLTH7oQ", "http://rdfh.ch/0112/FpO64L4BSPaw9R8q6pdAmA", "http://rdfh.ch/0112/HTSdSFyMS1WgbUtdUwUm-Q", "http://rdfh.ch/0112/JVzMqKLSTgWCqopLHQ7OOg", "http://rdfh.ch/0112/MWlUbTsMQgeqr2wgYPn4sw", "http://rdfh.ch/0112/PzSp-VS-StuLKkymNu20TA", "http://rdfh.ch/0112/T9bGv4JHQceo2DVstM8ilA", "http://rdfh.ch/0112/T_HfbXIgTVupJpeEmg2nJQ", "http://rdfh.ch/0112/TdA1mUr6TS-THsbv3Md_qg", "http://rdfh.ch/0112/U5cd3iv5Saud_qHn1MfkLg", "http://rdfh.ch/0112/VDFq0IWwS_Wb_tk-jdtQCQ", "http://rdfh.ch/0112/ViHU18rrTpOoo4qMNQEdOQ", "http://rdfh.ch/0112/VrNqHG1DSr6WGHz1NqECEA", "http://rdfh.ch/0112/VyN4ofOvTEO5GhxYd1LujQ", "http://rdfh.ch/0112/a6c8yy9kT-ajdFaWPVVyNQ", "http://rdfh.ch/0112/aLuGbTaHRF64vVnW4U9DLw", "http://rdfh.ch/0112/bs6F92o9TxStheHnifRkbA", "http://rdfh.ch/0112/eGCHYKzTTauVhyN5uJtINQ", "http://rdfh.ch/0112/eT5Ej14mRrmuzEYHmAHFFA","http://rdfh.ch/0112/kXcVfnVMQ821lx4dXa2lgA","http://rdfh.ch/0112/keldPxrfSvSPdhc-nKjSag","http://rdfh.ch/0112/lj13JNHJSoCdjin6HjAbdw","http://rdfh.ch/0112/ljwLu9JJTkylpWyxf60WoQ","http://rdfh.ch/0112/rY6HC2qiQZmbSQadmOSchA","http://rdfh.ch/0112/sBwa-NHMSvKKCZ01g2VWAg","http://rdfh.ch/0112/u0pXpUImTXuZZ0XynlmFAQ","http://rdfh.ch/0112/vM4VixIdQ0CQG0VPWrUCmg","http://rdfh.ch/0112/vserIi7zRPmSdHY_S4RHtQ","http://rdfh.ch/0112/w40JvWTvRz2LoTVgqBxZMQ","http://rdfh.ch/0112/yEfcPjxOQSyd5GBfxraxoQ"]
-    this.somePersonsIRIs = this.pickRandomItems(this.personsWithPhoto, 4);
-    
-    for (var ent in this.somePersonsIRIs) {
-      let entId = this.somePersonsIRIs[ent];
-      this.dataService
-      .getPicturesOfPerson(entId)
-      .subscribe((pictures: Picture[]) => {
-        this.somePersons.push(
-          {
-            id: entId,
-            photo: pictures[0].imageURL
-          }
-        )
-      });
-    } 
-
-
+      this.personsWithPhoto = ["http://rdfh.ch/0112/2GP95rlkQxqHjfvuv1zAEQ", "http://rdfh.ch/0112/0EJg8HlmQ22ZxNtSYj6L5g", "http://rdfh.ch/0112/3DeFLKhnQ765ajN8eAZTtQ", "http://rdfh.ch/0112/3FyniJqgSSiXk0E2ZjYguA", "http://rdfh.ch/0112/5cJu41PCQxaOnhXH11zO9Q", "http://rdfh.ch/0112/5iQLSLEESBitc0dkyYrybA", "http://rdfh.ch/0112/6YO6qfkTS6GkM8--W0KPkg", "http://rdfh.ch/0112/9Xh_eg3XQ0G8OSLnLTH7oQ", "http://rdfh.ch/0112/FpO64L4BSPaw9R8q6pdAmA", "http://rdfh.ch/0112/HTSdSFyMS1WgbUtdUwUm-Q", "http://rdfh.ch/0112/JVzMqKLSTgWCqopLHQ7OOg", "http://rdfh.ch/0112/MWlUbTsMQgeqr2wgYPn4sw", "http://rdfh.ch/0112/PzSp-VS-StuLKkymNu20TA", "http://rdfh.ch/0112/T9bGv4JHQceo2DVstM8ilA", "http://rdfh.ch/0112/T_HfbXIgTVupJpeEmg2nJQ", "http://rdfh.ch/0112/TdA1mUr6TS-THsbv3Md_qg", "http://rdfh.ch/0112/U5cd3iv5Saud_qHn1MfkLg", "http://rdfh.ch/0112/VDFq0IWwS_Wb_tk-jdtQCQ", "http://rdfh.ch/0112/ViHU18rrTpOoo4qMNQEdOQ", "http://rdfh.ch/0112/VrNqHG1DSr6WGHz1NqECEA", "http://rdfh.ch/0112/VyN4ofOvTEO5GhxYd1LujQ", "http://rdfh.ch/0112/a6c8yy9kT-ajdFaWPVVyNQ", "http://rdfh.ch/0112/aLuGbTaHRF64vVnW4U9DLw", "http://rdfh.ch/0112/bs6F92o9TxStheHnifRkbA", "http://rdfh.ch/0112/eGCHYKzTTauVhyN5uJtINQ", "http://rdfh.ch/0112/eT5Ej14mRrmuzEYHmAHFFA","http://rdfh.ch/0112/kXcVfnVMQ821lx4dXa2lgA","http://rdfh.ch/0112/keldPxrfSvSPdhc-nKjSag","http://rdfh.ch/0112/lj13JNHJSoCdjin6HjAbdw","http://rdfh.ch/0112/ljwLu9JJTkylpWyxf60WoQ","http://rdfh.ch/0112/rY6HC2qiQZmbSQadmOSchA","http://rdfh.ch/0112/sBwa-NHMSvKKCZ01g2VWAg","http://rdfh.ch/0112/u0pXpUImTXuZZ0XynlmFAQ","http://rdfh.ch/0112/vM4VixIdQ0CQG0VPWrUCmg","http://rdfh.ch/0112/vserIi7zRPmSdHY_S4RHtQ","http://rdfh.ch/0112/w40JvWTvRz2LoTVgqBxZMQ","http://rdfh.ch/0112/yEfcPjxOQSyd5GBfxraxoQ"];
+      this.somePersonsIRIs = this.pickRandomItems(this.personsWithPhoto, 4);
+      
+      for (var ent in this.somePersonsIRIs) {
+        let entId = this.somePersonsIRIs[ent];
+        this.dataService
+        .getPicturesOfPerson(entId)
+        .subscribe((pictures: Picture[]) => {
+          this.somePersons.push(
+            {
+              id: entId,
+              photo: pictures[0].imageURL
+            }
+          )
+        });
+      } 
 
       // QUERY COMING FROM ARCHIVES: TRANSLATIONS
       if (this.translatedAuthorIRI != null) {
@@ -151,18 +142,16 @@ export class FulltextSearchComponent implements OnInit {
         .subscribe(
           (mssTranslatedAuthor: MsLight[]) => {
             this.mssTranslatedAuthor = mssTranslatedAuthor;
-            this.mss.push(...mssTranslatedAuthor)
+            this.mss.push(...mssTranslatedAuthor);
           }
         );
       }
-
-
       // QUERY COMING FROM ARCHIVES: DIARY
       else if (this.years != null) {
 
         this.titleYears = this.years.slice(10).replace(":", "–");
         
-        this.mss = []
+        this.mss = [];
         this.mssDiaryYears = [];
 
         // TODO: Loic: add paging results
@@ -171,8 +160,8 @@ export class FulltextSearchComponent implements OnInit {
         .subscribe(
           (mssDiaryDate: MsLight[]) => {
             this.mssDiaryDate = mssDiaryDate;
-           // this.mss = [ ...mssDiaryDate];
-           this.mss.push(...this.mssDiaryDate)
+            // this.mss = [ ...mssDiaryDate];
+            this.mss.push(...this.mssDiaryDate);
             
           }
         );
@@ -185,14 +174,10 @@ export class FulltextSearchComponent implements OnInit {
             this.mssDiaryEstablishedDate = mssDiaryEstablishedDate;
             //this.mssDiaryYears = [ ...this.mssDiaryEstablishedDate];
             //this.mss.push(...this.mssDiaryYears)
-            this.mss.push(...this.mssDiaryEstablishedDate)
+            this.mss.push(...this.mssDiaryEstablishedDate);
           }
         );
       }
-
-
-
-      
       else if (this.about != null) {
         // QUERY COMING FROM ARCHIVES: ART AND LIT CRITICISM
         // same code is used below onSearch (with additional comments)
@@ -282,7 +267,7 @@ export class FulltextSearchComponent implements OnInit {
               .subscribe((msParts: MsPartLight[]) => {
                   msParts.forEach( e => {
                     this.msParts.push(e);
-  
+
                     this.dataService
                     .getMsOfMsPart(e.isPartOfMsValue)
                     .subscribe(
@@ -306,7 +291,7 @@ export class FulltextSearchComponent implements OnInit {
               .subscribe(
                 (pubs: PublicationLight[]) => {
                   this.pubs.push(...pubs);
-  
+
                   // filter only publications by Roud, before or in 1977
                   let roudPubs = pubs.filter
                     (pub => pub.editorialSet != 'About Roud' &&  pub.editorialSet != 'Photography'
@@ -327,19 +312,11 @@ export class FulltextSearchComponent implements OnInit {
           }))
           .subscribe()
       }
-
-
       else {
         this.expectingResults = 0;
       }
-
-
-
-    }
-  );
-}
-
-  
+    });
+  }
 
   onSearch() {
     this.results = false;
@@ -501,15 +478,10 @@ export class FulltextSearchComponent implements OnInit {
                   );
                 }
                 */
-
-
-
               },
               error => console.error(error)
             );
           }
-          
-
         }))
         .subscribe()
 //        error => console.error(error)
@@ -520,7 +492,7 @@ export class FulltextSearchComponent implements OnInit {
 
   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   shuffle(arr: any[]) {
-    let currentIndex = arr.length,  randomIndex;
+    let currentIndex = arr.length, randomIndex;
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
       // Pick a remaining element.
@@ -535,19 +507,19 @@ export class FulltextSearchComponent implements OnInit {
 
   pickRandomItems(arr: any[], n: number): any[]  {
     const shuffled = this.shuffle(arr);
-    return shuffled.slice(0,n)
+    return shuffled.slice(0,n);
     //return Object.entries(shuffled.slice(0,n).map(entry => entry[1]));
   }
 
 
   show(cat: string) {
     var checkBox = document.getElementById(cat+"Checkbox") as HTMLInputElement;
-    var checkedCat = cat + "Results"
-    var allResults = document.getElementById("allResults").children as HTMLCollectionOf<HTMLElement> ;
+    var checkedCat = cat + "Results";
+    var allResults = document.getElementById("allResults").children as HTMLCollectionOf<HTMLElement>;
     if (checkBox.checked == true){
       // define a variable for the category that has been checked and
       // push the category to the array of checked categories
-      this.checkedCategoriesArray.push(checkedCat)
+      this.checkedCategoriesArray.push(checkedCat);
       // loop through children of the div containing all the results
       // if it is not in the checked categories array, do not display it
       // otherwise display it as block
@@ -567,9 +539,9 @@ export class FulltextSearchComponent implements OnInit {
         // remove unchecked categories from the array of checked categories
         // (find its position in the array and then remove it)
         var catToBeRemoved = this.checkedCategoriesArray.indexOf(checkedCat);
-        this.checkedCategoriesArray.splice(catToBeRemoved,1)
+        this.checkedCategoriesArray.splice(catToBeRemoved,1);
         // do not display the unchecked category
-        var checkedCatResults = document.getElementById(checkedCat) as HTMLElement ;
+        var checkedCatResults = document.getElementById(checkedCat) as HTMLElement;
         checkedCatResults.style.display = "none";
       } else {
         // remove unchecked category from the array of checked categories
@@ -585,13 +557,9 @@ export class FulltextSearchComponent implements OnInit {
   } // end show function
 
   
-
   showMssAndNotes() {
     this.show('msParts');
     this.show('mss');
   }
-
-
-
 
 }

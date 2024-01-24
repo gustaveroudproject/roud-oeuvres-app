@@ -1,4 +1,3 @@
-
 <ul class="ulPourLaPartie">
     <!-- for each ms or msPart (both are in the array reusedInParts) -->
     <li class="liGenesis" *ngFor="let x of reusedInParts"> <!--  | sortByShelfmark -->
@@ -6,7 +5,6 @@
             <or-manuscript [msIRI]="x?.id"></or-manuscript>
         </span>
         
-
         <span *ngIf="x?.resourceClassLabel == 'Part of a manuscript (for diary only)'">
             <or-manuscriptpart [msPartIRI]="x?.id"></or-manuscriptpart>
         </span>

@@ -9,14 +9,9 @@ import { Resource } from 'src/app/models/resource.model';
 export class ResourceRouterComponent implements OnInit {
   resources: Resource[];
   selectedResource: Resource;
-  constructor(
-    private router: Router,
-    private dataService: DataService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     // get iri
     this.route.paramMap.subscribe(params => {
       // console.log(params);
@@ -34,7 +29,6 @@ export class ResourceRouterComponent implements OnInit {
         routeMapping.set('Music work', '/works/');
         routeMapping.set('Artwork', '/works/');
 
-
         // get resource class
         this.route.paramMap.subscribe(
           params => {
@@ -51,31 +45,28 @@ export class ResourceRouterComponent implements OnInit {
               // pass directly the decodedIri to the query
               this.dataService
                 .getResource(iri)
-                .subscribe(
-                  (resource: Resource) => {
-                       // console.log(resource.resourceClassLabel);
-                    if (routeMapping.has(resource.resourceClassLabel)) {
-                      // if the class is in the dictionary
-                      const resRoutePrefix = routeMapping.get(
-                        // give me the value of this key (e.g., the key is "Place" and the value is "/places/")
-                        resource.resourceClassLabel
-                      );
-                      
-                      // we use router to navigate, where? To the route mapped,
-                      // which is made of resRoutePrefix + encodeURIComponent(iri) + fragment, if any
-                      this.router.navigate([
-                        resRoutePrefix, // is not a string that we give, but a table, so we use ","
-                        encodeURIComponent(iri)],
-                        {fragment: fragment});
-                        // see https://angular.io/api/router/NavigationExtras#fragment
+                .subscribe((resource: Resource) => {
+                  // console.log(resource.resourceClassLabel);
+                  if (routeMapping.has(resource.resourceClassLabel)) {
+                    // if the class is in the dictionary
+                    const resRoutePrefix = routeMapping.get(
+                      // give me the value of this key (e.g., the key is "Place" and the value is "/places/")
+                      resource.resourceClassLabel
+                    );
+                    
+                    // we use router to navigate, where? To the route mapped,
+                    // which is made of resRoutePrefix + encodeURIComponent(iri) + fragment, if any
+                    this.router.navigate([
+                      resRoutePrefix, // is not a string that we give, but a table, so we use ","
+                      encodeURIComponent(iri)],
+                      {fragment: fragment});
+                      // see https://angular.io/api/router/NavigationExtras#fragment
 
-                    } else {
-                      console.log(
-                        'No route for class ' + resource.resourceClassLabel
-                      );
-                      this.router.navigate(['not-found']);
-                    }
-                  },
+                  } else {
+                    console.log('No route for class ' + resource.resourceClassLabel);
+                    this.router.navigate(['not-found']);
+                  }
+                },
                   error => console.error(error)
                 );
             }
@@ -85,4 +76,5 @@ export class ResourceRouterComponent implements OnInit {
       }
     });
   }
+
 }

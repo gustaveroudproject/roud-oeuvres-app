@@ -14,15 +14,11 @@ export class MscMssRewritingPartComponent implements OnInit {
   mssRewritingParts: (MsLight|MsPartLight)[];
   msFromParts2: MsLight;
 
-  @Input()
-  msPartId: string ;
+  @Input() msPartId: string;
 
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    
     this.mssRewritingParts = [];
 
     //// get manuscripts rewriting this ms part

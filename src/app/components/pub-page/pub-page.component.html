@@ -41,8 +41,6 @@
             </h3>
         </div>
     </div>
-
-
     
     <!-- start ROW -->
     <div class="row">
@@ -105,13 +103,7 @@
                 </div>
             </div> <!-- end bibliographical reference -->
 
-
-           
-            
-        
         </div> <!-- end columns left-->
-
-
 
         <!-- start COLUMNS RIGHT -->
         <div class="col-6">            
@@ -136,7 +128,7 @@
                             (how to retrieve properties, etc.).
                             So put together the results of two separated queries
                             into one array and then order by shelfmark with a pipe (as for surname)
-                             -->
+                        -->
                         <ul class="withListStyle">
                             <!-- for each ms or msPart (both are in the array diaryNotes) -->
                             <li class="liGenesis" *ngFor="let x of diaryNotes"> <!--  | sortByShelfmark -->
@@ -163,7 +155,6 @@
                         </ul>
                     </div>
 
-                
                     <div class="mainCategory">
                         <span class="strong">
                             <strong>Témoins génétiques</strong>
@@ -186,7 +177,6 @@
                             </li>
                         </ul>
                     </div>
-
                     
                     <div class="mainCategory">
                         <span class="strong">
@@ -242,7 +232,6 @@
 
                 </mat-expansion-panel>
 
-
                 <mat-expansion-panel id="panelReprises" class="my-4" [disabled]="panelReprisesDisableState">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Reprises</mat-panel-title>
@@ -291,7 +280,6 @@
                         </ul>
                     </div>
 
-
                     <div class="mainCategory">
                         <div *ngIf="publicationLight?.resourceClassLabel == 'Book'">
                             <span class="strong">
@@ -307,7 +295,6 @@
                     </div>
 
                 </mat-expansion-panel>
-
 
                 <mat-expansion-panel id="panelInfo" expanded="false">
                     <mat-expansion-panel-header>
@@ -341,8 +328,6 @@
                     </div>
                 </mat-expansion-panel>
 
-
-
             </div>  <!-- end genèse et reprises-->
             
             <!-- LIRE LE TEXTE -->
@@ -351,25 +336,17 @@
                 <a routerLink="/texts/{{ establishedText?.id | encodeURIComponent }}">
                     <button type="button" class="btn" btn-lg>Lire le texte</button>
                 </a>
-            </div>
-            
-            
+            </div>     
 
         </div> <!-- end columns right-->
-
     
     </div> <!-- end row -->
 
-
-
     <div class="row mb-5 justify-content-center" *ngIf="dataViz">
 
-
         <div class="col-12">
-
             <!-- <or-page-viewer [pages]="imagesDataVizForwarder" [order]="pv_0" id="pv_0"></or-page-viewer> -->
             <or-page-viewer [pages]="imagesDataVizForwarder" [id]="'dataviz'"></or-page-viewer>
-
             <!--
                 [currentTab]="selectedTabLabel"
                 [compoundNavigation]="compoundPosition" 
@@ -382,9 +359,9 @@
         </div>
 
         <!-- caption -->
-
         <div class="col-8 caption m-2">DensityDesign (Politecnico di Milano) + Unil, <em>Constellation génétique de </em>
-            <span [innerHTML]="publicationLight?.title | removeTextAndPar | htmlSanitizer"></span> <em> de Gustave Roud</em>, 2022. CC-BY 4-0. Cette image est disponible dans <a target="_blank" href="{{dataViz.ark}}">DSP</a>.</div>
+            <span [innerHTML]="publicationLight?.title | removeTextAndPar | htmlSanitizer"></span> <em> de Gustave Roud</em>, 2022. CC-BY 4-0. Cette image est disponible dans <a target="_blank" href="{{dataViz.ark}}">DSP</a>.
+        </div>
 
 
     </div>
@@ -404,6 +381,5 @@
             <strong>IRI interne</strong> : {{ publicationLight?.id }}
         </p>
     </div>
-
 
 </div> <!-- end container -->

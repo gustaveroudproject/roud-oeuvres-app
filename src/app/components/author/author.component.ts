@@ -12,18 +12,14 @@ export class AuthorComponent implements OnChanges {
   author: AuthorLight;
   authors: AuthorLight[];
   
-  @Input()
-  authorsId: string[] ;
+  @Input() authorsId: string[];
 
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnChanges() {
 
     /* on changes, because it is called also from components in components,
     like Book in PubPage, so does not work on init */
-
 
     this.authors = [];
     //// get authors from authors' IRIs
@@ -36,11 +32,9 @@ export class AuthorComponent implements OnChanges {
           this.authors.push(this.author);
           // it might be called more than once and add the same author multiple times 
           // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects 
-          this.authors = this.authors.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)                
+          this.authors = this.authors.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);            
         }
       );
     }
   }
-  
-
 }

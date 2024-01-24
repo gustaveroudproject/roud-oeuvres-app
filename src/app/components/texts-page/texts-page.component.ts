@@ -14,41 +14,29 @@ export class TextsPageComponent implements OnInit {
   // index = 0;
   loadingResults = 0;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   finalizeWait() {
     this.loadingResults--;
     //console.log("finalize: "+ this.loadingResults);
   }
 
-  //onLoadNextPage() {
-    
-  // }
-
-  
   ngOnInit() {
-    //this.onLoadNextPage();
     //this.dataService.getTextLights(this.index).subscribe(
     
-
-      this.loadingResults++;
-
+    this.loadingResults++;
     this.dataService.getTextLights()
     //.subscribe(
      // (texts: Text[]) => {
        // this.textLights.push(...texts);
         //this.index = this.index + 1;
-
-        .pipe(finalize(() => this.finalizeWait()))
-        .subscribe((textsLight: TextLight[]) => {
-          this.textsLight = textsLight;
-          
-          //console.log(this.textsLight)
-
-
-      },
-      error => console.error(error)
-    );
-
+      .pipe(finalize(() => this.finalizeWait()))
+      .subscribe((textsLight: TextLight[]) => {
+        this.textsLight = textsLight;
+        //console.log(this.textsLight)
+        },
+        error => console.error(error)
+      );
   }
+
 }

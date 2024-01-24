@@ -35,7 +35,6 @@ export interface BookSection extends Publication {
   volume: string;
 }
 
-
 export interface PubPartLight extends Resource, BookPart {  
   title: string;
   isPartOfPubValue: string;

@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MsLight } from 'src/app/models/manuscript.model';
-import { PubPartLight } from 'src/app/models/publication.model';
 import { DataService } from 'src/app/services/data.service';
-
 
 @Component({
   selector: 'or-pubc-avant-texts-part',
@@ -13,23 +11,16 @@ export class PubcAvantTextsPartComponent implements OnInit {
 
   avantTextsParts: MsLight[] = [];
 
-  @Input()
-  pubPartId: string ;
+  @Input() pubPartId: string;
 
-
-
-  constructor(
-    
-    private dataService: DataService
-  ) {}
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-
     //// get avant-textes from pubPart IRI
     this.dataService
     .getAllAvantTextsParts(this.pubPartId)
     .subscribe((avantTextsParts: MsLight[]) => {
-        this.avantTextsParts.push(...avantTextsParts);
-        });
+      this.avantTextsParts.push(...avantTextsParts);
+    });
   }
 }

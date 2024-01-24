@@ -4,7 +4,6 @@ import { PublicationLight, PubPartLight } from 'src/app/models/publication.model
 import { concat } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-
 @Component({
   selector: 'or-pubc-pubs-reused-part',
   templateUrl: './pubc-pubs-reused-part.component.html',
@@ -16,21 +15,16 @@ export class PubcPubsReusedPartComponent implements OnInit {
   pbReusedInPart: (PublicationLight|PubPartLight)[] = []; // array with pubsReusedInPart and pubPartsReusedInPart together
   pubOfParts2: PublicationLight;
 
-
-  @Input()
-  pubPartId: string ;
+  @Input() pubPartId: string;
   
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-
     //// get publications reused in pubPart IRI
     this.dataService
     .getAllPublicationsReusedInPubPart(this.pubPartId)
     .subscribe((pubsReusedInPart: PublicationLight[]) => {
-        this.pbReusedInPart.push(...pubsReusedInPart);
+      this.pbReusedInPart.push(...pubsReusedInPart);
     });
 
     //// get publication parts reused in pubPart IRI

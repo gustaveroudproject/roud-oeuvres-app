@@ -1,18 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Text, TextLight } from 'src/app/models/text.model';
+import { Text } from 'src/app/models/text.model';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { PersonLight } from 'src/app/models/person.model';
-import { PublicationLight, PeriodicalArticle, Book, BookSection } from 'src/app/models/publication.model';
-import { PeriodicalLight } from 'src/app/models/periodical.model';
-import { PublisherLight } from 'src/app/models/publisher.model';
 import { PlaceLight } from 'src/app/models/place.model';
 import { Work } from 'src/app/models/work.model';
 import { AuthorLight } from 'src/app/models/author.model';
-import { faLink, faExternalLinkAlt, faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote} from '@fortawesome/free-solid-svg-icons';
-import { MsLight } from 'src/app/models/manuscript.model';
+import { faUser, faPencilAlt, faMapMarkerAlt, faRecycle, faFile, faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs/operators';
-
 
 @Component({
   selector: 'or-text-page',
@@ -51,8 +46,6 @@ export class TextPageComponent implements OnInit, AfterViewInit {
 
   loadingResults = 0;
   
-
-  
   constructor(
     private route: ActivatedRoute, // it gives me the current route (URL)
     private dataService: DataService
@@ -63,10 +56,7 @@ export class TextPageComponent implements OnInit, AfterViewInit {
     // console.log("finalize: "+ this.loadingResults);
   }
 
-  
-
   ngOnInit() {
-
     // assign to the variable id_fragment the value of the fragment inside the URL
     // (everything after #, as built by the resource-router component)
     this.route.fragment.subscribe((fragment: string) => {
@@ -118,22 +108,19 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               .subscribe((worksMentioned: Work[]) => {
                 this.worksMentioned = worksMentioned;
 
-                
                 /// get works of authors
                 this.workAuthors = [];
                 for (var work in worksMentioned) {
                   if (worksMentioned[work].authorValue) {
-                  this.dataService
-                  .getAuthorLight(worksMentioned[work].authorValue)
-                  .subscribe(
-                    (workAuthor: AuthorLight) => {
-                      this.workAuthor = workAuthor;
-                      this.workAuthors.push(workAuthor);
+                    this.dataService
+                    .getAuthorLight(worksMentioned[work].authorValue)
+                    .subscribe(
+                      (workAuthor: AuthorLight) => {
+                        this.workAuthor = workAuthor;
+                        this.workAuthors.push(workAuthor);
                     });
                   }
-                  }
-                
-
+                }
               });
 
               /*
@@ -150,7 +137,6 @@ export class TextPageComponent implements OnInit, AfterViewInit {
               .subscribe((mssMentioned: MsLight[]) => {
                 this.mssMentioned = mssMentioned;
               });
-
 
 
               //// get texts mentioned in the text (reuse)
@@ -230,30 +216,20 @@ export class TextPageComponent implements OnInit, AfterViewInit {
                       } 
               });*/
 
-
             },
-            
             error => console.error(error)
           );
       },
       error => console.error(error)
     );
 
-
-    
-    
-  };
-
-
-  
+  }
 
   ngAfterViewInit() {
-
     // execute only if the URL contains a fragment, retrieved above at the beginning of ngOnInit
     if (this.id_fragment) {
 
       setTimeout(() => {
-
         // scroll into view the element identified by the fragment id
         // console.log(document.querySelector('#' + this.id_fragment));
         document.querySelector('#' + this.id_fragment).scrollIntoView({block: "center"}); // option block defines vertical alignment
@@ -268,79 +244,71 @@ export class TextPageComponent implements OnInit, AfterViewInit {
       // If it does not wait that long, the text is not yet initialized so nothing will work.
     }; 
 
-
     setTimeout(() => {
 
-      this.toc = []
-      var heads = document.getElementsByClassName('tei-head-rendH1')
+      this.toc = [];
+      var heads = document.getElementsByClassName('tei-head-rendH1');
       for (var head in heads) {
-        var tocItem = (heads[head] as HTMLElement).innerText
+        var tocItem = (heads[head] as HTMLElement).innerText;
         /* not needed with innerText
         if (tocItem != undefined) {
           if (tocItem.includes('<br>')) {
             tocItem = tocItem.replace('\n', ' ')
           }
         }*/
-        this.toc.push(tocItem)
+        this.toc.push(tocItem);
       }
       //console.log(this.toc)
       //console.log(this.toc.length)
     }, (10000)); 
 
-    
-
-  };
+  }
   
-
-
 
   /* READER CONTROLS
   --------------------------------------------------------------------------*/
-  changeFontSize(id: string, increaseValue:number){
+  changeFontSize(id: string, increaseValue:number) {
     var txt = document.getElementById(id);
     var style = window.getComputedStyle(txt, null).getPropertyValue('font-size');
     var currentSize = parseFloat(style);
     txt.style.fontSize = (currentSize + increaseValue) + 'px';
-  };
+  }
 
-  changeHorizontalPadding(id: string, increaseValue:number){
+  changeHorizontalPadding(id: string, increaseValue:number) {
     var txt = document.getElementById(id);
     var currentLeftPadding = parseFloat(window.getComputedStyle(txt, null).getPropertyValue('padding-left'));
     var currentRightPadding = parseFloat(window.getComputedStyle(txt, null).getPropertyValue('padding-right'));
     txt.style.paddingLeft = (currentLeftPadding + increaseValue) + 'px';
     txt.style.paddingRight = (currentRightPadding + increaseValue) + 'px';
-  };
+  }
 
-  changeBackgroundColor(id: string, backgroundColor:string, color:string){
+  changeBackgroundColor(id: string, backgroundColor:string, color:string) {
     var txt = document.getElementById(id);
     txt.style.backgroundColor = backgroundColor;
     txt.style.color = color;
-  };
+  }
 
-  changeLineHeight(id: string, increaseValue:number){
+  changeLineHeight(id: string, increaseValue:number) {
     var txt = document.getElementById(id);
     var style = window.getComputedStyle(txt, null).getPropertyValue('line-height');
     var currentLineHeight = parseFloat(style);
     txt.style.lineHeight = (currentLineHeight + increaseValue) + 'px';
   };
   
-
-
   /* ENTITIES DISPLAY
   --------------------------------------------------------------------------*/
-  visualizeEntities(){
+  visualizeEntities() {
     this.visualizeOneTypeOfEntities("tei-persName", "#F5E663");
     this.visualizeOneTypeOfEntities("tei-placeName", "#96CED9");
     this.visualizeOneTypeOfEntities("tei-ref", "#FFAD69");
-  };
-
+  }
 
   visualizeOneTypeOfEntities(teiElement: string, color: string) {
     var checkBox = document.getElementById("entitiesCheckbox") as HTMLInputElement;
     var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < entities.length; index++) {
       const entity = entities[index];
-      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      if (checkBox.checked == true) {    // need == otherwise it won't uncheck anymore ...
         entity.style.border = "1px solid" + color;
         entity.style.borderRadius = "3px";
         entity.style.padding = "1px";
@@ -353,21 +321,20 @@ export class TextPageComponent implements OnInit, AfterViewInit {
     }
   };
 
-
   /* MENTIONS DISPLAY
   --------------------------------------------------------------------------*/
-  visualizeMentions(){
+  visualizeMentions() {
     this.visualizeOneTypeOfMentions("tei-ref-ms", "lightGreen");
     this.visualizeOneTypeOfMentions("tei-ref-pub", "#FFCCFF");
-  };
+  }
 
   visualizeOneTypeOfMentions(teiElement: string, color: string) {
     var checkBox = document.getElementById("mentionsCheckbox") as HTMLInputElement;
     var entities = Array.from(document.getElementsByClassName(teiElement) as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < entities.length; index++) {
       const entity = entities[index];
-      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
-      entity.style.border = "1px solid" + color;;
+      if (checkBox.checked == true) {    // need == otherwise it won't uncheck anymore ...
+      entity.style.border = "1px solid" + color;
       entity.style.borderRadius = "3px";
       entity.style.padding = "1px";
       entity.style.backgroundColor = color;
@@ -377,25 +344,22 @@ export class TextPageComponent implements OnInit, AfterViewInit {
         entity.style.backgroundColor = "inherit";
       }
     }
-  };
-
+  }
 
   /* REUSE DISPLAY
   --------------------------------------------------------------------------*/
-  visualizeReuse(){
+  visualizeReuse() {
     var checkBox = document.getElementById("reuseCheckbox") as HTMLInputElement;
     var entities = Array.from(document.getElementsByClassName("tei-seg") as HTMLCollectionOf<HTMLElement>);
     for (let index = 0; index < entities.length; index++) {
       const entity = entities[index];
-      if (checkBox.checked == true){    // need == otherwise it won't uncheck anymore ...
+      if (checkBox.checked == true) {    // need == otherwise it won't uncheck anymore ...
         entity.style.borderBottom = "3px solid red";
       }
       else {
         entity.style.borderBottom = "none";
-        
       }
     }
-  };
-
+  }
 
 }

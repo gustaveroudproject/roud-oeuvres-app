@@ -31,10 +31,6 @@
 
         <!-- start COLUMNS LEFT -->
         <div class="col-7">
-        
-            
-
-
             <!-- LIRE LE TEXTE 
             <div *ngIf="manuscript?.editorialSet == 'Journal'" class="readTheText">
                 <button type="button" class="btn btn-secondary" btn-lg>Lire le texte</button>
@@ -66,8 +62,7 @@
                 <strong>Description du manuscrit</strong>
                 <div>
                     <div class="msDescItem">
-                        <span class="msDescHeader">Archive</span> :
-                        {{ msLight?.archive }}
+                        <span class="msDescHeader">Archive</span> : {{ msLight?.archive }}
                     </div>
                     <div class="msDescItem">
                         <span class="msDescHeader">Cote</span> :
@@ -78,44 +73,37 @@
                         <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem">
-                        <span class="msDescHeader">Type de document</span> :
-                        {{ manuscript?.documentType }}
+                        <span class="msDescHeader">Type de document</span> : {{ manuscript?.documentType }}
                     </div>
                     <div class="msDescItem">
-                        <span class="msDescHeader">Support</span> :
-                        {{ manuscript?.supportType }}
+                        <span class="msDescHeader">Support</span> : {{ manuscript?.supportType }}
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.supportInfo != null">
                         <span class="msDescHeader">Informations sur le support</span> :
                         <span [innerHTML]="manuscript?.supportInfo | removeTextAndPar | removeInternalPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.writingTool != null">
-                        <span class="msDescHeader">Outil d'écriture</span> :
-                        {{ manuscript?.writingTool }}
+                        <span class="msDescHeader">Outil d'écriture</span> : {{ manuscript?.writingTool }}
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.writingColor != null">
-                        <span class="msDescHeader">Couleur de l'écriture</span> :
-                        {{ manuscript?.writingColor }}
+                        <span class="msDescHeader">Couleur de l'écriture</span> : {{ manuscript?.writingColor }}
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.otherWritingTool != null">
                         <span class="msDescHeader">Autres outils d'écriture</span> :
                         <span [innerHTML]="manuscript?.otherWritingTool | removeTextAndPar | removeInternalPar | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem">
-                        <span class="msDescHeader">Manuscrit annoté</span> :
-                        {{ manuscript?.annotations | boolean }}
+                        <span class="msDescHeader">Manuscrit annoté</span> : {{ manuscript?.annotations | boolean }}
                     </div>
                     <div class="msDescItem">
-                        <span class="msDescHeader">Étape génétique</span> :
-                        {{ manuscript?.geneticStage }}
+                        <span class="msDescHeader">Étape génétique</span> : {{ manuscript?.geneticStage }}
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.dateReadable">
                         <span class="msDescHeader">Date dans le document</span> :
                         <span [innerHTML]="manuscript?.dateReadable | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.establishedDateAdd">
-                        <span class="msDescHeader">Date établie</span> :
-                        {{ manuscript?.establishedDateAdd }}
+                        <span class="msDescHeader">Date établie</span> : {{ manuscript?.establishedDateAdd }}
                         <span [innerHTML]="manuscript?.establishedDateReadable | htmlSanitizer"></span>
                     </div>
                     <div class="msDescItem" *ngIf="manuscript?.comment">
@@ -125,22 +113,19 @@
                 </div>
             </div> <!-- end manuscript description -->
 
-
         </div> <!-- end column left -->
-
 
         <!-- start COLUMNS RIGHT -->
         <div class="col-5">
 
             <!-- GENÈSE ET REPRISES -->
             <div>
-
                 <mat-expansion-panel id="panelPoeticPub" 
-                class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'"
-                [disabled]="panelPoeticPubDisableState">
+                    class="my-4" 
+                    *ngIf="manuscript?.editorialSet == 'Œuvre poétique' || manuscript?.editorialSet == 'Propos'"
+                    [disabled]="panelPoeticPubDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Publications (ce document est un témoin génétique de)</mat-panel-title>
+                        <mat-panel-title>Publications (ce document est un témoin génétique de)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul class="withListStyle">
@@ -164,11 +149,11 @@
                 </mat-expansion-panel>
 
                 <mat-expansion-panel id="panelDiaryLevel" 
-                class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Journal'"
-                [disabled]="panelDiaryLevelDisableState">
+                    class="my-4" 
+                    *ngIf="manuscript?.editorialSet == 'Journal'"
+                    [disabled]="panelDiaryLevelDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Niveaux de journal</mat-panel-title>
+                        <mat-panel-title>Niveaux de journal</mat-panel-title>
                     </mat-expansion-panel-header>
 
                     <div class="mainCategory">
@@ -242,11 +227,11 @@
                 </mat-expansion-panel>
 
                 <mat-expansion-panel id="panelDiaryPub" 
-                class="my-4" 
-                *ngIf="manuscript?.editorialSet == 'Journal'"
-                [disabled]="panelDiaryPubDisableState">
+                    class="my-4" 
+                    *ngIf="manuscript?.editorialSet == 'Journal'"
+                    [disabled]="panelDiaryPubDisableState">
                     <mat-expansion-panel-header>
-                    <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
+                        <mat-panel-title>Publications (dont la genèse utilise ce document)</mat-panel-title>
                     </mat-expansion-panel-header>
                     <div>
                         <ul class="withListStyle">

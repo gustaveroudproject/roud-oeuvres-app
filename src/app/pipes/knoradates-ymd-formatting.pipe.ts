@@ -14,24 +14,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({name: 'knoradatesYmdFormatting'})
 export class knoradatesYmdFormattingPipe implements PipeTransform {
 
-    
-
-
   transform(knoraDate: string): string {
 
-      const monthsMap = new Map()
-      monthsMap.set( "01", "janvier")
-      monthsMap.set( "02", "février")
-      monthsMap.set( "03", "mars")
-      monthsMap.set( "04", "avril")
-      monthsMap.set( "05", "mai")
-      monthsMap.set( "06", "juin")
-      monthsMap.set( "07", "juillet")
-      monthsMap.set( "08", "août")
-      monthsMap.set( "09", "septembre")
-      monthsMap.set( "10", "octobre")
-      monthsMap.set( "11", "novembre")
-      monthsMap.set( "12", "décembre")
+      const monthsMap = new Map();
+      monthsMap.set( "01", "janvier");
+      monthsMap.set( "02", "février");
+      monthsMap.set( "03", "mars");
+      monthsMap.set( "04", "avril");
+      monthsMap.set( "05", "mai");
+      monthsMap.set( "06", "juin");
+      monthsMap.set( "07", "juillet");
+      monthsMap.set( "08", "août");
+      monthsMap.set( "09", "septembre");
+      monthsMap.set( "10", "octobre");
+      monthsMap.set( "11", "novembre");
+      monthsMap.set( "12", "décembre");
 
     const date: string = knoraDate.substring(10,knoraDate.indexOf(' ')); // string GREGORIAN and CE from knora-date
 

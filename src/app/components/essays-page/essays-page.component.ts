@@ -4,7 +4,6 @@ import { finalize } from 'rxjs/operators';
 import { EssayLight, Essay } from 'src/app/models/essay.model';
 import { DataService } from 'src/app/services/data.service';
 
-
 @Component({
   selector: 'or-essays-page',
   templateUrl: './essays-page.component.html',
@@ -24,14 +23,11 @@ export class EssaysPageComponent implements OnInit {
     config.pauseOnHover = true;  
   }  
 
-
   finalizeWait() {
     this.loadingResults--;
     console.log("finalize: "+ this.loadingResults);
   }
 
-
-  
   ngOnInit() {
 
     this.loadingResults++;

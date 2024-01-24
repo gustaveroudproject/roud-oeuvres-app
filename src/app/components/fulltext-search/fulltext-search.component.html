@@ -4,290 +4,265 @@
 <router-outlet></router-outlet> -->
 <div class="container">
 
-<or-progress-indicator *ngIf="expectingResults > 0" ></or-progress-indicator>
+  <or-progress-indicator *ngIf="expectingResults > 0" ></or-progress-indicator>
 
-<!-- breadcrumbs -->
-<div class="breadcrumbNavbar my-4">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Accueil</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Recherche</li>
-    </ol>
-  </nav>
-</div>
+  <!-- breadcrumbs -->
+  <div class="breadcrumbNavbar my-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recherche</li>
+      </ol>
+    </nav>
+  </div>
 
-
-    <!-- INPUT -->
-    <div class="row">
-      <div class="col-md-6 offset-md-3 mt-5 mb-4">
-        <form class="d-flex" (ngSubmit)="onSearch()">
-          <input  class="form-control form-control-lg me-2" type="text" name="searchText" [(ngModel)]="searchText"/>  <!-- # indicate variable -->
-          <button class="btn btn-outline-secondary" type="submit"><fa-icon [icon]="faSearch"></fa-icon></button>
-        </form>
-        <p class="mt-3">Tapez un ou plusieurs mots.</p><p style="font-size: 0.8em;">Une recherche par catégories est disponible sur le <a href="https://ark.dasch.swiss/ark:/72163/1/0112" target="_blank">DaSCH Service Platform</a> (suivre le lien <i>Discover Project Data</i> et voir le <a href="https://github.com/gustaveroudproject/SalsahModeEmploi/blob/master/SalsahModeEmploi.md#mode-demploi-de-knora-salsah" target="_blank">mode d'emploi</a>).</p>
-      </div>
+  <!-- INPUT -->
+  <div class="row">
+    <div class="col-md-6 offset-md-3 mt-5 mb-4">
+      <form class="d-flex" (ngSubmit)="onSearch()">
+        <input  class="form-control form-control-lg me-2" type="text" name="searchText" [(ngModel)]="searchText"/>  <!-- # indicate variable -->
+        <button class="btn btn-outline-secondary" type="submit"><fa-icon [icon]="faSearch"></fa-icon></button>
+      </form>
+      <p class="mt-3">Tapez un ou plusieurs mots.</p><p style="font-size: 0.8em;">Une recherche par catégories est disponible sur le <a href="https://ark.dasch.swiss/ark:/72163/1/0112" target="_blank">DaSCH Service Platform</a> (suivre le lien <i>Discover Project Data</i> et voir le <a href="https://github.com/gustaveroudproject/SalsahModeEmploi/blob/master/SalsahModeEmploi.md#mode-demploi-de-knora-salsah" target="_blank">mode d'emploi</a>).</p>
     </div>
+  </div>
 
     
 
-    <!-- if NO results -->
-    <div class="row" *ngIf="!results && search && !pending">  <!--!mss && !msParts && !roudPubs && !persons && !places && !works-->
-      <div class="col-md-6 offset-md-4 my-5">
-          <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
+  <!-- if NO results -->
+  <div class="row" *ngIf="!results && search && !pending">  <!--!mss && !msParts && !roudPubs && !persons && !places && !works-->
+    <div class="col-md-6 offset-md-4 my-5">
+        <p style="font-size:larger;">Aucun résultat corresponde à votre recherche.</p>
+    </div>
+  </div>
+
+
+  <!-- RESULTS -->
+  <div class="row">
+
+    <!-- filter categories -->
+    <div class="col-md-3 my-3">
+      <div *ngIf="results || years || translatedAuthorIRI">
+
+        <!-- archives -->
+        <ul class="list-group mb-1">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <b>Archives</b>
+          </li>
+
+          <!-- mss -->
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="msPartsResults-mssCheckbox" (click)="show('msPartsResults-mss')">
+              <label class="form-check-label" for="msPartsResults-mssCheckbox">Manuscrits et notes de journal</label>
+              &nbsp;
+              <!-- SVG from https://primer.style/octicons/pencil-24 -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M17.263 2.177a1.75 1.75 0 012.474 0l2.586 2.586a1.75 1.75 0 010 2.474L19.53 10.03l-.012.013L8.69 20.378a1.75 1.75 0 01-.699.409l-5.523 1.68a.75.75 0 01-.935-.935l1.673-5.5a1.75 1.75 0 01.466-.756L14.476 4.963l2.787-2.786zm-2.275 4.371l-10.28 9.813a.25.25 0 00-.067.108l-1.264 4.154 4.177-1.271a.25.25 0 00.1-.059l10.273-9.806-2.94-2.939zM19 8.44l2.263-2.262a.25.25 0 000-.354l-2.586-2.586a.25.25 0 00-.354 0L16.061 5.5 19 8.44z"></path></svg>
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{mss?.length + msParts?.length}}</span>
+          </li>
+
+          <!-- publications -->
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="pubsCheckbox" (click)="show('pubs')">
+              <label class="form-check-label" for="pubsCheckbox">Publications</label>
+              &nbsp;
+              <!-- SVG from https://primer.style/octicons/book-24-->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M0 3.75A.75.75 0 01.75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.496 4.496 0 0115.75 3h7.5a.75.75 0 01.75.75v15.063a.75.75 0 01-.755.75l-7.682-.052a3 3 0 00-2.142.878l-.89.891a.75.75 0 01-1.061 0l-.902-.901a3 3 0 00-2.121-.879H.75a.75.75 0 01-.75-.75v-15zm11.247 3.747a3 3 0 00-3-2.997H1.5V18h6.947a4.5 4.5 0 012.803.98l-.003-11.483zm1.503 11.485V7.5a3 3 0 013-3h6.75v13.558l-6.927-.047a4.5 4.5 0 00-2.823.971z"></path></svg>
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{ (roudPubs !== undefined) ? (roudPubs?.length) : "0" }}
+              <!-- the data arrives too late, which gives an error thinking value is undefined. Add this to handle it --></span>
+          </li>
+        </ul>
+
+        <!-- textes -->
+        <ul class="list-group mb-1">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <b>Recueils</b>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="textsCheckbox" (click)="show('texts')">
+              <label class="form-check-label" for="textsCheckbox">Textes critiques</label>
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{ (texts !== undefined) ? (texts?.length) : "0" }}</span>
+          </li>
+        </ul>
+
+        <ul class="list-group mb-1">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <b>Entités</b>
+          </li>
+          <!-- persons -->
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="personsCheckbox" (click)="show('persons')">
+              <label class="form-check-label" for="personsCheckbox">Personnes</label>
+              &nbsp;
+              <!-- SVG from https://primer.style/octicons/person-24-->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
+                
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{ (persons !== undefined) ? (persons?.length) : "0" }}</span>
+          </li>
+          <!-- places -->
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="placesCheckbox" (click)="show('places')">
+              <label class="form-check-label" for="placesCheckbox">Lieux</label>
+              &nbsp;
+              <!-- SVG from https://primer.style/octicons/location-24 -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path fill-rule="evenodd" d="M19.071 3.429C15.166-.476 8.834-.476 4.93 3.429c-3.905 3.905-3.905 10.237 0 14.142l.028.028 5.375 5.375a2.359 2.359 0 003.336 0l5.403-5.403c3.905-3.905 3.905-10.237 0-14.142zM5.99 4.489A8.5 8.5 0 0118.01 16.51l-5.403 5.404a.859.859 0 01-1.214 0l-5.378-5.378-.002-.002-.023-.024a8.5 8.5 0 010-12.02z"></path></svg>
+                
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{ (places !== undefined) ? (places?.length) : "0" }}</span>
+          </li>
+          <!-- works -->
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="worksCheckbox" (click)="show('works')">
+              <label class="form-check-label" for="worksCheckbox">Œuvres</label>
+            </div>
+            <span class="badge text-bg-light rounded-pill">{{ (works !== undefined) ? (works?.length) : "0" }}</span>
+          </li>
+        </ul>
       </div>
     </div>
 
-
-    <!-- RESULTS -->
-    <div class="row">
-
-      <!-- filter categories -->
-      <div class="col-md-3 my-3">
-        <div *ngIf="results || years || translatedAuthorIRI">
-
-          
-
-          
-          
-
-          <!-- archives -->
-          <ul class="list-group mb-1">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Archives</b>
+    <!-- list of results -->
+    <div id="allResults" class="col-md-8 my-3">
+      <div id="mssResults" *ngIf="mss && mss.length > 0">
+        <div>
+          <strong>Manuscrits</strong>
+          <ul>
+            <li *ngFor="let ms of mss | sortByMsTitle">
+              <or-manuscript [msIRI]="ms?.id"></or-manuscript>
             </li>
-            <!-- mss -->
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-
-                <input type="checkbox" class="form-check-input" id="msPartsResults-mssCheckbox" (click)="show('msPartsResults-mss')">
-                <label class="form-check-label" for="msPartsResults-mssCheckbox">Manuscrits et notes de journal</label>
-                &nbsp;
-                <!-- SVG from https://primer.style/octicons/pencil-24 -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M17.263 2.177a1.75 1.75 0 012.474 0l2.586 2.586a1.75 1.75 0 010 2.474L19.53 10.03l-.012.013L8.69 20.378a1.75 1.75 0 01-.699.409l-5.523 1.68a.75.75 0 01-.935-.935l1.673-5.5a1.75 1.75 0 01.466-.756L14.476 4.963l2.787-2.786zm-2.275 4.371l-10.28 9.813a.25.25 0 00-.067.108l-1.264 4.154 4.177-1.271a.25.25 0 00.1-.059l10.273-9.806-2.94-2.939zM19 8.44l2.263-2.262a.25.25 0 000-.354l-2.586-2.586a.25.25 0 00-.354 0L16.061 5.5 19 8.44z"></path></svg>
-                
-                
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{mss?.length + msParts?.length}}</span>
-            </li>
-            <!-- publications -->
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="pubsCheckbox" (click)="show('pubs')">
-                <label class="form-check-label" for="pubsCheckbox">Publications</label>
-                &nbsp;
-                <!-- SVG from https://primer.style/octicons/book-24-->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M0 3.75A.75.75 0 01.75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.496 4.496 0 0115.75 3h7.5a.75.75 0 01.75.75v15.063a.75.75 0 01-.755.75l-7.682-.052a3 3 0 00-2.142.878l-.89.891a.75.75 0 01-1.061 0l-.902-.901a3 3 0 00-2.121-.879H.75a.75.75 0 01-.75-.75v-15zm11.247 3.747a3 3 0 00-3-2.997H1.5V18h6.947a4.5 4.5 0 012.803.98l-.003-11.483zm1.503 11.485V7.5a3 3 0 013-3h6.75v13.558l-6.927-.047a4.5 4.5 0 00-2.823.971z"></path></svg>
-                  
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{ (roudPubs !== undefined) ? (roudPubs?.length) : "0" }}
-                <!-- the data arrives too late, which gives an error thinking value is undefined. Add this to handle it --></span>
-            </li>
-          </ul>
-
-
-          <!-- textes -->
-          <ul class="list-group mb-1">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Recueils</b>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="textsCheckbox" (click)="show('texts')">
-                <label class="form-check-label" for="textsCheckbox">Textes critiques</label>
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{ (texts !== undefined) ? (texts?.length) : "0" }}</span>
-            </li>
-          </ul>
-
-          
-
-          <ul class="list-group mb-1">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <b>Entités</b>
-            </li>
-            <!-- persons -->
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="personsCheckbox" (click)="show('persons')">
-                <label class="form-check-label" for="personsCheckbox">Personnes</label>
-                &nbsp;
-                <!-- SVG from https://primer.style/octicons/person-24-->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
-                  
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{ (persons !== undefined) ? (persons?.length) : "0" }}</span>
-            </li>
-            <!-- places -->
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="placesCheckbox" (click)="show('places')">
-                <label class="form-check-label" for="placesCheckbox">Lieux</label>
-                &nbsp;
-                <!-- SVG from https://primer.style/octicons/location-24 -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path fill-rule="evenodd" d="M19.071 3.429C15.166-.476 8.834-.476 4.93 3.429c-3.905 3.905-3.905 10.237 0 14.142l.028.028 5.375 5.375a2.359 2.359 0 003.336 0l5.403-5.403c3.905-3.905 3.905-10.237 0-14.142zM5.99 4.489A8.5 8.5 0 0118.01 16.51l-5.403 5.404a.859.859 0 01-1.214 0l-5.378-5.378-.002-.002-.023-.024a8.5 8.5 0 010-12.02z"></path></svg>
-                  
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{ (places !== undefined) ? (places?.length) : "0" }}</span>
-            </li>
-            <!-- works -->
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="worksCheckbox" (click)="show('works')">
-                <label class="form-check-label" for="worksCheckbox">Œuvres</label>
-              </div>
-              <span class="badge text-bg-light rounded-pill">{{ (works !== undefined) ? (works?.length) : "0" }}</span>
-            </li>
-            
           </ul>
         </div>
       </div>
 
+      <div id="msPartsResults" *ngIf="msParts && msParts.length > 0">
+        <div>
+          <strong>Notes de journal</strong>
+          <ul>
+            <li *ngFor="let part of msParts">
+              {{ part?.title }}
+                (partie de : <a routerLink="/archive/ms/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
+                    <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
+                </a>)
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="pubsResults" *ngIf="roudPubs && roudPubs.length > 0">
+        <div>
+          <strong>Publications</strong>
+          <ul>
+            <li *ngFor="let bookIRI of booksIRIs">
+              <or-book [bookIRI]="bookIRI" [withAuthor]="'yes'"></or-book>
+            </li>
+            <li *ngFor="let articleIRI of articlesIRIs">
+              <or-article [articleIRI]="articleIRI" [withAuthor]="'yes'"></or-article>
+            </li>
+            <li>
+              <li *ngFor="let bookSectionIRI of bookSectionsIRIs">
+                <or-book-section [bookSectionIRI]="bookSectionIRI" [withAuthor]="'yes'"></or-book-section>
+              </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="textsResults" *ngIf="texts && texts.length > 0">
+        <div>
+          <strong>Recueils</strong>
+          <ul>
+            <li *ngFor="let text of texts | sortByTextDate">
+              <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
+                [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></a
+              >, <span [innerHtml]="text?.date | removeTextAndPar | htmlSanitizer"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="personsResults" *ngIf="persons && persons.length > 0">
+        <div>
+          <strong>Personnes</strong>
+          <ul>
+            <li *ngFor="let person of persons | sortBySurname">
+              <a routerLink="/persons/{{ person?.id | encodeURIComponent }}"
+                >{{ person?.name }} {{person?.surname}}
+                </a
+              ><span *ngIf="person?.dateOfBirth != null || person?.dateOfDeath != null">
+                ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
+            </span>
+            </li>
+          </ul>
+        </div>
+      </div>
       
-      <!-- list of results -->
-      <div id="allResults" class="col-md-8 my-3">
-
-
-        <div id="mssResults" *ngIf="mss && mss.length > 0">
-          <div>
-            <strong>Manuscrits</strong>
-            <ul>
-              <li *ngFor="let ms of mss | sortByMsTitle">
-                <or-manuscript [msIRI]="ms?.id"></or-manuscript>
-              </li>
-            </ul>
-          </div>
+      <div id="placesResults" *ngIf="places && places.length > 0">
+        <div>
+          <strong>Lieux</strong>
+          <ul>
+            <li *ngFor="let place of places">
+              <a routerLink="/places/{{ place?.id | encodeURIComponent }}">
+                {{place?.name}}
+                </a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
 
-        <div id="msPartsResults" *ngIf="msParts && msParts.length > 0">
-          <div>
-            <strong>Notes de journal</strong>
-            <ul>
-              <li *ngFor="let part of msParts">
-                {{ part?.title }}
-                  (partie de : <a routerLink="/archive/ms/{{ msFromParts?.id | encodeURIComponent }}">{{ msFromParts?.archive }}
-                      <span [innerHTML]="msFromParts?.shelfmark | htmlSanitizer"></span>
-                  </a>)
-              </li>
-            </ul>
-          </div>
+      <div id="worksResults" *ngIf="works && works.length > 0">
+        <div>
+          <strong>Œuvres littéraires, d'art et de musique</strong>
+          <ul>
+            <li *ngFor="let work of works">
+              <a routerLink="/works/{{ work?.id | encodeURIComponent }}">
+                <or-author [authorsId]="work?.authorsValues"></or-author>
+                <i [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></i>
+                <span *ngIf=work?.date>, {{ work?.date | knoradatesYmdFormatting }}</span>
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
 
+      <!--
+        <nav *ngIf="results" aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      -->
 
-        <div id="pubsResults" *ngIf="roudPubs && roudPubs.length > 0">
-          <div>
-            <strong>Publications</strong>
-            <ul>
-              <li *ngFor="let bookIRI of booksIRIs">
-                <or-book [bookIRI]="bookIRI" [withAuthor]="'yes'"></or-book>
-              </li>
-              <li *ngFor="let articleIRI of articlesIRIs">
-                <or-article [articleIRI]="articleIRI" [withAuthor]="'yes'"></or-article>
-              </li>
-              <li>
-                <li *ngFor="let bookSectionIRI of bookSectionsIRIs">
-                  <or-book-section [bookSectionIRI]="bookSectionIRI" [withAuthor]="'yes'"></or-book-section>
-                </li>
-            </ul>
-          </div>
-        </div>
+    </div> <!-- end list of results -->
 
-
-        <div id="textsResults" *ngIf="texts && texts.length > 0">
-          <div>
-            <strong>Recueils</strong>
-            <ul>
-              <li *ngFor="let text of texts | sortByTextDate">
-                <a routerLink="/texts/{{ text?.id | encodeURIComponent }}"
-                  [innerHTML]="text?.title | removeTextAndPar | htmlSanitizer"></a
-                >, <span [innerHtml]="text?.date | removeTextAndPar | htmlSanitizer"></span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-
-        
-        <div id="personsResults" *ngIf="persons && persons.length > 0">
-          <div>
-            <strong>Personnes</strong>
-            <ul>
-              <li *ngFor="let person of persons | sortBySurname">
-                <a routerLink="/persons/{{ person?.id | encodeURIComponent }}"
-                  >{{ person?.name }} {{person?.surname}}
-                  </a
-                ><span *ngIf="person?.dateOfBirth != null || person?.dateOfDeath != null">
-                  ({{ person?.dateOfBirth | knoradatesFormatting }}-{{ person?.dateOfDeath | knoradatesFormatting }})
-              </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        
-
-        <div id="placesResults" *ngIf="places && places.length > 0">
-          <div>
-            <strong>Lieux</strong>
-            <ul>
-              <li *ngFor="let place of places">
-                <a routerLink="/places/{{ place?.id | encodeURIComponent }}">
-                  {{place?.name}}
-                  </a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!---->
-        <div id="worksResults" *ngIf="works && works.length > 0">
-          <div>
-            <strong>Œuvres littéraires, d'art et de musique</strong>
-            <ul>
-              <li *ngFor="let work of works">
-                <a routerLink="/works/{{ work?.id | encodeURIComponent }}">
-                  <or-author [authorsId]="work?.authorsValues"></or-author>
-                  <i [innerHtml]="work?.title | removeTextAndPar | htmlSanitizer"></i>
-                  <span *ngIf=work?.date>, {{ work?.date | knoradatesYmdFormatting }}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-
-        <!--
-          <nav *ngIf="results" aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        -->
-
-
-      </div> <!-- end list of results -->
-
-    </div> <!-- end results -->    
+  </div> <!-- end results -->    
     
     <br/><br/><br/><br/><br/>
     <!-- SEARCH BY IMAGE -->
     
     <div class="row" *ngIf="somePersons">
-      
       <div class="col-12"><p style="text-align: center;font-size: x-large;">
         <strong>Recherche par image</strong><br/>Refraîchir la page pour voir de nouvelles photos.</p></div>
       
@@ -299,6 +274,4 @@
           </div>
     </div>
 
-
 </div> <!-- end container -->
-

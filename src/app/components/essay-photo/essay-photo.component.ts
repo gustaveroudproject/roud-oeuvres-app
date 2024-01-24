@@ -11,13 +11,9 @@ import { DataService } from 'src/app/services/data.service';
 export class EssayPhotoComponent implements OnInit {
 
   photo:Picture;
-  @Input()
-  essayPhotoId: string ;
+  @Input() essayPhotoId: string;
 
-  constructor(
-    private dataService: DataService,
-    public sanitizer: DomSanitizer
-  ) { }
+  constructor(private dataService: DataService, public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
 

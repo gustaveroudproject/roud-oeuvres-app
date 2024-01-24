@@ -10,7 +10,12 @@
       "prefix": "or",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+        },
+        "@schematics/angular:pipe": {
         }
       },
       "architect": {
@@ -65,24 +70,34 @@
                   "maximumWarning": "6kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "oeuvres-roud-app:build"
+            "buildTarget": "oeuvres-roud-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "oeuvres-roud-app:build:production"
+              "buildTarget": "oeuvres-roud-app:build:production"
+            },
+            "development": {
+              "buildTarget": "oeuvres-roud-app:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "oeuvres-roud-app:build"
+            "buildTarget": "oeuvres-roud-app:build"
           }
         },
         "test": {
