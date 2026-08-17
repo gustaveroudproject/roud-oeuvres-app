@@ -4,12 +4,6 @@
         "apiHost": "api.ls-prod-server.dasch.swiss", 
         "apiPort": null,
         "apiPath": "",
-        "jsonWebToken": "",
         "logErrors": false
-
-    },
-    "app": {
-        "name": "Knora-APP",
-        "url": "https://admin.ls-prod-server.dasch.swiss/"
     }
 }
