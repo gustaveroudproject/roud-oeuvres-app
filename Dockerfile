@@ -7,6 +7,7 @@ COPY package.json .
 RUN npm install
 
 COPY src src
+COPY scripts scripts
 COPY tsconfig.json .
 COPY angular.json .
 RUN npm run build

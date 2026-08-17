@@ -21,7 +21,7 @@ export class AppInitService {
                 knora.apiHost, 
                 knora.apiPort, 
                 knora.apiPath, 
-                knora.jsonWebToken, 
+                undefined,
                 knora.logErrors);
 
             // set knora-api connection configuration
