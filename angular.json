@@ -45,6 +45,15 @@
           },
           "configurations": {
             "production": {
+              "assets": [
+                "src/favicon.ico",
+                "src/assets",
+                {
+                  "glob": "config.prod.json",
+                  "input": "src/config",
+                  "output": "config"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
