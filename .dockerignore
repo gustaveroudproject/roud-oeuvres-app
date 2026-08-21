@@ -1,0 +1,9 @@
+.git
+.github
+.angular
+coverage
+dist
+e2e
+node_modules
+npm-debug.log*
+*.md
