@@ -14,6 +14,18 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+### Container CI
+
+Pull requests and merges to `master` validate a non-published `linux/amd64`
+image. Pushing an explicit Git tag matching `v*` publishes the same image for
+`linux/amd64` and `linux/arm64`, tagged with the Git tag and `latest`.
+
+The Angular bundle is built on BuildKit's native worker and copied into each
+target-platform nginx image. This avoids running the Node build under QEMU.
+Dependencies are installed reproducibly with `npm ci`; keep
+`package-lock.json` synchronized with `package.json`. The Docker context also
+excludes local dependencies, build output, Git metadata and test-only files.
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
