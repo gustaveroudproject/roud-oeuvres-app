@@ -25,6 +25,9 @@ target-platform nginx image. This avoids running the Node build under QEMU.
 Dependencies are installed reproducibly with `npm ci`; keep
 `package-lock.json` synchronized with `package.json`. The Docker context also
 excludes local dependencies, build output, Git metadata and test-only files.
+The container build currently serialises Angular's stylesheet workers because
+legacy component styles import the global Angular Material stylesheet; this
+prevents intermittent Sass module-load loops in CI.
 
 ## Running unit tests
 

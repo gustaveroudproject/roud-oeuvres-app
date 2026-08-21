@@ -14,7 +14,10 @@ COPY src src
 COPY scripts scripts
 COPY tsconfig.json .
 COPY angular.json .
-RUN npm run build
+# Several legacy component styles import the global Angular Material stylesheet.
+# Serialise Sass compilation to avoid intermittent module-load loops until those
+# imports are split into a dedicated shared-variables partial.
+RUN NG_BUILD_MAX_WORKERS=1 npm run build
 
 FROM nginx:alpine
 
