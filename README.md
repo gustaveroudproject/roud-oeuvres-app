@@ -31,6 +31,12 @@ The container build currently serialises Angular's stylesheet workers because
 legacy component styles import the global Angular Material stylesheet; this
 prevents intermittent Sass module-load loops in CI.
 
+If the registry's `latest` alias must be rolled back, run the
+`restore-docker-latest` workflow with an existing stable version tag and the
+requested confirmation text. It retags the existing multi-platform manifest
+without rebuilding or deploying the application; verify the resulting digest
+before using it for a deployment.
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
