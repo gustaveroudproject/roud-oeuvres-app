@@ -32,6 +32,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.DOCKERHUB_REPOSITORY }}
+          # Disable metadata-action's implicit latest tag. Stable releases add
+          # it explicitly below; prereleases must never move it.
+          flavor: latest=false
           tags: |
             type=sha,prefix=ci-
             type=ref,event=tag
