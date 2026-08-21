@@ -18,7 +18,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Pull requests and merges to `master` validate a non-published `linux/amd64`
 image. Pushing an explicit Git tag matching `v*` publishes the same image for
-`linux/amd64` and `linux/arm64`, tagged with the Git tag and `latest`.
+`linux/amd64` and `linux/arm64`, tagged with the Git tag. Stable version tags
+also update `latest`; prerelease tags containing `-`, such as
+`v2.0.18-rc.1`, do not.
 
 The Angular bundle is built on BuildKit's native worker and copied into each
 target-platform nginx image. This avoids running the Node build under QEMU.
