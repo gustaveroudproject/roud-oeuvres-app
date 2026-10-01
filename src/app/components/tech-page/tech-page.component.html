@@ -108,39 +108,39 @@
           Below are some examples of how to read and search resources (using <code>curl</code>). For more complex queries, see Gravsearch examples below.</p>
         <p class="p-api">
           <strong>Get all resources of a class</strong>
-          <br/>Specify the encoded class IRI, for example <code>http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#Manuscript</code>. Pagination is required (25 results for page).
+          <br/>Specify the encoded class IRI, for example <code>http://api.dasch.swiss/ontology/0112/roud-oeuvres/v2#Manuscript</code>. Pagination is required (25 results for page).
           <!--
           <br/>Header. <code>x-knora-accept-project: http://rdfh.ch/projects/0112</code>
-          <br/>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/resources?resourceClass=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0</code>-->
+          <br/>Body. <code>https://api.dasch.swiss/v2/resources?resourceClass=http://api.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0</code>-->
         </p>
         <div class="codeblockTitle">Example with curl</div>
-        <div class="codeblock"><code>curl --header "x-knora-accept-project: http://rdfh.ch/projects/0112" "https://api.ls-prod-server.dasch.swiss/v2/resources?resourceClass=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0"</code></div>
+        <div class="codeblock"><code>curl --header "x-knora-accept-project: http://rdfh.ch/projects/0112" "https://api.dasch.swiss/v2/resources?resourceClass=http://api.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23Manuscript&page=0"</code></div>
         
         <p class="p-api">
           <strong>Get one resource with ID</strong>
           <br/>Use the encoded internal IRI to get the resource, for example the book <i>Adieu</i> published in 1927.
           <!--
-          <br>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code>
+          <br>Body. <code>https://api.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code>
           -->
         </p>
         <div class="codeblockTitle">Example with curl</div>
-        <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code></div>
+        <div class="codeblock"><code>curl https://api.dasch.swiss/v2/resources/http%3A%2F%2Frdfh.ch%2F0112%2FK2OVZydJS42GUsMJvKhP-A</code></div>
         
         <p class="p-api">
           <strong>Get the value of a text resource property in XML/TEI</strong>
           <br/>Specfiy the encoded internal IRI of the resource, plus the property name as 'textProperty'. Only valid for text property (no numeric values, no dates, etc.). For example, information about the person Olivier Cherpillod.
-          <!--<br>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code>-->
+          <!--<br>Body. <code>https://api.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code>-->
         </p>
         <div class="codeblockTitle">Example with curl</div>
-        <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.ls-prod-server.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code></div>
+        <div class="codeblock"><code>curl https://api.dasch.swiss/v2/tei/http%3A%2F%2Frdfh.ch%2F0112%2F0EJg8HlmQ22ZxNtSYj6L5g?textProperty=http://api.dasch.swiss%2Fontology%2F0112%2Froud-oeuvres%2Fv2%23personHasNotice</code></div>
         
         <p class="p-api">
           <strong>Full-text search</strong>
           <br/>For example, find occurrences of 'Jaccottet'
-          <!--<br/>Body. <code>https://api.ls-prod-server.dasch.swiss/v2/search/Jaccottet</code>-->
+          <!--<br/>Body. <code>https://api.dasch.swiss/v2/search/Jaccottet</code>-->
         </p>
         <div class="codeblockTitle">Example with curl</div>
-        <div class="codeblock"><code>curl https://api.ls-prod-server.dasch.swiss/v2/search/Jaccottet</code></div>
+        <div class="codeblock"><code>curl https://api.dasch.swiss/v2/search/Jaccottet</code></div>
 
         <p>
           More complex queries can be handled using <strong>Gravsearch</strong>, the Virtual Graph Search.
@@ -152,7 +152,7 @@
           to retrieve the data to be displayed.
           Gravsearch is also available in the 'Expert search' tab in DSP-APP.
           Below are some examples of Gravsearch queries on the project data.
-          <br/>Gravsearch queries can be submitted via HTTP POST to <code>https://api.ls-prod-server.dasch.swiss/v2/searchextended</code>
+          <br/>Gravsearch queries can be submitted via HTTP POST to <code>https://api.dasch.swiss/v2/searchextended</code>
           or HTTP GET to the same endpoint, adding the URL encoded query (see curl example below).
         </p>
     
@@ -164,7 +164,7 @@
         <div class="codeblockTitle">Example of Gravsearch query</div>
         <div class="codeblock"><pre><code>
 PREFIX knora-api: &lt;http://api.knora.org/ontology/knora-api/v2#&gt;
-PREFIX roud-oeuvres: &lt;http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt;
+PREFIX roud-oeuvres: &lt;http://api.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt;
 CONSTRUCT &#123;
     ?person knora-api:isMainResource true .
     ?person roud-oeuvres:personHasGivenName ?name .
@@ -180,7 +180,7 @@ CONSTRUCT &#123;
 &#125;</code></pre></div>
 
         <div class="codeblockTitle">Example with curl</div>
-        <div class="codeblock"><code>curl -X POST https://api.ls-prod-server.dasch.swiss/v2/searchextended -d "PREFIX knora-api: &lt;ttp://api.knora.org/ontology/knora-api/v2#&gt; PREFIX roud-oeuvres: &lt;http://api.ls-prod-server.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt; CONSTRUCT &#123; ?person knora-api:isMainResource true . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . &#125; WHERE &#123; ?person a roud-oeuvres:Person . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . ?person roud-oeuvres:personHasAuthorityID ?idiri . ?idiri knora-api:valueAsString 'http://viaf.org/viaf/69021635' . &#125;"</code></div>
+        <div class="codeblock"><code>curl -X POST https://api.dasch.swiss/v2/searchextended -d "PREFIX knora-api: &lt;ttp://api.knora.org/ontology/knora-api/v2#&gt; PREFIX roud-oeuvres: &lt;http://api.dasch.swiss/ontology/0112/roud-oeuvres/v2#&gt; CONSTRUCT &#123; ?person knora-api:isMainResource true . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . &#125; WHERE &#123; ?person a roud-oeuvres:Person . ?person roud-oeuvres:personHasGivenName ?name . ?person roud-oeuvres:personHasFamilyName ?familyName . ?person roud-oeuvres:personHasNotice ?info . ?person roud-oeuvres:personHasAuthorityID ?idiri . ?idiri knora-api:valueAsString 'http://viaf.org/viaf/69021635' . &#125;"</code></div>
 
       </div> <!-- end API content -->
 
