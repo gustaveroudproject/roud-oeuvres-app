@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ImageResizePipe implements PipeTransform {
 
   /**
-   * transform url like : https://iiif.ls-prod-server.dasch.swiss/0112/G6TiAPry2hF-F4hPEgg14Nz.jpx/full/3409,4149/0/default.jpg
-   * into :               https://iiif.ls-prod-server.dasch.swiss/0112/G6TiAPry2hF-F4hPEgg14Nz.jpx/full/,1000/0/default.jpg 
+   * transform url like : https://iiif.dasch.swiss/0112/G6TiAPry2hF-F4hPEgg14Nz.jpx/full/3409,4149/0/default.jpg
+   * into :               https://iiif.dasch.swiss/0112/G6TiAPry2hF-F4hPEgg14Nz.jpx/full/,1000/0/default.jpg
    * @param value 
    * @returns 
    */

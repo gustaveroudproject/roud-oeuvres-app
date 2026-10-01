@@ -22,7 +22,7 @@ export class PageViewerComponent implements OnInit {
   lastPage = 1
 
   // for viewer DataViz
-  iiifURL:string = "https://iiif.ls-prod-server.dasch.swiss";
+  iiifURL:string = "https://iiif.dasch.swiss";
   project:string = "http://rdfh.ch/projects/0112";
   currentImage: FileRepresentation[] = [];
   images: FileRepresentation[] = [];
