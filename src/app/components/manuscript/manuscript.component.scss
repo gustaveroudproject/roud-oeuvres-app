@@ -1,1 +1,5 @@
 @import 'src/styles.scss';
+.manuscript-loading, .manuscript-error {
+  color: #595959;
+  font-style: italic;
+}
