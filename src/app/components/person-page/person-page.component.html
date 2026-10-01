@@ -26,7 +26,7 @@
     </div>
 
     <!-- NOTICE -->
-    <div class="py-4 notice row">
+    <div class="py-4 notice row" *ngIf="person?.notice?.trim()">
         <p [innerHtml]="person?.notice | htmlSanitizer" orResourceLink></p>
     </div>
 
