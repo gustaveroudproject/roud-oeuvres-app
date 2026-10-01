@@ -1,8 +1,11 @@
-<span>
-    <span [innerHTML]="msLight?.title | htmlSanitizer"></span>
-    (<a routerLink="/resources/{{ msLight?.id | encodeURIComponent }}">{{ msLight?.archive }}
-        <span *ngIf="msLight?.shelfmark != '/'">
-            <span [innerHTML]="msLight?.shelfmark | htmlSanitizer"></span>
-        </span>
-    </a>)
+<span *ngIf="loading" class="manuscript-loading" role="status">Chargement du manuscrit…</span>
+<span *ngIf="loadFailed" class="manuscript-error">Impossible de charger ce manuscrit.</span>
+<span *ngIf="msLight && !loading && !loadFailed">
+    <span [innerHTML]="(msLight.title || 'Sans titre') | htmlSanitizer"></span>
+    <ng-container *ngIf="msLight.archive || (msLight.shelfmark && msLight.shelfmark != '/')">
+        (<a routerLink="/resources/{{ msLight.id | encodeURIComponent }}">{{ msLight.archive }}
+            <span *ngIf="msLight.shelfmark && msLight.shelfmark != '/'"
+                [innerHTML]="msLight.shelfmark | htmlSanitizer"></span>
+        </a>)
+    </ng-container>
 </span>
