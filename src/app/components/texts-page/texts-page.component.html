@@ -25,7 +25,10 @@
   <div class="row">
 
     <div class="col-6">
-      <img src="https://iiif.dasch.swiss:443/0112/Af3QQvkv7BC-BKMtyOpy0pu.jp2/full/2532,2801/0/default.jpg"/>
+      <img #recueilsImage src="https://iiif.dasch.swiss/0112/Af3QQvkv7BC-BKMtyOpy0pu.jp2/full/max/0/default.jpg"
+           alt="Un homme repose la tête sur son bras, devant un carnet ouvert."
+           (error)="recueilsImage.hidden = true; recueilsFallback.hidden = false"/>
+      <p #recueilsFallback hidden class="p-3 border rounded" role="status">Illustration indisponible.</p>
     </div>
   
     <div class="col-5 offset-1">
